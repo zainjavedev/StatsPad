@@ -12,8 +12,8 @@ export const usePlayerData = (isPlayoffs) => {
         setLoading(true);
         
         const [regularResponse, playoffResponse] = await Promise.all([
-          fetch('/data/nba-2024-25-regular-season.json'),
-          fetch('/data/nba-2024-25-playoffs.json')
+          fetch('/data/2024-25/regular-season.json'),
+          fetch('/data/2024-25/playoffs.json')
         ]);
 
         if (!regularResponse.ok || !playoffResponse.ok) {

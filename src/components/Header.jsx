@@ -6,8 +6,8 @@ const Header = ({ isDarkMode, setIsDarkMode, selectedPlayers, shareComparison })
     <header className={`${
       isDarkMode ? 'bg-gray-900/95 border-gray-800' : 'bg-white/95 border-gray-200'
     } border-b sticky top-0 z-50 backdrop-blur-xl transition-all duration-300 shadow-sm`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+      <div className="max-w-7xl mx-auto px-8 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-24">
           <div className="flex items-center space-x-4">
             <div className="relative group">
               <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl shadow-lg transition-transform group-hover:scale-105">
