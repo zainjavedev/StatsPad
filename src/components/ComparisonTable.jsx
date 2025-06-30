@@ -32,9 +32,10 @@ const ComparisonTable = ({ selectedPlayers, currentStats, isDarkMode }) => {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     
-    // Set canvas size
-    canvas.width = 800;
-    canvas.height = 600;
+    // Set canvas size based on screen size
+    const isMobile = window.innerWidth < 640;
+    canvas.width = isMobile ? 600 : 800;
+    canvas.height = isMobile ? 500 : 600;
     
     // Background
     ctx.fillStyle = isDarkMode ? '#1F2937' : '#FFFFFF';
@@ -42,16 +43,16 @@ const ComparisonTable = ({ selectedPlayers, currentStats, isDarkMode }) => {
     
     // Title
     ctx.fillStyle = isDarkMode ? '#F3F4F6' : '#374151';
-    ctx.font = 'bold 20px system-ui, -apple-system, sans-serif';
+    ctx.font = `bold ${isMobile ? '16px' : '20px'} system-ui, -apple-system, sans-serif`;
     ctx.textAlign = 'center';
-    ctx.fillText('Head-to-Head Comparison', canvas.width / 2, 40);
+    ctx.fillText('Head-to-Head Comparison', canvas.width / 2, isMobile ? 30 : 40);
     
     // Table headers
-    ctx.font = 'bold 14px system-ui, -apple-system, sans-serif';
+    ctx.font = `bold ${isMobile ? '12px' : '14px'} system-ui, -apple-system, sans-serif`;
     ctx.textAlign = 'left';
     
     const colWidth = canvas.width / (selectedPlayers.length + 1);
-    let yPos = 80;
+    let yPos = isMobile ? 60 : 80;
     
     // Header row
     ctx.fillStyle = isDarkMode ? '#374151' : '#F9FAFB';
@@ -63,10 +64,10 @@ const ComparisonTable = ({ selectedPlayers, currentStats, isDarkMode }) => {
     selectedPlayers.forEach((player, index) => {
       const x = colWidth * (index + 1) + 20;
       ctx.fillText(player.playerName, x, yPos - 10);
-      ctx.font = '12px system-ui, -apple-system, sans-serif';
+      ctx.font = `${isMobile ? '10px' : '12px'} system-ui, -apple-system, sans-serif`;
       ctx.fillStyle = isDarkMode ? '#9CA3AF' : '#6B7280';
       ctx.fillText(player.team, x, yPos + 5);
-      ctx.font = 'bold 14px system-ui, -apple-system, sans-serif';
+      ctx.font = `bold ${isMobile ? '12px' : '14px'} system-ui, -apple-system, sans-serif`;
       ctx.fillStyle = isDarkMode ? '#F3F4F6' : '#374151';
     });
     
@@ -84,7 +85,7 @@ const ComparisonTable = ({ selectedPlayers, currentStats, isDarkMode }) => {
       
       // Stat name
       ctx.fillStyle = isDarkMode ? '#F3F4F6' : '#374151';
-      ctx.font = '14px system-ui, -apple-system, sans-serif';
+      ctx.font = `${isMobile ? '12px' : '14px'} system-ui, -apple-system, sans-serif`;
       ctx.fillText(statConfig.label, 20, yPos);
       
       // Player values
@@ -105,11 +106,11 @@ const ComparisonTable = ({ selectedPlayers, currentStats, isDarkMode }) => {
         ctx.fillText(formatValue(value, statKey), x, yPos);
         
         if (isBest) {
-          ctx.fillText('👑', x + 60, yPos);
+          ctx.fillText('👑', x + (isMobile ? 40 : 60), yPos);
         }
       });
       
-      yPos += 30;
+      yPos += isMobile ? 25 : 30;
     });
     
     // Download
@@ -123,10 +124,10 @@ const ComparisonTable = ({ selectedPlayers, currentStats, isDarkMode }) => {
     <div className={`rounded-lg border ${
       isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
     }`}>
-      <div className="flex items-center justify-between space-x-3 p-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex items-center justify-between space-x-3 p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center space-x-3">
-          <BarChart3 className="h-5 w-5" />
-          <h2 className="text-lg font-semibold">Head-to-Head</h2>
+          <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5" />
+          <h2 className="text-base sm:text-lg font-semibold">Head-to-Head</h2>
         </div>
         <button
           onClick={downloadTable}
@@ -142,13 +143,15 @@ const ComparisonTable = ({ selectedPlayers, currentStats, isDarkMode }) => {
       </div>
       
       <div className="overflow-x-auto" ref={tableRef}>
-        <table className="w-full">
+        <table className="w-full text-sm">
           <thead>
             <tr className={`${isDarkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
-              <th className="px-4 py-3 text-left font-medium">Stat</th>
+              <th className="px-3 sm:px-4 py-2 sm:py-3 text-left font-medium sticky left-0 bg-inherit">
+                Stat
+              </th>
               {selectedPlayers.map((player) => (
-                <th key={player.playerName} className="px-4 py-3 text-center font-medium">
-                  <div className="text-sm">{player.playerName}</div>
+                <th key={player.playerName} className="px-3 sm:px-4 py-2 sm:py-3 text-center font-medium min-w-[120px]">
+                  <div className="text-xs sm:text-sm truncate">{player.playerName}</div>
                   <div className="text-xs text-gray-500">{player.team}</div>
                 </th>
               ))}
@@ -162,20 +165,22 @@ const ComparisonTable = ({ selectedPlayers, currentStats, isDarkMode }) => {
                 <tr key={statKey} className={`${
                   isDarkMode ? 'border-gray-700' : 'border-gray-200'
                 } border-t`}>
-                  <td className="px-4 py-3 font-medium">{statConfig.label}</td>
+                  <td className="px-3 sm:px-4 py-2 sm:py-3 font-medium sticky left-0 bg-inherit text-xs sm:text-sm">
+                    {statConfig.label}
+                  </td>
                   {selectedPlayers.map((player) => {
                     const value = player.stats[statKey];
                     const isBest = value === bestValue && value !== undefined;
                     
                     return (
-                      <td key={player.playerName} className={`px-4 py-3 text-center ${
+                      <td key={player.playerName} className={`px-3 sm:px-4 py-2 sm:py-3 text-center ${
                         isBest 
                           ? 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-200 font-semibold' 
                           : ''
                       }`}>
                         <div className="flex items-center justify-center space-x-1">
-                          <span>{formatValue(value, statKey)}</span>
-                          {isBest && <Crown className="h-4 w-4 text-green-600" />}
+                          <span className="text-xs sm:text-sm">{formatValue(value, statKey)}</span>
+                          {isBest && <Crown className="h-3 w-3 sm:h-4 sm:w-4 text-green-600" />}
                         </div>
                       </td>
                     );

@@ -88,7 +88,9 @@ function App() {
   // Handle radar preset change
   const handleRadarPresetChange = (preset) => {
     setRadarPreset(preset);
-    setSelectedRadarStats(defaultRadarConfigs[preset]);
+    if (defaultRadarConfigs[preset]) {
+      setSelectedRadarStats(defaultRadarConfigs[preset]);
+    }
   };
 
   // Handle custom radar stats selection
@@ -121,16 +123,18 @@ function App() {
 
   // Load shared comparison from URL
   useEffect(() => {
-    const { players: playerNames, isPlayoffs: urlIsPlayoffs, showAdvanced: urlShowAdvanced } = parseUrlParameters();
+    if (parseUrlParameters) {
+      const { players: playerNames, isPlayoffs: urlIsPlayoffs, showAdvanced: urlShowAdvanced } = parseUrlParameters();
 
-    if (urlIsPlayoffs) setIsPlayoffs(true);
-    if (urlShowAdvanced) setShowAdvanced(true);
+      if (urlIsPlayoffs) setIsPlayoffs(true);
+      if (urlShowAdvanced) setShowAdvanced(true);
 
-    if (playerNames.length > 0 && currentData) {
-      const players = currentData.players.filter(p => 
-        playerNames.includes(p.playerName)
-      );
-      setSelectedPlayers(players);
+      if (playerNames && playerNames.length > 0 && currentData) {
+        const players = currentData.players.filter(p => 
+          playerNames.includes(p.playerName)
+        );
+        setSelectedPlayers(players);
+      }
     }
   }, [currentData]);
 
@@ -156,17 +160,29 @@ function App() {
     }
   }, [isDarkMode]);
 
+  // Handle clicks outside dropdown to close it
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showDropdown && !event.target.closest('.search-container')) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showDropdown]);
+
   if (loading) {
     return (
       <div className={`min-h-screen flex items-center justify-center ${
         isDarkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-blue-50 to-purple-50 text-gray-900'
       }`}>
-        <div className="text-center">
+        <div className="text-center px-4">
           <div className="relative">
-            <div className="w-16 h-16 border-4 border-blue-200 rounded-full animate-spin border-t-blue-500 mx-auto mb-4"></div>
-            <div className="absolute inset-0 w-16 h-16 border-4 border-purple-200 rounded-full animate-ping border-t-purple-500 mx-auto"></div>
+            <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-blue-200 rounded-full animate-spin border-t-blue-500 mx-auto mb-4"></div>
+            <div className="absolute inset-0 w-12 h-12 sm:w-16 sm:h-16 border-4 border-purple-200 rounded-full animate-ping border-t-purple-500 mx-auto"></div>
           </div>
-          <p className="text-lg font-medium">Loading player data...</p>
+          <p className="text-base sm:text-lg font-medium">Loading player data...</p>
           <p className="text-sm text-gray-500 mt-2">Getting the latest NBA stats</p>
         </div>
       </div>
@@ -178,15 +194,15 @@ function App() {
       <div className={`min-h-screen flex items-center justify-center ${
         isDarkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-red-50 to-pink-50 text-gray-900'
       }`}>
-        <div className="text-center max-w-md">
-          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-2xl">⚠️</span>
+        <div className="text-center max-w-md mx-4">
+          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <span className="text-xl sm:text-2xl">⚠️</span>
           </div>
-          <h2 className="text-xl font-semibold mb-2">Error Loading Data</h2>
-          <p className="text-red-600 mb-4">{error}</p>
+          <h2 className="text-lg sm:text-xl font-semibold mb-2">Error Loading Data</h2>
+          <p className="text-red-600 mb-4 text-sm sm:text-base">{error}</p>
           <button 
             onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm sm:text-base"
           >
             Retry
           </button>
@@ -208,24 +224,26 @@ function App() {
         shareComparison={shareComparison}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Search and Controls */}
-        <div className="mb-8 space-y-6">
-          <div className="flex flex-col lg:flex-row gap-6 items-start lg:items-center">
-            <SearchBar
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              showDropdown={showDropdown}
-              setShowDropdown={setShowDropdown}
-              filteredPlayers={filteredPlayers}
-              selectedPlayers={selectedPlayers}
-              addPlayer={addPlayer}
-              isDarkMode={isDarkMode}
-              sortBy={sortBy}
-              setSortBy={setSortBy}
-              sortOrder={sortOrder}
-              setSortOrder={setSortOrder}
-            />
+        <div className="mb-6 sm:mb-8 space-y-4 sm:space-y-6">
+          <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 items-start lg:items-center">
+            <div className="search-container flex-1">
+              <SearchBar
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                showDropdown={showDropdown}
+                setShowDropdown={setShowDropdown}
+                filteredPlayers={filteredPlayers}
+                selectedPlayers={selectedPlayers}
+                addPlayer={addPlayer}
+                isDarkMode={isDarkMode}
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+                sortOrder={sortOrder}
+                setSortOrder={setSortOrder}
+              />
+            </div>
 
             <ControlPanel
               isPlayoffs={isPlayoffs}
@@ -249,7 +267,7 @@ function App() {
 
         {/* Radar Chart with Customizer */}
         {selectedPlayers.length >= 2 && (
-          <div className="mb-8">
+          <div className="mb-6 sm:mb-8">
             <RadarChart
               selectedPlayers={selectedPlayers}
               currentStats={currentStats}

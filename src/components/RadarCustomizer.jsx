@@ -30,18 +30,18 @@ const RadarCustomizer = ({
         onClick={onClose}
       />
       
-      {/* Popup */}
-      <div className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md rounded-lg border shadow-xl ${
+      {/* Popup - Responsive sizing */}
+      <div className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-[95vw] max-w-md mx-4 rounded-lg border shadow-xl ${
         isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
       }`}>
-        <div className="p-4">
+        <div className="p-3 sm:p-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-2">
-              <Settings className="h-5 w-5" />
-              <h3 className="font-semibold">Customize Radar</h3>
+              <Settings className="h-4 w-4 sm:h-5 sm:w-5" />
+              <h3 className="font-semibold text-sm sm:text-base">Customize Radar</h3>
             </div>
             <div className="flex items-center space-x-3">
-              <span className="text-sm text-gray-500">
+              <span className="text-xs sm:text-sm text-gray-500">
                 {previewStats.length}/8
               </span>
               <button
@@ -54,7 +54,7 @@ const RadarCustomizer = ({
           </div>
 
           <div className="max-h-80 overflow-y-auto">
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {Object.entries(allAvailableStats).map(([key, stat]) => {
                 const isSelected = previewStats.includes(key);
                 const isDisabled = !isSelected && previewStats.length >= 8;
@@ -64,7 +64,7 @@ const RadarCustomizer = ({
                     key={key}
                     onClick={() => !isDisabled && toggleStat(key)}
                     disabled={isDisabled}
-                    className={`p-3 rounded-lg border text-left transition-all ${
+                    className={`p-2 sm:p-3 rounded-lg border text-left transition-all ${
                       isSelected
                         ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
                         : isDisabled
@@ -75,15 +75,15 @@ const RadarCustomizer = ({
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <div>
-                        <div className="font-medium text-sm">{stat.label}</div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-medium text-xs sm:text-sm truncate">{stat.label}</div>
                         {stat.inverted && (
                           <div className="text-xs text-yellow-600 dark:text-yellow-400">
                             Lower is better
                           </div>
                         )}
                       </div>
-                      {isSelected && <Check className="h-4 w-4 text-blue-500" />}
+                      {isSelected && <Check className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500 flex-shrink-0 ml-2" />}
                     </div>
                   </button>
                 );
@@ -92,13 +92,13 @@ const RadarCustomizer = ({
           </div>
 
           <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-            <div className="flex items-center justify-between">
-              <div className="text-sm text-gray-500">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="text-xs sm:text-sm text-gray-500 text-center sm:text-left">
                 Select up to 8 statistics for the radar chart
               </div>
               <button
                 onClick={onClose}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                className="w-full sm:w-auto px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm"
               >
                 Done
               </button>
