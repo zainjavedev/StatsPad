@@ -8,7 +8,7 @@ import ComparisonTable from './components/ComparisonTable';
 import EmptyState from './components/EmptyState';
 import RadarCustomizer from './components/RadarCustomizer';
 import { usePlayerData } from './hooks/usePlayerData';
-import { allAvailableStats, defaultRadarConfigs } from './config/statsConfig';
+import { allAvailableStats, defaultRadarConfigs, enhancePlayerStats } from './config/statsConfig';
 import { generateShareableUrl, parseUrlParameters } from './utils/utils';
 
 function App() {
@@ -19,12 +19,46 @@ function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showRadarCustomizer, setShowRadarCustomizer] = useState(false);
-  const [selectedRadarStats, setSelectedRadarStats] = useState(['points', 'assists', 'totalRebounds', 'fieldGoalPercentage', 'threePointPercentage']);
+  const [selectedRadarStats, setSelectedRadarStats] = useState(['points', 'assists', 'totalRebounds', 'trueShootingPercentage', 'threePointPercentage']);
   const [radarPreset, setRadarPreset] = useState('basic');
   const [sortBy, setSortBy] = useState('rank');
   const [sortOrder, setSortOrder] = useState('asc');
 
-  const { currentData, loading, error } = usePlayerData(isPlayoffs);
+  // Get both regular season and playoff data for season comparison
+  const { currentData: regularSeasonData, loading: regularLoading, error: regularError } = usePlayerData(false);
+  const { currentData: playoffData, loading: playoffLoading, error: playoffError } = usePlayerData(true);
+
+  // Current data based on selected season
+  const currentData = isPlayoffs ? playoffData : regularSeasonData;
+  const loading = regularLoading || playoffLoading;
+  const error = regularError || playoffError;
+
+  // Enhance player data with calculated stats (TS%, eFG%)
+  const enhancedData = useMemo(() => {
+    if (!currentData) return null;
+    
+    return {
+      ...currentData,
+      players: currentData.players.map(player => enhancePlayerStats(player))
+    };
+  }, [currentData]);
+
+  // Enhanced regular season and playoff data for season comparison
+  const enhancedRegularSeasonData = useMemo(() => {
+    if (!regularSeasonData) return null;
+    return {
+      ...regularSeasonData,
+      players: regularSeasonData.players.map(player => enhancePlayerStats(player))
+    };
+  }, [regularSeasonData]);
+
+  const enhancedPlayoffData = useMemo(() => {
+    if (!playoffData) return null;
+    return {
+      ...playoffData,
+      players: playoffData.players.map(player => enhancePlayerStats(player))
+    };
+  }, [playoffData]);
 
   // Get current stats for radar based on selection
   const currentStats = useMemo(() => {
@@ -37,11 +71,11 @@ function App() {
     return stats;
   }, [selectedRadarStats]);
 
-  // Filter and sort players - Fixed search for "Luka"
+  // Filter and sort players with enhanced data
   const filteredPlayers = useMemo(() => {
-    if (!searchTerm || !currentData) return [];
+    if (!searchTerm || !enhancedData) return [];
     
-    let filtered = currentData.players.filter(player => {
+    let filtered = enhancedData.players.filter(player => {
       const playerName = player.playerName.toLowerCase();
       const teamName = player.team.toLowerCase();
       const searchTermLower = searchTerm.toLowerCase();
@@ -53,7 +87,8 @@ function App() {
              (searchTermLower === 'luka' && playerName.includes('luka')) ||
              (searchTermLower === 'giannis' && playerName.includes('giannis')) ||
              (searchTermLower === 'jokic' && playerName.includes('jokic')) ||
-             (searchTermLower === 'lebron' && playerName.includes('lebron'));
+             (searchTermLower === 'lebron' && playerName.includes('lebron')) ||
+             (searchTermLower === 'shai' && playerName.includes('shai'));
     });
 
     // Sort players
@@ -69,7 +104,7 @@ function App() {
     });
 
     return filtered.slice(0, 50); // Show up to 50 players
-  }, [searchTerm, currentData, sortBy, sortOrder]);
+  }, [searchTerm, enhancedData, sortBy, sortOrder]);
 
   // Add player to comparison
   const addPlayer = (player) => {
@@ -129,14 +164,33 @@ function App() {
       if (urlIsPlayoffs) setIsPlayoffs(true);
       if (urlShowAdvanced) setShowAdvanced(true);
 
-      if (playerNames && playerNames.length > 0 && currentData) {
-        const players = currentData.players.filter(p => 
+      if (playerNames && playerNames.length > 0 && enhancedData) {
+        const players = enhancedData.players.filter(p => 
           playerNames.includes(p.playerName)
         );
         setSelectedPlayers(players);
       }
     }
-  }, [currentData]);
+  }, [enhancedData]);
+
+  // Update selected players when switching between seasons
+  useEffect(() => {
+    if (selectedPlayers.length > 0 && enhancedData) {
+      const updatedPlayers = selectedPlayers.map(selectedPlayer => {
+        const updatedPlayer = enhancedData.players.find(p => p.playerName === selectedPlayer.playerName);
+        return updatedPlayer || selectedPlayer; // Fallback to original if not found
+      });
+      
+      // Only update if there are actual changes
+      const hasChanges = updatedPlayers.some((player, index) => 
+        JSON.stringify(player.stats) !== JSON.stringify(selectedPlayers[index].stats)
+      );
+      
+      if (hasChanges) {
+        setSelectedPlayers(updatedPlayers);
+      }
+    }
+  }, [isPlayoffs, enhancedData]);
 
   // Initialize dark mode from system preference
   useEffect(() => {
@@ -255,6 +309,20 @@ function App() {
           </div>
         </div>
 
+        {/* Season Comparison Notice for Single Player */}
+        {selectedPlayers.length === 1 && enhancedRegularSeasonData && enhancedPlayoffData && (
+          <div className={`mb-4 p-3 rounded-lg border-l-4 border-blue-500 ${
+            isDarkMode ? 'bg-blue-900/20 border-blue-400' : 'bg-blue-50 border-blue-500'
+          }`}>
+            <div className="flex items-center space-x-2 text-sm">
+              <span className="text-blue-600 dark:text-blue-400">💡</span>
+              <span className={`${isDarkMode ? 'text-blue-300' : 'text-blue-700'}`}>
+                Season comparison available for {selectedPlayers[0].playerName} - radar shows both regular season and playoffs
+              </span>
+            </div>
+          </div>
+        )}
+
         {/* Selected Players */}
         {selectedPlayers.length > 0 && (
           <PlayerCards
@@ -265,8 +333,8 @@ function App() {
           />
         )}
 
-        {/* Radar Chart with Customizer */}
-        {selectedPlayers.length >= 2 && (
+        {/* Radar Chart with Season Comparison Support */}
+        {selectedPlayers.length >= 1 && (
           <div className="mb-6 sm:mb-8">
             <RadarChart
               selectedPlayers={selectedPlayers}
@@ -278,6 +346,9 @@ function App() {
               setShowCustomizer={setShowRadarCustomizer}
               radarPreset={radarPreset}
               onPresetChange={handleRadarPresetChange}
+              // Season comparison data
+              regularSeasonData={enhancedRegularSeasonData}
+              playoffsData={enhancedPlayoffData}
             />
             
             {showRadarCustomizer && (
@@ -293,12 +364,15 @@ function App() {
         )}
 
         {/* Comparison Table */}
-        {selectedPlayers.length >= 2 && (
+        {selectedPlayers.length >= 1 && (
           <ComparisonTable
             selectedPlayers={selectedPlayers}
             currentStats={currentStats}
             isDarkMode={isDarkMode}
             showAdvanced={showAdvanced}
+            // Season comparison data
+            regularSeasonData={enhancedRegularSeasonData}
+            playoffsData={enhancedPlayoffData}
           />
         )}
 

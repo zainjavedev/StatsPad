@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Radar, Settings, Download } from 'lucide-react';
+import { Radar, Settings, Download, ToggleLeft, ToggleRight } from 'lucide-react';
 
 const RadarChart = ({ 
   selectedPlayers, 
@@ -8,7 +8,10 @@ const RadarChart = ({
   showAdvanced,
   isDarkMode,
   showCustomizer,
-  setShowCustomizer
+  setShowCustomizer,
+  // New props for season comparison
+  regularSeasonData,
+  playoffsData
 }) => {
   const canvasRef = useRef(null);
 
@@ -26,9 +29,9 @@ const RadarChart = ({
 
     const ctx = canvas.getContext('2d');
     
-    // Responsive canvas sizing
+    // Responsive canvas sizing - increased for better spacing
     const isMobile = window.innerWidth < 640;
-    const size = isMobile ? 300 : 500;
+    const size = isMobile ? 400 : 600; // Increased canvas size for more space
     
     // Update canvas size if needed
     if (canvas.width !== size || canvas.height !== size) {
@@ -38,7 +41,7 @@ const RadarChart = ({
     
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
-    const radius = Math.min(centerX, centerY) * (isMobile ? 0.6 : 0.7);
+    const radius = Math.min(centerX, centerY) * (isMobile ? 0.5 : 0.55); // Reduced radar size relative to canvas
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
@@ -49,7 +52,7 @@ const RadarChart = ({
     const statKeys = Object.keys(currentStats);
     const angleStep = (2 * Math.PI) / statKeys.length;
     
-    // Simple grid - just circles
+    // Simple grid - concentric circles
     ctx.strokeStyle = isDarkMode ? '#4B5563' : '#D1D5DB';
     ctx.lineWidth = 1;
     
@@ -57,10 +60,19 @@ const RadarChart = ({
       ctx.beginPath();
       ctx.arc(centerX, centerY, (radius * i) / 4, 0, 2 * Math.PI);
       ctx.stroke();
+      
+      // Add percentage labels for grid lines
+      if (i === 4) {
+        ctx.fillStyle = isDarkMode ? '#6B7280' : '#9CA3AF';
+        ctx.font = `${isMobile ? '8px' : '10px'} system-ui, -apple-system, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText('100%', centerX, centerY - radius + (isMobile ? 8 : 12));
+      }
     }
     
-    // Simple axes
+    // Axes
     ctx.strokeStyle = isDarkMode ? '#6B7280' : '#9CA3AF';
+    ctx.lineWidth = 0.5;
     statKeys.forEach((statKey, index) => {
       const angle = index * angleStep - Math.PI / 2;
       const x2 = centerX + Math.cos(angle) * radius;
@@ -72,113 +84,253 @@ const RadarChart = ({
       ctx.stroke();
     });
     
-    // Responsive labels
+    // Enhanced labels with better spacing
     ctx.fillStyle = isDarkMode ? '#F3F4F6' : '#374151';
-    ctx.font = `${isMobile ? '10px' : '14px'} system-ui, -apple-system, sans-serif`;
+    ctx.font = `${isMobile ? '11px' : '13px'} system-ui, -apple-system, sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     
     statKeys.forEach((statKey, index) => {
       const angle = index * angleStep - Math.PI / 2;
-      const labelDistance = radius + (isMobile ? 20 : 30);
+      const labelDistance = radius + (isMobile ? 50 : 70); // Increased label distance
       const labelX = centerX + Math.cos(angle) * labelDistance;
       const labelY = centerY + Math.sin(angle) * labelDistance;
       
-      // Truncate labels on mobile
+      // Main stat label - center aligned for consistency
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      
       let label = currentStats[statKey].label;
-      if (isMobile && label.length > 8) {
-        label = label.substring(0, 6) + '...';
+      // Don't truncate labels since we have more space now
+      
+      ctx.fillText(label, labelX, labelY - (isMobile ? 8 : 10));
+      
+      // Show actual stat values for single player or season comparison
+      if (selectedPlayers.length === 1) {
+        const player = selectedPlayers[0];
+        const value = player.stats[statKey];
+        if (value !== undefined) {
+          ctx.font = `${isMobile ? '9px' : '11px'} system-ui, -apple-system, sans-serif`;
+          ctx.fillStyle = isDarkMode ? '#9CA3AF' : '#6B7280';
+          
+          let displayValue = value;
+          if (statKey.includes('Percentage')) {
+            displayValue = `${value.toFixed(1)}%`;
+          } else {
+            displayValue = value.toFixed(1);
+          }
+          
+          ctx.fillText(displayValue, labelX, labelY + (isMobile ? 8 : 10));
+          ctx.font = `${isMobile ? '11px' : '13px'} system-ui, -apple-system, sans-serif`;
+          ctx.fillStyle = isDarkMode ? '#F3F4F6' : '#374151';
+        }
       }
-      
-      ctx.fillText(label, labelX, labelY);
     });
     
-    // Simple player data
-    const colors = ['#3B82F6', '#EF4444', '#10B981']; // Blue, Red, Green
-    
-    selectedPlayers.forEach((player, playerIndex) => {
-      const color = colors[playerIndex];
-      
-      const points = statKeys.map((statKey, index) => {
-        const angle = index * angleStep - Math.PI / 2;
-        const value = getStatValue(player, statKey);
-        const distance = (radius * value) / 100;
-        
-        return {
-          x: centerX + Math.cos(angle) * distance,
-          y: centerY + Math.sin(angle) * distance
-        };
-      });
-      
-      // Fill area - very subtle
-      ctx.fillStyle = color + '15';
-      ctx.beginPath();
-      points.forEach((point, index) => {
-        if (index === 0) {
-          ctx.moveTo(point.x, point.y);
-        } else {
-          ctx.lineTo(point.x, point.y);
-        }
-      });
-      ctx.closePath();
-      ctx.fill();
-      
-      // Simple line
-      ctx.strokeStyle = color;
-      ctx.lineWidth = isMobile ? 1.5 : 2;
-      ctx.beginPath();
-      points.forEach((point, index) => {
-        if (index === 0) {
-          ctx.moveTo(point.x, point.y);
-        } else {
-          ctx.lineTo(point.x, point.y);
-        }
-      });
-      ctx.closePath();
-      ctx.stroke();
-      
-      // Simple points
-      ctx.fillStyle = color;
-      const pointSize = isMobile ? 3 : 4;
-      points.forEach(point => {
-        ctx.beginPath();
-        ctx.arc(point.x, point.y, pointSize, 0, 2 * Math.PI);
-        ctx.fill();
-      });
-    });
-    
-    // Responsive legend
-    ctx.font = `${isMobile ? '12px' : '14px'} system-ui, -apple-system, sans-serif`;
+    // Reset text alignment
     ctx.textAlign = 'left';
     
-    const legendStartY = isMobile ? 20 : 30;
-    const legendSpacing = isMobile ? 20 : 25;
-    const legendX = isMobile ? 10 : 20;
+    // Check if we're doing season comparison for single player
+    const isSeasonComparison = selectedPlayers.length === 1 && regularSeasonData && playoffsData;
     
-    selectedPlayers.forEach((player, index) => {
-      const y = legendStartY + index * legendSpacing;
-      const color = colors[index];
+    if (isSeasonComparison) {
+      // Season comparison mode - show both regular season and playoffs for same player
+      const player = selectedPlayers[0];
+      const regularPlayer = regularSeasonData.players.find(p => p.playerName === player.playerName);
+      const playoffPlayer = playoffsData.players.find(p => p.playerName === player.playerName);
       
-      // Simple rectangle
-      ctx.fillStyle = color;
-      const rectSize = isMobile ? 12 : 16;
-      ctx.fillRect(legendX, y - rectSize/2, rectSize, rectSize);
-      
-      // Player name (truncated on mobile)
-      ctx.fillStyle = isDarkMode ? '#F3F4F6' : '#374151';
-      let playerName = player.playerName;
-      if (isMobile && playerName.length > 12) {
-        playerName = playerName.substring(0, 10) + '...';
+      if (regularPlayer && playoffPlayer) {
+        const players = [regularPlayer, playoffPlayer];
+        const colors = ['#3B82F6', '#EF4444']; // Blue for regular, Red for playoffs
+        const labels = ['Regular Season', 'Playoffs'];
+        
+        players.forEach((seasonPlayer, seasonIndex) => {
+          const color = colors[seasonIndex];
+          
+          const points = statKeys.map((statKey, index) => {
+            const angle = index * angleStep - Math.PI / 2;
+            const value = getStatValue(seasonPlayer, statKey);
+            const distance = (radius * value) / 100;
+            
+            return {
+              x: centerX + Math.cos(angle) * distance,
+              y: centerY + Math.sin(angle) * distance,
+              value: value
+            };
+          });
+          
+          // Fill area with transparency
+          ctx.fillStyle = color + '20';
+          ctx.beginPath();
+          points.forEach((point, index) => {
+            if (index === 0) {
+              ctx.moveTo(point.x, point.y);
+            } else {
+              ctx.lineTo(point.x, point.y);
+            }
+          });
+          ctx.closePath();
+          ctx.fill();
+          
+          // Stroke the outline
+          ctx.strokeStyle = color;
+          ctx.lineWidth = isMobile ? 2 : 2.5;
+          // Remove dashed line - solid line for both seasons
+          ctx.beginPath();
+          points.forEach((point, index) => {
+            if (index === 0) {
+              ctx.moveTo(point.x, point.y);
+            } else {
+              ctx.lineTo(point.x, point.y);
+            }
+          });
+          ctx.closePath();
+          ctx.stroke();
+          
+          // Draw points
+          ctx.fillStyle = color;
+          const pointSize = isMobile ? 4 : 5;
+          points.forEach(point => {
+            ctx.beginPath();
+            ctx.arc(point.x, point.y, pointSize, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Add white border to points
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          });
+        });
+        
+        // Season comparison legend - positioned better with more space
+        ctx.font = `${isMobile ? '13px' : '15px'} system-ui, -apple-system, sans-serif`;
+        ctx.textAlign = 'left';
+        
+        const legendStartY = isMobile ? 30 : 40;
+        const legendSpacing = isMobile ? 28 : 35;
+        const legendX = isMobile ? 20 : 30;
+        
+        labels.forEach((label, index) => {
+          const y = legendStartY + index * legendSpacing;
+          const color = colors[index];
+          
+          // Legend rectangle
+          ctx.fillStyle = color;
+          const rectSize = isMobile ? 16 : 20; // Slightly larger legend squares
+          ctx.fillRect(legendX, y - rectSize/2, rectSize, rectSize);
+          
+          // Season label
+          ctx.fillStyle = isDarkMode ? '#F3F4F6' : '#374151';
+          ctx.fillText(label, legendX + rectSize + 12, y - 6);
+          
+          // Player name and team
+          ctx.font = `${isMobile ? '11px' : '13px'} system-ui, -apple-system, sans-serif`;
+          ctx.fillStyle = isDarkMode ? '#9CA3AF' : '#6B7280';
+          let playerName = player.playerName;
+          // Don't truncate player names since we have more space
+          ctx.fillText(`${playerName} (${player.team})`, legendX + rectSize + 12, y + 8);
+          ctx.font = `${isMobile ? '13px' : '15px'} system-ui, -apple-system, sans-serif`;
+        });
       }
-      ctx.fillText(playerName, legendX + rectSize + 8, y);
-    });
+    } else {
+      // Regular comparison mode - multiple different players
+      const colors = ['#3B82F6', '#EF4444', '#10B981']; // Blue, Red, Green
+      
+      selectedPlayers.forEach((player, playerIndex) => {
+        const color = colors[playerIndex];
+        
+        const points = statKeys.map((statKey, index) => {
+          const angle = index * angleStep - Math.PI / 2;
+          const value = getStatValue(player, statKey);
+          const distance = (radius * value) / 100;
+          
+          return {
+            x: centerX + Math.cos(angle) * distance,
+            y: centerY + Math.sin(angle) * distance,
+            value: value
+          };
+        });
+        
+        // Fill area with transparency
+        ctx.fillStyle = color + '20';
+        ctx.beginPath();
+        points.forEach((point, index) => {
+          if (index === 0) {
+            ctx.moveTo(point.x, point.y);
+          } else {
+            ctx.lineTo(point.x, point.y);
+          }
+        });
+        ctx.closePath();
+        ctx.fill();
+        
+        // Stroke the outline
+        ctx.strokeStyle = color;
+        ctx.lineWidth = isMobile ? 2 : 2.5;
+        ctx.beginPath();
+        points.forEach((point, index) => {
+          if (index === 0) {
+            ctx.moveTo(point.x, point.y);
+          } else {
+            ctx.lineTo(point.x, point.y);
+          }
+        });
+        ctx.closePath();
+        ctx.stroke();
+        
+        // Draw points
+        ctx.fillStyle = color;
+        const pointSize = isMobile ? 4 : 5;
+        points.forEach(point => {
+          ctx.beginPath();
+          ctx.arc(point.x, point.y, pointSize, 0, 2 * Math.PI);
+          ctx.fill();
+          
+          // Add white border to points
+          ctx.strokeStyle = '#FFFFFF';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        });
+      });
+      
+      // Regular legend - also improved spacing
+      ctx.font = `${isMobile ? '13px' : '15px'} system-ui, -apple-system, sans-serif`;
+      ctx.textAlign = 'left';
+      
+      const legendStartY = isMobile ? 30 : 40;
+      const legendSpacing = isMobile ? 26 : 32;
+      const legendX = isMobile ? 20 : 30;
+      
+      selectedPlayers.forEach((player, index) => {
+        const y = legendStartY + index * legendSpacing;
+        const color = colors[index];
+        
+        // Legend rectangle
+        ctx.fillStyle = color;
+        const rectSize = isMobile ? 16 : 20;
+        ctx.fillRect(legendX, y - rectSize/2, rectSize, rectSize);
+        
+        // Player name
+        ctx.fillStyle = isDarkMode ? '#F3F4F6' : '#374151';
+        let playerName = player.playerName;
+        // Don't truncate since we have more space
+        ctx.fillText(playerName, legendX + rectSize + 12, y - 6);
+        
+        // Team
+        ctx.font = `${isMobile ? '11px' : '13px'} system-ui, -apple-system, sans-serif`;
+        ctx.fillStyle = isDarkMode ? '#9CA3AF' : '#6B7280';
+        ctx.fillText(player.team, legendX + rectSize + 12, y + 8);
+        ctx.font = `${isMobile ? '13px' : '15px'} system-ui, -apple-system, sans-serif`;
+        ctx.fillStyle = isDarkMode ? '#F3F4F6' : '#374151';
+      });
+    }
   };
 
   useEffect(() => {
     if (selectedPlayers.length > 0) {
       generateRadarChart();
     }
-  }, [selectedPlayers, currentStats, isDarkMode]);
+  }, [selectedPlayers, currentStats, isDarkMode, regularSeasonData, playoffsData]);
 
   // Handle window resize for responsive chart
   useEffect(() => {
@@ -197,7 +349,10 @@ const RadarChart = ({
     if (!canvas) return;
     
     const link = document.createElement('a');
-    link.download = `nba-comparison.${format}`;
+    const filename = selectedPlayers.length === 1 && regularSeasonData && playoffsData
+      ? `${selectedPlayers[0].playerName.replace(/\s+/g, '-')}-season-comparison.${format}`
+      : `nba-comparison-${selectedPlayers.map(p => p.playerName.replace(/\s+/g, '-')).join('-vs-')}.${format}`;
+    link.download = filename;
     link.href = canvas.toDataURL(`image/${format}`);
     link.click();
   };
@@ -211,6 +366,12 @@ const RadarChart = ({
     return () => window.removeEventListener('downloadChart', handleDownload);
   }, []);
 
+  // Check if season comparison is available
+  const canCompareSeasons = selectedPlayers.length === 1 && regularSeasonData && playoffsData;
+  const isSeasonComparison = canCompareSeasons && 
+    regularSeasonData.players.find(p => p.playerName === selectedPlayers[0].playerName) &&
+    playoffsData.players.find(p => p.playerName === selectedPlayers[0].playerName);
+
   return (
     <div className="mb-6 sm:mb-8">
       <div className={`rounded-lg border ${
@@ -220,14 +381,31 @@ const RadarChart = ({
           <div className="flex items-center space-x-3">
             <Radar className="h-4 w-4 sm:h-5 sm:w-5" />
             <div>
-              <h2 className="text-base sm:text-lg font-semibold">Performance Radar</h2>
+              <h2 className="text-base sm:text-lg font-semibold">
+                {isSeasonComparison ? 'Season Comparison' : selectedPlayers.length === 1 ? 'Player Analysis' : 'Performance Comparison'}
+              </h2>
               <p className="text-xs sm:text-sm text-gray-500">
-                {isPlayoffs ? 'Playoffs' : 'Regular Season'} Stats
+                {isSeasonComparison 
+                  ? 'Regular Season vs Playoffs' 
+                  : isPlayoffs ? 'Playoffs' : 'Regular Season'} Stats
+                {selectedPlayers.length === 1 && !isSeasonComparison && ' • Individual Breakdown'}
               </p>
             </div>
           </div>
           
           <div className="flex items-center space-x-2">
+            {/* Season Comparison Toggle for single player */}
+            {canCompareSeasons && (
+              <div className="flex items-center space-x-2 px-2 py-1 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300">
+                <span className="text-xs font-medium">Season Compare</span>
+                {isSeasonComparison ? (
+                  <ToggleRight className="h-4 w-4" />
+                ) : (
+                  <ToggleLeft className="h-4 w-4" />
+                )}
+              </div>
+            )}
+            
             <button
               onClick={() => downloadChart('png')}
               className={`p-2 rounded-lg transition-colors ${
@@ -261,8 +439,8 @@ const RadarChart = ({
         <div className="flex justify-center p-3 sm:p-6">
           <canvas
             ref={canvasRef}
-            width={500}
-            height={500}
+            width={600}
+            height={600}
             className="max-w-full h-auto"
             style={{ maxWidth: '100%', height: 'auto' }}
           />
