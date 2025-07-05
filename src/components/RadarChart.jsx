@@ -29,9 +29,9 @@ const RadarChart = ({
 
     const ctx = canvas.getContext('2d');
     
-    // Responsive canvas sizing - increased for better spacing
+    // Optimized canvas sizing with better proportions
     const isMobile = window.innerWidth < 640;
-    const size = isMobile ? 400 : 600; // Increased canvas size for more space
+    const size = isMobile ? 400 : 520; // Slightly larger for better space utilization
     
     // Update canvas size if needed
     if (canvas.width !== size || canvas.height !== size) {
@@ -41,7 +41,7 @@ const RadarChart = ({
     
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
-    const radius = Math.min(centerX, centerY) * (isMobile ? 0.5 : 0.55); // Reduced radar size relative to canvas
+    const radius = Math.min(centerX, centerY) * (isMobile ? 0.68 : 0.75); // Much larger radar area
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
@@ -52,7 +52,7 @@ const RadarChart = ({
     const statKeys = Object.keys(currentStats);
     const angleStep = (2 * Math.PI) / statKeys.length;
     
-    // Simple grid - concentric circles
+    // Simple grid - concentric circles (no percentage labels)
     ctx.strokeStyle = isDarkMode ? '#4B5563' : '#D1D5DB';
     ctx.lineWidth = 1;
     
@@ -60,14 +60,6 @@ const RadarChart = ({
       ctx.beginPath();
       ctx.arc(centerX, centerY, (radius * i) / 4, 0, 2 * Math.PI);
       ctx.stroke();
-      
-      // Add percentage labels for grid lines
-      if (i === 4) {
-        ctx.fillStyle = isDarkMode ? '#6B7280' : '#9CA3AF';
-        ctx.font = `${isMobile ? '8px' : '10px'} system-ui, -apple-system, sans-serif`;
-        ctx.textAlign = 'center';
-        ctx.fillText('100%', centerX, centerY - radius + (isMobile ? 8 : 12));
-      }
     }
     
     // Axes
@@ -84,51 +76,100 @@ const RadarChart = ({
       ctx.stroke();
     });
     
-    // Enhanced labels with better spacing
+    // Smart label positioning with proper alignment based on location
     ctx.fillStyle = isDarkMode ? '#F3F4F6' : '#374151';
-    ctx.font = `${isMobile ? '11px' : '13px'} system-ui, -apple-system, sans-serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
+    ctx.font = `bold ${isMobile ? '12px' : '14px'} system-ui, -apple-system, sans-serif`;
     
     statKeys.forEach((statKey, index) => {
       const angle = index * angleStep - Math.PI / 2;
-      const labelDistance = radius + (isMobile ? 50 : 70); // Increased label distance
+      const labelDistance = radius + (isMobile ? 20 : 26); // Optimal distance from chart
       const labelX = centerX + Math.cos(angle) * labelDistance;
       const labelY = centerY + Math.sin(angle) * labelDistance;
       
-      // Main stat label - center aligned for consistency
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
+      // Smart alignment based on position around the circle
+      const normalizedAngle = ((angle + Math.PI * 2) % (Math.PI * 2));
+      
+      // Determine text alignment based on quadrant and position
+      if (normalizedAngle >= 0 && normalizedAngle < Math.PI * 0.5) {
+        // Top right quadrant (0° to 90°)
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'bottom';
+      } else if (normalizedAngle >= Math.PI * 0.5 && normalizedAngle < Math.PI) {
+        // Bottom right quadrant (90° to 180°)
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+      } else if (normalizedAngle >= Math.PI && normalizedAngle < Math.PI * 1.5) {
+        // Bottom left quadrant (180° to 270°)
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'top';
+      } else {
+        // Top left quadrant (270° to 360°)
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'bottom';
+      }
+      
+      // Special handling for cardinal directions for perfect alignment
+      const tolerance = 0.15; // Increased tolerance for better cardinal detection
+      if (Math.abs(normalizedAngle) < tolerance || Math.abs(normalizedAngle - Math.PI * 2) < tolerance) {
+        // Right (0°)
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+      } else if (Math.abs(normalizedAngle - Math.PI * 0.5) < tolerance) {
+        // Bottom (90°)
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+      } else if (Math.abs(normalizedAngle - Math.PI) < tolerance) {
+        // Left (180°)
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+      } else if (Math.abs(normalizedAngle - Math.PI * 1.5) < tolerance) {
+        // Top (270°)
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+      }
       
       let label = currentStats[statKey].label;
-      // Don't truncate labels since we have more space now
       
-      ctx.fillText(label, labelX, labelY - (isMobile ? 8 : 10));
+      // Calculate background box dimensions based on alignment
+      const metrics = ctx.measureText(label);
+      const textWidth = metrics.width;
+      const textHeight = 16;
       
-      // Show actual stat values for single player or season comparison
-      if (selectedPlayers.length === 1) {
-        const player = selectedPlayers[0];
-        const value = player.stats[statKey];
-        if (value !== undefined) {
-          ctx.font = `${isMobile ? '9px' : '11px'} system-ui, -apple-system, sans-serif`;
-          ctx.fillStyle = isDarkMode ? '#9CA3AF' : '#6B7280';
-          
-          let displayValue = value;
-          if (statKey.includes('Percentage')) {
-            displayValue = `${value.toFixed(1)}%`;
-          } else {
-            displayValue = value.toFixed(1);
-          }
-          
-          ctx.fillText(displayValue, labelX, labelY + (isMobile ? 8 : 10));
-          ctx.font = `${isMobile ? '11px' : '13px'} system-ui, -apple-system, sans-serif`;
-          ctx.fillStyle = isDarkMode ? '#F3F4F6' : '#374151';
-        }
+      // Position background box based on text alignment
+      let bgX, bgY;
+      if (ctx.textAlign === 'left') {
+        bgX = labelX - 2;
+      } else if (ctx.textAlign === 'right') {
+        bgX = labelX - textWidth - 2;
+      } else { // center
+        bgX = labelX - textWidth/2 - 2;
       }
+      
+      if (ctx.textBaseline === 'top') {
+        bgY = labelY - 2;
+      } else if (ctx.textBaseline === 'bottom') {
+        bgY = labelY - textHeight - 2;
+      } else { // middle
+        bgY = labelY - textHeight/2 - 2;
+      }
+      
+      // Add optimized background for better readability
+      ctx.fillStyle = isDarkMode ? 'rgba(31, 41, 55, 0.9)' : 'rgba(255, 255, 255, 0.9)';
+      ctx.fillRect(bgX, bgY, textWidth + 4, textHeight + 4);
+      
+      // Add subtle border to background
+      ctx.strokeStyle = isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(209, 213, 219, 0.5)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(bgX, bgY, textWidth + 4, textHeight + 4);
+      
+      // Draw the label text
+      ctx.fillStyle = isDarkMode ? '#F3F4F6' : '#374151';
+      ctx.fillText(label, labelX, labelY);
     });
     
     // Reset text alignment
     ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
     
     // Check if we're doing season comparison for single player
     const isSeasonComparison = selectedPlayers.length === 1 && regularSeasonData && playoffsData;
@@ -172,10 +213,9 @@ const RadarChart = ({
           ctx.closePath();
           ctx.fill();
           
-          // Stroke the outline
+          // Stroke the outline - thicker and more visible
           ctx.strokeStyle = color;
-          ctx.lineWidth = isMobile ? 2 : 2.5;
-          // Remove dashed line - solid line for both seasons
+          ctx.lineWidth = isMobile ? 3 : 4;
           ctx.beginPath();
           points.forEach((point, index) => {
             if (index === 0) {
@@ -187,49 +227,60 @@ const RadarChart = ({
           ctx.closePath();
           ctx.stroke();
           
-          // Draw points
+          // Draw larger, more visible points
           ctx.fillStyle = color;
-          const pointSize = isMobile ? 4 : 5;
+          const pointSize = isMobile ? 6 : 8; // Larger points
           points.forEach(point => {
             ctx.beginPath();
             ctx.arc(point.x, point.y, pointSize, 0, 2 * Math.PI);
             ctx.fill();
             
-            // Add white border to points
+            // Add white border to points for better visibility
             ctx.strokeStyle = '#FFFFFF';
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 2;
             ctx.stroke();
           });
         });
         
-        // Season comparison legend - positioned better with more space
-        ctx.font = `${isMobile ? '13px' : '15px'} system-ui, -apple-system, sans-serif`;
+        // MOVED TO TOP-LEFT: Season comparison legend
+        ctx.font = `bold ${isMobile ? '11px' : '13px'} system-ui, -apple-system, sans-serif`;
         ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
         
-        const legendStartY = isMobile ? 30 : 40;
-        const legendSpacing = isMobile ? 28 : 35;
-        const legendX = isMobile ? 20 : 30;
+        // Top-left positioning (same as regular comparison)
+        const legendStartX = isMobile ? 12 : 15;
+        const legendStartY = isMobile ? 12 : 15;
+        const legendSpacing = isMobile ? 20 : 22;
+        
+        // Add legend background for better readability
+        const legendHeight = labels.length * legendSpacing + 10;
+        const legendWidth = isMobile ? 120 : 140;
+        
+        ctx.fillStyle = isDarkMode ? 'rgba(31, 41, 55, 0.95)' : 'rgba(255, 255, 255, 0.95)';
+        ctx.fillRect(legendStartX - 8, legendStartY - 8, legendWidth, legendHeight);
+        
+        ctx.strokeStyle = isDarkMode ? '#374151' : '#E5E7EB';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(legendStartX - 8, legendStartY - 8, legendWidth, legendHeight);
         
         labels.forEach((label, index) => {
           const y = legendStartY + index * legendSpacing;
           const color = colors[index];
           
-          // Legend rectangle
+          // Legend rectangle - consistent size
           ctx.fillStyle = color;
-          const rectSize = isMobile ? 16 : 20; // Slightly larger legend squares
-          ctx.fillRect(legendX, y - rectSize/2, rectSize, rectSize);
+          const rectSize = isMobile ? 14 : 16;
+          ctx.fillRect(legendStartX, y, rectSize, rectSize);
           
-          // Season label
+          // Add subtle border to legend rectangle
+          ctx.strokeStyle = isDarkMode ? '#4B5563' : '#D1D5DB';
+          ctx.lineWidth = 1;
+          ctx.strokeRect(legendStartX, y, rectSize, rectSize);
+          
+          // Season label only - no player name or team
           ctx.fillStyle = isDarkMode ? '#F3F4F6' : '#374151';
-          ctx.fillText(label, legendX + rectSize + 12, y - 6);
-          
-          // Player name and team
-          ctx.font = `${isMobile ? '11px' : '13px'} system-ui, -apple-system, sans-serif`;
-          ctx.fillStyle = isDarkMode ? '#9CA3AF' : '#6B7280';
-          let playerName = player.playerName;
-          // Don't truncate player names since we have more space
-          ctx.fillText(`${playerName} (${player.team})`, legendX + rectSize + 12, y + 8);
-          ctx.font = `${isMobile ? '13px' : '15px'} system-ui, -apple-system, sans-serif`;
+          ctx.font = `bold ${isMobile ? '11px' : '13px'} system-ui, -apple-system, sans-serif`;
+          ctx.fillText(label, legendStartX + rectSize + 8, y + 2);
         });
       }
     } else {
@@ -264,9 +315,9 @@ const RadarChart = ({
         ctx.closePath();
         ctx.fill();
         
-        // Stroke the outline
+        // Stroke the outline - thicker and more visible
         ctx.strokeStyle = color;
-        ctx.lineWidth = isMobile ? 2 : 2.5;
+        ctx.lineWidth = isMobile ? 3 : 4;
         ctx.beginPath();
         points.forEach((point, index) => {
           if (index === 0) {
@@ -278,50 +329,73 @@ const RadarChart = ({
         ctx.closePath();
         ctx.stroke();
         
-        // Draw points
+        // Draw larger, more visible points
         ctx.fillStyle = color;
-        const pointSize = isMobile ? 4 : 5;
+        const pointSize = isMobile ? 6 : 8; // Larger points
         points.forEach(point => {
           ctx.beginPath();
           ctx.arc(point.x, point.y, pointSize, 0, 2 * Math.PI);
           ctx.fill();
           
-          // Add white border to points
+          // Add white border to points for better visibility
           ctx.strokeStyle = '#FFFFFF';
-          ctx.lineWidth = 1;
+          ctx.lineWidth = 2;
           ctx.stroke();
         });
       });
       
-      // Regular legend - also improved spacing
-      ctx.font = `${isMobile ? '13px' : '15px'} system-ui, -apple-system, sans-serif`;
+      // Legend positioned at top-left corner to avoid overlap
+      ctx.font = `bold ${isMobile ? '10px' : '12px'} system-ui, -apple-system, sans-serif`;
       ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       
-      const legendStartY = isMobile ? 30 : 40;
-      const legendSpacing = isMobile ? 26 : 32;
-      const legendX = isMobile ? 20 : 30;
+      // Top-left positioning for both mobile and desktop
+      const legendStartX = isMobile ? 12 : 15;
+      const legendStartY = isMobile ? 12 : 15;
+      const legendSpacing = isMobile ? 16 : 18;
+      
+      // Compact legend size
+      const legendHeight = selectedPlayers.length * legendSpacing + 10;
+      const legendWidth = isMobile ? 90 : 110;
+      
+      ctx.fillStyle = isDarkMode ? 'rgba(31, 41, 55, 0.95)' : 'rgba(255, 255, 255, 0.95)';
+      ctx.fillRect(legendStartX - 4, legendStartY - 4, legendWidth, legendHeight);
+      
+      ctx.strokeStyle = isDarkMode ? '#4B5563' : '#D1D5DB';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(legendStartX - 4, legendStartY - 4, legendWidth, legendHeight);
       
       selectedPlayers.forEach((player, index) => {
         const y = legendStartY + index * legendSpacing;
         const color = colors[index];
         
-        // Legend rectangle
+        // Compact legend rectangle
         ctx.fillStyle = color;
-        const rectSize = isMobile ? 16 : 20;
-        ctx.fillRect(legendX, y - rectSize/2, rectSize, rectSize);
+        const rectSize = isMobile ? 10 : 12;
+        ctx.fillRect(legendStartX, y, rectSize, rectSize);
         
-        // Player name
-        ctx.fillStyle = isDarkMode ? '#F3F4F6' : '#374151';
-        let playerName = player.playerName;
-        // Don't truncate since we have more space
-        ctx.fillText(playerName, legendX + rectSize + 12, y - 6);
+        // Add subtle border to legend rectangle
+        ctx.strokeStyle = isDarkMode ? '#6B7280' : '#9CA3AF';
+        ctx.lineWidth = 0.5;
+        ctx.strokeRect(legendStartX, y, rectSize, rectSize);
         
-        // Team
-        ctx.font = `${isMobile ? '11px' : '13px'} system-ui, -apple-system, sans-serif`;
-        ctx.fillStyle = isDarkMode ? '#9CA3AF' : '#6B7280';
-        ctx.fillText(player.team, legendX + rectSize + 12, y + 8);
-        ctx.font = `${isMobile ? '13px' : '15px'} system-ui, -apple-system, sans-serif`;
+        // Player name only - no team
         ctx.fillStyle = isDarkMode ? '#F3F4F6' : '#374151';
+        ctx.font = `bold ${isMobile ? '9px' : '11px'} system-ui, -apple-system, sans-serif`;
+        
+        // Compact player name handling
+        let playerDisplay = player.playerName;
+        const maxLength = isMobile ? 10 : 12;
+        if (playerDisplay.length > maxLength) {
+          const nameParts = playerDisplay.split(' ');
+          if (nameParts.length >= 2) {
+            playerDisplay = `${nameParts[0]} ${nameParts[nameParts.length - 1][0]}.`;
+          } else {
+            playerDisplay = playerDisplay.substring(0, maxLength - 3) + '...';
+          }
+        }
+        
+        ctx.fillText(playerDisplay, legendStartX + rectSize + 5, y + 2);
       });
     }
   };
@@ -373,18 +447,18 @@ const RadarChart = ({
     playoffsData.players.find(p => p.playerName === selectedPlayers[0].playerName);
 
   return (
-    <div className="mb-6 sm:mb-8">
+    <div className="mb-4">
       <div className={`rounded-lg border ${
         isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
       }`}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700 gap-3">
-          <div className="flex items-center space-x-3">
-            <Radar className="h-4 w-4 sm:h-5 sm:w-5" />
-            <div>
-              <h2 className="text-base sm:text-lg font-semibold">
+          <div className="flex items-center space-x-3 min-w-0 flex-1">
+            <Radar className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+            <div className="min-w-0">
+              <h2 className="text-base sm:text-lg font-semibold truncate">
                 {isSeasonComparison ? 'Season Comparison' : selectedPlayers.length === 1 ? 'Player Analysis' : 'Performance Comparison'}
               </h2>
-              <p className="text-xs sm:text-sm text-gray-500">
+              <p className="text-xs sm:text-sm text-gray-500 truncate">
                 {isSeasonComparison 
                   ? 'Regular Season vs Playoffs' 
                   : isPlayoffs ? 'Playoffs' : 'Regular Season'} Stats
@@ -393,11 +467,12 @@ const RadarChart = ({
             </div>
           </div>
           
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center justify-between sm:justify-end gap-2 sm:gap-3 flex-shrink-0">
             {/* Season Comparison Toggle for single player */}
             {canCompareSeasons && (
               <div className="flex items-center space-x-2 px-2 py-1 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300">
-                <span className="text-xs font-medium">Season Compare</span>
+                <span className="text-xs font-medium hidden sm:inline">Season Compare</span>
+                <span className="text-xs font-medium sm:hidden">Compare</span>
                 {isSeasonComparison ? (
                   <ToggleRight className="h-4 w-4" />
                 ) : (
@@ -406,41 +481,43 @@ const RadarChart = ({
               </div>
             )}
             
-            <button
-              onClick={() => downloadChart('png')}
-              className={`p-2 rounded-lg transition-colors ${
-                isDarkMode
-                  ? 'bg-gray-700 hover:bg-gray-600 text-gray-300'
-                  : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-              }`}
-              title="Download chart"
-            >
-              <Download className="h-4 w-4" />
-            </button>
-            
-            {setShowCustomizer && (
+            <div className="flex items-center space-x-2">
               <button
-                onClick={() => setShowCustomizer(!showCustomizer)}
+                onClick={() => downloadChart('png')}
                 className={`p-2 rounded-lg transition-colors ${
-                  showCustomizer
-                    ? 'bg-blue-500 text-white'
-                    : isDarkMode
+                  isDarkMode
                     ? 'bg-gray-700 hover:bg-gray-600 text-gray-300'
                     : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
                 }`}
-                title="Customize radar"
+                title="Download chart"
               >
-                <Settings className="h-4 w-4" />
+                <Download className="h-4 w-4" />
               </button>
-            )}
+              
+              {setShowCustomizer && (
+                <button
+                  onClick={() => setShowCustomizer(!showCustomizer)}
+                  className={`p-2 rounded-lg transition-colors ${
+                    showCustomizer
+                      ? 'bg-blue-500 text-white'
+                      : isDarkMode
+                      ? 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                  }`}
+                  title="Customize radar"
+                >
+                  <Settings className="h-4 w-4" />
+                </button>
+              )}
+            </div>
           </div>
         </div>
         
-        <div className="flex justify-center p-3 sm:p-6">
+        <div className="flex justify-center p-2">
           <canvas
             ref={canvasRef}
-            width={600}
-            height={600}
+            width={520}
+            height={520}
             className="max-w-full h-auto"
             style={{ maxWidth: '100%', height: 'auto' }}
           />
