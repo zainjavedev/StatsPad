@@ -32,7 +32,7 @@ const Header = ({ isDarkMode, setIsDarkMode, selectedPlayers, shareComparison })
             {/* Title Section */}
             <div>
               <h1 className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                NBA Comparison
+                StatsPad BB
               </h1>
               <p className={`text-xs transition-colors ${
                 isDarkMode ? 'text-gray-400' : 'text-gray-600'
