@@ -198,6 +198,16 @@ html,body,#root{max-width:100%;overflow-x:hidden}
   .search-shell input{font-size:13px!important}
 }
 
+/* Player-led card composition. */
+.story-card{isolation:isolate}
+.story-watermark{position:absolute;z-index:1;right:-10px;bottom:-24px;color:var(--story-text);font:900 clamp(110px,15vw,220px)/.8 Arial;letter-spacing:-.1em;opacity:.13;pointer-events:none}
+.story-art{z-index:2!important;width:58%!important;height:104%!important;right:-3%!important;filter:drop-shadow(0 18px 18px #0006)!important}
+.story-copy{z-index:4!important}
+@media(max-width:600px){
+  .story-watermark{font-size:130px;right:-8px;bottom:-14px}
+  .story-art{width:57%!important;height:100%!important;right:-4%!important}
+}
+
 /* Mobile keeps the daily-use path focused: search, key leaders, compare. */
 @media(max-width:600px){
   .muse-sidebar button:nth-of-type(n+3){display:flex}
