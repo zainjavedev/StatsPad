@@ -204,6 +204,8 @@ html,body,#root{max-width:100%;overflow-x:hidden}
 .story-art{z-index:2!important;width:58%!important;height:104%!important;right:-3%!important;filter:drop-shadow(0 18px 18px #0006)!important}
 .story-art.art-fallback-image{width:58%!important;height:104%!important;right:-3%!important}
 .story-copy{z-index:4!important}
+.season-changing>*:not(.season-changing){animation:season-settle .42s cubic-bezier(.22,.8,.25,1)}
+@keyframes season-settle{0%{opacity:.55;transform:translateY(8px);filter:blur(1.5px)}55%{opacity:.9;transform:translateY(2px);filter:blur(.4px)}100%{opacity:1;transform:none;filter:none}}
 @media(min-width:601px){
   .story-feed{grid-template-rows:none!important;grid-auto-rows:minmax(390px,auto)!important}
 }
