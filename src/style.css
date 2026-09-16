@@ -179,8 +179,12 @@ html,body,#root{max-width:100%;overflow-x:hidden}
 
 /* Mobile keeps the daily-use path focused: search, key leaders, compare. */
 @media(max-width:600px){
-  .muse-sidebar button:nth-of-type(n+3){display:none}
+  .muse-sidebar button:nth-of-type(n+3){display:flex}
   .muse-filters{display:none!important}
+  .muse-hero{min-height:154px!important;padding:18px 20px!important;gap:10px!important}
+  .muse-hero h1{font-size:30px!important;margin:4px 0!important}
+  .muse-hero .eyebrow{font-size:9px}
+  .muse-hero+.search-shell{margin-top:10px!important;margin-bottom:14px!important}
   .leader-filters{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none;padding-bottom:4px!important}
   .leader-filters::-webkit-scrollbar{display:none}
   .story-feed .story-card:nth-of-type(n+7){display:none!important}
