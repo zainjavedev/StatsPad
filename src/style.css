@@ -176,3 +176,13 @@ html,body,#root{max-width:100%;overflow-x:hidden}
   .scoreboard-head,.stat-row{min-width:460px}
   footer{margin:0 14px;font-size:10px}
 }
+
+/* Mobile keeps the daily-use path focused: search, key leaders, compare. */
+@media(max-width:600px){
+  .muse-sidebar button:nth-of-type(n+3){display:none}
+  .muse-filters{display:none!important}
+  .leader-filters{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none;padding-bottom:4px!important}
+  .leader-filters::-webkit-scrollbar{display:none}
+  .story-feed .story-card:nth-of-type(n+7){display:none!important}
+  .split-grid-wrap{display:none!important}
+}
