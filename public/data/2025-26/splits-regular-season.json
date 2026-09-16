@@ -1,0 +1,461 @@
+{
+  "season": "2025-26",
+  "seasonType": "Regular Season",
+  "source": {
+    "name": "SportsFBI NBA split feed",
+    "url": "https://sportsfbi.com/api-docs"
+  },
+  "quarters": {
+    "Q1": [
+      {
+        "playerId": "doncilu01",
+        "playerName": "Luka Dončić",
+        "team": "LAL",
+        "pts": 12.6,
+        "tsPct": 62.1,
+        "usagePct": 40.8
+      },
+      {
+        "playerId": "jeromty01",
+        "playerName": "Ty Jerome",
+        "team": "MEM",
+        "pts": 11.2,
+        "tsPct": 63.4,
+        "usagePct": 35.1
+      },
+      {
+        "playerId": "antetgi01",
+        "playerName": "Giannis Antetokounmpo",
+        "team": "MIL",
+        "pts": 10.4,
+        "tsPct": 63.2,
+        "usagePct": 34.4
+      },
+      {
+        "playerId": "wembavi01",
+        "playerName": "Victor Wembanyama",
+        "team": "SAS",
+        "pts": 10.2,
+        "tsPct": 68.6,
+        "usagePct": 29
+      },
+      {
+        "playerId": "markkla01",
+        "playerName": "Lauri Markkanen",
+        "team": "UTA",
+        "pts": 10,
+        "tsPct": 57,
+        "usagePct": 28.3
+      },
+      {
+        "playerId": "greenja05",
+        "playerName": "Jalen Green",
+        "team": "PHO",
+        "pts": 9.6,
+        "tsPct": 57.8,
+        "usagePct": 31.4
+      },
+      {
+        "playerId": "portemi01",
+        "playerName": "Michael Porter Jr.",
+        "team": "BRK",
+        "pts": 9.5,
+        "tsPct": 59.6,
+        "usagePct": 30.5
+      },
+      {
+        "playerId": "embiijo01",
+        "playerName": "Joel Embiid",
+        "team": "PHI",
+        "pts": 9.4,
+        "tsPct": 57.5,
+        "usagePct": 33.3
+      },
+      {
+        "playerId": "ballla01",
+        "playerName": "LaMelo Ball",
+        "team": "CHO",
+        "pts": 9.4,
+        "tsPct": 58.3,
+        "usagePct": 30.7
+      },
+      {
+        "playerId": "edwaran01",
+        "playerName": "Anthony Edwards",
+        "team": "MIN",
+        "pts": 9.2,
+        "tsPct": 60.3,
+        "usagePct": 29.3
+      }
+    ],
+    "Q2": [
+      {
+        "playerId": "gilgesh01",
+        "playerName": "Shai Gilgeous-Alexander",
+        "team": "OKC",
+        "pts": 12.1,
+        "tsPct": 69.8,
+        "usagePct": 34.9
+      },
+      {
+        "playerId": "embiijo01",
+        "playerName": "Joel Embiid",
+        "team": "PHI",
+        "pts": 11.9,
+        "tsPct": 61.9,
+        "usagePct": 35.9
+      },
+      {
+        "playerId": "antetgi01",
+        "playerName": "Giannis Antetokounmpo",
+        "team": "MIL",
+        "pts": 11.6,
+        "tsPct": 67.7,
+        "usagePct": 37.1
+      },
+      {
+        "playerId": "doncilu01",
+        "playerName": "Luka Dončić",
+        "team": "LAL",
+        "pts": 11.1,
+        "tsPct": 59.8,
+        "usagePct": 37.6
+      },
+      {
+        "playerId": "leonaka01",
+        "playerName": "Kawhi Leonard",
+        "team": "LAC",
+        "pts": 10.9,
+        "tsPct": 63.8,
+        "usagePct": 34.3
+      },
+      {
+        "playerId": "jeromty01",
+        "playerName": "Ty Jerome",
+        "team": "MEM",
+        "pts": 10.8,
+        "tsPct": 61.1,
+        "usagePct": 36.7
+      },
+      {
+        "playerId": "brownja02",
+        "playerName": "Jaylen Brown",
+        "team": "BOS",
+        "pts": 10,
+        "tsPct": 56.7,
+        "usagePct": 33.5
+      },
+      {
+        "playerId": "markkla01",
+        "playerName": "Lauri Markkanen",
+        "team": "UTA",
+        "pts": 10,
+        "tsPct": 65.9,
+        "usagePct": 26.8
+      },
+      {
+        "playerId": "siakapa01",
+        "playerName": "Pascal Siakam",
+        "team": "IND",
+        "pts": 10,
+        "tsPct": 57.8,
+        "usagePct": 32.6
+      },
+      {
+        "playerId": "curryst01",
+        "playerName": "Stephen Curry",
+        "team": "GSW",
+        "pts": 9.8,
+        "tsPct": 56.3,
+        "usagePct": 33.4
+      }
+    ],
+    "Q3": [
+      {
+        "playerId": "antetgi01",
+        "playerName": "Giannis Antetokounmpo",
+        "team": "MIL",
+        "pts": 12.5,
+        "tsPct": 64.5,
+        "usagePct": 38.7
+      },
+      {
+        "playerId": "brownja02",
+        "playerName": "Jaylen Brown",
+        "team": "BOS",
+        "pts": 11.6,
+        "tsPct": 62.2,
+        "usagePct": 36.3
+      },
+      {
+        "playerId": "leonaka01",
+        "playerName": "Kawhi Leonard",
+        "team": "LAC",
+        "pts": 11.3,
+        "tsPct": 69.8,
+        "usagePct": 32.1
+      },
+      {
+        "playerId": "curryst01",
+        "playerName": "Stephen Curry",
+        "team": "GSW",
+        "pts": 11.1,
+        "tsPct": 67.1,
+        "usagePct": 32.6
+      },
+      {
+        "playerId": "gilgesh01",
+        "playerName": "Shai Gilgeous-Alexander",
+        "team": "OKC",
+        "pts": 11,
+        "tsPct": 69.4,
+        "usagePct": 31.9
+      },
+      {
+        "playerId": "mitchdo01",
+        "playerName": "Donovan Mitchell",
+        "team": "CLE",
+        "pts": 11,
+        "tsPct": 63.7,
+        "usagePct": 33.1
+      },
+      {
+        "playerId": "doncilu01",
+        "playerName": "Luka Dončić",
+        "team": "LAL",
+        "pts": 10.1,
+        "tsPct": 58.1,
+        "usagePct": 36.3
+      },
+      {
+        "playerId": "whiteco01",
+        "playerName": "Coby White",
+        "team": "2TM",
+        "pts": 10.1,
+        "tsPct": 65.3,
+        "usagePct": 30.3
+      },
+      {
+        "playerId": "bookede01",
+        "playerName": "Devin Booker",
+        "team": "PHO",
+        "pts": 10,
+        "tsPct": 59.6,
+        "usagePct": 31.6
+      },
+      {
+        "playerId": "jokicni01",
+        "playerName": "Nikola Jokić",
+        "team": "DEN",
+        "pts": 9.8,
+        "tsPct": 72,
+        "usagePct": 29.4
+      }
+    ],
+    "Q4": [
+      {
+        "playerId": "antetgi01",
+        "playerName": "Giannis Antetokounmpo",
+        "team": "MIL",
+        "pts": 12.6,
+        "tsPct": 70.1,
+        "usagePct": 39.4
+      },
+      {
+        "playerId": "gilgesh01",
+        "playerName": "Shai Gilgeous-Alexander",
+        "team": "OKC",
+        "pts": 12.3,
+        "tsPct": 74.4,
+        "usagePct": 37.9
+      },
+      {
+        "playerId": "jeromty01",
+        "playerName": "Ty Jerome",
+        "team": "MEM",
+        "pts": 10.6,
+        "tsPct": 68.2,
+        "usagePct": 32.7
+      },
+      {
+        "playerId": "wembavi01",
+        "playerName": "Victor Wembanyama",
+        "team": "SAS",
+        "pts": 10.4,
+        "tsPct": 61.9,
+        "usagePct": 32.4
+      },
+      {
+        "playerId": "curryst01",
+        "playerName": "Stephen Curry",
+        "team": "GSW",
+        "pts": 10.3,
+        "tsPct": 58.6,
+        "usagePct": 34.1
+      },
+      {
+        "playerId": "mitchdo01",
+        "playerName": "Donovan Mitchell",
+        "team": "CLE",
+        "pts": 10.2,
+        "tsPct": 57.5,
+        "usagePct": 34.1
+      },
+      {
+        "playerId": "edwaran01",
+        "playerName": "Anthony Edwards",
+        "team": "MIN",
+        "pts": 9.9,
+        "tsPct": 57.6,
+        "usagePct": 31.3
+      },
+      {
+        "playerId": "brownja02",
+        "playerName": "Jaylen Brown",
+        "team": "BOS",
+        "pts": 9.9,
+        "tsPct": 54.4,
+        "usagePct": 40
+      },
+      {
+        "playerId": "jokicni01",
+        "playerName": "Nikola Jokić",
+        "team": "DEN",
+        "pts": 9.9,
+        "tsPct": 62.1,
+        "usagePct": 32.7
+      },
+      {
+        "playerId": "brunsja01",
+        "playerName": "Jalen Brunson",
+        "team": "NYK",
+        "pts": 9.8,
+        "tsPct": 58,
+        "usagePct": 33.8
+      }
+    ]
+  },
+  "clutch": [
+    {
+      "playerId": "jokicni01",
+      "playerName": "Nikola Jokić",
+      "team": "DEN",
+      "games": 29,
+      "pts": 31.0952,
+      "clutchPoints": 902,
+      "reb": 14,
+      "ast": 10.619,
+      "fgPct": 53,
+      "clutchScore": 58
+    },
+    {
+      "playerId": "edwaran01",
+      "playerName": "Anthony Edwards",
+      "team": "MIN",
+      "games": 26,
+      "pts": 31.381,
+      "clutchPoints": 816,
+      "reb": 5.5714,
+      "ast": 3.35,
+      "fgPct": 48.7,
+      "clutchScore": 59
+    },
+    {
+      "playerId": "murraja01",
+      "playerName": "Jamal Murray",
+      "team": "DEN",
+      "games": 29,
+      "pts": 26.2692,
+      "clutchPoints": 762,
+      "reb": 4.8077,
+      "ast": 7.9615,
+      "fgPct": 46.5,
+      "clutchScore": 52
+    },
+    {
+      "playerId": "duranke01",
+      "playerName": "Kevin Durant",
+      "team": "HOU",
+      "games": 27,
+      "pts": 27.9167,
+      "clutchPoints": 754,
+      "reb": 6.0417,
+      "ast": 4.7391,
+      "fgPct": 51.4,
+      "clutchScore": 55
+    },
+    {
+      "playerId": "bookede01",
+      "playerName": "Devin Booker",
+      "team": "PHO",
+      "games": 27,
+      "pts": 27.15,
+      "clutchPoints": 733,
+      "reb": 3.9444,
+      "ast": 5.95,
+      "fgPct": 42.2,
+      "clutchScore": 53
+    },
+    {
+      "playerId": "curryst01",
+      "playerName": "Stephen Curry",
+      "team": "GSW",
+      "games": 24,
+      "pts": 30.3077,
+      "clutchPoints": 727,
+      "reb": 4.75,
+      "ast": 4,
+      "fgPct": 48.7,
+      "clutchScore": 61
+    },
+    {
+      "playerId": "banchpa01",
+      "playerName": "Paolo Banchero",
+      "team": "ORL",
+      "games": 31,
+      "pts": 23.2593,
+      "clutchPoints": 721,
+      "reb": 9,
+      "ast": 5.9259,
+      "fgPct": 44.9,
+      "clutchScore": 52
+    },
+    {
+      "playerId": "wagnefr01",
+      "playerName": "Franz Wagner",
+      "team": "ORL",
+      "games": 31,
+      "pts": 23,
+      "clutchPoints": 713,
+      "reb": 5.8182,
+      "ast": 3.2727,
+      "fgPct": 47.3,
+      "clutchScore": 61
+    },
+    {
+      "playerId": "mitchdo01",
+      "playerName": "Donovan Mitchell",
+      "team": "CLE",
+      "games": 24,
+      "pts": 28.1667,
+      "clutchPoints": 676,
+      "reb": 5.5,
+      "ast": 5.1111,
+      "fgPct": 44.3,
+      "clutchScore": 50
+    },
+    {
+      "playerId": "wembavi01",
+      "playerName": "Victor Wembanyama",
+      "team": "SAS",
+      "games": 28,
+      "pts": 24.087,
+      "clutchPoints": 674,
+      "reb": 9.8261,
+      "ast": 2.913,
+      "fgPct": 47.7,
+      "clutchScore": 47
+    }
+  ],
+  "recordsFetched": 99
+}

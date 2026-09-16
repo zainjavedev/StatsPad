@@ -1,419 +1,139 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import Header from './Header';
-import SearchBar from './SearchBar';
-import ControlPanel from './ControlPanel';
-import PlayerCards from './PlayerCards';
-import RadarChart from './RadarChart';
-import ComparisonTable from './ComparisonTable';
-import EmptyState from './EmptyState';
-import RadarCustomizer from './RadarCustomizer';
-import ComparisonStatsCustomizer from './ComparisonStatsCustomizer';
-import { usePlayerData } from '../hooks/usePlayerData';
-import { 
-  allAvailableStats, 
-  defaultRadarConfigs, 
-  defaultComparisonConfigs,
-  defaultRadarStats,
-  defaultComparisonStats,
-  enhancePlayerStats,
-  getCurrentStats 
-} from '../config/statsConfig';
-import { generateShareableUrl, parseUrlParameters } from '../utils/utils';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { ArrowLeft, ArrowRight, BarChart3, Check, ChevronDown, Copy, Download, Search, Share2, Sparkles, X, Zap } from 'lucide-react';
+import { toPng } from 'html-to-image';
 
-function Home() {
-  const [selectedPlayers, setSelectedPlayers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isPlayoffs, setIsPlayoffs] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [showRadarCustomizer, setShowRadarCustomizer] = useState(false);
-  const [showComparisonCustomizer, setShowComparisonCustomizer] = useState(false);
-  const [selectedRadarStats, setSelectedRadarStats] = useState(defaultRadarStats);
-  const [selectedComparisonStats, setSelectedComparisonStats] = useState(defaultComparisonStats);
-  const [radarPreset, setRadarPreset] = useState('basic');
-  const [comparisonPreset, setComparisonPreset] = useState('comprehensive');
-  const [sortBy, setSortBy] = useState('rank');
-  const [sortOrder, setSortOrder] = useState('asc');
+const COLORS = ['#ff5a36', '#55d6be', '#9b87f5'];
+const TEAM_COLORS = {ATL:'#e03a3e',BOS:'#007a33',BKN:'#777',BRK:'#777',CHA:'#1d1160',CHO:'#1d1160',CHI:'#ce1141',CLE:'#860038',DAL:'#00538c',DEN:'#0e2240',DET:'#c8102e',GSW:'#1d428a',HOU:'#ce1141',IND:'#002d62',LAC:'#c8102e',LAL:'#552583',MEM:'#5d76a9',MIA:'#98002e',MIL:'#00471b',MIN:'#0c2340',NOP:'#0c2340',NYK:'#f58426',OKC:'#007ac1',ORL:'#0077c0',PHI:'#006bb6',PHO:'#1d1160',PHX:'#1d1160',POR:'#e03a3e',SAC:'#5a2d81',SAS:'#8a8d8f',TOR:'#ce1141',UTA:'#6cace4',WAS:'#002b5c'};
+const EXTRA_PLAYER_IDS = {'Victor Wembanyama':1641705,'Cade Cunningham':1630595,'Josh Giddey':1630581,'Donovan Clingan':1642270,'Dyson Daniels':1630700,'Ausar Thompson':1641708,'Chet Holmgren':1631096,'Alex Sarr':1642258,'Jalen Williams':1631114,'Jaden McDaniels':1630183,'Jericho Sims':1630579,'Ryan Kalkbrenner':1642267,'Bobby Portis':1626171,'Rui Hachimura':1629060,'Anthony Davis':203076,'Jay Huff':1630643};
+const PLAYER_AVATARS = {'Bez Mbeng':'/avatars/bez-mbeng.svg'};
+const JERSEY_COLORS = {LAL:'#FDB927',DEN:'#0E2240',SAS:'#C4CED4',GSW:'#1D428A',UTA:'#F9A01B',MIN:'#236192',OKC:'#007AC1',BOS:'#007A33',BKN:'#111111',NYK:'#F58426',MIA:'#98002E',MIL:'#00471B',PHI:'#006BB6',CLE:'#860038',DAL:'#00538C',HOU:'#CE1141',TOR:'#CE1141',ATL:'#E03A3E',CHI:'#CE1141',DET:'#C8102E',ORL:'#0077C0',IND:'#002D62',MEM:'#5D76A9',NOP:'#0C2340',PHX:'#E56020',POR:'#E03A3E',SAC:'#5A2D81',WAS:'#002B5C',LAC:'#D71920',CHA:'#1D1160'};
+const PLAYER_COLOR_OVERRIDES = {'Luke Kennard':['#FDB927','#171717']};
+const CARD_THEMES = [['#e06455','#fff'],['#167f88','#fff'],['#5268c9','#fff'],['#d48a3d','#171717']];
+function playerTheme(player,index){if(PLAYER_COLOR_OVERRIDES[player.playerName])return PLAYER_COLOR_OVERRIDES[player.playerName];const background=JERSEY_COLORS[player.team]||CARD_THEMES[index%CARD_THEMES.length][0];const hex=background.replace('#','');const red=parseInt(hex.slice(0,2),16),green=parseInt(hex.slice(2,4),16),blue=parseInt(hex.slice(4,6),16);return [background,(red*299+green*587+blue*114)>145000?'#171717':'#fff']}
+const STAT_GROUPS = {
+  impact: [['points','PTS'],['assists','AST'],['totalRebounds','REB'],['trueShootingPercentage','TS%'],['steals','STL'],['blocks','BLK']],
+  offense: [['points','PTS'],['assists','AST'],['fieldGoalPercentage','FG%'],['threePointPercentage','3P%'],['trueShootingPercentage','TS%'],['turnovers','TOV',true]],
+  defense: [['steals','STL'],['blocks','BLK'],['totalRebounds','REB'],['defensiveRebounds','DREB'],['personalFouls','PF',true],['turnovers','TOV',true]],
+};
+const TABLE_STATS = [['points','Points / game'],['assists','Assists / game'],['totalRebounds','Rebounds / game'],['steals','Steals / game'],['blocks','Blocks / game'],['fieldGoalPercentage','Field goal %'],['threePointPercentage','Three-point %'],['freeThrowPercentage','Free throw %'],['trueShootingPercentage','True shooting %'],['effectiveFieldGoalPercentage','Effective FG %'],['turnovers','Turnovers / game',true]];
+const pctKeys = new Set(['fieldGoalPercentage','threePointPercentage','freeThrowPercentage','trueShootingPercentage','effectiveFieldGoalPercentage']);
+const valueOf = (player,key) => player?.stats?.[key] ?? 0;
+const metricValue = (player,key) => key==='trueShootingPercentage' ? (player?.stats?.fieldGoalsAttempted ? Number((player.stats.points/(2*(player.stats.fieldGoalsAttempted+.44*player.stats.freeThrowsAttempted))*100).toFixed(1)) : 0) : key==='stocks' ? valueOf(player,'steals')+valueOf(player,'blocks') : player?.stats?.[key] ?? player?.[key] ?? 0;
+const format = (value,key) => `${Number(value).toFixed(1)}${pctKeys.has(key)?'%':''}`;
+const initials = name => name.split(' ').map(part=>part[0]).slice(-2).join('');
+const normalizedName = name => name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace('ć','c');
+function EntityArt({entity,playerIds,className=''}){
+  const[failed,setFailed]=useState(false);
+  const playerId=playerIds[normalizedName(entity.playerName)]||playerIds[entity.playerName]||EXTRA_PLAYER_IDS[entity.playerName];
+  const src=entity.entityType==='team'
+    ? `https://cdn.nba.com/logos/nba/${entity.teamId}/global/L/logo.svg`
+    : playerId?`https://cdn.nba.com/headshots/nba/latest/1040x760/${playerId}.png`:null;
+  const fallbackSrc=PLAYER_AVATARS[entity.playerName]||`https://api.dicebear.com/9.x/avataaars/png?seed=${encodeURIComponent(entity.playerName)}&backgroundColor=${(TEAM_COLORS[entity.team]||'#3b3b45').replace('#','')}&size=512`;
+  if(!src||failed)return <img className={`${className} art-fallback-image`} src={fallbackSrc} alt={`${entity.playerName} avatar`}/>;
+  return <img className={className} src={src} alt="" onError={()=>setFailed(true)}/>;
+}
+function percentile(players,key,value,inverse=false){const values=players.map(p=>valueOf(p,key)).filter(Number.isFinite).sort((a,b)=>a-b);if(!values.length)return 0;const below=values.filter(v=>v<value).length,equal=values.filter(v=>v===value).length,score=Math.round(((below+equal*.5)/values.length)*100);return inverse?100-score:score}
 
-  // Get both regular season and playoff data for season comparison
-  const { currentData: regularSeasonData, loading: regularLoading, error: regularError } = usePlayerData(false);
-  const { currentData: playoffData, loading: playoffLoading, error: playoffError } = usePlayerData(true);
-
-  // Current data based on selected season
-  const currentData = isPlayoffs ? playoffData : regularSeasonData;
-  const loading = regularLoading || playoffLoading;
-  const error = regularError || playoffError;
-
-  // Enhance player data with calculated stats (TS%, eFG%)
-  const enhancedData = useMemo(() => {
-    if (!currentData) return null;
-    
-    return {
-      ...currentData,
-      players: currentData.players.map(player => enhancePlayerStats(player))
-    };
-  }, [currentData]);
-
-  // Enhanced regular season and playoff data for season comparison
-  const enhancedRegularSeasonData = useMemo(() => {
-    if (!regularSeasonData) return null;
-    return {
-      ...regularSeasonData,
-      players: regularSeasonData.players.map(player => enhancePlayerStats(player))
-    };
-  }, [regularSeasonData]);
-
-  const enhancedPlayoffData = useMemo(() => {
-    if (!playoffData) return null;
-    return {
-      ...playoffData,
-      players: playoffData.players.map(player => enhancePlayerStats(player))
-    };
-  }, [playoffData]);
-
-  // Get current stats for radar based on selection
-  const currentRadarStats = useMemo(() => {
-    return getCurrentStats(selectedRadarStats);
-  }, [selectedRadarStats]);
-
-  // Get current stats for comparison table based on selection
-  const currentComparisonStats = useMemo(() => {
-    return getCurrentStats(selectedComparisonStats);
-  }, [selectedComparisonStats]);
-
-  // Filter and sort players with enhanced data
-  const filteredPlayers = useMemo(() => {
-    if (!searchTerm || !enhancedData) return [];
-    
-    let filtered = enhancedData.players.filter(player => {
-      const playerName = player.playerName.toLowerCase();
-      const teamName = player.team.toLowerCase();
-      const searchTermLower = searchTerm.toLowerCase();
-      
-      // Check for partial matches in player name or team
-      return playerName.includes(searchTermLower) || 
-             teamName.includes(searchTermLower) ||
-             // Special case for common nicknames
-             (searchTermLower === 'luka' && playerName.includes('luka')) ||
-             (searchTermLower === 'giannis' && playerName.includes('giannis')) ||
-             (searchTermLower === 'jokic' && playerName.includes('jokic')) ||
-             (searchTermLower === 'lebron' && playerName.includes('lebron')) ||
-             (searchTermLower === 'shai' && playerName.includes('shai'));
-    });
-
-    // Sort players
-    filtered.sort((a, b) => {
-      let aValue = sortBy === 'rank' ? a.rank : (a.stats[sortBy] || 0);
-      let bValue = sortBy === 'rank' ? b.rank : (b.stats[sortBy] || 0);
-      
-      if (sortOrder === 'asc') {
-        return aValue - bValue;
-      } else {
-        return bValue - aValue;
-      }
-    });
-
-    return filtered.slice(0, 50); // Show up to 50 players
-  }, [searchTerm, enhancedData, sortBy, sortOrder]);
-
-  // Add player to comparison
-  const addPlayer = (player) => {
-    if (selectedPlayers.length < 3 && !selectedPlayers.find(p => p.playerName === player.playerName)) {
-      setSelectedPlayers([...selectedPlayers, player]);
-      setSearchTerm('');
-      setShowDropdown(false);
-    }
-  };
-
-  // Remove player from comparison
-  const removePlayer = (playerName) => {
-    setSelectedPlayers(selectedPlayers.filter(p => p.playerName !== playerName));
-  };
-
-  // Handle radar preset change
-  const handleRadarPresetChange = (preset) => {
-    setRadarPreset(preset);
-    if (defaultRadarConfigs[preset]) {
-      setSelectedRadarStats(defaultRadarConfigs[preset]);
-    }
-  };
-
-  // Handle radar stats selection
-  const handleRadarStatsChange = (statKeys) => {
-    setSelectedRadarStats(statKeys);
-    setRadarPreset('custom');
-  };
-
-  // Handle comparison stats selection
-  const handleComparisonStatsChange = (statKeys) => {
-    setSelectedComparisonStats(statKeys);
-    setComparisonPreset('custom');
-  };
-
-  // Handle comparison preset change
-  const handleComparisonPresetChange = (preset) => {
-    setComparisonPreset(preset);
-    if (defaultComparisonConfigs[preset]) {
-      setSelectedComparisonStats(defaultComparisonConfigs[preset]);
-    }
-  };
-
-  // Share comparison
-  const shareComparison = async () => {
-    const url = generateShareableUrl(selectedPlayers, isPlayoffs);
-    
-    try {
-      await navigator.clipboard.writeText(url);
-      // Show success toast
-      const toast = document.createElement('div');
-      toast.className = `fixed top-4 right-4 z-50 px-4 py-2 rounded-lg shadow-lg transition-all duration-300 ${
-        isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'
-      } border border-green-200`;
-      toast.innerHTML = '✅ Link copied to clipboard!';
-      document.body.appendChild(toast);
-      setTimeout(() => {
-        toast.remove();
-      }, 3000);
-    } catch (err) {
-      console.error('Failed to copy to clipboard:', err);
-      prompt('Copy this link to share:', url);
-    }
-  };
-
-  // Load shared comparison from URL
-  useEffect(() => {
-    if (parseUrlParameters) {
-      const { players: playerNames, isPlayoffs: urlIsPlayoffs } = parseUrlParameters();
-
-      if (urlIsPlayoffs) setIsPlayoffs(true);
-
-      if (playerNames && playerNames.length > 0 && enhancedData) {
-        const players = enhancedData.players.filter(p => 
-          playerNames.includes(p.playerName)
-        );
-        setSelectedPlayers(players);
-      }
-    }
-  }, [enhancedData]);
-
-  // Update selected players when switching between seasons
-  useEffect(() => {
-    if (selectedPlayers.length > 0 && enhancedData) {
-      const updatedPlayers = selectedPlayers.map(selectedPlayer => {
-        const updatedPlayer = enhancedData.players.find(p => p.playerName === selectedPlayer.playerName);
-        return updatedPlayer || selectedPlayer; // Fallback to original if not found
-      });
-      
-      // Only update if there are actual changes
-      const hasChanges = updatedPlayers.some((player, index) => 
-        JSON.stringify(player.stats) !== JSON.stringify(selectedPlayers[index].stats)
-      );
-      
-      if (hasChanges) {
-        setSelectedPlayers(updatedPlayers);
-      }
-    }
-  }, [isPlayoffs, enhancedData]);
-
-  // Initialize dark mode from system preference
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
-      setIsDarkMode(true);
-      document.documentElement.classList.add('dark');
-    }
-  }, []);
-
-  // Update theme
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [isDarkMode]);
-
-  // Handle clicks outside dropdown to close it
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (showDropdown && !event.target.closest('.search-container')) {
-        setShowDropdown(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [showDropdown]);
-
-  if (loading) {
-    return (
-      <div className={`min-h-screen flex items-center justify-center ${
-        isDarkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-blue-50 to-purple-50 text-gray-900'
-      }`}>
-        <div className="text-center px-4">
-          <div className="relative">
-            <div className="w-16 h-16 border-4 border-blue-200 rounded-full animate-spin border-t-blue-500 mx-auto mb-4"></div>
-            <div className="absolute inset-0 w-16 h-16 border-4 border-purple-200 rounded-full animate-ping border-t-purple-500 mx-auto"></div>
-          </div>
-          <p className="text-lg font-medium">Loading player data...</p>
-          <p className="text-sm text-gray-500 mt-2">Getting the latest NBA stats</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className={`min-h-screen flex items-center justify-center ${
-        isDarkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-red-50 to-pink-50 text-gray-900'
-      }`}>
-        <div className="text-center max-w-md mx-4">
-          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-2xl">⚠️</span>
-          </div>
-          <h2 className="text-xl font-semibold mb-2">Error Loading Data</h2>
-          <p className="text-red-600 mb-4">{error}</p>
-          <button 
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-          >
-            Retry
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className={`min-h-screen transition-all duration-300 ${
-      isDarkMode 
-        ? 'bg-gray-900 text-white' 
-        : 'bg-gradient-to-br from-blue-50 via-white to-purple-50 text-gray-900'
-    }`}>
-      <Header 
-        isDarkMode={isDarkMode} 
-        setIsDarkMode={setIsDarkMode}
-        selectedPlayers={selectedPlayers}
-        shareComparison={shareComparison}
-      />
-
-      <div className="max-w-7xl mx-auto px-4 py-4">
-        {/* Search and Controls - Mobile Full Width */}
-        <div className="mb-6 space-y-4">
-          <div className="search-container w-full">
-            <SearchBar
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              showDropdown={showDropdown}
-              setShowDropdown={setShowDropdown}
-              filteredPlayers={filteredPlayers}
-              selectedPlayers={selectedPlayers}
-              addPlayer={addPlayer}
-              isDarkMode={isDarkMode}
-              sortBy={sortBy}
-              setSortBy={setSortBy}
-              sortOrder={sortOrder}
-              setSortOrder={setSortOrder}
-            />
-          </div>
-
-          <div className="w-full">
-            <ControlPanel
-              isPlayoffs={isPlayoffs}
-              setIsPlayoffs={setIsPlayoffs}
-              isDarkMode={isDarkMode}
-            />
-          </div>
-        </div>
-
-        {/* Season Comparison Notice for Single Player */}
-        {selectedPlayers.length === 1 && enhancedRegularSeasonData && enhancedPlayoffData && (
-          <div className={`mb-4 p-3 rounded-lg border-l-4 border-blue-500 ${
-            isDarkMode ? 'bg-blue-900/20 border-blue-400' : 'bg-blue-50 border-blue-500'
-          }`}>
-            <div className="flex items-center space-x-2 text-sm">
-              <span className="text-blue-600 dark:text-blue-400">💡</span>
-              <span className={`${isDarkMode ? 'text-blue-300' : 'text-blue-700'}`}>
-                Season comparison available for {selectedPlayers[0].playerName} - radar shows both regular season and playoffs
-              </span>
-            </div>
-          </div>
-        )}
-
-        {/* Selected Players */}
-        {selectedPlayers.length > 0 && (
-          <PlayerCards
-            selectedPlayers={selectedPlayers}
-            removePlayer={removePlayer}
-            shareComparison={shareComparison}
-            isDarkMode={isDarkMode}
-          />
-        )}
-
-        {/* Radar Chart with Season Comparison Support */}
-        {selectedPlayers.length >= 1 && (
-          <div className="mb-4">
-            <RadarChart
-              selectedPlayers={selectedPlayers}
-              currentStats={currentRadarStats}
-              isPlayoffs={isPlayoffs}
-              isDarkMode={isDarkMode}
-              showCustomizer={showRadarCustomizer}
-              setShowCustomizer={setShowRadarCustomizer}
-              radarPreset={radarPreset}
-              onPresetChange={handleRadarPresetChange}
-              // Season comparison data
-              regularSeasonData={enhancedRegularSeasonData}
-              playoffsData={enhancedPlayoffData}
-            />
-            
-            {showRadarCustomizer && (
-              <RadarCustomizer
-                selectedStats={selectedRadarStats}
-                onStatsChange={handleRadarStatsChange}
-                isDarkMode={isDarkMode}
-                isOpen={showRadarCustomizer}
-                onClose={() => setShowRadarCustomizer(false)}
-              />
-            )}
-          </div>
-        )}
-
-        {/* Comparison Table */}
-        {selectedPlayers.length >= 1 && (
-          <div>
-            <ComparisonTable
-              selectedPlayers={selectedPlayers}
-              currentStats={currentComparisonStats}
-              isDarkMode={isDarkMode}
-              showStatsCustomizer={showComparisonCustomizer}
-              setShowStatsCustomizer={setShowComparisonCustomizer}
-              // Season comparison data
-              regularSeasonData={enhancedRegularSeasonData}
-              playoffsData={enhancedPlayoffData}
-            />
-            
-            {showComparisonCustomizer && (
-              <ComparisonStatsCustomizer
-                selectedStats={selectedComparisonStats}
-                onStatsChange={handleComparisonStatsChange}
-                isDarkMode={isDarkMode}
-                isOpen={showComparisonCustomizer}
-                onClose={() => setShowComparisonCustomizer(false)}
-              />
-            )}
-          </div>
-        )}
-
-        {/* Empty State */}
-        {selectedPlayers.length === 0 && <EmptyState isDarkMode={isDarkMode} />}
-      </div>
-    </div>
-  );
+function Radar({players,population,metrics,chartRef}){
+  const size=520,center=260,radius=174;
+  const point=(index,score=100)=>{const angle=-Math.PI/2+Math.PI*2*index/metrics.length,distance=radius*score/100;return[center+Math.cos(angle)*distance,center+Math.sin(angle)*distance]};
+  const polygon=score=>metrics.map((_,i)=>point(i,score).join(',')).join(' ');
+  return <svg ref={chartRef} className="radar" viewBox={`0 0 ${size} ${size}`} role="img" aria-label="Player percentile comparison radar">
+    <defs><radialGradient id="courtGlow"><stop offset="0" stopColor="#2b211d"/><stop offset="1" stopColor="#101012"/></radialGradient><filter id="glow"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+    <rect width="520" height="520" rx="28" fill="url(#courtGlow)"/>
+    {[25,50,75,100].map(level=><g key={level}><polygon points={polygon(level)} fill={level===100?'#151518':'none'} fillOpacity=".7" stroke={level===100?'#3b3533':'#2b2b30'} strokeWidth={level===100?'1.5':'1'}/><text x="267" y={center-radius*level/100+4} fill="#59595f" fontSize="9">{level}</text></g>)}
+    {metrics.map((metric,i)=>{const[x,y]=point(i);return <line key={metric[0]} x1={center} y1={center} x2={x} y2={y} stroke="#25252a"/>})}
+    {players.map((player,p)=>{const scores=metrics.map(([key,,inverse])=>percentile(population,key,valueOf(player,key),inverse)),points=scores.map((score,i)=>point(i,score).join(',')).join(' ');return <g key={player.playerId||player.teamId}><polygon points={points} fill={COLORS[p]} fillOpacity=".12" stroke={COLORS[p]} strokeWidth="3" strokeLinejoin="round" filter="url(#glow)"/>{scores.map((score,i)=>{const[x,y]=point(i,score);return <circle key={i} cx={x} cy={y} r="4" fill="#101012" stroke={COLORS[p]} strokeWidth="2"/>})}</g>})}
+    {metrics.map(([key,label,inverse],i)=>{const[x,y]=point(i,120);return <g key={key}><text x={x} y={y-5} textAnchor="middle" fill="#9b9ba3" fontSize="12" fontWeight="700">{label}</text>{players.map((player,p)=><text key={player.playerId||player.teamId} x={x+(p-1)*34} y={y+13} textAnchor="middle" fill={COLORS[p]} fontSize="11" fontWeight="800">{percentile(population,key,valueOf(player,key),inverse)}</text>)}</g>})}
+    <text x="260" y="252" textAnchor="middle" fill="#777780" fontSize="11">LEAGUE</text><text x="260" y="268" textAnchor="middle" fill="#f7f7f8" fontSize="14" fontWeight="800">PERCENTILE</text>
+  </svg>
 }
 
-export default Home;    
+function PlayerPicker({index,player,players,onPick,onRemove,playerIds}){
+  const[open,setOpen]=useState(false),[query,setQuery]=useState('');
+  const results=players.filter(p=>`${p.playerName} ${p.team}`.toLowerCase().includes(query.toLowerCase())).slice(0,8);
+  if(player)return <div className="player-chip" style={{'--accent':COLORS[index]}}><EntityArt entity={player} playerIds={playerIds} className="avatar"/><span><strong>{player.playerName}</strong><small>{player.entityType==='team'?'NBA team':`${player.team} · ${player.position}`} · {player.gamesPlayed} GP</small></span><button onClick={onRemove} aria-label={`Remove ${player.playerName}`}><X size={17}/></button></div>;
+  return <div className="picker"><button className="add-player" onClick={()=>setOpen(!open)}><span>+</span> Add {players[0]?.entityType==='team'?'team':'player'}</button>{open&&<div className="picker-popover"><label><Search size={16}/><input autoFocus value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search the league"/></label><div>{results.map(p=><button key={p.playerId||p.teamId} onClick={()=>{onPick(p);setOpen(false);setQuery('')}}><EntityArt entity={p} playerIds={playerIds} className="mini-avatar"/><span><b>{p.playerName}</b><small>{p.team} · {p.stats.points} PPG</small></span></button>)}</div></div>}</div>
+}
+
+function SiteHeader({page,onHome,onCompare}){
+  return <header><button className="brand brand-button" onClick={onHome}><span className="brand-mark">S</span><span>STATSPAD<small>NBA numbers, visualized</small></span></button><nav><button className={page==='home'?'active':''} onClick={onHome}>Home</button><button className={page==='compare'?'active':''} onClick={onCompare}>Compare</button></nav><div className="season-pill"><span className="live-dot"></span>2025–26 COMPLETE</div></header>
+}
+
+function AppSidebar({page,onHome,onCompare}){
+  return <aside className="muse-sidebar"><div className="sidebar-label">NBA</div><button className={page==='home'?'selected':''} onClick={onHome}><BarChart3 size={17}/> Home</button><button className={page==='compare'?'selected':''} onClick={onCompare}><Sparkles size={17}/> Compare</button><button><span className="sidebar-icon">▥</span> Leaders</button><button><span className="sidebar-icon">◷</span> Scores</button><button><span className="sidebar-icon">◈</span> Teams</button><div className="sidebar-divider"/><div className="sidebar-label">DISCOVER</div><button><span className="sidebar-icon">✦</span> Browse</button><button><span className="sidebar-icon">▦</span> Gallery</button></aside>
+}
+
+function Discovery({players,teams,playerIds,onOpen,onCompare,onHome,seasonType,onSeasonTypeChange,splits}){
+  const[query,setQuery]=useState(''),[filter,setFilter]=useState('all'),[listCard,setListCard]=useState(null);
+  const results=[...players,...teams].filter(item=>`${item.playerName} ${item.team}`.toLowerCase().includes(query.toLowerCase())).slice(0,8);
+  const leaderGroups=[['Scoring leader','points','PPG','scoring'],['Assist leader','assists','APG','playmaking'],['Rebound leader','totalRebounds','RPG','rebounding'],['Offensive-rebound leader','offensiveRebounds','ORB','rebounding'],['Defensive-rebound leader','defensiveRebounds','DRB','rebounding'],['Steal leader','steals','SPG','defense'],['Block leader','blocks','BPG','defense'],['Stocks leader','stocks','STK','defense'],['Field-goal leader','fieldGoalPercentage','FG%','shooting'],['Three-point leader','threePointPercentage','3P%','shooting'],['Free-throw leader','freeThrowPercentage','FT%','shooting'],['True-shooting leader','trueShootingPercentage','TS%','shooting'],['Turnover leader','turnovers','TOV','volume'],['Effective-FG leader','effectiveFieldGoalPercentage','eFG%','shooting'],['Field-goals-made leader','fieldGoalsMade','FGM','volume'],['Three-pointers-made leader','threePointersMade','3PM','volume'],['Free-throws-made leader','freeThrowsMade','FTM','volume'],['Minutes leader','minutesPerGame','MPG','volume'],['Field-goals-attempted leader','fieldGoalsAttempted','FGA','volume'],['Three-pointers-attempted leader','threePointersAttempted','3PA','volume'],['Free-throws-attempted leader','freeThrowsAttempted','FTA','volume'],['Foul leader','personalFouls','PF','defense']];
+  const qualifiedPlayers=players.filter(player=>player.gamesPlayed>=15&&player.minutesPerGame>=10);
+  const leaderPool=qualifiedPlayers.length?qualifiedPlayers:players;
+  const leaderCards=leaderGroups.map(([label,key,suffix,category])=>{const pool=key==='threePointPercentage'?leaderPool.filter(player=>player.stats.threePointersAttempted>=3):key==='freeThrowPercentage'?leaderPool.filter(player=>player.stats.freeThrowsAttempted>=2):leaderPool;const leaders=[...(pool.length?pool:leaderPool)].sort((a,b)=>metricValue(b,key)-metricValue(a,key)).slice(0,5);return {label,key,suffix,category,player:leaders[0],leaders}}).filter(card=>card.player);
+  const visibleCards=filter==='all'?leaderCards:leaderCards.filter(card=>card.category===filter);
+  const playerById=new Map(players.map(player=>[player.playerId,player]));
+  const situationCards=splits?[...Object.entries(splits.quarters).map(([quarter,leaders])=>({label:`${quarter} scoring leader`,suffix:'PTS',valueKey:'pts',leaders,player:leaders[0],value:leaders[0]?.pts})),...(splits.clutch?.length?[{label:'Clutch scoring leader',suffix:'CLUTCH PTS',valueKey:'clutchPoints',leaders:splits.clutch,player:splits.clutch[0],value:splits.clutch[0]?.clutchPoints}]:[])].filter(card=>card.player):[];
+  return <div className="muse-layout"><AppSidebar page="home" onHome={onHome} onCompare={onCompare}/><div className="muse-main">
+    <section className="muse-hero"><div><div className="eyebrow"><Sparkles size={14}/> NBA STATS</div><h1>Find the number<br/><em>you came for.</em></h1></div><div className="muse-filters"><button className="active">NBA</button><button>2025–26⌄</button><button>Regular season⌄</button></div></section>
+    <section className="search-shell"><Search size={23}/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search players, stats or teams…"/><kbd>⌘ K</kbd>{query&&<div className="global-results">{results.map(item=><button key={item.playerId||item.teamId} onClick={()=>onOpen(item)}><EntityArt entity={item} playerIds={playerIds} className="result-art"/><span><b>{item.playerName}</b><small>{item.entityType==='team'?'NBA team':`${item.team} · ${item.position}`}</small></span><ArrowRight size={17}/></button>)}</div>}</section>
+    <section className="muse-home-grid"><div className="story-feed"><div className="feed-heading"><h2>NBA stat cards</h2><div className="season-toggle" role="group" aria-label="Season type"><button className={seasonType==='regular-season'?'active':''} onClick={()=>onSeasonTypeChange('regular-season')}>Regular season</button><button className={seasonType==='playoffs'?'active':''} onClick={()=>onSeasonTypeChange('playoffs')}>Playoffs</button></div></div><div className="leader-filters" role="group" aria-label="Leader categories">{[['all','All stats'],['scoring','Scoring'],['playmaking','Playmaking'],['rebounding','Rebounding'],['defense','Defense'],['shooting','Shooting'],['volume','Volume']].map(([key,label])=><button key={key} className={filter===key?'active':''} onClick={()=>setFilter(key)}>{label}</button>)}</div>{visibleCards.map((card,index)=><StoryCard key={`${card.key}-${card.player.playerId}`} player={card.player} leaders={card.leaders} index={index} label={card.label} statKey={card.key} suffix={card.suffix} playerIds={playerIds} onOpen={onOpen} onOpenList={setListCard}/>)}{situationCards.map((card,index)=><SituationCard key={card.label} card={card} index={index} player={playerById.get(card.player.playerId)||card.player} playerIds={playerIds} onOpen={onOpen} onOpenList={setListCard}/>)}</div></section>{splits&&<SplitGrid splits={splits} playerIds={playerIds} players={players} onOpen={onOpen}/>} {listCard&&<StatListModal card={listCard} playerIds={playerIds} onOpen={onOpen} onClose={()=>setListCard(null)}/>}
+    <section className="trend-panels"><TrendPanel title="Top players by scoring" items={players.slice(0,5)} playerIds={playerIds} onOpen={onOpen}/><TrendPanel title="Top teams by scoring" items={teams.slice(0,5)} playerIds={playerIds} onOpen={onOpen}/><TrendPanel title="Quick comparisons" items={players.slice(0,5).map(p=>({...p,searchName:`${p.playerName} vs ${players[(p.rank||1)%players.length]?.playerName}`}))} playerIds={playerIds} onOpen={onOpen}/></section>
+    <section className="discovery-content"><div className="section-title"><div><small>BROWSE PLAYERS</small><h2>Open a player profile</h2></div><span>2025–26 regular season</span></div><div className="player-scroll">{players.slice(0,10).map((player,index)=><button className="visual-player-card" key={player.playerId} onClick={()=>onOpen(player)} style={{'--team':TEAM_COLORS[player.team]||'#333'}}><span className="trend-rank">0{index+1}</span><EntityArt entity={player} playerIds={playerIds} className="card-player-art"/><div><small>{player.team} · {player.position}</small><h3>{player.playerName}</h3><p><b>{format(player.stats.points,'points')}</b> PTS <b>{format(player.stats.assists,'assists')}</b> AST</p></div></button>)}</div>
+      <div className="dashboard-grid"><section className="leaders-panel"><div className="section-title compact"><div><small>THE NUMBERS</small><h2>League leaders</h2></div></div><div className="leader-tabs">{leaderGroups.map(([title,key,suffix])=><article key={key}><h3>{title}</h3>{[...players].sort((a,b)=>valueOf(b,key)-valueOf(a,key)).slice(0,5).map((player,i)=><button key={player.playerId} onClick={()=>onOpen(player)}><span>{i+1}</span><EntityArt entity={player} playerIds={playerIds} className="tiny-art"/><b>{player.playerName}</b><strong>{format(valueOf(player,key),key)} <small>{suffix}</small></strong></button>)}</article>)}</div></section>
+        <section className="teams-panel"><div className="section-title compact"><div><small>ALL 30 CLUBS</small><h2>Browse teams</h2></div></div><div className="team-cloud">{teams.map(team=><button key={team.teamId} onClick={()=>onOpen(team)} title={team.playerName}><EntityArt entity={team} playerIds={playerIds} className="team-cloud-logo"/><span>{team.team}</span></button>)}</div><button className="compare-cta" onClick={onCompare}><BarChart3 size={18}/><span><b>Build a comparison</b><small>Players or teams, side by side</small></span><ArrowRight size={18}/></button></section></div>
+    </section></div></div>
+}
+
+function TrendPanel({title,items,playerIds,onOpen}){return <section className="trend-panel"><h2>{title}</h2>{items.map((item,index)=><button key={item.playerId||item.teamId||index} onClick={()=>onOpen(item)}><span>{index+1}</span><EntityArt entity={item} playerIds={playerIds} className="trend-art"/><b>{item.searchName||item.playerName}</b><strong>{item.entityType==='team'?item.team:`${format(item.stats.points,'points')} PPG`}</strong></button>)}</section>}
+function SituationCard({card,index,player,playerIds,onOpenList}){const cardRef=useRef(null),[background,text]=playerTheme(player,index+3),openList=()=>onOpenList({title:card.label,player,leaders:card.leaders,statKey:card.valueKey,suffix:card.suffix});return <article ref={cardRef} className="story-card situation-card" style={{'--story-color':background,'--story-text':text}} onClick={openList} role="button" tabIndex={0}><div className="story-copy"><small>{card.label.toUpperCase()}</small><h2>{player.playerName}</h2><strong className="story-stat">{card.value.toFixed(0)} {card.suffix}</strong><div className="leader-list">{card.leaders.slice(1,5).map((leader,position)=><span key={leader.playerId}><small>{position+2}</small><b>{leader.playerName}</b><strong>{Number(leader[card.valueKey]).toFixed(0)} {card.suffix}</strong></span>)}</div></div><EntityArt entity={player} playerIds={playerIds} className="story-art"/><button className="card-download" aria-label={`Download ${card.label}`} onClick={event=>{event.stopPropagation();downloadCard(cardRef.current,`${player.playerName}-${card.suffix}`)}}><Download size={16}/></button></article>}
+function SplitGrid({splits,playerIds,players,onOpen}){const byId=new Map(players.map(player=>[player.playerId,player]));return <section className="split-grid-wrap"><div className="split-heading"><div><small>SITUATIONAL STATS</small><h2>Quarter & clutch leaders</h2></div><span>SportsFBI split feed · 2025–26 regular season</span></div><div className="split-grid"><section className="split-panel quarter-panel"><h3>Most points by quarter</h3><div className="quarter-columns">{Object.entries(splits.quarters).map(([quarter,leaders])=><div key={quarter}><b>{quarter}</b>{leaders.slice(0,5).map((leader,index)=><button key={leader.playerId} onClick={()=>byId.has(leader.playerId)&&onOpen(byId.get(leader.playerId))}><span>{index+1}</span><EntityArt entity={byId.get(leader.playerId)||leader} playerIds={playerIds} className="split-avatar"/><strong>{leader.playerName}</strong><em>{leader.pts.toFixed(1)} PTS</em></button>)}</div>)}</div></section><section className="split-panel clutch-panel"><h3>Clutch scoring leaders</h3><p>Close games: final margin of five points or fewer.</p>{splits.clutch.slice(0,6).map((leader,index)=><button key={leader.playerId} onClick={()=>byId.has(leader.playerId)&&onOpen(byId.get(leader.playerId))}><span>{index+1}</span><EntityArt entity={byId.get(leader.playerId)||leader} playerIds={playerIds} className="split-avatar"/><strong>{leader.playerName}</strong><em>{leader.clutchPoints.toLocaleString()} PTS · {leader.pts.toFixed(1)} PPG</em></button>)}</section></div></section>}
+async function downloadCard(node,name){const dataUrl=await toPng(node,{pixelRatio:2,cacheBust:true});const link=document.createElement('a');link.download=`${name.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.png`;link.href=dataUrl;link.click()}
+function StoryCard({player,leaders,index,label,statKey,suffix,playerIds,onOpenList}){const cardRef=useRef(null),stat=format(metricValue(player,statKey),statKey),[background,text]=playerTheme(player,index),openList=()=>onOpenList({title:label,player,leaders,statKey,suffix});return <article ref={cardRef} className={`story-card story-${index}`} style={{'--story-color':background,'--story-text':text}} onClick={openList} role="button" tabIndex={0} onKeyDown={event=>event.key==='Enter'&&openList()}><div className="story-copy"><small>{label.toUpperCase()}</small><h2>{player.playerName}</h2><strong className="story-stat">{stat} {suffix}</strong><div className="leader-list">{leaders.slice(1).map((leader,position)=><span key={leader.playerId}><small>{position+2}</small><b>{leader.playerName}</b><strong>{format(metricValue(leader,statKey),statKey)} {suffix}</strong></span>)}</div></div><EntityArt entity={player} playerIds={playerIds} className="story-art"/><button className="card-download" aria-label={`Download ${label}`} onClick={event=>{event.stopPropagation();downloadCard(cardRef.current,`${player.playerName}-${suffix}`)}}><Download size={16}/></button></article>}
+function StatListModal({card,playerIds,onOpen,onClose}){return <div className="stat-modal-backdrop" onClick={onClose}><section className="stat-modal" onClick={event=>event.stopPropagation()}><button className="stat-modal-close" onClick={onClose} aria-label="Close"><X size={18}/></button><small>FULL LEADERBOARD</small><h2>{card.title}</h2><p>2025–26 regular season · top {card.leaders.length}</p>{card.leaders.map((leader,index)=><button className="stat-modal-row" key={leader.playerId} onClick={()=>onOpen(leader)}><span>{index+1}</span><EntityArt entity={leader} playerIds={playerIds} className="split-avatar"/><b>{leader.playerName}</b><strong>{format(metricValue(leader,card.statKey),card.statKey)} {card.suffix}</strong></button>)}</section></div>}
+
+function Profile({entity,allEntities,playerIds,onBack,onCompare}){
+  const stats=[['points','PTS'],['totalRebounds','REB'],['assists','AST'],['steals','STL'],['blocks','BLK'],['trueShootingPercentage','TS%']];
+  const enriched={...entity,stats:{...entity.stats,trueShootingPercentage:entity.stats.fieldGoalsAttempted?entity.stats.points/(2*(entity.stats.fieldGoalsAttempted+.44*entity.stats.freeThrowsAttempted))*100:0}};
+  const population=allEntities.map(item=>({...item,stats:{...item.stats,trueShootingPercentage:item.stats.fieldGoalsAttempted?item.stats.points/(2*(item.stats.fieldGoalsAttempted+.44*item.stats.freeThrowsAttempted))*100:0}}));
+  return <section className="profile-page"><button className="back-button" onClick={onBack}><ArrowLeft size={16}/> Back to explore</button><div className="profile-hero" style={{'--team':TEAM_COLORS[entity.team]||'#333'}}><div className="profile-copy"><small>{entity.entityType==='team'?'NBA TEAM':`${entity.team} · ${entity.position}`} · 2025–26</small><h1>{entity.playerName}</h1><p>{entity.entityType==='team'?`${entity.gamesPlayed} games · ${format(entity.stats.points,'points')} points per game`:`Age ${entity.age} · ${entity.gamesPlayed} games · ${entity.gamesStarted} starts`}</p><button onClick={()=>onCompare(entity)}><BarChart3 size={17}/> Compare {entity.entityType==='team'?'team':'player'}</button></div><div className="profile-art-wrap"><div></div><EntityArt entity={entity} playerIds={playerIds} className="profile-art"/></div></div>
+    <div className="profile-grid"><section className="profile-main"><div className="section-title compact"><div><small>SEASON SNAPSHOT</small><h2>At a glance</h2></div></div><div className="big-stats">{stats.slice(0,3).map(([key,label])=><article key={key}><strong>{format(valueOf(enriched,key),key)}</strong><span>{label}</span><small>{percentile(population,key,valueOf(enriched,key))}th percentile</small></article>)}</div><div className="stat-bars">{stats.map(([key,label])=>{const score=percentile(population,key,valueOf(enriched,key));return <div key={key}><span>{label}<small>{format(valueOf(enriched,key),key)}</small></span><i><b style={{width:`${score}%`}}></b></i><strong>{score}</strong></div>})}</div></section>
+      <aside className="profile-side"><small>PLAYER PROFILE</small><h2>League percentile</h2><Radar players={[enriched]} population={population} metrics={STAT_GROUPS.impact}/></aside></div>
+  </section>
+}
+
+export default function Home(){
+  const paramsOnLoad=useMemo(()=>new URLSearchParams(location.search),[]);
+  const[seasonType,setSeasonType]=useState(()=>paramsOnLoad.get('type')||'regular-season'),[entityType,setEntityType]=useState(()=>paramsOnLoad.get('mode')||'player'),[data,setData]=useState(null),[splits,setSplits]=useState(null),[selected,setSelected]=useState([]),[preset,setPreset]=useState('impact'),[toast,setToast]=useState(''),[playerIds,setPlayerIds]=useState({}),[catalog,setCatalog]=useState({players:[],teams:[]}),[page,setPage]=useState(paramsOnLoad.has('players')?'compare':paramsOnLoad.has('profile')?'profile':'home'),[profile,setProfile]=useState(null);
+  const chartRef=useRef(null);
+  useEffect(()=>{fetch('/data/player-ids.json').then(r=>r.json()).then(ids=>setPlayerIds(Object.fromEntries(Object.entries(ids).map(([name,id])=>[normalizedName(name),id]))))},[]);
+  useEffect(()=>{const suffix=seasonType==='playoffs'?'playoffs':'regular-season';Promise.all([fetch(`/data/2025-26/${suffix}.json`).then(r=>r.json()),fetch(`/data/2025-26/teams-${suffix}.json`).then(r=>r.json())]).then(([players,teams])=>setCatalog({players:players.players,teams:teams.players}))},[seasonType]);
+  useEffect(()=>{const suffix=seasonType==='playoffs'?'playoffs':'regular-season';fetch(`/data/2025-26/splits-${suffix}.json`).then(response=>response.ok?response.json():null).then(setSplits).catch(()=>setSplits(null))},[seasonType]);
+  useEffect(()=>{const name=paramsOnLoad.get('profile');if(!name||profile)return;const match=[...catalog.players,...catalog.teams].find(item=>item.playerName===name);if(match)setProfile(match)},[catalog,paramsOnLoad,profile]);
+  useEffect(()=>{const file=entityType==='team'?`teams-${seasonType}.json`:`${seasonType}.json`;fetch(`/data/2025-26/${file}`).then(r=>r.json()).then(setData)},[seasonType,entityType]);
+  useEffect(()=>{if(!data)return;const params=new URLSearchParams(location.search),names=params.get('players')?.split('|').filter(Boolean);const defaults=names?.length?names:(entityType==='team'?['Oklahoma City Thunder','New York Knicks']:['Luka Dončić','Shai Gilgeous-Alexander','Nikola Jokić']);setSelected(defaults.map(name=>data.players.find(p=>p.playerName===name)).filter(Boolean).slice(0,3))},[data,entityType]);
+  const population=useMemo(()=>data?.players.filter(p=>entityType==='team'||(p.gamesPlayed>=(seasonType==='playoffs'?3:15)&&p.minutesPerGame>=10))||[],[data,seasonType,entityType]);
+  const enrich=p=>({...p,stats:{...p.stats,trueShootingPercentage:p.stats.fieldGoalsAttempted?Number((p.stats.points/(2*(p.stats.fieldGoalsAttempted+.44*p.stats.freeThrowsAttempted))*100).toFixed(1)):0}});
+  const enriched=useMemo(()=>selected.map(enrich),[selected]);
+  const enrichedPopulation=useMemo(()=>population.map(enrich),[population]);
+  const notify=message=>{setToast(message);setTimeout(()=>setToast(''),2200)};
+  const share=async()=>{const params=new URLSearchParams({players:enriched.map(p=>p.playerName).join('|'),type:seasonType,mode:entityType}),url=`${location.origin}${location.pathname}?${params}`;await navigator.clipboard.writeText(url);notify('Comparison link copied')};
+  const copyTake=async()=>{const leaders=TABLE_STATS.slice(0,5).map(([key,label,inverse])=>{const ordered=[...enriched].sort((a,b)=>(valueOf(b,key)-valueOf(a,key))*(inverse?-1:1));return `${label}: ${ordered[0]?.playerName} (${format(valueOf(ordered[0],key),key)})`});await navigator.clipboard.writeText(`${enriched.map(p=>p.playerName).join(' vs ')} — 2025-26 ${data.seasonType}\n\n${leaders.join('\n')}\n\nMade with StatsPad`);notify('Debate-ready take copied')};
+  const download=()=>{const svg=chartRef.current;if(!svg)return;const canvas=document.createElement('canvas');canvas.width=1040;canvas.height=1040;const image=new Image(),blob=new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml'});image.onload=()=>{canvas.getContext('2d').drawImage(image,0,0,1040,1040);URL.revokeObjectURL(image.src);const a=document.createElement('a');a.download='statspad-comparison.png';a.href=canvas.toDataURL('image/png');a.click();notify('Chart downloaded')};image.src=URL.createObjectURL(blob)};
+  if(!data)return <main className="loading"><span></span>Loading the league…</main>;
+  const goHome=()=>{setPage('home');setProfile(null);history.replaceState({},'',location.pathname)};
+  const openProfile=item=>{setProfile(item);setPage('profile');history.pushState({},'',`?profile=${encodeURIComponent(item.playerName)}`);scrollTo({top:0,behavior:'smooth'})};
+  const openCompare=item=>{if(item){const isTeam=item.entityType==='team';setEntityType(isTeam?'team':'player');setSelected([item])}setPage('compare');setProfile(null);scrollTo({top:0,behavior:'smooth'})};
+  if(page==='home')return <main><SiteHeader page={page} onHome={goHome} onCompare={()=>openCompare()}/><Discovery players={catalog.players} teams={catalog.teams} playerIds={playerIds} onOpen={openProfile} onHome={goHome} onCompare={()=>openCompare()} seasonType={seasonType} onSeasonTypeChange={setSeasonType} splits={splits}/><footer><span>StatsPad · NBA numbers, visualized</span><span>2025–26 data from <a href={data.source.url} target="_blank" rel="noreferrer">Basketball Reference</a></span></footer></main>;
+  if(page==='profile'&&profile){const entities=profile.entityType==='team'?catalog.teams:catalog.players;return <main><SiteHeader page={page} onHome={goHome} onCompare={()=>openCompare()}/><Profile entity={profile} allEntities={entities} playerIds={playerIds} onBack={goHome} onCompare={openCompare}/><footer><span>StatsPad · NBA numbers, visualized</span><span>2025–26 data from <a href={data.source.url} target="_blank" rel="noreferrer">Basketball Reference</a></span></footer></main>}
+  return <main><SiteHeader page={page} onHome={goHome} onCompare={()=>openCompare()}/>
+    <div className="muse-layout compare-shell"><AppSidebar page="compare" onHome={goHome} onCompare={()=>openCompare()}/><div className="muse-main compare-main">
+    <div className="compare-topbar"><button onClick={goHome}><ArrowLeft size={15}/> Explore</button><span>COMPARISON LAB</span><button onClick={share}><Share2 size={16}/> Share</button></div>
+    <section className="compare-intro"><div className="eyebrow"><Zap size={14}/> MATCHUP BUILDER</div><h1>Put the argument<br/><em>on the board.</em></h1><p>Choose two or three players or teams. We normalize every stat so unlike numbers can be compared fairly.</p></section>
+    <section className="workspace"><div className="toolbar"><div className="toolbar-left"><div className="segmented mode"><button className={entityType==='player'?'active':''} onClick={()=>setEntityType('player')}>Players</button><button className={entityType==='team'?'active':''} onClick={()=>setEntityType('team')}>Teams</button></div><div className="segmented"><button className={seasonType==='regular-season'?'active':''} onClick={()=>setSeasonType('regular-season')}>Regular season</button><button className={seasonType==='playoffs'?'active':''} onClick={()=>setSeasonType('playoffs')}>Playoffs</button></div></div><span>{data.totalPlayers||data.totalTeams} {entityType==='team'?'teams':'players'} · per game</span></div>
+      <div className="pickers">{[0,1,2].map(i=><PlayerPicker key={i} index={i} player={enriched[i]} playerIds={playerIds} players={data.players.filter(p=>!enriched.some(s=>s.playerName===p.playerName))} onPick={p=>setSelected([...enriched,p].slice(0,3))} onRemove={()=>setSelected(enriched.filter((_,x)=>x!==i))}/>)}</div>
+      {enriched.length>=2&&<section className="matchup-stage">{enriched.map((entity,i)=><React.Fragment key={entity.playerId||entity.teamId}><article style={{'--accent':COLORS[i]}}><div className="entity-glow" style={{background:TEAM_COLORS[entity.team]||COLORS[i]}}></div><EntityArt entity={entity} playerIds={playerIds} className="hero-art"/><div><small>{entity.team} · 2025–26</small><h2>{entity.playerName}</h2><p><b>{format(entity.stats.points,'points')}</b> PTS <b>{format(entity.stats.totalRebounds,'totalRebounds')}</b> REB <b>{format(entity.stats.assists,'assists')}</b> AST</p></div></article>{i<enriched.length-1&&<span className="versus">VS</span>}</React.Fragment>)}</section>}
+      {enriched.length>=2?<div className="content-grid"><section className="panel chart-panel"><div className="panel-head"><div><small>{entityType==='team'?'TEAM IDENTITY':'PLAYER PROFILE'}</small><h2>Where they win</h2></div><div className="select-wrap"><select value={preset} onChange={e=>setPreset(e.target.value)}><option value="impact">All-around</option><option value="offense">Offense</option><option value="defense">Defense</option></select><ChevronDown size={15}/></div></div><Radar players={enriched} population={enrichedPopulation} metrics={STAT_GROUPS[preset]} chartRef={chartRef}/><div className="legend">{enriched.map((p,i)=><span key={p.playerId||p.teamId}><i style={{background:COLORS[i]}}></i>{p.playerName}</span>)}</div><p className="chart-note">Percentiles compare {entityType==='team'?'all teams':'qualified rotation players'}. 90 means better than roughly 90% of the group.</p><div className="chart-actions"><button onClick={download}><Download size={16}/> Download PNG</button><button onClick={copyTake}><Copy size={16}/> Copy the take</button></div></section>
+        <section className="panel verdict-panel"><div className="panel-head"><div><small>HEAD TO HEAD</small><h2>Stat scoreboard</h2></div></div><div className="scoreboard-head"><span>STAT</span>{enriched.map((p,i)=><span key={p.playerId||p.teamId} style={{color:COLORS[i]}}>{initials(p.playerName)}</span>)}</div>{TABLE_STATS.map(([key,label,inverse])=>{const vals=enriched.map(p=>valueOf(p,key)),target=inverse?Math.min(...vals):Math.max(...vals);return <div className="stat-row" key={key}><span>{label}</span>{enriched.map(p=><strong key={p.playerId||p.teamId} className={valueOf(p,key)===target?'winner':''}>{valueOf(p,key)===target&&<Check size={12}/>} {format(valueOf(p,key),key)}</strong>)}</div>})}</section></div>:<section className="empty"><div>VS</div><h2>Add at least two {entityType==='team'?'teams':'players'}</h2><p>Pick the matchup everyone is arguing about.</p></section>}
+    </section></div></div><footer><span>StatsPad · made for smarter hoops arguments</span><span>2025–26 data from <a href={data.source.url} target="_blank" rel="noreferrer">Basketball Reference</a> · Updated {data.lastUpdated}</span></footer>{toast&&<div className="toast"><Check size={16}/>{toast}</div>}</main>
+}
