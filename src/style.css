@@ -392,6 +392,33 @@ header{height:60px!important;min-height:60px!important;padding-top:0!important;p
 }
 @media(prefers-reduced-motion:reduce){.h2h-stage>article,.battle-stat,.battle-player>i b{animation:none!important}.h2h-player-art{transition:none}}
 
+/* Home-only quick comparison rail. */
+.home-dashboard{display:grid;grid-template-columns:minmax(0,1fr) 300px;align-items:start;gap:16px;width:min(1400px,100%);margin:0 auto;padding:0 24px}
+.home-dashboard .muse-home-grid{min-width:0;padding:8px 0 70px!important}
+.quick-compare-rail{position:sticky;top:72px;margin-top:8px;padding:20px;border:1px solid #ffffff1c;border-radius:20px;background:linear-gradient(155deg,#171b29ed,#0c1019f5);box-shadow:0 22px 65px #05060b70,inset 0 1px #ffffff0b}
+.quick-compare-rail>small{color:#45d7de;font-size:9px;font-weight:900;letter-spacing:.16em}
+.quick-compare-rail>h2{margin:7px 0 5px;font:900 25px/1 Arial;letter-spacing:-.035em}
+.quick-compare-rail>p{margin:0 0 15px;color:#777d88;font-size:11px;line-height:1.45}
+.quick-pickers{display:flex;flex-direction:column;gap:8px}
+.quick-pickers .player-chip,.quick-pickers .add-player{height:64px;border-radius:12px;background:#0b0f18;border-color:#ffffff1a}
+.quick-pickers .player-chip{padding:8px}
+.quick-pickers .player-chip .avatar{width:39px;height:43px;border-radius:9px}
+.quick-pickers .player-chip strong{overflow:hidden;max-width:150px;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
+.quick-pickers .player-chip small{font-size:9px}
+.quick-pickers .picker-popover{left:auto;width:330px;top:70px}
+.quick-compare-go{display:flex;align-items:center;gap:9px;width:100%;margin-top:12px;padding:12px;border:0;border-radius:12px;background:#f4f3ee;color:#111;text-align:left;font-size:12px;font-weight:900;transition:transform .2s,opacity .2s}
+.quick-compare-go:hover:not(:disabled){transform:translateY(-2px)}
+.quick-compare-go:disabled{cursor:not-allowed;opacity:.38}
+.quick-compare-go>span{flex:1}
+.quick-compare-go small{display:block;margin-top:2px;color:#676767;font-size:8px;font-weight:800;letter-spacing:.08em}
+.quick-presets{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px;padding-top:15px;border-top:1px solid #ffffff12}
+.quick-presets>span{width:100%;margin-bottom:2px;color:#606673;font-size:8px;font-weight:900;letter-spacing:.15em}
+.quick-presets button{padding:7px 9px;border:1px solid #ffffff17;border-radius:999px;background:#ffffff06;color:#9da2ac;font-size:9px;font-weight:800}
+.quick-presets button:hover{border-color:#45d7de66;color:#fff}
+@media(max-width:1100px){.home-dashboard{grid-template-columns:minmax(0,1fr) 270px}.quick-compare-rail{padding:16px}.quick-pickers .picker-popover{width:300px}}
+@media(max-width:900px){.home-dashboard{grid-template-columns:1fr;padding:0 14px}.quick-compare-rail{position:static;order:-1;margin:5px 0 2px}.quick-pickers{display:grid;grid-template-columns:1fr 1fr}.quick-presets{display:none}.home-dashboard .muse-home-grid{padding-top:4px!important}}
+@media(max-width:600px){.quick-compare-rail{display:none}.home-dashboard{padding:0 10px}}
+
 /* Mobile keeps the daily-use path focused: search, key leaders, compare. */
 @media(max-width:600px){
   .muse-sidebar button:nth-of-type(n+3){display:flex}
