@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, BarChart3, Check, ChevronDown, Copy, Download, Search, Share2, Sparkles, X, Zap } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BarChart3, Check, ChevronDown, Copy, Download, Menu, Search, Share2, Sparkles, X, Zap } from 'lucide-react';
 import { toPng } from 'html-to-image';
 
 const COLORS = ['#ff5a36', '#55d6be', '#9b87f5'];
@@ -61,7 +61,8 @@ function SiteHeader({page,onHome,onCompare}){
 }
 
 function AppSidebar({page,onHome,onCompare}){
-  return <aside className="muse-sidebar"><div className="sidebar-label">NBA</div><button className={page==='home'?'selected':''} onClick={onHome}><BarChart3 size={17}/> Home</button><button className={page==='compare'?'selected':''} onClick={onCompare}><Sparkles size={17}/> Compare</button><button><span className="sidebar-icon">▥</span> Leaders</button><button><span className="sidebar-icon">◷</span> Scores</button><button><span className="sidebar-icon">◈</span> Teams</button><div className="sidebar-divider"/><div className="sidebar-label">DISCOVER</div><button><span className="sidebar-icon">✦</span> Browse</button><button><span className="sidebar-icon">▦</span> Gallery</button></aside>
+  const[open,setOpen]=useState(false),close=handler=>()=>{setOpen(false);handler?.()};
+  return <aside className={`muse-sidebar ${open?'is-open':''}`}><button className="mobile-menu-toggle" onClick={()=>setOpen(!open)}><Menu size={17}/><span>Menu</span></button><div className="sidebar-menu"><div className="sidebar-label">NBA</div><button className={page==='home'?'selected':''} onClick={close(onHome)}><BarChart3 size={17}/> Home</button><button className={page==='compare'?'selected':''} onClick={close(onCompare)}><Sparkles size={17}/> Compare</button><button><span className="sidebar-icon">▥</span> Leaders</button><button><span className="sidebar-icon">◷</span> Scores</button><button><span className="sidebar-icon">◈</span> Teams</button><div className="sidebar-divider"/><div className="sidebar-label">DISCOVER</div><button><span className="sidebar-icon">✦</span> Browse</button><button><span className="sidebar-icon">▦</span> Gallery</button></div></aside>
 }
 
 function Discovery({players,teams,playerIds,onOpen,onCompare,onHome,seasonType,onSeasonTypeChange,splits}){
