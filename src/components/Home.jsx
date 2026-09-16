@@ -4,8 +4,8 @@ import { toPng } from 'html-to-image';
 
 const COLORS = ['#ff5a36', '#55d6be', '#9b87f5'];
 const TEAM_COLORS = {ATL:'#e03a3e',BOS:'#007a33',BKN:'#777',BRK:'#777',CHA:'#1d1160',CHO:'#1d1160',CHI:'#ce1141',CLE:'#860038',DAL:'#00538c',DEN:'#0e2240',DET:'#c8102e',GSW:'#1d428a',HOU:'#ce1141',IND:'#002d62',LAC:'#c8102e',LAL:'#552583',MEM:'#5d76a9',MIA:'#98002e',MIL:'#00471b',MIN:'#0c2340',NOP:'#0c2340',NYK:'#f58426',OKC:'#007ac1',ORL:'#0077c0',PHI:'#006bb6',PHO:'#1d1160',PHX:'#1d1160',POR:'#e03a3e',SAC:'#5a2d81',SAS:'#8a8d8f',TOR:'#ce1141',UTA:'#6cace4',WAS:'#002b5c'};
-const EXTRA_PLAYER_IDS = {'Victor Wembanyama':1641705,'Cade Cunningham':1630595,'Josh Giddey':1630581,'Donovan Clingan':1642270,'Dyson Daniels':1630700,'Ausar Thompson':1641708,'Chet Holmgren':1631096,'Alex Sarr':1642258,'Jalen Williams':1631114,'Jaden McDaniels':1630183,'Jericho Sims':1630579,'Ryan Kalkbrenner':1642267,'Bobby Portis':1626171,'Rui Hachimura':1629060,'Anthony Davis':203076,'Jay Huff':1630643};
-const PLAYER_AVATARS = {'Bez Mbeng':'/avatars/bez-mbeng.svg'};
+const EXTRA_PLAYER_IDS = {'Bez Mbeng':1643016,'Victor Wembanyama':1641705,'Cade Cunningham':1630595,'Josh Giddey':1630581,'Donovan Clingan':1642270,'Dyson Daniels':1630700,'Ausar Thompson':1641708,'Chet Holmgren':1631096,'Alex Sarr':1642258,'Jalen Williams':1631114,'Jaden McDaniels':1630183,'Jericho Sims':1630579,'Ryan Kalkbrenner':1642267,'Bobby Portis':1626171,'Rui Hachimura':1629060,'Anthony Davis':203076,'Jay Huff':1630643};
+const PLAYER_AVATARS = {'Bez Mbeng':'/avatars/bez-mbeng.png'};
 const JERSEY_COLORS = {LAL:'#FDB927',DEN:'#0E2240',SAS:'#C4CED4',GSW:'#1D428A',UTA:'#F9A01B',MIN:'#236192',OKC:'#007AC1',BOS:'#007A33',BKN:'#111111',NYK:'#F58426',MIA:'#98002E',MIL:'#00471B',PHI:'#006BB6',CLE:'#860038',DAL:'#00538C',HOU:'#CE1141',TOR:'#CE1141',ATL:'#E03A3E',CHI:'#CE1141',DET:'#C8102E',ORL:'#0077C0',IND:'#002D62',MEM:'#5D76A9',NOP:'#0C2340',PHX:'#E56020',POR:'#E03A3E',SAC:'#5A2D81',WAS:'#002B5C',LAC:'#D71920',CHA:'#1D1160'};
 const PLAYER_COLOR_OVERRIDES = {'Luke Kennard':['#FDB927','#171717']};
 const CARD_THEMES = [['#e06455','#fff'],['#167f88','#fff'],['#5268c9','#fff'],['#d48a3d','#171717']];
