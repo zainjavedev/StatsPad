@@ -193,6 +193,9 @@ html,body,#root{max-width:100%;overflow-x:hidden}
   .muse-sidebar.is-open .sidebar-menu .sidebar-divider{display:block}
   .leader-filters{margin-top:0;overflow-x:auto;scrollbar-width:none}
   .leader-filters::-webkit-scrollbar{display:none}
+  .search-shell{height:44px!important;margin:10px 10px 14px!important;padding:0 12px!important;gap:8px!important;border-radius:10px!important;box-shadow:none!important}
+  .search-shell>svg{width:17px;height:17px}
+  .search-shell input{font-size:13px!important}
 }
 
 /* Mobile keeps the daily-use path focused: search, key leaders, compare. */
