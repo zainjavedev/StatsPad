@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, BarChart3, Check, ChevronDown, Copy, Download, Search, Share2, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BarChart3, Check, Copy, Download, Moon, Search, Share2, Sun, X } from 'lucide-react';
 import { toPng } from 'html-to-image';
 
-const COLORS = ['#ff5a36', '#55d6be', '#9b87f5'];
+const COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)'];
 const TEAM_COLORS = {ATL:'#e03a3e',BOS:'#007a33',BKN:'#777',BRK:'#777',CHA:'#1d1160',CHO:'#1d1160',CHI:'#ce1141',CLE:'#860038',DAL:'#00538c',DEN:'#0e2240',DET:'#c8102e',GSW:'#1d428a',HOU:'#ce1141',IND:'#002d62',LAC:'#c8102e',LAL:'#552583',MEM:'#5d76a9',MIA:'#98002e',MIL:'#00471b',MIN:'#0c2340',NOP:'#0c2340',NYK:'#f58426',OKC:'#007ac1',ORL:'#0077c0',PHI:'#006bb6',PHO:'#1d1160',PHX:'#1d1160',POR:'#e03a3e',SAC:'#5a2d81',SAS:'#8a8d8f',TOR:'#ce1141',UTA:'#6cace4',WAS:'#002b5c'};
 const EXTRA_PLAYER_IDS = {'Bez Mbeng':1643016,'Cason Wallace':1641717,'Victor Wembanyama':1641705,'Cade Cunningham':1630595,'Josh Giddey':1630581,'Donovan Clingan':1642270,'Dyson Daniels':1630700,'Ausar Thompson':1641708,'Chet Holmgren':1631096,'Alex Sarr':1642258,'Jalen Williams':1631114,'Jaden McDaniels':1630183,'Jericho Sims':1630579,'Ryan Kalkbrenner':1642267,'Bobby Portis':1626171,'Rui Hachimura':1629060,'Anthony Davis':203076,'Jay Huff':1630643};
 const PLAYER_AVATARS = {'Bez Mbeng':'/avatars/bez-mbeng.png','Cason Wallace':'/avatars/cason-wallace.png'};
@@ -21,44 +21,90 @@ const STAT_GROUPS = {
   defense: [['steals','STL'],['blocks','BLK'],['totalRebounds','REB'],['defensiveRebounds','DREB'],['personalFouls','PF',true],['turnovers','TOV',true]],
 };
 const TABLE_STATS = [['points','Points / game'],['assists','Assists / game'],['totalRebounds','Rebounds / game'],['steals','Steals / game'],['blocks','Blocks / game'],['fieldGoalPercentage','Field goal %'],['threePointPercentage','Three-point %'],['freeThrowPercentage','Free throw %'],['trueShootingPercentage','True shooting %'],['effectiveFieldGoalPercentage','Effective FG %'],['turnovers','Turnovers / game',true]];
-const BATTLE_STATS = [['points','Scoring','PPG'],['assists','Playmaking','APG'],['totalRebounds','Rebounding','RPG'],['trueShootingPercentage','Efficiency','TS%'],['steals','Takeaways','SPG'],['blocks','Rim protection','BPG']];
 const pctKeys = new Set(['fieldGoalPercentage','threePointPercentage','freeThrowPercentage','trueShootingPercentage','effectiveFieldGoalPercentage']);
 const valueOf = (player,key) => player?.stats?.[key] ?? 0;
 const metricValue = (player,key) => key==='trueShootingPercentage' ? (player?.stats?.fieldGoalsAttempted ? Number((player.stats.points/(2*(player.stats.fieldGoalsAttempted+.44*player.stats.freeThrowsAttempted))*100).toFixed(1)) : 0) : key==='stocks' ? valueOf(player,'steals')+valueOf(player,'blocks') : player?.stats?.[key] ?? player?.[key] ?? 0;
 const format = (value,key) => `${Number(value).toFixed(1)}${pctKeys.has(key)?'%':''}`;
 const initials = name => name.split(' ').map(part=>part[0]).slice(-2).join('');
+const ordinal = value => { const tens = value % 100, ones = value % 10; return `${value}${tens > 10 && tens < 14 ? 'th' : ones === 1 ? 'st' : ones === 2 ? 'nd' : ones === 3 ? 'rd' : 'th'}`; };
 const normalizedName = name => name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace('ć','c');
-const categoryLeader = (players,key,inverse=false) => [...players].sort((a,b)=>(valueOf(b,key)-valueOf(a,key))*(inverse?-1:1))[0];
-const categoryWins = (players,player) => TABLE_STATS.filter(([key,,inverse])=>categoryLeader(players,key,inverse)?.playerName===player.playerName).length;
 function EntityArt({entity,playerIds,className=''}){
-  const[failed,setFailed]=useState(false);
-  const playerId=playerIds[normalizedName(entity.playerName)]||playerIds[entity.playerName]||EXTRA_PLAYER_IDS[entity.playerName];
-  const src=entity.entityType==='team'
-    ? `https://cdn.nba.com/logos/nba/${entity.teamId}/global/L/logo.svg`
-    : playerId?`https://cdn.nba.com/headshots/nba/latest/1040x760/${playerId}.png`:null;
-  const fallbackSrc=PLAYER_AVATARS[entity.playerName]||`https://api.dicebear.com/9.x/avataaars/png?seed=${encodeURIComponent(entity.playerName)}&backgroundColor=${(TEAM_COLORS[entity.team]||'#3b3b45').replace('#','')}&size=512`;
-  if(!src||failed)return <img className={`${className} art-fallback-image`} src={fallbackSrc} alt={`${entity.playerName} avatar`}/>;
-  return <img className={className} src={src} alt="" onError={()=>setFailed(true)}/>;
+  const[step,setStep]=useState(0);
+  const sources=useMemo(()=>{
+    if(entity.entityType==='team')return [`https://cdn.nba.com/logos/nba/${entity.teamId}/global/L/logo.svg`];
+    const nbaId=playerIds[normalizedName(entity.playerName)]||playerIds[entity.playerName]||EXTRA_PLAYER_IDS[entity.playerName];
+    return [
+      PLAYER_AVATARS[entity.playerName],
+      nbaId&&`https://cdn.nba.com/headshots/nba/latest/1040x760/${nbaId}.png`,
+    ].filter(Boolean);
+  },[entity,playerIds]);
+  useEffect(()=>{setStep(0)},[sources]);
+  const src=sources[step];
+  if(!src)return <img className={`${className} art-fallback-image`} alt={`${entity.playerName} avatar`}
+    src={`https://api.dicebear.com/9.x/avataaars/png?seed=${encodeURIComponent(entity.playerName)}&backgroundColor=${(TEAM_COLORS[entity.team]||'#3b3b45').replace('#','')}&size=512`}/>;
+  return <img className={className} src={src} alt="" loading="lazy" onError={()=>setStep(current=>current+1)}/>;
 }
 function percentile(players,key,value,inverse=false){const values=players.map(p=>valueOf(p,key)).filter(Number.isFinite).sort((a,b)=>a-b);if(!values.length)return 0;const below=values.filter(v=>v<value).length,equal=values.filter(v=>v===value).length,score=Math.round(((below+equal*.5)/values.length)*100);return inverse?100-score:score}
 
-function Radar({players,population,metrics,chartRef}){
-  const size=520,center=260,radius=174;
-  const point=(index,score=100)=>{const angle=-Math.PI/2+Math.PI*2*index/metrics.length,distance=radius*score/100;return[center+Math.cos(angle)*distance,center+Math.sin(angle)*distance]};
-  const polygon=score=>metrics.map((_,i)=>point(i,score).join(',')).join(' ');
-  return <svg ref={chartRef} className="radar" viewBox={`0 0 ${size} ${size}`} role="img" aria-label="Player percentile comparison radar">
-    <defs><radialGradient id="courtGlow"><stop offset="0" stopColor="#2b211d"/><stop offset="1" stopColor="#101012"/></radialGradient><filter id="glow"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-    <rect width="520" height="520" rx="28" fill="url(#courtGlow)"/>
-    {[25,50,75,100].map(level=><g key={level}><polygon points={polygon(level)} fill={level===100?'#151518':'none'} fillOpacity=".7" stroke={level===100?'#3b3533':'#2b2b30'} strokeWidth={level===100?'1.5':'1'}/><text x="267" y={center-radius*level/100+4} fill="#59595f" fontSize="9">{level}</text></g>)}
-    {metrics.map((metric,i)=>{const[x,y]=point(i);return <line key={metric[0]} x1={center} y1={center} x2={x} y2={y} stroke="#25252a"/>})}
-    {players.map((player,p)=>{const scores=metrics.map(([key,,inverse])=>percentile(population,key,valueOf(player,key),inverse)),points=scores.map((score,i)=>point(i,score).join(',')).join(' ');return <g className="radar-player" key={player.playerId||player.teamId} style={{'--radar-delay':`${p*110}ms`}}><polygon className="radar-player-shape" points={points} fill={COLORS[p]} fillOpacity=".12" stroke={COLORS[p]} strokeWidth="3" strokeLinejoin="round" filter="url(#glow)"/>{scores.map((score,i)=>{const[x,y]=point(i,score);return <circle className="radar-player-dot" key={i} cx={x} cy={y} r="4" fill="#101012" stroke={COLORS[p]} strokeWidth="2" style={{'--dot-delay':`${p*110+i*45}ms`}}/>})}</g>})}
-    {metrics.map(([key,label,inverse],i)=>{const[x,y]=point(i,120);return <g key={key}><text x={x} y={y-5} textAnchor="middle" fill="#9b9ba3" fontSize="12" fontWeight="700">{label}</text>{players.map((player,p)=><text key={player.playerId||player.teamId} x={x+(p-1)*34} y={y+13} textAnchor="middle" fill={COLORS[p]} fontSize="11" fontWeight="800">{percentile(population,key,valueOf(player,key),inverse)}</text>)}</g>})}
-    <text x="260" y="252" textAnchor="middle" fill="#777780" fontSize="11">LEAGUE</text><text x="260" y="268" textAnchor="middle" fill="#f7f7f8" fontSize="14" fontWeight="800">PERCENTILE</text>
-  </svg>
+function PercentileBars({entity,population,metrics}){
+  return <div className="pct-bars">{metrics.map(([key,label,inverse],row)=>{
+    const score=percentile(population,key,valueOf(entity,key),inverse);
+    return <div className="pct-bar-row" key={key} style={{'--row':row}}>
+      <span className="pct-bar-label">{label}</span>
+      <span className="pct-bar-track"><i style={{width:`${score}%`}}></i></span>
+      <b>{score}</b>
+    </div>})}
+    <div className="pct-bar-axis"><span>0</span><span>50</span><span>100</span></div>
+  </div>
 }
 
-function MetricEdgeGrid({players,metrics}){
-  return <div className="metric-edge-grid">{metrics.map(([key,label,inverse])=>{const leader=categoryLeader(players,key,inverse),index=players.findIndex(player=>player.playerName===leader?.playerName);return <article key={key} style={{'--edge-color':COLORS[index]||COLORS[0]}}><small>{label}</small><strong>{leader?.playerName}</strong><span>{format(valueOf(leader,key),key)}</span></article>})}</div>
+const VS_SECTIONS = [
+  ['Season', [['gamesPlayed','Games played',false,0],['minutesPerGame','Minutes per game']]],
+  ['Per game', [['points','Points'],['totalRebounds','Rebounds'],['assists','Assists'],['steals','Steals'],['blocks','Blocks'],['turnovers','Turnovers',true]]],
+  ['Shooting', [['fieldGoalPercentage','Field goal %'],['threePointPercentage','Three-point %'],['freeThrowPercentage','Free throw %'],['trueShootingPercentage','True shooting %'],['effectiveFieldGoalPercentage','Effective field goal %']]],
+];
+const TEAM_SECTIONS = [
+  ['Per game', [['points','Points'],['assists','Assists'],['totalRebounds','Rebounds'],['offensiveRebounds','Offensive rebounds'],['defensiveRebounds','Defensive rebounds'],['steals','Steals'],['blocks','Blocks'],['turnovers','Turnovers',true],['personalFouls','Fouls',true]]],
+  ['Shooting', [['fieldGoalPercentage','Field goal %'],['threePointPercentage','Three-point %'],['threePointersMade','Threes made'],['freeThrowPercentage','Free throw %'],['effectiveFieldGoalPercentage','Effective field goal %'],['trueShootingPercentage','True shooting %']]],
+];
+const statValue = (entity,key) => entity?.stats?.[key] ?? entity?.[key] ?? 0;
+const statText = (value,key,places) => `${Number(value).toFixed(places ?? 1)}${pctKeys.has(key) ? '%' : ''}`;
+
+/* One table row: a value per entity either side of the category name, the
+   leader's cell tinted. Percentile rank rides along in the title attribute. */
+function VsRow({players,population,metric,row}){
+  const[key,label,inverse,places]=metric,values=players.map(player=>statValue(player,key));
+  const tied=values[0]===values[1],best=inverse?Math.min(...values):Math.max(...values);
+  const cell=index=><span
+    className={!tied&&values[index]===best?'vs-cell lead':'vs-cell'}
+    key={players[index].playerId||players[index].teamId}
+    title={`${players[index].playerName} · ${label}: ${statText(values[index],key,places)} (${ordinal(percentile(population,key,values[index],inverse))} percentile)`}
+  >{statText(values[index],key,places)}</span>;
+  return <div className="vs-row" style={{'--row':row}}>{cell(0)}<span className="vs-cat">{label}</span>{cell(1)}</div>
+}
+
+/* Each side of the card header is also its own picker: a cross to clear the
+   slot, an add button and search popover when it is empty. */
+function VsSlot({index,entity,options,playerIds,noun,onPick,onRemove}){
+  const[open,setOpen]=useState(false),[query,setQuery]=useState('');
+  const results=options.filter(option=>`${option.playerName} ${option.team}`.toLowerCase().includes(query.toLowerCase())).slice(0,8);
+  const choose=option=>{onPick(option);setOpen(false);setQuery('')};
+  return <div className={entity?'vs-person':'vs-person is-empty'} style={{'--player-color':COLORS[index]}}>
+    {entity?<>
+      <button className="vs-remove" onClick={onRemove} aria-label={`Remove ${entity.playerName}`}><X size={14}/></button>
+      <EntityArt entity={entity} playerIds={playerIds} className="vs-art"/>
+      <strong>{entity.playerName}</strong>
+    </>:
+      <button className="vs-add" onClick={()=>setOpen(!open)}><span>+</span> Add {noun}</button>
+    }
+    {open&&<div className="picker-popover">
+      <label><Search size={16}/><input autoFocus value={query} onChange={event=>setQuery(event.target.value)} placeholder={`Search ${noun}s`}/></label>
+      <div>{results.map(option=><button key={option.playerId||option.teamId} onClick={()=>choose(option)}>
+        <EntityArt entity={option} playerIds={playerIds} className="mini-avatar"/>
+        <span><b>{option.playerName}</b><small>{option.team} · {option.stats.points} PPG</small></span>
+      </button>)}</div>
+    </div>}
+  </div>
 }
 
 function PlayerPicker({index,player,players,onPick,onRemove,playerIds}){
@@ -68,8 +114,8 @@ function PlayerPicker({index,player,players,onPick,onRemove,playerIds}){
   return <div className="picker"><button className="add-player" onClick={()=>setOpen(!open)}><span>+</span> Add {players[0]?.entityType==='team'?'team':'player'}</button>{open&&<div className="picker-popover"><label><Search size={16}/><input autoFocus value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search the league"/></label><div>{results.map(p=><button key={p.playerId||p.teamId} onClick={()=>{onPick(p);setOpen(false);setQuery('')}}><EntityArt entity={p} playerIds={playerIds} className="mini-avatar"/><span><b>{p.playerName}</b><small>{p.team} · {p.stats.points} PPG</small></span></button>)}</div></div>}</div>
 }
 
-function SiteHeader({page,onHome,onCompare}){
-  return <header><button className="brand brand-button" onClick={onHome}><span className="brand-mark">S</span><span>STATSPAD<small>NBA numbers, visualized</small></span></button><nav><button className={page==='home'?'active':''} onClick={onHome}>Home</button><button className={page==='compare'?'active':''} onClick={onCompare}>Compare</button></nav><div className="season-pill"><span className="live-dot"></span>2025–26 COMPLETE</div></header>
+function SiteHeader({page,onHome,onCompare,theme,onToggleTheme}){
+  return <header><button className="brand brand-button" onClick={onHome}><span className="brand-mark">S</span><span>STATSPAD<small>NBA numbers, visualized</small></span></button><nav><button className={page==='home'?'active':''} onClick={onHome}>Home</button><button className={page==='compare'?'active':''} onClick={onCompare}>Compare</button></nav><div className="header-end"><div className="season-pill"><span className="live-dot"></span>2025–26 season complete</div><button className="theme-toggle" onClick={onToggleTheme} aria-label={theme==='dark'?'Switch to light theme':'Switch to dark theme'} title={theme==='dark'?'Light theme':'Dark theme'}>{theme==='dark'?<Sun size={16}/>:<Moon size={16}/>}</button></div></header>
 }
 
 function QuickCompareRail({players,playerIds,onCompare}){
@@ -110,42 +156,55 @@ function Profile({entity,allEntities,playerIds,onBack,onCompare}){
   const enriched={...entity,stats:{...entity.stats,trueShootingPercentage:entity.stats.fieldGoalsAttempted?entity.stats.points/(2*(entity.stats.fieldGoalsAttempted+.44*entity.stats.freeThrowsAttempted))*100:0}};
   const population=allEntities.map(item=>({...item,stats:{...item.stats,trueShootingPercentage:item.stats.fieldGoalsAttempted?item.stats.points/(2*(item.stats.fieldGoalsAttempted+.44*item.stats.freeThrowsAttempted))*100:0}}));
   return <section className="profile-page"><button className="back-button" onClick={onBack}><ArrowLeft size={16}/> Back to explore</button><div className="profile-hero" style={{'--team':TEAM_COLORS[entity.team]||'#333'}}><div className="profile-copy"><small>{entity.entityType==='team'?'NBA TEAM':`${entity.team} · ${entity.position}`} · 2025–26</small><h1>{entity.playerName}</h1><p>{entity.entityType==='team'?`${entity.gamesPlayed} games · ${format(entity.stats.points,'points')} points per game`:`Age ${entity.age} · ${entity.gamesPlayed} games · ${entity.gamesStarted} starts`}</p><button onClick={()=>onCompare(entity)}><BarChart3 size={17}/> Compare {entity.entityType==='team'?'team':'player'}</button></div><div className="profile-art-wrap"><div></div><EntityArt entity={entity} playerIds={playerIds} className="profile-art"/></div></div>
-    <div className="profile-grid"><section className="profile-main"><div className="section-title compact"><div><small>SEASON SNAPSHOT</small><h2>At a glance</h2></div></div><div className="big-stats">{stats.slice(0,3).map(([key,label])=><article key={key}><strong>{format(valueOf(enriched,key),key)}</strong><span>{label}</span><small>{percentile(population,key,valueOf(enriched,key))}th percentile</small></article>)}</div><div className="stat-bars">{stats.map(([key,label])=>{const score=percentile(population,key,valueOf(enriched,key));return <div key={key}><span>{label}<small>{format(valueOf(enriched,key),key)}</small></span><i><b style={{width:`${score}%`}}></b></i><strong>{score}</strong></div>})}</div></section>
-      <aside className="profile-side"><small>PLAYER PROFILE</small><h2>League percentile</h2><Radar players={[enriched]} population={population} metrics={STAT_GROUPS.impact}/></aside></div>
+    <div className="profile-grid"><section className="profile-main"><div className="section-title compact"><div><small>SEASON SNAPSHOT</small><h2>At a glance</h2></div></div><div className="big-stats">{stats.slice(0,3).map(([key,label])=><article key={key}><strong>{format(valueOf(enriched,key),key)}</strong><span>{label}</span><small>{percentile(population,key,valueOf(enriched,key))}th percentile</small></article>)}</div></section>
+      <aside className="profile-side"><small>PLAYER PROFILE</small><h2>League percentile</h2><PercentileBars entity={enriched} population={population} metrics={STAT_GROUPS.impact}/></aside></div>
   </section>
 }
 
-function BattleStatCard({players,metric,index}){
-  const[key,label,suffix,inverse]=metric,values=players.map(player=>valueOf(player,key)),best=inverse?Math.min(...values):Math.max(...values),largest=Math.max(...values.map(value=>Math.abs(value)),1);
-  return <article className="battle-stat" style={{'--battle-delay':`${index*55}ms`}}><header><small>{label}</small><strong>{suffix}</strong></header>{players.map((player,playerIndex)=>{const value=valueOf(player,key),winner=value===best;return <div className={winner?'battle-player winner':'battle-player'} key={player.playerId||player.teamId}><span style={{color:COLORS[playerIndex]}}>{initials(player.playerName)}</span><i><b style={{width:`${Math.max(8,value/largest*100)}%`,background:COLORS[playerIndex]}}></b></i><strong>{format(value,key)}</strong></div>})}</article>
-}
-
-function ComparisonPage({data,entityType,setEntityType,seasonType,switchSeason,enriched,setSelected,playerIds,preset,setPreset,enrichedPopulation,chartRef,onHome,onShare,onDownload,onCopy,toast}){
-  const ready=enriched.length>=2;
-  return <main><SiteHeader page="compare" onHome={onHome} onCompare={()=>{}}/><section className="h2h-page">
-    <div className="h2h-nav"><button onClick={onHome}><ArrowLeft size={15}/> Home</button><span>HEAD TO HEAD</span><button onClick={onShare}><Share2 size={16}/> Share</button></div>
-    <div className="h2h-title"><div><small>STATSPAD COMPARISON</small><h1>Pick a side.</h1></div><p>Players, teams, every major number—one clean matchup.</p></div>
-    <div className="h2h-controls"><div className="segmented mode"><button className={entityType==='player'?'active':''} onClick={()=>setEntityType('player')}>Players</button><button className={entityType==='team'?'active':''} onClick={()=>setEntityType('team')}>Teams</button></div><div className="segmented season"><button className={seasonType==='regular-season'?'active':''} onClick={()=>switchSeason('regular-season')}>Regular season</button><button className={seasonType==='playoffs'?'active':''} onClick={()=>switchSeason('playoffs')}>Playoffs</button></div><span>{data.totalPlayers||data.totalTeams} available</span></div>
-    <div className="h2h-pickers">{[0,1,2].map(i=><PlayerPicker key={i} index={i} player={enriched[i]} playerIds={playerIds} players={data.players.filter(player=>!enriched.some(selected=>selected.playerName===player.playerName))} onPick={player=>setSelected([...enriched,player].slice(0,3))} onRemove={()=>setSelected(enriched.filter((_,index)=>index!==i))}/>)}</div>
-    {ready?<>
-      <section className="h2h-stage" style={{'--player-count':enriched.length}}>{enriched.map((entity,index)=><article key={entity.playerId||entity.teamId} style={{'--player-color':COLORS[index],'--player-delay':`${index*90}ms`}}><span className="h2h-win-count">{categoryWins(enriched,entity)} wins</span><div className="h2h-glow" style={{background:TEAM_COLORS[entity.team]||COLORS[index]}}></div><EntityArt entity={entity} playerIds={playerIds} className="h2h-player-art"/><div className="h2h-player-copy"><small>{entity.team} · {entity.position||'NBA TEAM'}</small><h2>{entity.playerName}</h2><p><b>{format(entity.stats.points,'points')}</b> PTS <b>{format(entity.stats.totalRebounds,'totalRebounds')}</b> REB <b>{format(entity.stats.assists,'assists')}</b> AST</p></div></article>)}<div className="h2h-vs">VS</div></section>
-      <section className="battle-grid">{BATTLE_STATS.map((metric,index)=><BattleStatCard key={metric[0]} players={enriched} metric={metric} index={index}/>)}</section>
-      <section className="h2h-analysis"><article className="h2h-radar"><div className="h2h-panel-head"><div><small>LEAGUE PERCENTILE</small><h2>Shape of the matchup</h2></div><div className="select-wrap"><select value={preset} onChange={event=>setPreset(event.target.value)}><option value="impact">All-around</option><option value="offense">Offense</option><option value="defense">Defense</option></select><ChevronDown size={15}/></div></div><Radar players={enriched} population={enrichedPopulation} metrics={STAT_GROUPS[preset]} chartRef={chartRef}/><div className="legend">{enriched.map((player,index)=><span key={player.playerId||player.teamId}><i style={{background:COLORS[index]}}></i>{player.playerName}</span>)}</div><MetricEdgeGrid players={enriched} metrics={STAT_GROUPS[preset]}/><div className="h2h-actions"><button onClick={onDownload}><Download size={16}/> Download radar</button><button onClick={onCopy}><Copy size={16}/> Copy verdict</button></div></article>
-        <article className="h2h-scoreboard"><div className="h2h-panel-head"><div><small>FULL COMPARISON</small><h2>Stat by stat</h2></div></div><div className="scoreboard-head"><span>STAT</span>{enriched.map((player,index)=><span key={player.playerId||player.teamId} style={{color:COLORS[index]}}>{initials(player.playerName)}</span>)}</div>{TABLE_STATS.map(([key,label,inverse])=>{const winner=categoryLeader(enriched,key,inverse);return <div className="stat-row" key={key}><span>{label}</span>{enriched.map(player=><strong key={player.playerId||player.teamId} className={player.playerName===winner?.playerName?'winner':''}>{player.playerName===winner?.playerName&&<Check size={12}/>} {format(valueOf(player,key),key)}</strong>)}</div>})}</article>
-      </section>
-    </>:<section className="h2h-empty"><div>VS</div><h2>Choose two {entityType==='team'?'teams':'players'}</h2><p>Your full comparison will build here.</p></section>}
+function ComparisonPage({data,entityType,setEntityType,seasonType,switchSeason,enriched,setSelected,playerIds,enrichedPopulation,chartRef,onHome,onShare,onDownload,onCopy,toast,theme,onToggleTheme}){
+  const ready=enriched.length>=2,noun=entityType==='team'?'teams':'players';
+  return <main className="h2h-main"><SiteHeader page="compare" onHome={onHome} onCompare={()=>{}} theme={theme} onToggleTheme={onToggleTheme}/><section className="h2h-page">
+    <div className="h2h-bar">
+      <div className="segmented mode"><button className={entityType==='player'?'active':''} onClick={()=>setEntityType('player')}>Players</button><button className={entityType==='team'?'active':''} onClick={()=>setEntityType('team')}>Teams</button></div>
+      <div className="segmented season"><button className={seasonType==='regular-season'?'active':''} onClick={()=>switchSeason('regular-season')}>Regular season</button><button className={seasonType==='playoffs'?'active':''} onClick={()=>switchSeason('playoffs')}>Playoffs</button></div>
+      <div className="h2h-bar-actions">
+        <button className="ghost-button" onClick={onShare} title="Copy a link to this comparison"><Share2 size={15}/> Share</button>
+        <button className="ghost-button" onClick={onCopy} disabled={!ready} title="Copy the verdict as text"><Copy size={15}/> Copy</button>
+        <button className="ghost-button" onClick={onDownload} disabled={!ready} title="Save this comparison as an image"><Download size={15}/> Save</button>
+      </div>
+    </div>
+    <section className="vs-card" ref={chartRef}>
+      <div className="vs-head">
+        {[0,1].map(index=><VsSlot key={index} index={index} entity={enriched[index]} playerIds={playerIds} noun={entityType==='team'?'team':'player'}
+          options={data.players.filter(option=>!enriched.some(selected=>selected.playerName===option.playerName))}
+          onPick={option=>setSelected([...enriched,option].slice(0,2))}
+          onRemove={()=>setSelected(enriched.filter((_,position)=>position!==index))}/>)}
+        <span className="vs-badge">VS</span>
+      </div>
+      {ready?<><div className="vs-table" key={enriched.map(player=>player.playerName).join('|')}>
+        {(entityType==='team'?TEAM_SECTIONS:VS_SECTIONS).map(([title,metrics])=><React.Fragment key={title}>
+          <div className="vs-section">{title}</div>
+          {metrics.map((metric,row)=><VsRow key={metric[0]} players={enriched} population={enrichedPopulation} metric={metric} row={row}/>)}
+        </React.Fragment>)}
+      </div>
+      <p className="vs-note">Highlighted cell leads the category; fewer turnovers counts as leading. Hover any value for its league percentile among {enrichedPopulation.length} qualified {noun}.</p></>
+      :<p className="vs-empty">Pick two {noun} above and the comparison builds itself.</p>}
+    </section>
   </section><footer><span>StatsPad · made for smarter hoops arguments</span><span>2025–26 data from <a href={data.source.url} target="_blank" rel="noreferrer">Basketball Reference</a> · Updated {data.lastUpdated}</span></footer>{toast&&<div className="toast"><Check size={16}/>{toast}</div>}</main>
 }
 
 export default function Home(){
   const paramsOnLoad=useMemo(()=>new URLSearchParams(location.search),[]);
-  const[seasonType,setSeasonType]=useState(()=>paramsOnLoad.get('type')||'regular-season'),[seasonChanging,setSeasonChanging]=useState(false),[entityType,setEntityType]=useState(()=>paramsOnLoad.get('mode')||'player'),[data,setData]=useState(null),[splits,setSplits]=useState(null),[selected,setSelected]=useState([]),[preset,setPreset]=useState('impact'),[toast,setToast]=useState(''),[playerIds,setPlayerIds]=useState({}),[catalog,setCatalog]=useState({players:[],teams:[]}),[page,setPage]=useState(paramsOnLoad.has('players')?'compare':paramsOnLoad.has('profile')?'profile':'home'),[profile,setProfile]=useState(null);
+  const[seasonType,setSeasonType]=useState(()=>paramsOnLoad.get('type')||'regular-season'),[seasonChanging,setSeasonChanging]=useState(false),[entityType,setEntityType]=useState(()=>paramsOnLoad.get('mode')||'player'),[data,setData]=useState(null),[splits,setSplits]=useState(null),[selected,setSelected]=useState([]),[toast,setToast]=useState(''),[playerIds,setPlayerIds]=useState({}),[catalog,setCatalog]=useState({players:[],teams:[]}),[page,setPage]=useState(paramsOnLoad.has('players')?'compare':paramsOnLoad.has('profile')?'profile':'home'),[profile,setProfile]=useState(null);
   const chartRef=useRef(null),seasonTransitionRef=useRef(0);
+  const[theme,setTheme]=useState(()=>{try{return localStorage.getItem('statspad-theme')||'light'}catch{return 'light'}});
+  useEffect(()=>{document.documentElement.dataset.theme=theme;try{localStorage.setItem('statspad-theme',theme)}catch{/* private mode */}},[theme]);
+  const toggleTheme=()=>setTheme(current=>current==='dark'?'light':'dark');
   useEffect(()=>{fetch('/data/player-ids.json').then(r=>r.json()).then(ids=>setPlayerIds(Object.fromEntries(Object.entries(ids).map(([name,id])=>[normalizedName(name),id]))))},[]);
   useEffect(()=>{loadSeasonBundle('regular-season');loadSeasonBundle('playoffs')},[]);
   useEffect(()=>{let active=true;loadSeasonBundle(seasonType).then(bundle=>{if(!active)return;setCatalog({players:bundle.players.players,teams:bundle.teams.players});setSplits(bundle.splits);setData(entityType==='team'?bundle.teams:bundle.players)});return()=>{active=false}},[seasonType,entityType]);
   useEffect(()=>{const name=paramsOnLoad.get('profile');if(!name||profile)return;const match=[...catalog.players,...catalog.teams].find(item=>item.playerName===name);if(match)setProfile(match)},[catalog,paramsOnLoad,profile]);
-  useEffect(()=>{if(!data)return;const params=new URLSearchParams(location.search),names=params.get('players')?.split('|').filter(Boolean);const defaults=names?.length?names:(entityType==='team'?['Oklahoma City Thunder','New York Knicks']:['Luka Dončić','Shai Gilgeous-Alexander','Nikola Jokić']);setSelected(defaults.map(name=>data.players.find(p=>p.playerName===name)).filter(Boolean).slice(0,3))},[data,entityType]);
+  useEffect(()=>{if(!data)return;const params=new URLSearchParams(location.search),names=params.get('players')?.split('|').filter(Boolean);const defaults=names?.length?names:(entityType==='team'?['Oklahoma City Thunder','New York Knicks']:['Luka Dončić','Shai Gilgeous-Alexander']);setSelected(defaults.map(name=>data.players.find(p=>p.playerName===name)).filter(Boolean).slice(0,2))},[data,entityType]);
   const population=useMemo(()=>data?.players.filter(p=>entityType==='team'||(p.gamesPlayed>=(seasonType==='playoffs'?3:15)&&p.minutesPerGame>=10))||[],[data,seasonType,entityType]);
   const enrich=p=>({...p,stats:{...p.stats,trueShootingPercentage:p.stats.fieldGoalsAttempted?Number((p.stats.points/(2*(p.stats.fieldGoalsAttempted+.44*p.stats.freeThrowsAttempted))*100).toFixed(1)):0}});
   const enriched=useMemo(()=>selected.map(enrich),[selected]);
@@ -154,12 +213,12 @@ export default function Home(){
   const switchSeason=async next=>{if(next===seasonType||seasonChanging)return;const transition=++seasonTransitionRef.current;setSeasonChanging(true);try{const[bundle]=await Promise.all([loadSeasonBundle(next),new Promise(resolve=>window.setTimeout(resolve,180))]);if(transition!==seasonTransitionRef.current)return;setCatalog({players:bundle.players.players,teams:bundle.teams.players});setSplits(bundle.splits);setData(entityType==='team'?bundle.teams:bundle.players);setSeasonType(next);window.requestAnimationFrame(()=>window.requestAnimationFrame(()=>setSeasonChanging(false)))}catch{setSeasonChanging(false)}};
   const share=async()=>{const params=new URLSearchParams({players:enriched.map(p=>p.playerName).join('|'),type:seasonType,mode:entityType}),url=`${location.origin}${location.pathname}?${params}`;await navigator.clipboard.writeText(url);notify('Comparison link copied')};
   const copyTake=async()=>{const leaders=TABLE_STATS.slice(0,5).map(([key,label,inverse])=>{const ordered=[...enriched].sort((a,b)=>(valueOf(b,key)-valueOf(a,key))*(inverse?-1:1));return `${label}: ${ordered[0]?.playerName} (${format(valueOf(ordered[0],key),key)})`});await navigator.clipboard.writeText(`${enriched.map(p=>p.playerName).join(' vs ')} — 2025-26 ${data.seasonType}\n\n${leaders.join('\n')}\n\nMade with StatsPad`);notify('Debate-ready take copied')};
-  const download=()=>{const svg=chartRef.current;if(!svg)return;const canvas=document.createElement('canvas');canvas.width=1040;canvas.height=1040;const image=new Image(),blob=new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml'});image.onload=()=>{canvas.getContext('2d').drawImage(image,0,0,1040,1040);URL.revokeObjectURL(image.src);const a=document.createElement('a');a.download='statspad-comparison.png';a.href=canvas.toDataURL('image/png');a.click();notify('Chart downloaded')};image.src=URL.createObjectURL(blob)};
+  const download=()=>{if(chartRef.current)downloadCard(chartRef.current,`${enriched.map(p=>p.playerName).join('-vs-')}-comparison`)};
   if(!data)return <main className="loading"><span></span>Loading the league…</main>;
   const goHome=()=>{setPage('home');setProfile(null);history.replaceState({},'',location.pathname)};
   const openProfile=item=>{setProfile(item);setPage('profile');history.pushState({},'',`?profile=${encodeURIComponent(item.playerName)}`);scrollTo({top:0,behavior:'smooth'})};
-  const openCompare=item=>{if(item){const items=Array.isArray(item)?item:[item],isTeam=items[0]?.entityType==='team';setEntityType(isTeam?'team':'player');setSelected(items.slice(0,3))}setPage('compare');setProfile(null);scrollTo({top:0,behavior:'smooth'})};
-  if(page==='home')return <main><SiteHeader page={page} onHome={goHome} onCompare={()=>openCompare()}/><Discovery players={catalog.players} teams={catalog.teams} playerIds={playerIds} onOpen={openProfile} onCompare={()=>openCompare()} seasonType={seasonType} onSeasonTypeChange={switchSeason} seasonChanging={seasonChanging} splits={splits}/><footer><span>StatsPad · NBA numbers, visualized</span><span>2025–26 data from <a href={data.source.url} target="_blank" rel="noreferrer">Basketball Reference</a></span></footer></main>;
-  if(page==='profile'&&profile){const entities=profile.entityType==='team'?catalog.teams:catalog.players;return <main><SiteHeader page={page} onHome={goHome} onCompare={()=>openCompare()}/><Profile entity={profile} allEntities={entities} playerIds={playerIds} onBack={goHome} onCompare={openCompare}/><footer><span>StatsPad · NBA numbers, visualized</span><span>2025–26 data from <a href={data.source.url} target="_blank" rel="noreferrer">Basketball Reference</a></span></footer></main>}
-  return <ComparisonPage data={data} entityType={entityType} setEntityType={setEntityType} seasonType={seasonType} switchSeason={switchSeason} enriched={enriched} setSelected={setSelected} playerIds={playerIds} preset={preset} setPreset={setPreset} enrichedPopulation={enrichedPopulation} chartRef={chartRef} onHome={goHome} onShare={share} onDownload={download} onCopy={copyTake} toast={toast}/>;
+  const openCompare=item=>{if(item){const items=Array.isArray(item)?item:[item],isTeam=items[0]?.entityType==='team';setEntityType(isTeam?'team':'player');setSelected(items.slice(0,2))}setPage('compare');setProfile(null);scrollTo({top:0,behavior:'smooth'})};
+  if(page==='home')return <main><SiteHeader page={page} onHome={goHome} onCompare={()=>openCompare()} theme={theme} onToggleTheme={toggleTheme}/><Discovery players={catalog.players} teams={catalog.teams} playerIds={playerIds} onOpen={openProfile} onCompare={()=>openCompare()} seasonType={seasonType} onSeasonTypeChange={switchSeason} seasonChanging={seasonChanging} splits={splits}/><footer><span>StatsPad · NBA numbers, visualized</span><span>2025–26 data from <a href={data.source.url} target="_blank" rel="noreferrer">Basketball Reference</a></span></footer></main>;
+  if(page==='profile'&&profile){const entities=profile.entityType==='team'?catalog.teams:catalog.players;return <main><SiteHeader page={page} onHome={goHome} onCompare={()=>openCompare()} theme={theme} onToggleTheme={toggleTheme}/><Profile entity={profile} allEntities={entities} playerIds={playerIds} onBack={goHome} onCompare={openCompare}/><footer><span>StatsPad · NBA numbers, visualized</span><span>2025–26 data from <a href={data.source.url} target="_blank" rel="noreferrer">Basketball Reference</a></span></footer></main>}
+  return <ComparisonPage data={data} entityType={entityType} setEntityType={setEntityType} seasonType={seasonType} switchSeason={switchSeason} enriched={enriched} setSelected={setSelected} playerIds={playerIds} enrichedPopulation={enrichedPopulation} chartRef={chartRef} onHome={goHome} onShare={share} onDownload={download} onCopy={copyTake} toast={toast} theme={theme} onToggleTheme={toggleTheme}/>;
 }
