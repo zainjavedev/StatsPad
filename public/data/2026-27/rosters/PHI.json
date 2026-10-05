@@ -1,0 +1,45 @@
+{
+  "team": "PHI",
+  "teamName": "Philadelphia 76ers",
+  "teamId": 1610612755,
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Nick Nurse",
+  "lastUpdated": "2026-10-04",
+  "sources": [
+    {"label": "Basketball Reference roster", "url": "https://www.basketball-reference.com/teams/PHI/2027.html"},
+    {"label": "FanSided projected rotation", "url": "https://fansided.com/nba/projected-76ers-staring-lineup-and-rotation-as-training-camp-opens"}
+  ],
+  "units": [
+    {"key": "starters", "label": "Expected starting five", "short": "Starters"},
+    {"key": "second", "label": "Second unit", "short": "2nd unit"},
+    {"key": "third", "label": "Third unit", "short": "3rd unit"},
+    {"key": "camp", "label": "Camp bodies & development", "short": "Camp"}
+  ],
+  "players": [
+    {"name": "Tyrese Maxey", "bbrefId": "maxeyty01", "nbaId": 1630178, "pos": "G", "slot": "PG", "height": "6-2", "birthDate": "2000-11-04", "exp": 6, "college": "Kentucky", "unit": "starters"},
+    {"name": "VJ Edgecombe", "bbrefId": "edgecvj01", "pos": "G-F", "slot": "SG", "height": "6-4", "birthDate": "2005-07-30", "exp": 1, "college": "Baylor", "unit": "starters"},
+    {"name": "Jaylen Brown", "bbrefId": "brownja02", "nbaId": 1627759, "pos": "F-G", "slot": "SF", "height": "6-6", "birthDate": "1996-10-24", "exp": 10, "college": "California", "unit": "starters"},
+    {"name": "LeBron James", "bbrefId": "jamesle01", "nbaId": 2544, "pos": "F-G", "slot": "PF", "height": "6-9", "birthDate": "1984-12-30", "exp": 23, "college": null, "unit": "starters"},
+    {"name": "Joel Embiid", "bbrefId": "embiijo01", "nbaId": 203954, "pos": "C", "slot": "C", "height": "7-0", "birthDate": "1994-03-16", "exp": 10, "college": "Kansas", "unit": "starters"},
+
+    {"name": "Dean Wade", "bbrefId": "wadede01", "nbaId": 1629731, "pos": "F", "height": "6-9", "birthDate": "1996-11-20", "exp": 7, "college": "Kansas State", "unit": "second", "role": "Defensive glue guy"},
+    {"name": "Anfernee Simons", "bbrefId": "simonan01", "nbaId": 1629014, "pos": "G", "height": "6-3", "birthDate": "1999-06-08", "exp": 8, "college": null, "unit": "second", "role": "Bench scoring punch"},
+    {"name": "Dominick Barlow", "bbrefId": "barlodo01", "pos": "F", "height": "6-9", "birthDate": "2003-05-26", "exp": 4, "college": null, "unit": "second", "role": "Energy forward"},
+    {"name": "Adem Bona", "bbrefId": "bonaad01", "pos": "C-F", "height": "6-10", "birthDate": "2003-03-28", "exp": 2, "college": "UCLA", "unit": "second", "role": "Backup big", "status": "Recovering from a foot injury"},
+    {"name": "Kentavious Caldwell-Pope", "bbrefId": "caldwke01", "nbaId": 203484, "pos": "G", "height": "6-5", "birthDate": "1993-02-18", "exp": 13, "college": "Georgia", "unit": "second", "role": "3-and-D veteran"},
+
+    {"name": "Labaron Philon Jr.", "pos": "G", "height": "6-4", "birthDate": "2005-11-24", "exp": 0, "college": "Alabama", "unit": "third", "role": "Rookie guard"},
+    {"name": "Justin Edwards", "bbrefId": "edwarju01", "pos": "G", "height": "6-7", "birthDate": "2003-12-16", "exp": 2, "college": "Kentucky", "unit": "third"},
+    {"name": "Jabari Walker", "bbrefId": "walkeja01", "pos": "F-C", "height": "6-7", "birthDate": "2002-07-30", "exp": 4, "college": "Colorado", "unit": "third"},
+    {"name": "Ariel Hukporti", "bbrefId": "hukpoar01", "pos": "C", "height": "7-0", "birthDate": "2002-04-12", "exp": 2, "college": null, "unit": "third"},
+    {"name": "Rayan Rupert", "bbrefId": "ruperra01", "pos": "G", "height": "6-7", "birthDate": "2004-05-31", "exp": 3, "college": "Duke", "unit": "third", "status": "Two-way"},
+    {"name": "Caleb Love", "bbrefId": "loveca01", "pos": "G", "height": "6-3", "birthDate": "2001-09-27", "exp": 1, "college": "UNC / Arizona", "unit": "third", "status": "Two-way"},
+
+    {"name": "Dillon Jones", "bbrefId": "jonesdi01", "pos": "F", "height": "6-5", "birthDate": "2001-10-29", "exp": 2, "college": "Weber State", "unit": "camp"},
+    {"name": "Tacko Fall", "nbaId": 1629605, "pos": "C", "height": "7-6", "birthDate": "1995-12-10", "exp": 3, "college": "UCF", "unit": "camp"},
+    {"name": "Jameer Nelson Jr.", "pos": "G", "height": "6-2", "birthDate": "2001-08-07", "exp": 0, "college": "TCU", "unit": "camp"},
+    {"name": "Saint Thomas", "pos": "F", "height": "6-7", "birthDate": "2003-05-01", "exp": 0, "college": "USC", "unit": "camp"},
+    {"name": "Duke Miles", "pos": "G", "height": "6-2", "birthDate": "2002-02-03", "exp": 0, "college": "Vanderbilt", "unit": "camp"}
+  ]
+}
