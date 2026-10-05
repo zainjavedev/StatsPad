@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowDown, ArrowUp } from 'lucide-react';
+import { ArrowDown, ArrowUp, ChevronRight } from 'lucide-react';
 
 /* Team roster page: who is on the team this season, how the rotation is
    expected to stack up, and each player's previous-season numbers. */
@@ -43,29 +43,42 @@ const statLine = player => player.stats
   ? `${player.stats.points.toFixed(1)} pts · ${player.stats.totalRebounds.toFixed(1)} reb · ${player.stats.assists.toFixed(1)} ast`
   : player.exp === 0 ? 'Rookie' : 'Did not play last season';
 
-function StarterCard({player}) {
-  return <article className="starter-card">
-    <span className="slot-badge">{player.slot}</span>
-    <Headshot player={player} className="starter-art"/>
+function StarterCard({player, onOpen}) {
+  return <button className="starter-card" onClick={() => onOpen(player)} disabled={!player.profile}>
+    <span className="starter-stage">
+      <span className="slot-badge">{player.slot}</span>
+      <Headshot player={player} className="starter-art"/>
+    </span>
     <h3>{player.name}</h3>
     <dl className="starter-line">
       <div><dt>PTS</dt><dd>{player.stats.points.toFixed(1)}</dd></div>
       <div><dt>REB</dt><dd>{player.stats.totalRebounds.toFixed(1)}</dd></div>
       <div><dt>AST</dt><dd>{player.stats.assists.toFixed(1)}</dd></div>
     </dl>
-  </article>;
+  </button>;
 }
 
-function StatTable({players}) {
+function UnitRow({player, onOpen}) {
+  const body = <>
+    <Headshot player={player} className="unit-art"/>
+    <span className="unit-who"><strong>{player.name}</strong><span>{player.pos} · {statLine(player)}</span></span>
+  </>;
+  return <li>{player.profile
+    ? <button className="unit-row" onClick={() => onOpen(player)}>{body}<ChevronRight className="unit-go" size={16}/></button>
+    : <div className="unit-row">{body}</div>}</li>;
+}
+
+function StatTable({players, onOpen}) {
   const [sort, setSort] = useState({key: 'points', desc: true});
   const rows = useMemo(() => {
     const rank = player => !player.stats ? 2 : qualifies(player, sort.key) ? 0 : 1;
-    return [...players].sort((a, b) => rank(a) - rank(b) || ((statOf(b, sort.key) ?? 0) - (statOf(a, sort.key) ?? 0)) * (sort.desc ? 1 : -1));
+    return [...players.filter(player => player.stats)].sort((a, b) => rank(a) - rank(b) || ((statOf(b, sort.key) ?? 0) - (statOf(a, sort.key) ?? 0)) * (sort.desc ? 1 : -1));
   }, [players, sort]);
-  const best = useMemo(() => Object.fromEntries(STAT_COLUMNS.map(({key}) => {
-    const values = players.filter(player => qualifies(player, key)).map(player => statOf(player, key));
-    return [key, values.length ? Math.max(...values) : null];
-  })), [players]);
+  const best = useMemo(() => {
+    const values = players.filter(player => qualifies(player, sort.key)).map(player => statOf(player, sort.key));
+    return values.length ? Math.max(...values) : null;
+  }, [players, sort.key]);
+  const noStats = players.filter(player => !player.stats);
   const pick = key => setSort(current => ({key, desc: current.key === key ? !current.desc : true}));
 
   /* On narrow screens, bring the sorted column into view beside the names. */
@@ -96,21 +109,25 @@ function StatTable({players}) {
             <button onClick={() => pick(column.key)}>{column.label}{arrow(column.key)}</button>
           </th>)}
         </tr></thead>
-        <tbody>{rows.map(player => <tr key={player.name} className={player.stats ? '' : 'no-stats'}>
-          <th className="sticky-col" scope="row"><span className="board-name">{player.name}</span></th>
+        <tbody>{rows.map(player => <tr key={player.name}>
+          <th className="sticky-col" scope="row"><button className="board-name" onClick={() => onOpen(player)}>{player.name}</button></th>
           {STAT_COLUMNS.map(column => {
-            const value = player.stats ? statOf(player, column.key) : null;
-            const lead = value != null && value === best[column.key] && qualifies(player, column.key);
-            return <td key={column.key} className={[sort.key === column.key && 'sorted', lead && 'lead'].filter(Boolean).join(' ')}>{show(value, column)}</td>;
+            const value = statOf(player, column.key);
+            const lead = column.key === sort.key && value === best && qualifies(player, column.key);
+            const thin = column.pct && !qualifies(player, column.key);
+            return <td key={column.key} className={[sort.key === column.key && 'sorted', lead && 'lead', thin && 'thin'].filter(Boolean).join(' ')}>{show(value, column)}</td>;
           })}
         </tr>)}</tbody>
       </table>
     </div>
-    <p className="board-note">2025–26 regular season, per game. Green marks the team best.</p>
+    <p className="board-note">
+      2025–26 regular season, per game. Faded percentages come from too few attempts and sort last.
+      {noStats.length > 0 && <> No NBA stats yet: {noStats.map(player => player.name).join(', ')}.</>}
+    </p>
   </section>;
 }
 
-export default function TeamPage({teamCode = 'PHI', leaguePlayers}) {
+export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen}) {
   const [roster, setRoster] = useState(null), [error, setError] = useState(false);
   useEffect(() => {
     let active = true;
@@ -123,17 +140,18 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers}) {
     const byId = new Map(leaguePlayers.map(player => [player.playerId, player]));
     return roster.players.map(entry => {
       const last = entry.bbrefId && byId.get(entry.bbrefId);
-      return {...entry, stats: last?.stats ?? null, gamesPlayed: last?.gamesPlayed, minutesPerGame: last?.minutesPerGame};
+      return {...entry, profile: last || null, stats: last?.stats ?? null, gamesPlayed: last?.gamesPlayed, minutesPerGame: last?.minutesPerGame};
     });
   }, [roster, leaguePlayers]);
 
   if (error) return <section className="team-page"><p className="vs-empty">Couldn&apos;t load the roster. Try a refresh.</p></section>;
   if (!roster) return <section className="team-page"><p className="vs-empty">Loading the roster…</p></section>;
   const unit = key => players.filter(player => player.unit === key);
+  const open = player => player.profile && onOpen(player.profile);
 
   return <section className="team-page" style={{'--team': TEAM_COLORS[teamCode]}}>
     <div className="team-hero">
-      <img className="team-hero-logo" src={`https://cdn.nba.com/logos/nba/${roster.teamId}/global/L/logo.svg`} alt="" onError={event => { event.currentTarget.style.display = 'none'; }}/>
+      <span className="team-hero-mark"><img className="team-hero-logo" src={`https://cdn.nba.com/logos/nba/${roster.teamId}/global/L/logo.svg`} alt="" onError={event => { event.currentTarget.style.display = 'none'; }}/></span>
       <div>
         <h1>{roster.teamName}</h1>
         <p>{roster.season.replace('-', '–')} roster</p>
@@ -142,20 +160,17 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers}) {
 
     <section className="team-block">
       <h2>Starting five</h2>
-      <div className="starter-grid">{unit('starters').map(player => <StarterCard key={player.name} player={player}/>)}</div>
+      <div className="starter-grid">{unit('starters').map(player => <StarterCard key={player.name} player={player} onOpen={open}/>)}</div>
     </section>
 
     <section className="team-block units">
       {roster.units.filter(entry => entry.key !== 'starters').map(entry => <div className="unit-card" key={entry.key}>
         <h2>{entry.label}</h2>
-        <ul>{unit(entry.key).map(player => <li className="unit-row" key={player.name}>
-          <Headshot player={player} className="unit-art"/>
-          <div><strong>{player.name}</strong><span>{player.pos} · {statLine(player)}</span></div>
-        </li>)}</ul>
+        <ul>{unit(entry.key).map(player => <UnitRow key={player.name} player={player} onOpen={open}/>)}</ul>
       </div>)}
     </section>
 
-    <StatTable players={players}/>
+    <StatTable players={players} onOpen={open}/>
 
     <p className="team-sources">Roster as of {roster.lastUpdated}. Rotation is a pre-season projection. Sources: {roster.sources.map((source, index) => <React.Fragment key={source.url}>{index ? ', ' : ''}<a href={source.url} target="_blank" rel="noreferrer">{source.label}</a></React.Fragment>)}.</p>
   </section>;

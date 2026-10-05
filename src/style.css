@@ -566,25 +566,33 @@ footer a:hover{color:var(--text-1)}
 .h2h-bar-actions{gap:6px}
 
 /* ==========================================================================
-   Team roster page. Same neutral surfaces as the rest of the shell; team
-   colour appears only on the position badges.
+   Team roster page. Team colour carries the header band and the starting-five
+   photo stages; everything below sits on the shell's neutral surfaces.
    ========================================================================== */
 .team-page{width:min(1100px,100%);margin:0 auto;padding:28px 28px 40px;color:var(--text-1)}
 .team-page h2{margin:0 0 14px;font-size:18px;font-weight:800;letter-spacing:-.02em}
 
-.team-hero{display:flex;align-items:center;gap:18px}
-.team-hero-logo{width:72px;height:72px;object-fit:contain}
-.team-hero h1{margin:0;font-size:clamp(30px,5vw,44px);font-weight:900;line-height:1.05;letter-spacing:-.04em}
-.team-hero p{margin:6px 0 0;color:var(--text-3);font-size:14px}
+.team-hero{position:relative;display:flex;align-items:center;gap:18px;overflow:hidden;padding:26px 28px;border-radius:14px;background:radial-gradient(120% 140% at 100% 0,#1a84d6 0,transparent 55%),linear-gradient(135deg,#0a62a8,#00467f);color:#fff}
+.team-hero::after{content:'';position:absolute;inset:auto 0 0;height:4px;background:#ed174c}
+.team-hero-mark{display:grid;place-items:center;flex:none;width:76px;height:76px;border-radius:50%;background:#fff;box-shadow:0 4px 14px rgb(0 0 0 / .18)}
+.team-hero-logo{width:62px;height:62px;object-fit:contain}
+.team-hero h1{margin:0;font-size:clamp(28px,5vw,44px);font-weight:900;line-height:1.05;letter-spacing:-.04em}
+.team-hero p{margin:6px 0 0;color:rgb(255 255 255 / .75);font-size:14px;font-weight:500}
 
 .team-block{margin-top:36px}
 .starter-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
-.starter-card{position:relative;display:flex;flex-direction:column;align-items:center;min-width:0;padding:16px 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--ink-1);text-align:center}
-.slot-badge{position:absolute;top:12px;left:12px;padding:3px 7px;border-radius:6px;background:var(--team);color:#fff;font-size:11px;font-weight:800;letter-spacing:.04em}
-.starter-art{width:136px;height:100px;margin:6px 0 10px;object-fit:cover;object-position:top}
-.starter-art.roster-monogram{width:100px;height:100px;font-size:30px}
-.starter-card h3{margin:0;font-size:15px;font-weight:800;line-height:1.25}
-.starter-line{display:grid;grid-template-columns:repeat(3,1fr);width:100%;margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line)}
+.starter-card{display:flex;flex-direction:column;align-items:center;min-width:0;overflow:hidden;padding:0 0 14px;border:1px solid var(--line);border-radius:12px;background:var(--ink-1);color:var(--text-1);text-align:center;transition:transform .18s,box-shadow .18s,border-color .18s;-webkit-tap-highlight-color:transparent}
+.starter-card:not(:disabled):hover{border-color:var(--line-2);box-shadow:0 10px 24px rgb(0 0 0 / .08);transform:translateY(-2px)}
+.starter-card:not(:disabled):active{transform:scale(.98)}
+.starter-card:focus-visible,.unit-row:focus-visible,.board-name:focus-visible{outline:2px solid var(--team);outline-offset:2px}
+/* Photo stage: the headshot stands on a team-colour floor that fades up. */
+.starter-stage{position:relative;display:flex;align-items:flex-end;justify-content:center;width:100%;height:150px;overflow:hidden;background:radial-gradient(70% 80% at 50% 100%,#2a8de0 0,transparent 70%),linear-gradient(180deg,#0a5d9f,#004a85)}
+.starter-stage::after{content:'';position:absolute;inset:auto 0 0;height:3px;background:#ed174c}
+.slot-badge{position:absolute;top:10px;left:10px;z-index:1;padding:3px 7px;border-radius:6px;background:#fff;color:#00467f;font-size:11px;font-weight:800;letter-spacing:.04em}
+.starter-art{position:relative;width:auto;height:136px;max-width:100%;object-fit:contain;object-position:bottom}
+.starter-art.roster-monogram{align-self:center;width:84px;height:84px;background:rgb(255 255 255 / .16);color:#fff;font-size:28px}
+.starter-card h3{margin:12px 10px 0;font-size:15px;font-weight:800;line-height:1.25}
+.starter-line{display:grid;grid-template-columns:repeat(3,1fr);width:calc(100% - 24px);margin:12px 12px 0;padding-top:10px;border-top:1px solid var(--line)}
 .starter-line dt{color:var(--text-3);font-size:10px;font-weight:700;letter-spacing:.06em}
 .starter-line dd{margin:2px 0 0;font-size:17px;font-weight:800;font-variant-numeric:tabular-nums}
 
@@ -592,17 +600,22 @@ footer a:hover{color:var(--text-1)}
 
 .team-block.units{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:start}
 .unit-card ul{margin:0;padding:0;list-style:none;border-top:1px solid var(--line)}
-.unit-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
-.unit-art{width:40px;height:40px;border-radius:50%;background:var(--ink-2);object-fit:cover;object-position:top}
+.unit-card li{border-bottom:1px solid var(--line)}
+.unit-row{display:flex;align-items:center;gap:12px;width:100%;min-height:60px;padding:10px 4px 10px 0;color:var(--text-1);text-align:left;-webkit-tap-highlight-color:transparent}
+button.unit-row{border-radius:8px;transition:background .15s}
+button.unit-row:hover{background:var(--ink-2)}
+button.unit-row:active{background:var(--line)}
+.unit-art{flex:none;width:42px;height:42px;border-radius:50%;background:linear-gradient(180deg,#0a5d9f,#004a85);object-fit:cover;object-position:top}
 .unit-art.roster-monogram{font-size:13px}
-.unit-row div{min-width:0}
-.unit-row strong{display:block;font-size:14px;font-weight:700}
-.unit-row span{display:block;margin-top:2px;overflow:hidden;color:var(--text-3);font-size:12px;text-overflow:ellipsis;white-space:nowrap;font-variant-numeric:tabular-nums}
+.unit-who{flex:1;min-width:0}
+.unit-who strong{display:block;font-size:14px;font-weight:700}
+.unit-who>span{display:block;margin-top:2px;overflow:hidden;color:var(--text-3);font-size:12px;text-overflow:ellipsis;white-space:nowrap;font-variant-numeric:tabular-nums}
+.unit-go{flex:none;color:var(--text-4)}
 
 .stat-board{margin-top:40px;border:1px solid var(--line);border-radius:var(--radius);background:var(--ink-1)}
 .board-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px 16px;padding:16px 18px}
 .board-head h2{margin:0}
-.sort-chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.sort-chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .sort-chips::-webkit-scrollbar{display:none}
 .sort-chips button{display:inline-flex;align-items:center;gap:3px;flex:none;padding:6px 11px;border:1px solid var(--line);border-radius:999px;background:var(--ink-1);color:var(--text-2);font-size:12px;font-weight:700;transition:background .15s,border-color .15s,color .15s}
 .sort-chips button:hover{border-color:var(--line-2);color:var(--text-1)}
@@ -616,13 +629,14 @@ footer a:hover{color:var(--text-1)}
 .board-table td{padding:10px}
 .board-table td.sorted{font-weight:700}
 .board-table td.lead{background:var(--lead-tint);font-weight:800}
+.board-table td.thin{color:var(--text-4);font-weight:400}
 .board-table .sticky-col{position:sticky;left:0;z-index:1;min-width:180px;padding:10px 14px 10px 18px;background:var(--ink-1);text-align:left;box-shadow:1px 0 0 var(--line)}
-.board-name{color:var(--text-1);font-size:13.5px;font-weight:700}
+.board-name{max-width:100%;overflow:hidden;color:var(--text-1);font-size:13.5px;font-weight:700;text-align:left;text-overflow:ellipsis;white-space:nowrap}
+.board-name:hover{text-decoration:underline;text-underline-offset:3px}
 .board-table tbody tr:hover td,.board-table tbody tr:hover .sticky-col{background:var(--ink-2)}
 .board-table tbody tr:hover td.lead{background:var(--lead-tint)}
-.board-table tr.no-stats td{color:var(--text-4)}
 .board-table tbody tr:last-child>*{border-bottom:0}
-.board-note{margin:0;padding:12px 18px;border-top:1px solid var(--line);color:var(--text-4);font-size:11.5px}
+.board-note{margin:0;padding:12px 18px;border-top:1px solid var(--line);color:var(--text-3);font-size:12px;line-height:1.5}
 .team-sources{margin:24px 0 0;color:var(--text-4);font-size:11px;line-height:1.5}
 .team-sources a{color:var(--text-3)}
 
@@ -630,17 +644,25 @@ footer a:hover{color:var(--text-1)}
   .starter-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
   .team-block.units{grid-template-columns:1fr 1fr}
 }
+@media(max-width:520px){header .brand small{display:none}}
 @media(max-width:700px){
-  .team-page{padding:20px 16px 36px}
-  .team-hero-logo{width:56px;height:56px}
+  .team-page{padding:16px 16px 36px}
+  .team-hero{gap:14px;padding:20px 18px}
+  .team-hero-mark{width:58px;height:58px}
+  .team-hero-logo{width:48px;height:48px}
+  .team-hero p{font-size:13px}
   .team-block{margin-top:30px}
   /* Starting five becomes a swipeable row with the next card peeking in. */
   .starter-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:0 16px 4px;scrollbar-width:none}
   .starter-grid::-webkit-scrollbar{display:none}
-  .starter-card{flex:0 0 62%;scroll-snap-align:start}
+  .starter-card{flex:0 0 64%;scroll-snap-align:start}
+  .starter-card:not(:disabled):hover{box-shadow:none;transform:none}
   .team-block.units{grid-template-columns:1fr;gap:28px}
   .board-head{padding:14px}
-  .sort-chips{width:100%}
-  .board-table .sticky-col{min-width:140px;max-width:140px;padding-left:14px;overflow:hidden;text-overflow:ellipsis}
+  /* Chips scroll sideways; fade the right edge so it's obvious there's more. */
+  .sort-chips{width:calc(100% + 14px);margin-right:-14px;padding-right:14px;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}
+  .sort-chips button{padding:8px 13px}
+  .board-table .sticky-col{min-width:140px;max-width:140px;padding-left:14px}
+  .board-table td,.board-table .sticky-col{padding-top:12px;padding-bottom:12px}
   .board-note{padding:12px 14px}
 }
