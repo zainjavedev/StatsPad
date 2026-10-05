@@ -48,15 +48,29 @@ function EntityArt({entity,playerIds,className=''}){
 }
 function percentile(players,key,value,inverse=false){const values=players.map(p=>valueOf(p,key)).filter(Number.isFinite).sort((a,b)=>a-b);if(!values.length)return 0;const below=values.filter(v=>v<value).length,equal=values.filter(v=>v===value).length,score=Math.round(((below+equal*.5)/values.length)*100);return inverse?100-score:score}
 
-function PercentileBars({entity,population,metrics}){
-  return <div className="pct-bars">{metrics.map(([key,label,inverse],row)=>{
-    const score=percentile(population,key,valueOf(entity,key),inverse);
-    return <div className="pct-bar-row" key={key} style={{'--row':row}}>
-      <span className="pct-bar-label">{label}</span>
-      <span className="pct-bar-track"><i style={{width:`${score}%`}}></i></span>
-      <b>{score}</b>
+/* League rank among regulars (15+ games and 10+ minutes; 3+ games in a
+   playoff population, matching the compare page); teams rank among all 30.
+   Ties share a rank. Returns null when the entity itself doesn't qualify. */
+const minGamesFor=population=>Math.max(0,...population.map(item=>item.gamesPlayed||0))>=40?15:3;
+const regularTest=population=>{const minGames=minGamesFor(population);return item=>item.entityType==='team'||(item.gamesPlayed>=minGames&&item.minutesPerGame>=10)};
+function leagueRank(population,entity,key,inverse=false){
+  const isRegular=regularTest(population);
+  if(!isRegular(entity))return null;
+  const pool=population.filter(isRegular),value=valueOf(entity,key);
+  const better=pool.filter(item=>inverse?valueOf(item,key)<value:valueOf(item,key)>value).length;
+  return {rank:better+1,of:pool.length};
+}
+const RANK_LABELS={points:'Points',assists:'Assists',totalRebounds:'Rebounds',trueShootingPercentage:'True shooting %',steals:'Steals',blocks:'Blocks'};
+function LeagueRanks({entity,population,metrics}){
+  const noun=entity.entityType==='team'?'teams':'regulars',isRegular=regularTest(population),minGames=minGamesFor(population);
+  return <div className="rank-list">{metrics.map(([key,label,inverse])=>{
+    const place=leagueRank(population,entity,key,inverse);
+    return <div className="rank-row" key={key}>
+      <span className="rank-label">{RANK_LABELS[key]||label}</span>
+      <span className="rank-value">{format(valueOf(entity,key),key)}</span>
+      <b className={place&&place.rank<=10?'rank-place top':'rank-place'}>{place?ordinal(place.rank):'—'}</b>
     </div>})}
-    <div className="pct-bar-axis"><span>0</span><span>50</span><span>100</span></div>
+    <p className="rank-note">{isRegular(entity)?`Rank among ${population.filter(isRegular).length} ${noun}${noun==='regulars'?` (${minGames}+ games, 10+ minutes)`:''}.`:`Not ranked: fewer than ${minGames} games or 10 minutes a game.`}</p>
   </div>
 }
 
@@ -158,8 +172,8 @@ function Profile({entity,allEntities,playerIds,onBack,backLabel='Back to explore
   const enriched={...entity,stats:{...entity.stats,trueShootingPercentage:entity.stats.fieldGoalsAttempted?entity.stats.points/(2*(entity.stats.fieldGoalsAttempted+.44*entity.stats.freeThrowsAttempted))*100:0}};
   const population=allEntities.map(item=>({...item,stats:{...item.stats,trueShootingPercentage:item.stats.fieldGoalsAttempted?item.stats.points/(2*(item.stats.fieldGoalsAttempted+.44*item.stats.freeThrowsAttempted))*100:0}}));
   return <section className="profile-page"><button className="back-button" onClick={onBack}><ArrowLeft size={16}/> {backLabel}</button><div className="profile-hero" style={{'--team':TEAM_COLORS[entity.team]||'#333'}}><div className="profile-copy"><small>{entity.entityType==='team'?'NBA TEAM':`${entity.team} · ${entity.position}`} · 2025–26</small><h1>{entity.playerName}</h1><p>{entity.entityType==='team'?`${entity.gamesPlayed} games · ${format(entity.stats.points,'points')} points per game`:`Age ${entity.age} · ${entity.gamesPlayed} games · ${entity.gamesStarted} starts`}</p><button onClick={()=>onCompare(entity)}><BarChart3 size={17}/> Compare {entity.entityType==='team'?'team':'player'}</button></div><div className="profile-art-wrap"><div></div><EntityArt entity={entity} playerIds={playerIds} className="profile-art"/></div></div>
-    <div className="profile-grid"><section className="profile-main"><div className="section-title compact"><div><small>SEASON SNAPSHOT</small><h2>At a glance</h2></div></div><div className="big-stats">{stats.slice(0,3).map(([key,label])=><article key={key}><strong>{format(valueOf(enriched,key),key)}</strong><span>{label}</span><small>{percentile(population,key,valueOf(enriched,key))}th percentile</small></article>)}</div></section>
-      <aside className="profile-side"><small>PLAYER PROFILE</small><h2>League percentile</h2><PercentileBars entity={enriched} population={population} metrics={STAT_GROUPS.impact}/></aside></div>
+    <div className="profile-grid"><section className="profile-main"><div className="section-title compact"><div><small>SEASON SNAPSHOT</small><h2>At a glance</h2></div></div><div className="big-stats">{stats.slice(0,3).map(([key,label])=><article key={key}><strong>{format(valueOf(enriched,key),key)}</strong><span>{label}</span><small>{(place=>place?`${ordinal(place.rank)} in the NBA`:'Not ranked')(leagueRank(population,enriched,key))}</small></article>)}</div></section>
+      <aside className="profile-side"><small>{entity.entityType==='team'?'TEAM PROFILE':'PLAYER PROFILE'}</small><h2>League rank</h2><LeagueRanks entity={enriched} population={population} metrics={STAT_GROUPS.impact}/></aside></div>
   </section>
 }
 
