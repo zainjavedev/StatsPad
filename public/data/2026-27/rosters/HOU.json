@@ -1,0 +1,285 @@
+{
+  "team": "HOU",
+  "espnAbbr": "hou",
+  "teamName": "Houston Rockets",
+  "teamId": 1610612745,
+  "colors": {
+    "primary": "#ce0e2d",
+    "secondary": "#000000"
+  },
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Ime Udoka",
+  "lastUpdated": "2026-10-05",
+  "sources": [
+    {
+      "label": "ESPN roster and depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/hou"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of roster",
+      "short": "Rest"
+    }
+  ],
+  "players": [
+    {
+      "name": "Fred VanVleet",
+      "espnId": "2991230",
+      "nbaId": 1627832,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/2991230.png",
+      "pos": "G",
+      "slot": "PG",
+      "height": "6-0",
+      "birthDate": "1994-02-25",
+      "exp": 9,
+      "college": "Wichita State",
+      "jersey": "5",
+      "unit": "starters"
+    },
+    {
+      "name": "Amen Thompson",
+      "espnId": "4684740",
+      "bbrefId": "thompam01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4684740.png",
+      "pos": "G",
+      "slot": "SG",
+      "height": "6-7",
+      "birthDate": "2003-01-30",
+      "exp": 4,
+      "college": null,
+      "jersey": "1",
+      "unit": "starters"
+    },
+    {
+      "name": "Kevin Durant",
+      "espnId": "3202",
+      "bbrefId": "duranke01",
+      "nbaId": 201142,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3202.png",
+      "pos": "F",
+      "slot": "SF",
+      "height": "6-11",
+      "birthDate": "1988-09-29",
+      "exp": 20,
+      "college": "Texas",
+      "jersey": "7",
+      "unit": "starters"
+    },
+    {
+      "name": "Jabari Smith Jr.",
+      "espnId": "4432639",
+      "bbrefId": "smithja05",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432639.png",
+      "pos": "F",
+      "slot": "PF",
+      "height": "6-11",
+      "birthDate": "2003-05-13",
+      "exp": 5,
+      "college": "Auburn",
+      "jersey": "10",
+      "unit": "starters"
+    },
+    {
+      "name": "Alperen Sengun",
+      "espnId": "4871144",
+      "bbrefId": "sengual01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4871144.png",
+      "pos": "C",
+      "slot": "C",
+      "height": "6-11",
+      "birthDate": "2002-07-25",
+      "exp": 6,
+      "college": null,
+      "jersey": "28",
+      "unit": "starters"
+    },
+    {
+      "name": "Steven Adams",
+      "espnId": "2991235",
+      "bbrefId": "adamsst01",
+      "nbaId": 203500,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/2991235.png",
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "1993-07-20",
+      "exp": 14,
+      "college": "Pittsburgh",
+      "jersey": "12",
+      "unit": "second"
+    },
+    {
+      "name": "Bogdan Bogdanovic",
+      "espnId": "3037789",
+      "bbrefId": "bogdabo01",
+      "nbaId": 203992,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3037789.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "1992-08-18",
+      "exp": 10,
+      "college": null,
+      "jersey": "31",
+      "unit": "second"
+    },
+    {
+      "name": "Tari Eason",
+      "espnId": "4433192",
+      "bbrefId": "easonta01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4433192.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2001-05-10",
+      "exp": 5,
+      "college": "LSU",
+      "jersey": "17",
+      "unit": "second"
+    },
+    {
+      "name": "Reed Sheppard",
+      "espnId": "4711272",
+      "bbrefId": "sheppre01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4711272.png",
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "2004-06-24",
+      "exp": 3,
+      "college": "Kentucky",
+      "jersey": "15",
+      "unit": "second"
+    },
+    {
+      "name": "Marcus Smart",
+      "espnId": "2990992",
+      "bbrefId": "smartma01",
+      "nbaId": 203935,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/2990992.png",
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "1994-03-06",
+      "exp": 13,
+      "college": "Oklahoma State",
+      "jersey": "36",
+      "unit": "second"
+    },
+    {
+      "name": "Clint Capela",
+      "espnId": "3102529",
+      "bbrefId": "capelca01",
+      "nbaId": 203991,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3102529.png",
+      "pos": "C",
+      "height": "6-10",
+      "birthDate": "1994-05-18",
+      "exp": 13,
+      "college": null,
+      "jersey": "30",
+      "unit": "third"
+    },
+    {
+      "name": "Isaiah Crawford",
+      "espnId": "4592857",
+      "bbrefId": "crawfis01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4592857.png",
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "2001-11-01",
+      "exp": 3,
+      "college": "Louisiana Tech",
+      "jersey": "27",
+      "unit": "third"
+    },
+    {
+      "name": "Jae'Sean Tate",
+      "espnId": "3136777",
+      "bbrefId": "tateja01",
+      "nbaId": 1630256,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3136777.png",
+      "pos": "F",
+      "height": "6-4",
+      "birthDate": "1995-10-28",
+      "exp": 7,
+      "college": "Ohio State",
+      "jersey": "8",
+      "unit": "third"
+    },
+    {
+      "name": "Bruce Thornton",
+      "espnId": "5105837",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5105837.png",
+      "pos": "G",
+      "height": "6-0",
+      "birthDate": "2003-09-14",
+      "exp": 0,
+      "college": "Ohio State",
+      "jersey": "2",
+      "unit": "third"
+    },
+    {
+      "name": "Oscar Tshiebwe",
+      "espnId": "4432827",
+      "bbrefId": "tshieos01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432827.png",
+      "pos": "C",
+      "height": "6-8",
+      "birthDate": "1999-11-27",
+      "exp": 4,
+      "college": "Kentucky",
+      "jersey": "9",
+      "unit": "third"
+    },
+    {
+      "name": "Quadir Copeland",
+      "espnId": "4683860",
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2003-09-01",
+      "exp": 0,
+      "college": "NC State",
+      "jersey": "25",
+      "unit": "camp"
+    },
+    {
+      "name": "Sean Pedulla",
+      "espnId": "4709131",
+      "bbrefId": "pedulse01",
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "2002-10-10",
+      "exp": 2,
+      "college": "Ole Miss",
+      "jersey": "0",
+      "unit": "camp"
+    },
+    {
+      "name": "Julian Phillips",
+      "espnId": "5105553",
+      "bbrefId": "phillju01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5105553.png",
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "2003-11-05",
+      "exp": 6,
+      "college": "Tennessee",
+      "jersey": "3",
+      "unit": "camp"
+    }
+  ]
+}

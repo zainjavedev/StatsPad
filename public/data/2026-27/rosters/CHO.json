@@ -1,0 +1,309 @@
+{
+  "team": "CHO",
+  "espnAbbr": "cha",
+  "teamName": "Charlotte Hornets",
+  "teamId": 1610612766,
+  "colors": {
+    "primary": "#008ca8",
+    "secondary": "#1d1060"
+  },
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Charles Lee",
+  "lastUpdated": "2026-10-05",
+  "sources": [
+    {
+      "label": "ESPN roster and depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/cha"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of roster",
+      "short": "Rest"
+    }
+  ],
+  "players": [
+    {
+      "name": "Coby White",
+      "espnId": "4395651",
+      "bbrefId": "whiteco01",
+      "nbaId": 1629632,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4395651.png",
+      "pos": "G",
+      "slot": "PG",
+      "height": "6-4",
+      "birthDate": "2000-02-16",
+      "exp": 8,
+      "college": "North Carolina",
+      "jersey": "3",
+      "unit": "starters"
+    },
+    {
+      "name": "Kon Knueppel",
+      "espnId": "5061575",
+      "bbrefId": "knuepko01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5061575.png",
+      "pos": "G",
+      "slot": "SG",
+      "height": "6-6",
+      "birthDate": "2005-08-03",
+      "exp": 2,
+      "college": "Duke",
+      "jersey": "7",
+      "unit": "starters"
+    },
+    {
+      "name": "Brandon Miller",
+      "espnId": "4433287",
+      "bbrefId": "millebr02",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4433287.png",
+      "pos": "F",
+      "slot": "SF",
+      "height": "6-7",
+      "birthDate": "2002-11-22",
+      "exp": 4,
+      "college": "Alabama",
+      "jersey": "24",
+      "unit": "starters"
+    },
+    {
+      "name": "Naz Reid",
+      "espnId": "4396971",
+      "bbrefId": "reidna01",
+      "nbaId": 1629675,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4396971.png",
+      "pos": "C",
+      "slot": "PF",
+      "height": "6-9",
+      "birthDate": "1999-08-26",
+      "exp": 8,
+      "college": "LSU",
+      "jersey": "0",
+      "unit": "starters"
+    },
+    {
+      "name": "Moussa Diabate",
+      "espnId": "4433249",
+      "bbrefId": "diabamo01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4433249.png",
+      "pos": "F",
+      "slot": "C",
+      "height": "6-10",
+      "birthDate": "2002-01-21",
+      "exp": 5,
+      "college": "Michigan",
+      "jersey": "14",
+      "unit": "starters"
+    },
+    {
+      "name": "Grayson Allen",
+      "espnId": "3135045",
+      "bbrefId": "allengr01",
+      "nbaId": 1628960,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3135045.png",
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "1995-10-08",
+      "exp": 9,
+      "college": "Duke",
+      "jersey": "8",
+      "unit": "second"
+    },
+    {
+      "name": "Sion James",
+      "espnId": "4602025",
+      "bbrefId": "jamessi01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4602025.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2002-12-04",
+      "exp": 2,
+      "college": "Duke",
+      "jersey": "4",
+      "unit": "second"
+    },
+    {
+      "name": "Royce O'Neale",
+      "espnId": "2583632",
+      "bbrefId": "onealro01",
+      "nbaId": 1626220,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/2583632.png",
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "1993-06-05",
+      "exp": 10,
+      "college": "Baylor",
+      "jersey": "00",
+      "unit": "second"
+    },
+    {
+      "name": "Dennis Schroder",
+      "espnId": "3032979",
+      "bbrefId": "schrode01",
+      "nbaId": 203471,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3032979.png",
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "1993-09-15",
+      "exp": 14,
+      "college": null,
+      "jersey": "17",
+      "unit": "second"
+    },
+    {
+      "name": "Hannes Steinbach",
+      "espnId": "5281370",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5281370.png",
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2006-05-01",
+      "exp": 0,
+      "college": "Washington",
+      "jersey": "22",
+      "unit": "second"
+    },
+    {
+      "name": "Christian Anderson",
+      "espnId": "5060701",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5060701.png",
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "2006-04-02",
+      "exp": 0,
+      "college": "Texas Tech",
+      "jersey": "5",
+      "unit": "third"
+    },
+    {
+      "name": "Kylan Boswell",
+      "espnId": "4684269",
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "2005-04-18",
+      "exp": 0,
+      "college": "Illinois",
+      "jersey": "18",
+      "unit": "third"
+    },
+    {
+      "name": "Ryan Kalkbrenner",
+      "espnId": "4576060",
+      "bbrefId": "kalkbry01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4576060.png",
+      "pos": "C",
+      "height": "7-1",
+      "birthDate": "2002-01-17",
+      "exp": 2,
+      "college": "Creighton",
+      "jersey": "11",
+      "unit": "third"
+    },
+    {
+      "name": "Tidjane Salaun",
+      "espnId": "5211176",
+      "bbrefId": "salauti01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5211176.png",
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2005-08-10",
+      "exp": 3,
+      "college": null,
+      "jersey": "31",
+      "unit": "third"
+    },
+    {
+      "name": "Grant Williams",
+      "espnId": "4066218",
+      "bbrefId": "willigr01",
+      "nbaId": 1629684,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4066218.png",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "1998-11-30",
+      "exp": 8,
+      "college": "Tennessee",
+      "jersey": "2",
+      "unit": "third"
+    },
+    {
+      "name": "Pat Connaughton",
+      "espnId": "2578239",
+      "bbrefId": "connapa01",
+      "nbaId": 1626192,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/2578239.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "1993-01-06",
+      "exp": 12,
+      "college": "Notre Dame",
+      "jersey": "21",
+      "unit": "camp"
+    },
+    {
+      "name": "Wyatt Fricks",
+      "espnId": "4897504",
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2002-11-17",
+      "exp": 0,
+      "college": "Marshall",
+      "jersey": "23",
+      "unit": "camp"
+    },
+    {
+      "name": "PJ Hall",
+      "espnId": "4701225",
+      "bbrefId": "hallpj01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4701225.png",
+      "pos": "C",
+      "height": "6-8",
+      "birthDate": "2002-02-21",
+      "exp": 3,
+      "college": "Clemson",
+      "jersey": "16",
+      "unit": "camp"
+    },
+    {
+      "name": "Jarkel Joiner",
+      "espnId": "4278729",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4278729.png",
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "1999-05-20",
+      "exp": 4,
+      "college": "NC State",
+      "jersey": "20",
+      "unit": "camp"
+    },
+    {
+      "name": "Liam McNeeley",
+      "espnId": "5239590",
+      "bbrefId": "mcneeli01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5239590.png",
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "2005-10-10",
+      "exp": 2,
+      "college": "UConn",
+      "jersey": "33",
+      "unit": "camp"
+    }
+  ]
+}

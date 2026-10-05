@@ -1,0 +1,307 @@
+{
+  "team": "DAL",
+  "espnAbbr": "dal",
+  "teamName": "Dallas Mavericks",
+  "teamId": 1610612742,
+  "colors": {
+    "primary": "#0064b1",
+    "secondary": "#bbc4ca"
+  },
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Dusty May",
+  "lastUpdated": "2026-10-05",
+  "sources": [
+    {
+      "label": "ESPN roster and depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/dal"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of roster",
+      "short": "Rest"
+    }
+  ],
+  "players": [
+    {
+      "name": "Kyrie Irving",
+      "espnId": "6442",
+      "nbaId": 202681,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/6442.png",
+      "pos": "G",
+      "slot": "PG",
+      "height": "6-2",
+      "birthDate": "1992-03-23",
+      "exp": 15,
+      "college": "Duke",
+      "jersey": "11",
+      "unit": "starters"
+    },
+    {
+      "name": "Max Christie",
+      "espnId": "4432582",
+      "bbrefId": "chrisma02",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432582.png",
+      "pos": "G",
+      "slot": "SG",
+      "height": "6-5",
+      "birthDate": "2003-02-10",
+      "exp": 5,
+      "college": "Michigan State",
+      "jersey": "0",
+      "unit": "starters"
+    },
+    {
+      "name": "Cooper Flagg",
+      "espnId": "5041939",
+      "bbrefId": "flaggco01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5041939.png",
+      "pos": "F",
+      "slot": "SF",
+      "height": "6-9",
+      "birthDate": "2006-12-21",
+      "exp": 2,
+      "college": "Duke",
+      "jersey": "32",
+      "unit": "starters"
+    },
+    {
+      "name": "P.J. Washington",
+      "espnId": "4278078",
+      "bbrefId": "washipj01",
+      "nbaId": 1629023,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4278078.png",
+      "pos": "F",
+      "slot": "PF",
+      "height": "6-7",
+      "birthDate": "1998-08-23",
+      "exp": 8,
+      "college": "Kentucky",
+      "jersey": "25",
+      "unit": "starters"
+    },
+    {
+      "name": "Dereck Lively II",
+      "espnId": "4683688",
+      "bbrefId": "livelde01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4683688.png",
+      "pos": "C",
+      "slot": "C",
+      "height": "7-1",
+      "birthDate": "2004-02-12",
+      "exp": 4,
+      "college": "Duke",
+      "jersey": "2",
+      "unit": "starters"
+    },
+    {
+      "name": "Daniel Gafford",
+      "espnId": "4278049",
+      "bbrefId": "gaffoda01",
+      "nbaId": 1629655,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4278049.png",
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "1998-10-01",
+      "exp": 8,
+      "college": "Arkansas",
+      "jersey": "21",
+      "unit": "second"
+    },
+    {
+      "name": "Morez Johnson Jr.",
+      "espnId": "4873153",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4873153.png",
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2006-01-25",
+      "exp": 0,
+      "college": "Michigan",
+      "jersey": "14",
+      "unit": "second"
+    },
+    {
+      "name": "Naji Marshall",
+      "espnId": "4278594",
+      "bbrefId": "marshna01",
+      "nbaId": 1630230,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4278594.png",
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "1998-01-24",
+      "exp": 7,
+      "college": "Xavier",
+      "jersey": "3",
+      "unit": "second"
+    },
+    {
+      "name": "Zaccharie Risacher",
+      "espnId": "5211175",
+      "bbrefId": "risacza01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5211175.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2005-04-08",
+      "exp": 3,
+      "college": null,
+      "jersey": "10",
+      "unit": "second"
+    },
+    {
+      "name": "Marcus Sasser",
+      "espnId": "4432107",
+      "bbrefId": "sassema01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432107.png",
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "2000-09-21",
+      "exp": 4,
+      "college": "Houston",
+      "jersey": "8",
+      "unit": "second"
+    },
+    {
+      "name": "Santi Aldama",
+      "espnId": "4593125",
+      "bbrefId": "aldamsa01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4593125.png",
+      "pos": "F",
+      "height": "7-0",
+      "birthDate": "2001-01-10",
+      "exp": 6,
+      "college": "Loyola Maryland",
+      "jersey": "34",
+      "unit": "third"
+    },
+    {
+      "name": "Moussa Cisse",
+      "espnId": "4701208",
+      "bbrefId": "cissemo01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4701208.png",
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "2002-09-10",
+      "exp": 2,
+      "college": "Memphis",
+      "jersey": "30",
+      "unit": "third"
+    },
+    {
+      "name": "Sergio de Larrea",
+      "espnId": "5279129",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2005-12-04",
+      "exp": 0,
+      "college": null,
+      "jersey": "55",
+      "unit": "third"
+    },
+    {
+      "name": "Caleb Martin",
+      "espnId": "3138160",
+      "bbrefId": "martica02",
+      "nbaId": 1628997,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3138160.png",
+      "pos": "F",
+      "height": "6-5",
+      "birthDate": "1995-09-28",
+      "exp": 8,
+      "college": "Nevada",
+      "jersey": "16",
+      "unit": "third"
+    },
+    {
+      "name": "John Poulakidas",
+      "espnId": "4898238",
+      "bbrefId": "poulajo01",
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2003-04-04",
+      "exp": 2,
+      "college": "Yale",
+      "jersey": "1",
+      "unit": "third"
+    },
+    {
+      "name": "Tarik Biberovic",
+      "espnId": "5148538",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5148538.png",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2001-01-28",
+      "exp": 0,
+      "college": null,
+      "jersey": "13",
+      "unit": "camp"
+    },
+    {
+      "name": "Jett Howard",
+      "espnId": "5105806",
+      "bbrefId": "howarje01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5105806.png",
+      "pos": "G",
+      "height": "6-8",
+      "birthDate": "2003-09-14",
+      "exp": 4,
+      "college": "Michigan",
+      "jersey": "9",
+      "unit": "camp"
+    },
+    {
+      "name": "Tobi Lawal",
+      "espnId": "5106040",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5106040.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2003-05-01",
+      "exp": 0,
+      "college": "Virginia Tech",
+      "jersey": "33",
+      "unit": "camp"
+    },
+    {
+      "name": "Seth Lundy",
+      "espnId": "4431775",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4431775.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2000-04-02",
+      "exp": 2,
+      "college": "Penn State",
+      "jersey": "5",
+      "unit": "camp"
+    },
+    {
+      "name": "Dwight Powell",
+      "espnId": "2531367",
+      "bbrefId": "poweldw01",
+      "nbaId": 203939,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/2531367.png",
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "1991-07-20",
+      "exp": 13,
+      "college": "Stanford",
+      "jersey": "7",
+      "unit": "camp"
+    }
+  ]
+}

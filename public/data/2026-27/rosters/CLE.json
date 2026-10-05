@@ -1,0 +1,316 @@
+{
+  "team": "CLE",
+  "espnAbbr": "cle",
+  "teamName": "Cleveland Cavaliers",
+  "teamId": 1610612739,
+  "colors": {
+    "primary": "#860038",
+    "secondary": "#bc945c"
+  },
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Kenny Atkinson",
+  "lastUpdated": "2026-10-05",
+  "sources": [
+    {
+      "label": "ESPN roster and depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/cle"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of roster",
+      "short": "Rest"
+    }
+  ],
+  "players": [
+    {
+      "name": "James Harden",
+      "espnId": "3992",
+      "bbrefId": "hardeja01",
+      "nbaId": 201935,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3992.png",
+      "pos": "G",
+      "slot": "PG",
+      "height": "6-5",
+      "birthDate": "1989-08-26",
+      "exp": 18,
+      "college": "Arizona State",
+      "jersey": "1",
+      "unit": "starters"
+    },
+    {
+      "name": "Donovan Mitchell",
+      "espnId": "3908809",
+      "bbrefId": "mitchdo01",
+      "nbaId": 1628378,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3908809.png",
+      "pos": "G",
+      "slot": "SG",
+      "height": "6-2",
+      "birthDate": "1996-09-07",
+      "exp": 10,
+      "college": "Louisville",
+      "jersey": "45",
+      "unit": "starters"
+    },
+    {
+      "name": "Peyton Watson",
+      "espnId": "4576087",
+      "bbrefId": "watsope01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4576087.png",
+      "pos": "G",
+      "slot": "SF",
+      "height": "6-8",
+      "birthDate": "2002-09-11",
+      "exp": 5,
+      "college": "UCLA",
+      "jersey": "8",
+      "unit": "starters"
+    },
+    {
+      "name": "Evan Mobley",
+      "espnId": "4432158",
+      "bbrefId": "mobleev01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432158.png",
+      "pos": "C",
+      "slot": "PF",
+      "height": "6-11",
+      "birthDate": "2001-06-18",
+      "exp": 6,
+      "college": "USC",
+      "jersey": "4",
+      "unit": "starters"
+    },
+    {
+      "name": "Jarrett Allen",
+      "espnId": "4066328",
+      "bbrefId": "allenja01",
+      "nbaId": 1628386,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4066328.png",
+      "pos": "C",
+      "slot": "C",
+      "height": "6-9",
+      "birthDate": "1998-04-21",
+      "exp": 10,
+      "college": "Texas",
+      "jersey": "31",
+      "unit": "starters"
+    },
+    {
+      "name": "Sam Merrill",
+      "espnId": "4066757",
+      "bbrefId": "merrisa01",
+      "nbaId": 1630241,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4066757.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "1996-05-15",
+      "exp": 7,
+      "college": "Utah State",
+      "jersey": "5",
+      "unit": "second"
+    },
+    {
+      "name": "Craig Porter Jr.",
+      "espnId": "4701233",
+      "bbrefId": "portecr01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4701233.png",
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "2000-02-26",
+      "exp": 4,
+      "college": "Wichita State",
+      "jersey": "9",
+      "unit": "second"
+    },
+    {
+      "name": "Tyrese Proctor",
+      "espnId": "5023693",
+      "bbrefId": "proctty01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5023693.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2004-04-01",
+      "exp": 2,
+      "college": "Duke",
+      "jersey": "24",
+      "unit": "second"
+    },
+    {
+      "name": "Nae'Qwan Tomlin",
+      "espnId": "5106268",
+      "bbrefId": "tomlina01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5106268.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2000-12-19",
+      "exp": 3,
+      "college": "Memphis",
+      "jersey": "35",
+      "unit": "second"
+    },
+    {
+      "name": "Jaylon Tyson",
+      "espnId": "4683747",
+      "bbrefId": "tysonja01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4683747.png",
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2002-12-02",
+      "exp": 3,
+      "college": "California",
+      "jersey": "20",
+      "unit": "second"
+    },
+    {
+      "name": "Thomas Bryant",
+      "espnId": "3934723",
+      "bbrefId": "bryanth01",
+      "nbaId": 1628418,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3934723.png",
+      "pos": "C",
+      "height": "6-9",
+      "birthDate": "1997-07-31",
+      "exp": 10,
+      "college": "Indiana",
+      "jersey": "3",
+      "unit": "third"
+    },
+    {
+      "name": "Khalifa Diop",
+      "espnId": "4997530",
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "2002-01-15",
+      "exp": 0,
+      "college": null,
+      "jersey": "18",
+      "unit": "third"
+    },
+    {
+      "name": "Mario Hezonja",
+      "espnId": "2995706",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/2995706.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "1995-02-25",
+      "exp": 6,
+      "college": null,
+      "jersey": "33",
+      "unit": "third"
+    },
+    {
+      "name": "Meleek Thomas",
+      "espnId": "5041951",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5041951.png",
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2006-08-06",
+      "exp": 0,
+      "college": "Arkansas",
+      "jersey": "15",
+      "unit": "third"
+    },
+    {
+      "name": "Ernest Udeh Jr.",
+      "espnId": "5106261",
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "2004-01-08",
+      "exp": 0,
+      "college": "Miami",
+      "jersey": "39",
+      "unit": "third"
+    },
+    {
+      "name": "Rashaun Agee",
+      "espnId": "4593815",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2000-11-02",
+      "exp": 0,
+      "college": "Texas A&M",
+      "jersey": "19",
+      "unit": "camp"
+    },
+    {
+      "name": "Zack Austin",
+      "espnId": "4702099",
+      "pos": "F",
+      "height": "6-5",
+      "birthDate": "2001-08-11",
+      "exp": 0,
+      "college": "Pittsburgh",
+      "jersey": "55",
+      "unit": "camp"
+    },
+    {
+      "name": "Tristan Enaruna",
+      "espnId": "4431734",
+      "bbrefId": "enarutr01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4431734.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2001-06-26",
+      "exp": 2,
+      "college": "Cleveland State",
+      "jersey": "21",
+      "unit": "camp"
+    },
+    {
+      "name": "Curtis Jones",
+      "espnId": "4898369",
+      "bbrefId": "jonescu01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4898369.png",
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2001-10-04",
+      "exp": 2,
+      "college": "Iowa State",
+      "jersey": "14",
+      "unit": "camp"
+    },
+    {
+      "name": "Riley Minix",
+      "espnId": "5177362",
+      "bbrefId": "minixri01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5177362.png",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2000-09-22",
+      "exp": 3,
+      "college": "Morehead State",
+      "jersey": "12",
+      "unit": "camp"
+    },
+    {
+      "name": "Kadary Richmond",
+      "espnId": "4701845",
+      "bbrefId": "richmka01",
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2001-08-25",
+      "exp": 2,
+      "college": "St. John's",
+      "jersey": "16",
+      "unit": "camp"
+    }
+  ]
+}

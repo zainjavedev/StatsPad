@@ -1,0 +1,322 @@
+{
+  "team": "PHO",
+  "espnAbbr": "phx",
+  "teamName": "Phoenix Suns",
+  "teamId": 1610612756,
+  "colors": {
+    "primary": "#29127a",
+    "secondary": "#e56020"
+  },
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Jordan Ott",
+  "lastUpdated": "2026-10-05",
+  "sources": [
+    {
+      "label": "ESPN roster and depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/phx"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of roster",
+      "short": "Rest"
+    }
+  ],
+  "players": [
+    {
+      "name": "Devin Booker",
+      "espnId": "3136193",
+      "bbrefId": "bookede01",
+      "nbaId": 1626164,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3136193.png",
+      "pos": "G",
+      "slot": "PG",
+      "height": "6-5",
+      "birthDate": "1996-10-30",
+      "exp": 12,
+      "college": "Kentucky",
+      "jersey": "15",
+      "unit": "starters"
+    },
+    {
+      "name": "Jalen Green",
+      "espnId": "4437244",
+      "bbrefId": "greenja05",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4437244.png",
+      "pos": "G",
+      "slot": "SG",
+      "height": "6-4",
+      "birthDate": "2002-02-09",
+      "exp": 6,
+      "college": null,
+      "jersey": "4",
+      "unit": "starters"
+    },
+    {
+      "name": "Dillon Brooks",
+      "espnId": "3155526",
+      "bbrefId": "brookdi01",
+      "nbaId": 1628415,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3155526.png",
+      "pos": "F",
+      "slot": "SF",
+      "height": "6-7",
+      "birthDate": "1996-01-22",
+      "exp": 10,
+      "college": "Oregon",
+      "jersey": "3",
+      "unit": "starters"
+    },
+    {
+      "name": "Miles Bridges",
+      "espnId": "4066383",
+      "bbrefId": "bridgmi02",
+      "nbaId": 1628970,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4066383.png",
+      "pos": "F",
+      "slot": "PF",
+      "height": "6-7",
+      "birthDate": "1998-03-21",
+      "exp": 8,
+      "college": "Michigan State",
+      "jersey": "22",
+      "unit": "starters"
+    },
+    {
+      "name": "Oso Ighodaro",
+      "espnId": "4601023",
+      "bbrefId": "ighodos01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4601023.png",
+      "pos": "F",
+      "slot": "C",
+      "height": "6-11",
+      "birthDate": "2002-07-14",
+      "exp": 3,
+      "college": "Marquette",
+      "jersey": "11",
+      "unit": "starters"
+    },
+    {
+      "name": "Ryan Dunn",
+      "espnId": "4888725",
+      "bbrefId": "dunnry01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4888725.png",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2003-01-07",
+      "exp": 3,
+      "college": "Virginia",
+      "jersey": "0",
+      "unit": "second"
+    },
+    {
+      "name": "Collin Gillespie",
+      "espnId": "4278585",
+      "bbrefId": "gilleco01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4278585.png",
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "1999-06-25",
+      "exp": 4,
+      "college": "Villanova",
+      "jersey": "12",
+      "unit": "second"
+    },
+    {
+      "name": "Jordan Goodwin",
+      "espnId": "4278402",
+      "bbrefId": "goodwjo01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4278402.png",
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "1998-10-23",
+      "exp": 6,
+      "college": "Saint Louis",
+      "jersey": "23",
+      "unit": "second"
+    },
+    {
+      "name": "Luke Kennard",
+      "espnId": "3913174",
+      "bbrefId": "kennalu01",
+      "nbaId": 1628379,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3913174.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "1996-06-24",
+      "exp": 10,
+      "college": "Duke",
+      "jersey": "8",
+      "unit": "second"
+    },
+    {
+      "name": "Khaman Maluach",
+      "espnId": "5203685",
+      "bbrefId": "maluakh01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5203685.png",
+      "pos": "C",
+      "height": "7-2",
+      "birthDate": "2006-09-14",
+      "exp": 2,
+      "college": "Duke",
+      "jersey": "10",
+      "unit": "second"
+    },
+    {
+      "name": "Jamaree Bouyea",
+      "espnId": "4280245",
+      "bbrefId": "bouyeja01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4280245.png",
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "1999-06-27",
+      "exp": 5,
+      "college": "San Francisco",
+      "jersey": "17",
+      "unit": "third"
+    },
+    {
+      "name": "Rasheer Fleming",
+      "espnId": "5105977",
+      "bbrefId": "flemira01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5105977.png",
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2004-07-10",
+      "exp": 2,
+      "college": "Saint Joseph's",
+      "jersey": "20",
+      "unit": "third"
+    },
+    {
+      "name": "Koa Peat",
+      "espnId": "5041953",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5041953.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2007-01-20",
+      "exp": 0,
+      "college": "Arizona",
+      "jersey": "18",
+      "unit": "third"
+    },
+    {
+      "name": "Duop Reath",
+      "espnId": "4066268",
+      "bbrefId": "reathdu01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4066268.png",
+      "pos": "C",
+      "height": "6-9",
+      "birthDate": "1996-06-26",
+      "exp": 4,
+      "college": "LSU",
+      "jersey": "26",
+      "unit": "third"
+    },
+    {
+      "name": "Pat Spencer",
+      "espnId": "4592714",
+      "bbrefId": "spencpa01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4592714.png",
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "1996-07-04",
+      "exp": 4,
+      "college": "Northwestern",
+      "jersey": "61",
+      "unit": "third"
+    },
+    {
+      "name": "Koby Brea",
+      "espnId": "4591259",
+      "bbrefId": "breako01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4591259.png",
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2002-11-06",
+      "exp": 2,
+      "college": "Kentucky",
+      "jersey": "14",
+      "unit": "camp"
+    },
+    {
+      "name": "Kennedy Chandler",
+      "espnId": "4432646",
+      "bbrefId": "chandke01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432646.png",
+      "pos": "G",
+      "height": "5-11",
+      "birthDate": "2002-09-16",
+      "exp": 3,
+      "college": "Tennessee",
+      "jersey": "2",
+      "unit": "camp"
+    },
+    {
+      "name": "Haywood Highsmith",
+      "espnId": "4291678",
+      "bbrefId": "highsha01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4291678.png",
+      "pos": "F",
+      "height": "6-5",
+      "birthDate": "1996-12-09",
+      "exp": 7,
+      "college": "Wheeling",
+      "jersey": "19",
+      "unit": "camp"
+    },
+    {
+      "name": "CJ Huntley",
+      "espnId": "4702602",
+      "bbrefId": "huntlcj01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4702602.png",
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2002-01-06",
+      "exp": 2,
+      "college": "App State",
+      "jersey": "21",
+      "unit": "camp"
+    },
+    {
+      "name": "Phillip Wheeler",
+      "espnId": "4909710",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2002-04-23",
+      "exp": 1,
+      "college": null,
+      "unit": "camp"
+    },
+    {
+      "name": "Mark Williams",
+      "espnId": "4701232",
+      "bbrefId": "willima07",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4701232.png",
+      "pos": "C",
+      "height": "7-1",
+      "birthDate": "2001-12-16",
+      "exp": 5,
+      "college": "Duke",
+      "jersey": "25",
+      "unit": "camp"
+    }
+  ]
+}

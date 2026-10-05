@@ -1,0 +1,323 @@
+{
+  "team": "NOP",
+  "espnAbbr": "no",
+  "teamName": "New Orleans Pelicans",
+  "teamId": 1610612740,
+  "colors": {
+    "primary": "#0a2240",
+    "secondary": "#b4975a"
+  },
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Jamahl Mosley",
+  "lastUpdated": "2026-10-05",
+  "sources": [
+    {
+      "label": "ESPN roster and depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/no"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of roster",
+      "short": "Rest"
+    }
+  ],
+  "players": [
+    {
+      "name": "Dejounte Murray",
+      "espnId": "3907497",
+      "bbrefId": "murrade01",
+      "nbaId": 1627749,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3907497.png",
+      "pos": "G",
+      "slot": "PG",
+      "height": "6-4",
+      "birthDate": "1996-09-19",
+      "exp": 10,
+      "college": "Washington",
+      "jersey": "5",
+      "unit": "starters"
+    },
+    {
+      "name": "Trey Murphy III",
+      "espnId": "4397688",
+      "bbrefId": "murphtr02",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4397688.png",
+      "pos": "F",
+      "slot": "SG",
+      "height": "6-8",
+      "birthDate": "2000-06-18",
+      "exp": 6,
+      "college": "Virginia",
+      "jersey": "25",
+      "unit": "starters"
+    },
+    {
+      "name": "Saddiq Bey",
+      "espnId": "4397136",
+      "bbrefId": "beysa01",
+      "nbaId": 1630180,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4397136.png",
+      "pos": "G",
+      "slot": "SF",
+      "height": "6-8",
+      "birthDate": "1999-04-09",
+      "exp": 6,
+      "college": "Villanova",
+      "jersey": "41",
+      "unit": "starters"
+    },
+    {
+      "name": "Zion Williamson",
+      "espnId": "4395628",
+      "bbrefId": "willizi01",
+      "nbaId": 1629627,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4395628.png",
+      "pos": "F",
+      "slot": "PF",
+      "height": "6-6",
+      "birthDate": "2000-07-06",
+      "exp": 7,
+      "college": "Duke",
+      "jersey": "1",
+      "unit": "starters"
+    },
+    {
+      "name": "Herbert Jones",
+      "espnId": "4277813",
+      "bbrefId": "joneshe01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4277813.png",
+      "pos": "F",
+      "slot": "C",
+      "height": "6-7",
+      "birthDate": "1998-10-06",
+      "exp": 6,
+      "college": "Alabama",
+      "jersey": "2",
+      "unit": "starters"
+    },
+    {
+      "name": "Jeremiah Fears",
+      "espnId": "5144091",
+      "bbrefId": "fearsje01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5144091.png",
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2006-10-14",
+      "exp": 2,
+      "college": "Oklahoma",
+      "jersey": "0",
+      "unit": "second"
+    },
+    {
+      "name": "Bennedict Mathurin",
+      "espnId": "4683634",
+      "bbrefId": "mathube01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4683634.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2002-06-19",
+      "exp": 5,
+      "college": "Arizona",
+      "jersey": "24",
+      "unit": "second"
+    },
+    {
+      "name": "Yves Missi",
+      "espnId": "5061589",
+      "bbrefId": "missiyv01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5061589.png",
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "2004-05-14",
+      "exp": 3,
+      "college": "Baylor",
+      "jersey": "21",
+      "unit": "second"
+    },
+    {
+      "name": "Jordan Poole",
+      "espnId": "4277956",
+      "bbrefId": "poolejo01",
+      "nbaId": 1629673,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4277956.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "1999-06-19",
+      "exp": 8,
+      "college": "Michigan",
+      "jersey": "3",
+      "unit": "second"
+    },
+    {
+      "name": "Derik Queen",
+      "espnId": "4869780",
+      "bbrefId": "queende01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4869780.png",
+      "pos": "C",
+      "height": "6-9",
+      "birthDate": "2004-12-27",
+      "exp": 2,
+      "college": "Maryland",
+      "jersey": "22",
+      "unit": "second"
+    },
+    {
+      "name": "DeAndre Jordan",
+      "espnId": "3442",
+      "bbrefId": "jordade01",
+      "nbaId": 201599,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3442.png",
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "1988-07-21",
+      "exp": 19,
+      "college": "Texas A&M",
+      "jersey": "6",
+      "unit": "third"
+    },
+    {
+      "name": "Karlo Matkovic",
+      "espnId": "4997538",
+      "bbrefId": "matkoka01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4997538.png",
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2001-03-30",
+      "exp": 3,
+      "college": null,
+      "jersey": "17",
+      "unit": "third"
+    },
+    {
+      "name": "Bryce McGowens",
+      "espnId": "4576086",
+      "bbrefId": "mcgowbr01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4576086.png",
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2002-11-08",
+      "exp": 5,
+      "college": "Nebraska",
+      "jersey": "11",
+      "unit": "third"
+    },
+    {
+      "name": "Jaron Pierre Jr.",
+      "espnId": "4703115",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4703115.png",
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2002-07-12",
+      "exp": 0,
+      "college": "SMU",
+      "jersey": "10",
+      "unit": "third"
+    },
+    {
+      "name": "Trendon Watford",
+      "espnId": "4431675",
+      "bbrefId": "watfotr01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4431675.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2000-11-09",
+      "exp": 6,
+      "college": "LSU",
+      "jersey": "9",
+      "unit": "third"
+    },
+    {
+      "name": "Kobe Bufkin",
+      "espnId": "4683736",
+      "bbrefId": "bufkiko01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4683736.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2003-09-21",
+      "exp": 4,
+      "college": "Michigan",
+      "jersey": "4",
+      "unit": "camp"
+    },
+    {
+      "name": "Malik Dia",
+      "espnId": "4712862",
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2004-02-04",
+      "exp": 0,
+      "college": "Ole Miss",
+      "jersey": "8",
+      "unit": "camp"
+    },
+    {
+      "name": "Caleb Houstan",
+      "espnId": "4433623",
+      "bbrefId": "houstca01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4433623.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2003-01-09",
+      "exp": 5,
+      "college": "Michigan",
+      "jersey": "33",
+      "unit": "camp"
+    },
+    {
+      "name": "AJ Johnson",
+      "espnId": "5170947",
+      "bbrefId": "johnsaj01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5170947.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2004-12-01",
+      "exp": 3,
+      "college": null,
+      "jersey": "14",
+      "unit": "camp"
+    },
+    {
+      "name": "Christian Koloko",
+      "espnId": "4431778",
+      "bbrefId": "kolokch01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4431778.png",
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "2000-06-20",
+      "exp": 4,
+      "college": "Arizona",
+      "jersey": "35",
+      "unit": "camp"
+    },
+    {
+      "name": "Julian Reese",
+      "espnId": "4683742",
+      "bbrefId": "reeseju01",
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2003-06-30",
+      "exp": 2,
+      "college": "Maryland",
+      "jersey": "13",
+      "unit": "camp"
+    }
+  ]
+}

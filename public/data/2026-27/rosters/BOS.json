@@ -1,0 +1,319 @@
+{
+  "team": "BOS",
+  "espnAbbr": "bos",
+  "teamName": "Boston Celtics",
+  "teamId": 1610612738,
+  "colors": {
+    "primary": "#008348",
+    "secondary": "#ffffff"
+  },
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Joe Mazzulla",
+  "lastUpdated": "2026-10-05",
+  "sources": [
+    {
+      "label": "ESPN roster and depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/bos"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of roster",
+      "short": "Rest"
+    }
+  ],
+  "players": [
+    {
+      "name": "Derrick White",
+      "espnId": "3078576",
+      "bbrefId": "whitede01",
+      "nbaId": 1628401,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3078576.png",
+      "pos": "G",
+      "slot": "PG",
+      "height": "6-4",
+      "birthDate": "1994-07-02",
+      "exp": 10,
+      "college": "Colorado",
+      "jersey": "9",
+      "unit": "starters"
+    },
+    {
+      "name": "Baylor Scheierman",
+      "espnId": "4593841",
+      "bbrefId": "scheiba01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4593841.png",
+      "pos": "G",
+      "slot": "SG",
+      "height": "6-6",
+      "birthDate": "2000-09-26",
+      "exp": 3,
+      "college": "Creighton",
+      "jersey": "55",
+      "unit": "starters"
+    },
+    {
+      "name": "Paul George",
+      "espnId": "4251",
+      "bbrefId": "georgpa01",
+      "nbaId": 202331,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4251.png",
+      "pos": "F",
+      "slot": "SF",
+      "height": "6-8",
+      "birthDate": "1990-05-02",
+      "exp": 17,
+      "college": "Fresno State",
+      "jersey": "13",
+      "unit": "starters"
+    },
+    {
+      "name": "Jayson Tatum",
+      "espnId": "4065648",
+      "bbrefId": "tatumja01",
+      "nbaId": 1628369,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4065648.png",
+      "pos": "F",
+      "slot": "PF",
+      "height": "6-8",
+      "birthDate": "1998-03-03",
+      "exp": 10,
+      "college": "Duke",
+      "jersey": "0",
+      "unit": "starters"
+    },
+    {
+      "name": "Neemias Queta",
+      "espnId": "4397424",
+      "bbrefId": "quetane01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4397424.png",
+      "pos": "C",
+      "slot": "C",
+      "height": "7-0",
+      "birthDate": "1999-07-13",
+      "exp": 6,
+      "college": "Utah State",
+      "jersey": "88",
+      "unit": "starters"
+    },
+    {
+      "name": "Mike Conley",
+      "espnId": "3195",
+      "bbrefId": "conlemi01",
+      "nbaId": 201144,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3195.png",
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "1987-10-11",
+      "exp": 20,
+      "college": "Ohio State",
+      "jersey": "45",
+      "unit": "second"
+    },
+    {
+      "name": "Sam Hauser",
+      "espnId": "4065804",
+      "bbrefId": "hausesa01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4065804.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "1997-12-08",
+      "exp": 6,
+      "college": "Virginia",
+      "jersey": "30",
+      "unit": "second"
+    },
+    {
+      "name": "Payton Pritchard",
+      "espnId": "4066354",
+      "bbrefId": "pritcpa01",
+      "nbaId": 1630202,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4066354.png",
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "1998-01-28",
+      "exp": 7,
+      "college": "Oregon",
+      "jersey": "11",
+      "unit": "second"
+    },
+    {
+      "name": "Mitchell Robinson",
+      "espnId": "4351852",
+      "bbrefId": "robinmi01",
+      "nbaId": 1629011,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4351852.png",
+      "pos": "C",
+      "height": "7-0",
+      "birthDate": "1998-04-01",
+      "exp": 9,
+      "college": null,
+      "jersey": "4",
+      "unit": "second"
+    },
+    {
+      "name": "Jordan Walsh",
+      "espnId": "4683689",
+      "bbrefId": "walshjo01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4683689.png",
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "2004-03-03",
+      "exp": 4,
+      "college": "Arkansas",
+      "jersey": "27",
+      "unit": "second"
+    },
+    {
+      "name": "Chris Cenac Jr.",
+      "espnId": "5142621",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5142621.png",
+      "pos": "F",
+      "height": "6-11",
+      "birthDate": "2007-02-01",
+      "exp": 0,
+      "college": "Houston",
+      "jersey": "12",
+      "unit": "third"
+    },
+    {
+      "name": "Luka Garza",
+      "espnId": "4277951",
+      "bbrefId": "garzalu01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4277951.png",
+      "pos": "C",
+      "height": "6-10",
+      "birthDate": "1998-12-27",
+      "exp": 6,
+      "college": "Iowa",
+      "jersey": "52",
+      "unit": "third"
+    },
+    {
+      "name": "Hugo Gonzalez",
+      "espnId": "5175647",
+      "bbrefId": "gonzahu01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5175647.png",
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2006-02-05",
+      "exp": 2,
+      "college": null,
+      "jersey": "28",
+      "unit": "third"
+    },
+    {
+      "name": "Ron Harper Jr.",
+      "espnId": "4397251",
+      "bbrefId": "harpero02",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4397251.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2000-04-12",
+      "exp": 5,
+      "college": "Rutgers",
+      "jersey": "8",
+      "unit": "third"
+    },
+    {
+      "name": "Amari Williams",
+      "espnId": "4702745",
+      "bbrefId": "william01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4702745.png",
+      "pos": "F",
+      "height": "7-0",
+      "birthDate": "2002-01-28",
+      "exp": 2,
+      "college": "Kentucky",
+      "jersey": "77",
+      "unit": "third"
+    },
+    {
+      "name": "Devin Carter",
+      "espnId": "4433188",
+      "bbrefId": "cartede02",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4433188.png",
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "2002-03-18",
+      "exp": 3,
+      "college": "Providence",
+      "jersey": "99",
+      "unit": "camp"
+    },
+    {
+      "name": "Tucker DeVries",
+      "espnId": "4837238",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2002-12-07",
+      "exp": 0,
+      "college": "Indiana",
+      "jersey": "26",
+      "unit": "camp"
+    },
+    {
+      "name": "Hayden Gray",
+      "espnId": "5176420",
+      "bbrefId": "grayha01",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2003-05-11",
+      "exp": 2,
+      "college": "UC San Diego",
+      "jersey": "44",
+      "unit": "camp"
+    },
+    {
+      "name": "Gabe McGlothan",
+      "espnId": "4398356",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "1999-03-03",
+      "exp": 0,
+      "college": "Grand Canyon",
+      "jersey": "41",
+      "unit": "camp"
+    },
+    {
+      "name": "Dillon Mitchell",
+      "espnId": "5106283",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5106283.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2003-10-03",
+      "exp": 0,
+      "college": "St. John's",
+      "jersey": "20",
+      "unit": "camp"
+    },
+    {
+      "name": "Milos Uzan",
+      "espnId": "5106272",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2002-12-26",
+      "exp": 0,
+      "college": "Houston",
+      "jersey": "29",
+      "unit": "camp"
+    }
+  ]
+}

@@ -1,0 +1,317 @@
+{
+  "team": "TOR",
+  "espnAbbr": "tor",
+  "teamName": "Toronto Raptors",
+  "teamId": 1610612761,
+  "colors": {
+    "primary": "#d91244",
+    "secondary": "#000000"
+  },
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Darko Rajakovic",
+  "lastUpdated": "2026-10-05",
+  "sources": [
+    {
+      "label": "ESPN roster and depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/tor"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of roster",
+      "short": "Rest"
+    }
+  ],
+  "players": [
+    {
+      "name": "Immanuel Quickley",
+      "espnId": "4395724",
+      "bbrefId": "quickim01",
+      "nbaId": 1630193,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4395724.png",
+      "pos": "G",
+      "slot": "PG",
+      "height": "6-2",
+      "birthDate": "1999-06-17",
+      "exp": 6,
+      "college": "Kentucky",
+      "jersey": "5",
+      "unit": "starters"
+    },
+    {
+      "name": "RJ Barrett",
+      "espnId": "4395625",
+      "bbrefId": "barrerj01",
+      "nbaId": 1629628,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4395625.png",
+      "pos": "F",
+      "slot": "SG",
+      "height": "6-6",
+      "birthDate": "2000-06-14",
+      "exp": 7,
+      "college": "Duke",
+      "jersey": "9",
+      "unit": "starters"
+    },
+    {
+      "name": "Kawhi Leonard",
+      "espnId": "6450",
+      "bbrefId": "leonaka01",
+      "nbaId": 202695,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/6450.png",
+      "pos": "F",
+      "slot": "SF",
+      "height": "6-6",
+      "birthDate": "1991-06-29",
+      "exp": 15,
+      "college": "San Diego State",
+      "jersey": "2",
+      "unit": "starters"
+    },
+    {
+      "name": "Scottie Barnes",
+      "espnId": "4433134",
+      "bbrefId": "barnesc01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4433134.png",
+      "pos": "F",
+      "slot": "PF",
+      "height": "6-8",
+      "birthDate": "2001-08-01",
+      "exp": 5,
+      "college": "Florida State",
+      "jersey": "4",
+      "unit": "starters"
+    },
+    {
+      "name": "Jakob Poeltl",
+      "espnId": "3134908",
+      "bbrefId": "poeltja01",
+      "nbaId": 1627751,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3134908.png",
+      "pos": "C",
+      "slot": "C",
+      "height": "7-0",
+      "birthDate": "1995-10-15",
+      "exp": 10,
+      "college": "Utah",
+      "jersey": "19",
+      "unit": "starters"
+    },
+    {
+      "name": "Jamison Battle",
+      "espnId": "4431893",
+      "bbrefId": "battlja01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4431893.png",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2001-05-10",
+      "exp": 2,
+      "college": "Ohio State",
+      "jersey": "77",
+      "unit": "second"
+    },
+    {
+      "name": "Allen Graves",
+      "espnId": "5149115",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5149115.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2006-07-28",
+      "exp": 0,
+      "college": "Santa Clara",
+      "jersey": "22",
+      "unit": "second"
+    },
+    {
+      "name": "Collin Murray-Boyles",
+      "espnId": "5093267",
+      "bbrefId": "murraco01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5093267.png",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2005-06-10",
+      "exp": 1,
+      "college": "South Carolina",
+      "jersey": "30",
+      "unit": "second"
+    },
+    {
+      "name": "Jamal Shead",
+      "espnId": "4432241",
+      "bbrefId": "sheadja01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432241.png",
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "2002-07-24",
+      "exp": 2,
+      "college": "Houston",
+      "jersey": "23",
+      "unit": "second"
+    },
+    {
+      "name": "Ja'Kobe Walter",
+      "espnId": "4684272",
+      "bbrefId": "walteja01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4684272.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2004-09-04",
+      "exp": 2,
+      "college": "Baylor",
+      "jersey": "14",
+      "unit": "second"
+    },
+    {
+      "name": "Kyle Anderson",
+      "espnId": "2993874",
+      "bbrefId": "anderky01",
+      "nbaId": 203937,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/2993874.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "1993-09-20",
+      "exp": 12,
+      "college": "UCLA",
+      "jersey": "12",
+      "unit": "third"
+    },
+    {
+      "name": "Jaden Bradley",
+      "espnId": "4432737",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432737.png",
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2003-09-14",
+      "exp": 0,
+      "college": "Arizona",
+      "jersey": "8",
+      "unit": "third"
+    },
+    {
+      "name": "Trayce Jackson-Davis",
+      "espnId": "4431684",
+      "bbrefId": "jackstr02",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4431684.png",
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2000-02-22",
+      "exp": 3,
+      "college": "Indiana",
+      "jersey": "32",
+      "unit": "third"
+    },
+    {
+      "name": "Trey Jemison III",
+      "espnId": "4395623",
+      "bbrefId": "jemistr01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4395623.png",
+      "pos": "C",
+      "height": "6-10",
+      "birthDate": "1999-11-28",
+      "exp": 3,
+      "college": "UAB",
+      "jersey": "50",
+      "unit": "third"
+    },
+    {
+      "name": "Alijah Martin",
+      "espnId": "4702656",
+      "bbrefId": "martial01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4702656.png",
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "2001-12-26",
+      "exp": 1,
+      "college": "Florida",
+      "jersey": "55",
+      "unit": "third"
+    },
+    {
+      "name": "Nate Bittle",
+      "espnId": "4432586",
+      "pos": "C",
+      "height": "7-0",
+      "birthDate": "2003-06-03",
+      "exp": 0,
+      "college": "Oregon",
+      "unit": "camp"
+    },
+    {
+      "name": "Nimari Burnett",
+      "espnId": "4433138",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2001-12-20",
+      "exp": 0,
+      "college": "Michigan",
+      "jersey": "25",
+      "unit": "camp"
+    },
+    {
+      "name": "Chucky Hepburn",
+      "espnId": "4590360",
+      "bbrefId": "hepbuch01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4590360.png",
+      "pos": "G",
+      "height": "6-0",
+      "birthDate": "2003-02-09",
+      "exp": 1,
+      "college": "Louisville",
+      "jersey": "24",
+      "unit": "camp"
+    },
+    {
+      "name": "Andre Jackson Jr.",
+      "espnId": "4432190",
+      "bbrefId": "jacksan01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432190.png",
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2001-11-13",
+      "exp": 3,
+      "college": "UConn",
+      "jersey": "44",
+      "unit": "camp"
+    },
+    {
+      "name": "Tyreke Key",
+      "espnId": "4279143",
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "1998-10-29",
+      "exp": 2,
+      "college": "Tennessee",
+      "jersey": "11",
+      "unit": "camp"
+    },
+    {
+      "name": "Malachi Smith",
+      "espnId": "4397784",
+      "bbrefId": "smithma02",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "1999-12-06",
+      "exp": 1,
+      "college": "Gonzaga",
+      "jersey": "18",
+      "unit": "camp"
+    }
+  ]
+}

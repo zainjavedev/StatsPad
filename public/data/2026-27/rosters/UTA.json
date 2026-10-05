@@ -1,0 +1,311 @@
+{
+  "team": "UTA",
+  "espnAbbr": "utah",
+  "teamName": "Utah Jazz",
+  "teamId": 1610612762,
+  "colors": {
+    "primary": "#4e008e",
+    "secondary": "#79a3dc"
+  },
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Will Hardy",
+  "lastUpdated": "2026-10-05",
+  "sources": [
+    {
+      "label": "ESPN roster and depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/utah"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of roster",
+      "short": "Rest"
+    }
+  ],
+  "players": [
+    {
+      "name": "Keyonte George",
+      "espnId": "4433627",
+      "bbrefId": "georgke01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4433627.png",
+      "pos": "G",
+      "slot": "PG",
+      "height": "6-4",
+      "birthDate": "2003-11-08",
+      "exp": 4,
+      "college": "Baylor",
+      "jersey": "3",
+      "unit": "starters"
+    },
+    {
+      "name": "Darryn Peterson",
+      "espnId": "5041955",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5041955.png",
+      "pos": "G",
+      "slot": "SG",
+      "height": "6-5",
+      "birthDate": "2007-01-17",
+      "exp": 0,
+      "college": "Kansas",
+      "jersey": "22",
+      "unit": "starters"
+    },
+    {
+      "name": "Lauri Markkanen",
+      "espnId": "4066336",
+      "bbrefId": "markkla01",
+      "nbaId": 1628374,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4066336.png",
+      "pos": "F",
+      "slot": "SF",
+      "height": "7-1",
+      "birthDate": "1997-05-22",
+      "exp": 10,
+      "college": "Arizona",
+      "jersey": "23",
+      "unit": "starters"
+    },
+    {
+      "name": "Jaren Jackson Jr.",
+      "espnId": "4277961",
+      "bbrefId": "jacksja02",
+      "nbaId": 1628991,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4277961.png",
+      "pos": "F",
+      "slot": "PF",
+      "height": "6-10",
+      "birthDate": "1999-09-15",
+      "exp": 9,
+      "college": "Michigan State",
+      "jersey": "20",
+      "unit": "starters"
+    },
+    {
+      "name": "Jusuf Nurkic",
+      "espnId": "3102530",
+      "bbrefId": "nurkiju01",
+      "nbaId": 203994,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3102530.png",
+      "pos": "C",
+      "slot": "C",
+      "height": "6-11",
+      "birthDate": "1994-08-23",
+      "exp": 13,
+      "college": null,
+      "jersey": "30",
+      "unit": "starters"
+    },
+    {
+      "name": "Ace Bailey",
+      "espnId": "4873138",
+      "bbrefId": "baileac01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4873138.png",
+      "pos": "G",
+      "height": "6-9",
+      "birthDate": "2006-08-13",
+      "exp": 2,
+      "college": "Rutgers",
+      "jersey": "19",
+      "unit": "second"
+    },
+    {
+      "name": "Isaiah Collier",
+      "espnId": "4683766",
+      "bbrefId": "colliis01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4683766.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2004-10-08",
+      "exp": 3,
+      "college": "USC",
+      "jersey": "8",
+      "unit": "second"
+    },
+    {
+      "name": "Kyle Filipowski",
+      "espnId": "4684793",
+      "bbrefId": "filipky01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4684793.png",
+      "pos": "F",
+      "height": "6-11",
+      "birthDate": "2003-11-07",
+      "exp": 3,
+      "college": "Duke",
+      "jersey": "2",
+      "unit": "second"
+    },
+    {
+      "name": "Jaxson Hayes",
+      "espnId": "4397077",
+      "bbrefId": "hayesja02",
+      "nbaId": 1629637,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4397077.png",
+      "pos": "C",
+      "height": "7-0",
+      "birthDate": "2000-05-23",
+      "exp": 8,
+      "college": "Texas",
+      "jersey": "11",
+      "unit": "second"
+    },
+    {
+      "name": "Brice Sensabaugh",
+      "espnId": "5105839",
+      "bbrefId": "sensabr01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5105839.png",
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "2003-10-30",
+      "exp": 4,
+      "college": "Ohio State",
+      "jersey": "28",
+      "unit": "second"
+    },
+    {
+      "name": "Trey Alexander",
+      "espnId": "4433268",
+      "bbrefId": "alexatr01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4433268.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2003-05-02",
+      "exp": 3,
+      "college": "Creighton",
+      "jersey": "15",
+      "unit": "third"
+    },
+    {
+      "name": "Josh Green",
+      "espnId": "4432811",
+      "bbrefId": "greenjo02",
+      "nbaId": 1630182,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432811.png",
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2000-11-16",
+      "exp": 7,
+      "college": "Arizona",
+      "jersey": "5",
+      "unit": "third"
+    },
+    {
+      "name": "Blake Hinson",
+      "espnId": "4396963",
+      "bbrefId": "hinsobl01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4396963.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "1999-12-26",
+      "exp": 2,
+      "college": "Pittsburgh",
+      "jersey": "25",
+      "unit": "third"
+    },
+    {
+      "name": "Svi Mykhailiuk",
+      "espnId": "3133602",
+      "bbrefId": "mykhasv01",
+      "nbaId": 1629004,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3133602.png",
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "1997-06-10",
+      "exp": 9,
+      "college": "Kansas",
+      "jersey": "10",
+      "unit": "third"
+    },
+    {
+      "name": "Josh Okogie",
+      "espnId": "4065663",
+      "bbrefId": "okogijo01",
+      "nbaId": 1629006,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4065663.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "1998-09-01",
+      "exp": 9,
+      "college": "Georgia Tech",
+      "jersey": "21",
+      "unit": "third"
+    },
+    {
+      "name": "Jonas Aidoo",
+      "espnId": "4684682",
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "2002-12-10",
+      "exp": 0,
+      "college": "Arkansas",
+      "jersey": "13",
+      "unit": "camp"
+    },
+    {
+      "name": "Mo Bamba",
+      "espnId": "4277919",
+      "bbrefId": "bambamo01",
+      "nbaId": 1628964,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4277919.png",
+      "pos": "C",
+      "height": "7-0",
+      "birthDate": "1998-05-12",
+      "exp": 9,
+      "college": "Texas",
+      "jersey": "44",
+      "unit": "camp"
+    },
+    {
+      "name": "Tamar Bates",
+      "espnId": "4683933",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4683933.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2003-02-21",
+      "exp": 0,
+      "college": "Missouri",
+      "jersey": "0",
+      "unit": "camp"
+    },
+    {
+      "name": "Terrell Brown Jr.",
+      "espnId": "4395997",
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "1998-04-23",
+      "exp": 0,
+      "college": "Washington",
+      "jersey": "16",
+      "unit": "camp"
+    },
+    {
+      "name": "Harrison Ingram",
+      "espnId": "4433618",
+      "bbrefId": "ingraha01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4433618.png",
+      "pos": "F",
+      "height": "6-5",
+      "birthDate": "2002-11-27",
+      "exp": 3,
+      "college": "North Carolina",
+      "jersey": "00",
+      "unit": "camp"
+    }
+  ]
+}

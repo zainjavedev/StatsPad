@@ -1,9 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const [input, output, seasonType] = process.argv.slice(2);
+const [input, output, seasonType, season = '2025-26'] = process.argv.slice(2);
+const endYear = Number(season.slice(0, 4)) + 1;
 if (!input || !output || !seasonType) {
-  console.error('Usage: node scripts/build-data.mjs input.html output.json "Regular Season"');
+  console.error('Usage: node scripts/build-data.mjs input.html output.json "Regular Season" [2025-26]');
   process.exit(1);
 }
 
@@ -69,15 +70,15 @@ const players = rows.map((row, index) => ({
   .map((player, index) => ({ ...player, rank: index + 1 }));
 
 const payload = {
-  season: '2025-26',
+  season,
   seasonType,
-  description: `NBA player per-game statistics for the 2025-26 ${seasonType.toLowerCase()}`,
-  lastUpdated: '2026-09-15',
+  description: `NBA player per-game statistics for the ${season} ${seasonType.toLowerCase()}`,
+  lastUpdated: new Date().toISOString().slice(0, 10),
   source: {
     name: 'Basketball Reference',
     url: seasonType === 'Playoffs'
-      ? 'https://www.basketball-reference.com/playoffs/NBA_2026_per_game.html'
-      : 'https://www.basketball-reference.com/leagues/NBA_2026_per_game.html',
+      ? `https://www.basketball-reference.com/playoffs/NBA_${endYear}_per_game.html`
+      : `https://www.basketball-reference.com/leagues/NBA_${endYear}_per_game.html`,
   },
   totalPlayers: players.length,
   players,

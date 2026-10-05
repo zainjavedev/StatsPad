@@ -1,0 +1,321 @@
+{
+  "team": "DEN",
+  "espnAbbr": "den",
+  "teamName": "Denver Nuggets",
+  "teamId": 1610612743,
+  "colors": {
+    "primary": "#0e2240",
+    "secondary": "#fec524"
+  },
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "David Adelman",
+  "lastUpdated": "2026-10-05",
+  "sources": [
+    {
+      "label": "ESPN roster and depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/den"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of roster",
+      "short": "Rest"
+    }
+  ],
+  "players": [
+    {
+      "name": "Jamal Murray",
+      "espnId": "3936299",
+      "bbrefId": "murraja01",
+      "nbaId": 1627750,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3936299.png",
+      "pos": "G",
+      "slot": "PG",
+      "height": "6-4",
+      "birthDate": "1997-02-23",
+      "exp": 10,
+      "college": "Kentucky",
+      "jersey": "27",
+      "unit": "starters"
+    },
+    {
+      "name": "Christian Braun",
+      "espnId": "4431767",
+      "bbrefId": "braunch01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4431767.png",
+      "pos": "G",
+      "slot": "SG",
+      "height": "6-6",
+      "birthDate": "2001-04-17",
+      "exp": 5,
+      "college": "Kansas",
+      "jersey": "0",
+      "unit": "starters"
+    },
+    {
+      "name": "Cameron Johnson",
+      "espnId": "3138196",
+      "bbrefId": "johnsca02",
+      "nbaId": 1629661,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3138196.png",
+      "pos": "F",
+      "slot": "SF",
+      "height": "6-8",
+      "birthDate": "1996-03-03",
+      "exp": 8,
+      "college": "North Carolina",
+      "jersey": "23",
+      "unit": "starters"
+    },
+    {
+      "name": "Aaron Gordon",
+      "espnId": "3064290",
+      "bbrefId": "gordoaa01",
+      "nbaId": 203932,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3064290.png",
+      "pos": "F",
+      "slot": "PF",
+      "height": "6-8",
+      "birthDate": "1995-09-16",
+      "exp": 13,
+      "college": "Arizona",
+      "jersey": "32",
+      "unit": "starters"
+    },
+    {
+      "name": "Nikola Jokic",
+      "espnId": "3112335",
+      "bbrefId": "jokicni01",
+      "nbaId": 203999,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3112335.png",
+      "pos": "C",
+      "slot": "C",
+      "height": "6-11",
+      "birthDate": "1995-02-19",
+      "exp": 12,
+      "college": null,
+      "jersey": "15",
+      "unit": "starters"
+    },
+    {
+      "name": "Marvin Bagley III",
+      "espnId": "4277848",
+      "bbrefId": "baglema01",
+      "nbaId": 1628963,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4277848.png",
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "1999-03-14",
+      "exp": 9,
+      "college": "Duke",
+      "jersey": "3",
+      "unit": "second"
+    },
+    {
+      "name": "DeMar DeRozan",
+      "espnId": "3978",
+      "bbrefId": "derozde01",
+      "nbaId": 201942,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3978.png",
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "1989-08-07",
+      "exp": 18,
+      "college": "USC",
+      "jersey": "10",
+      "unit": "second"
+    },
+    {
+      "name": "Spencer Jones",
+      "espnId": "4592427",
+      "bbrefId": "jonessp01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4592427.png",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2001-06-14",
+      "exp": 3,
+      "college": "Stanford",
+      "jersey": "21",
+      "unit": "second"
+    },
+    {
+      "name": "Tyus Jones",
+      "espnId": "3135046",
+      "bbrefId": "jonesty01",
+      "nbaId": 1626145,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3135046.png",
+      "pos": "G",
+      "height": "6-0",
+      "birthDate": "1996-05-10",
+      "exp": 12,
+      "college": "Duke",
+      "jersey": "5",
+      "unit": "second"
+    },
+    {
+      "name": "Julian Strawther",
+      "espnId": "4432181",
+      "bbrefId": "strawju01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432181.png",
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2002-04-18",
+      "exp": 4,
+      "college": "Gonzaga",
+      "jersey": "1",
+      "unit": "second"
+    },
+    {
+      "name": "Trevon Brazile",
+      "espnId": "4698719",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4698719.png",
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2003-01-07",
+      "exp": 0,
+      "college": "Arkansas",
+      "jersey": "7",
+      "unit": "third"
+    },
+    {
+      "name": "Alpha Diallo",
+      "espnId": "4065813",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "1997-06-29",
+      "exp": 0,
+      "college": "Providence",
+      "jersey": "11",
+      "unit": "third"
+    },
+    {
+      "name": "DaRon Holmes II",
+      "espnId": "4433607",
+      "bbrefId": "holmeda01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4433607.png",
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2002-08-15",
+      "exp": 2,
+      "college": "Dayton",
+      "jersey": "14",
+      "unit": "third"
+    },
+    {
+      "name": "Zeke Nnaji",
+      "espnId": "4431690",
+      "bbrefId": "nnajize01",
+      "nbaId": 1630192,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4431690.png",
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2001-01-09",
+      "exp": 7,
+      "college": "Arizona",
+      "jersey": "22",
+      "unit": "third"
+    },
+    {
+      "name": "Lonnie Walker IV",
+      "espnId": "4277890",
+      "nbaId": 1629022,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4277890.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "1998-12-14",
+      "exp": 8,
+      "college": "Miami",
+      "jersey": "4",
+      "unit": "third"
+    },
+    {
+      "name": "Dane Goodwin",
+      "espnId": "4395667",
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "1999-12-28",
+      "exp": 0,
+      "college": "Notre Dame",
+      "jersey": "20",
+      "unit": "camp"
+    },
+    {
+      "name": "Coleman Hawkins",
+      "espnId": "4432976",
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2001-12-10",
+      "exp": 0,
+      "college": "Kansas State",
+      "jersey": "43",
+      "unit": "camp"
+    },
+    {
+      "name": "Bryce Hopkins",
+      "espnId": "4565698",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4565698.png",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2002-09-07",
+      "exp": 0,
+      "college": "St. John's",
+      "jersey": "13",
+      "unit": "camp"
+    },
+    {
+      "name": "Emanuel Miller",
+      "espnId": "4432872",
+      "bbrefId": "milleem01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432872.png",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2000-06-19",
+      "exp": 3,
+      "college": "TCU",
+      "jersey": "8",
+      "unit": "camp"
+    },
+    {
+      "name": "Ryan Nembhard",
+      "espnId": "4433629",
+      "bbrefId": "nembhry01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4433629.png",
+      "pos": "G",
+      "height": "5-11",
+      "birthDate": "2003-03-10",
+      "exp": 2,
+      "college": "Gonzaga",
+      "unit": "camp"
+    },
+    {
+      "name": "Cam Whitmore",
+      "espnId": "5105592",
+      "bbrefId": "whitmca01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5105592.png",
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "2004-07-08",
+      "exp": 4,
+      "college": "Villanova",
+      "jersey": "00",
+      "unit": "camp"
+    }
+  ]
+}

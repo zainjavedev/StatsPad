@@ -1,7 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const [input, output, seasonType] = process.argv.slice(2);
+const [input, output, seasonType, season = '2025-26'] = process.argv.slice(2);
+const endYear = Number(season.slice(0, 4)) + 1;
 if (!input || !output || !seasonType) throw new Error('Usage: node scripts/build-team-data.mjs input.html output.json "Regular Season"');
 const html = fs.readFileSync(input, 'utf8');
 const table = html.match(/<table[^>]+id="per_game-team"[\s\S]*?<\/table>/)?.[0];
@@ -15,5 +16,5 @@ const teams=[...table.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/g)].map(m=>m[1]).filte
   const fgm=num(row,'fg'),fga=num(row,'fga'),threes=num(row,'fg3');
   return {entityType:'team',teamId:ids[abbr],team:abbr,playerName:clean(teamCell),rank:index+1,gamesPlayed:num(row,'g'),position:'Team',stats:{points:num(row,'pts'),assists:num(row,'ast'),totalRebounds:num(row,'trb'),offensiveRebounds:num(row,'orb'),defensiveRebounds:num(row,'drb'),steals:num(row,'stl'),blocks:num(row,'blk'),turnovers:num(row,'tov'),personalFouls:num(row,'pf'),fieldGoalsMade:fgm,fieldGoalsAttempted:fga,fieldGoalPercentage:num(row,'fg_pct',true),threePointersMade:threes,threePointersAttempted:num(row,'fg3a'),threePointPercentage:num(row,'fg3_pct',true),freeThrowsMade:num(row,'ft'),freeThrowsAttempted:num(row,'fta'),freeThrowPercentage:num(row,'ft_pct',true),effectiveFieldGoalPercentage:fga?Number(((fgm+.5*threes)/fga*100).toFixed(1)):0}};
 }).sort((a,b)=>b.stats.points-a.stats.points).map((team,index)=>({...team,rank:index+1}));
-const payload={season:'2025-26',seasonType,description:`NBA team per-game statistics for the 2025-26 ${seasonType.toLowerCase()}`,lastUpdated:'2026-09-15',source:{name:'Basketball Reference',url:seasonType==='Playoffs'?'https://www.basketball-reference.com/playoffs/NBA_2026.html':'https://www.basketball-reference.com/leagues/NBA_2026.html'},totalTeams:teams.length,players:teams};
+const payload={season,seasonType,description:`NBA team per-game statistics for the ${season} ${seasonType.toLowerCase()}`,lastUpdated:new Date().toISOString().slice(0,10),source:{name:'Basketball Reference',url:seasonType==='Playoffs'?`https://www.basketball-reference.com/playoffs/NBA_${endYear}.html`:`https://www.basketball-reference.com/leagues/NBA_${endYear}.html`},totalTeams:teams.length,players:teams};
 fs.mkdirSync(path.dirname(output),{recursive:true});fs.writeFileSync(output,`${JSON.stringify(payload,null,2)}\n`);console.log(`Wrote ${teams.length} teams to ${output}`);

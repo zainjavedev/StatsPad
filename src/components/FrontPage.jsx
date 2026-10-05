@@ -43,7 +43,7 @@ function PlayerSearch({players, Art, playerIds, onOpen}) {
       {results.length ? results.map((player, index) => <li key={player.playerId}>
         <button className={index === active ? 'active' : ''} onMouseEnter={() => setActive(index)} onClick={() => choose(player)}>
           <Art entity={player} playerIds={playerIds} className="front-result-art"/>
-          <span><b>{player.playerName}</b><small>{player.team} · {player.position}</small></span>
+          <span><b>{player.playerName}</b><small>{player.currentTeam || player.team} · {player.position}</small></span>
           <strong>{player.stats.points.toFixed(1)} <small>PPG</small></strong>
         </button>
       </li>) : <li className="front-no-results">No player matches “{query.trim()}”.</li>}
@@ -51,7 +51,7 @@ function PlayerSearch({players, Art, playerIds, onOpen}) {
   </div>;
 }
 
-export default function FrontPage({players, teams, playerIds, Art, onOpen, onCompare, onTeam, onLeaders}) {
+export default function FrontPage({season, players, teams, playerIds, Art, onOpen, onCompare, onTeam, onLeaders}) {
   const games = useFeed(loadGames), news = useFeed(loadNews);
   const leaders = useMemo(() => {
     const pool = players.filter(player => player.gamesPlayed >= 15 && player.minutesPerGame >= 10);
@@ -65,7 +65,7 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
     <div className="front-hero">
       <div className="front-hero-copy">
         <h1>Look up any player.</h1>
-        <p>Last season&apos;s numbers for {players.length} players, this season&apos;s games and news.</p>
+        <p>{season} numbers for {players.length} players, plus this week&apos;s games and news.</p>
         <PlayerSearch players={players} Art={Art} playerIds={playerIds} onOpen={onOpen}/>
       </div>
       <div className="front-tiles">
@@ -74,7 +74,7 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
           <span><b>Compare players</b><small>Head-to-head on every stat</small></span>
           <ArrowRight size={18}/>
         </button>
-        <button className="front-tile sixers" onClick={onTeam}>
+        <button className="front-tile sixers" onClick={() => onTeam('PHI')}>
           <span className="front-tile-icon"><img src="https://cdn.nba.com/logos/nba/1610612755/global/L/logo.svg" alt=""/></span>
           <span><b>Philadelphia 76ers</b><small>2026–27 roster and rotation</small></span>
           <ArrowRight size={18}/>
@@ -83,7 +83,7 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
     </div>
 
     <section className="front-block">
-      <div className="front-block-head"><h2>2025–26 leaders</h2><button onClick={onLeaders}>All leaders <ArrowRight size={14}/></button></div>
+      <div className="front-block-head"><h2>{season} leaders</h2><button onClick={onLeaders}>All leaders <ArrowRight size={14}/></button></div>
       <div className="front-leaders">{leaders.map(entry => <button key={entry.key} className="front-leader" onClick={() => onOpen(entry.player)}>
         <Art entity={entry.player} playerIds={playerIds} className="front-leader-art"/>
         <span>
@@ -107,7 +107,7 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
 
     <section className="front-block">
       <div className="front-block-head"><h2>Teams</h2></div>
-      <div className="front-teams">{[...teams].sort((a, b) => a.playerName.localeCompare(b.playerName)).map(team => <button key={team.teamId} onClick={() => team.team === 'PHI' ? onTeam() : onOpen(team)} title={team.playerName}>
+      <div className="front-teams">{[...teams].sort((a, b) => a.playerName.localeCompare(b.playerName)).map(team => <button key={team.teamId} onClick={() => onTeam(team.team)} title={`${team.playerName} roster`}>
         <Art entity={team} playerIds={playerIds} className="front-team-logo"/>
         <span>{team.team}</span>
       </button>)}</div>

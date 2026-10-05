@@ -1,14 +1,32 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowDown, ArrowUp, ChevronRight } from 'lucide-react';
+import { ArrowDown, ArrowUp, BarChart3, ChevronRight } from 'lucide-react';
 import { GameList } from './Feeds';
 import { useFeed } from '../lib/useFeed';
 import { teamSchedule } from '../lib/espn';
+import SEASON from '../season.json';
 
-/* Team roster page: who is on the team this season, how the rotation is
-   expected to stack up, and each player's previous-season numbers. */
+/* Team roster page for any of the 30 teams: who is on the team this season,
+   how the rotation is expected to stack up, and each player's numbers from
+   the stats season in src/season.json. Rosters live in
+   public/data/<season>/rosters/<TEAM>.json (scripts/build-rosters.mjs). */
 
-const TEAM_COLORS = {PHI: '#006bb6'};
-const SCHEDULES = {PHI: () => teamSchedule('phi', 5)};
+const STATS_LABEL = SEASON.stats.replace('-', '–');
+const STATS_ARE_CURRENT = SEASON.stats === SEASON.rosters;
+const TO_ESPN = {BRK: 'bkn', CHO: 'cha', GSW: 'gs', NOP: 'no', NYK: 'ny', PHO: 'phx', SAS: 'sa', UTA: 'utah', WAS: 'wsh'};
+
+/* The darker of the team's two colours carries the white text in the header
+   and photo stages; the other becomes the accent stripe. A colour that is
+   still too light for white text gets darkened. */
+const luminance = hex => {
+  const [r, g, b] = [1, 3, 5].map(index => parseInt(hex.slice(index, index + 2), 16) / 255)
+    .map(channel => channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4);
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+function teamPalette(colors = {}) {
+  const primary = colors.primary || '#333333', secondary = colors.secondary || '#ffffff';
+  const [dark, accent] = luminance(primary) <= luminance(secondary) ? [primary, secondary] : [secondary, primary];
+  return {'--team': luminance(dark) > 0.18 ? `color-mix(in srgb, ${dark} 55%, black)` : dark, '--team-accent': accent};
+}
 
 const STAT_COLUMNS = [
   {key: 'gamesPlayed', label: 'GP', places: 0},
@@ -36,16 +54,22 @@ const statOf = (player, key) => key === 'gamesPlayed' || key === 'minutesPerGame
 const show = (value, column) => value == null ? '—' : `${Number(value).toFixed(column.places ?? 1)}${column.pct ? '%' : ''}`;
 const initials = name => name.replace(/ (Jr\.|Sr\.|II|III)$/, '').split(' ').map(part => part[0]).slice(0, 2).join('');
 
+/* NBA.com headshot when we know the NBA id, ESPN's otherwise, initials last. */
 function Headshot({player, className}) {
-  const [failed, setFailed] = useState(false);
-  useEffect(() => setFailed(false), [player.nbaId]);
-  if (!player.nbaId || failed) return <span className={`${className} roster-monogram`} aria-hidden="true">{initials(player.name)}</span>;
-  return <img className={className} src={`https://cdn.nba.com/headshots/nba/latest/260x190/${player.nbaId}.png`} alt="" loading="lazy" onError={() => setFailed(true)}/>;
+  const sources = useMemo(() => [
+    player.nbaId && `https://cdn.nba.com/headshots/nba/latest/260x190/${player.nbaId}.png`,
+    player.espnId && `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${player.espnId}.png&w=260&h=190`,
+  ].filter(Boolean), [player.nbaId, player.espnId]);
+  const [step, setStep] = useState(0);
+  useEffect(() => setStep(0), [sources]);
+  if (!sources[step]) return <span className={`${className} roster-monogram`} aria-hidden="true">{initials(player.name)}</span>;
+  return <img className={className} src={sources[step]} alt="" loading="lazy" onError={() => setStep(current => current + 1)}/>;
 }
 
+const noStatsText = player => player.exp === 0 ? 'Rookie' : STATS_ARE_CURRENT ? 'No games yet' : 'Did not play last season';
 const statLine = player => player.stats
   ? `${player.stats.points.toFixed(1)} pts · ${player.stats.totalRebounds.toFixed(1)} reb · ${player.stats.assists.toFixed(1)} ast`
-  : player.exp === 0 ? 'Rookie' : 'Did not play last season';
+  : noStatsText(player);
 
 function StarterCard({player, onOpen}) {
   return <button className="starter-card" onClick={() => onOpen(player)} disabled={!player.profile}>
@@ -54,11 +78,11 @@ function StarterCard({player, onOpen}) {
       <Headshot player={player} className="starter-art"/>
     </span>
     <h3>{player.name}</h3>
-    <dl className="starter-line">
+    {player.stats ? <dl className="starter-line">
       <div><dt>PTS</dt><dd>{player.stats.points.toFixed(1)}</dd></div>
       <div><dt>REB</dt><dd>{player.stats.totalRebounds.toFixed(1)}</dd></div>
       <div><dt>AST</dt><dd>{player.stats.assists.toFixed(1)}</dd></div>
-    </dl>
+    </dl> : <p className="starter-none">{noStatsText(player)}</p>}
   </button>;
 }
 
@@ -98,7 +122,7 @@ function StatTable({players, onOpen}) {
 
   return <section className="stat-board">
     <div className="board-head">
-      <h2>Last season&apos;s stats</h2>
+      <h2>{STATS_ARE_CURRENT ? 'This season' : 'Last season'}&apos;s stats</h2>
       <div className="sort-chips" role="group" aria-label="Sort by">
         {SORT_CHIPS.map(key => <button key={key} className={sort.key === key ? 'active' : ''} onClick={() => pick(key)}>
           {STAT_COLUMNS.find(column => column.key === key).label}{arrow(key)}
@@ -125,20 +149,23 @@ function StatTable({players, onOpen}) {
       </table>
     </div>
     <p className="board-note">
-      2025–26 regular season, per game. Faded percentages come from too few attempts and sort last.
+      {STATS_LABEL} regular season, per game. Faded percentages come from too few attempts and sort last.
       {noStats.length > 0 && <> No NBA stats yet: {noStats.map(player => player.name).join(', ')}.</>}
     </p>
   </section>;
 }
 
-export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen}) {
+export default function TeamPage({teamCode = 'PHI', leaguePlayers, teamEntity, onOpen}) {
   const [roster, setRoster] = useState(null), [error, setError] = useState(false);
-  const games = useFeed(SCHEDULES[teamCode]);
+  const loadGames = useMemo(() => () => teamSchedule(TO_ESPN[teamCode] || teamCode.toLowerCase(), 5), [teamCode]);
+  const games = useFeed(loadGames);
   useEffect(() => {
     let active = true;
-    fetch(`/data/2026-27/rosters/${teamCode}.json`).then(response => response.json()).then(data => active && setRoster(data)).catch(() => active && setError(true));
+    setRoster(null); setError(false);
+    fetch(`/data/${SEASON.rosters}/rosters/${teamCode}.json`).then(response => response.json()).then(data => active && setRoster(data)).catch(() => active && setError(true));
     return () => { active = false; };
   }, [teamCode]);
+  useEffect(() => { if (roster) document.title = `${roster.teamName} roster · StatsPad`; }, [roster]);
 
   const players = useMemo(() => {
     if (!roster) return [];
@@ -149,18 +176,19 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen}) {
     });
   }, [roster, leaguePlayers]);
 
-  if (error) return <section className="team-page"><p className="vs-empty">Couldn&apos;t load the roster. Try a refresh.</p></section>;
+  if (error) return <section className="team-page"><p className="vs-empty">No roster found for “{teamCode}”.</p></section>;
   if (!roster) return <section className="team-page"><p className="vs-empty">Loading the roster…</p></section>;
   const unit = key => players.filter(player => player.unit === key);
-  const open = player => player.profile && onOpen(player.profile);
+  const open = player => player.profile && onOpen(player.profile, roster.teamName);
 
-  return <section className="team-page" style={{'--team': TEAM_COLORS[teamCode]}}>
+  return <section className="team-page" style={teamPalette(roster.colors)}>
     <div className="team-hero">
       <span className="team-hero-mark"><img className="team-hero-logo" src={`https://cdn.nba.com/logos/nba/${roster.teamId}/global/L/logo.svg`} alt="" onError={event => { event.currentTarget.style.display = 'none'; }}/></span>
       <div>
         <h1>{roster.teamName}</h1>
-        <p>{roster.season.replace('-', '–')} roster</p>
+        <p>{roster.season.replace('-', '–')} roster{roster.coach ? ` · Coach ${roster.coach}` : ''}</p>
       </div>
+      {teamEntity && <button className="team-hero-stats" onClick={() => onOpen(teamEntity, roster.teamName)}><BarChart3 size={15}/> Team stats</button>}
     </div>
 
     <section className="team-block">
@@ -182,6 +210,6 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen}) {
 
     <StatTable players={players} onOpen={open}/>
 
-    <p className="team-sources">Roster as of {roster.lastUpdated}. Rotation is a pre-season projection. Sources: {roster.sources.map((source, index) => <React.Fragment key={source.url}>{index ? ', ' : ''}<a href={source.url} target="_blank" rel="noreferrer">{source.label}</a></React.Fragment>)}.</p>
+    <p className="team-sources">Roster as of {roster.lastUpdated}. Lineups and units are projections. Sources: {roster.sources.map((source, index) => <React.Fragment key={source.url}>{index ? ', ' : ''}<a href={source.url} target="_blank" rel="noreferrer">{source.label}</a></React.Fragment>)}.</p>
   </section>;
 }

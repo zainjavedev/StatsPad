@@ -1,0 +1,294 @@
+{
+  "team": "BRK",
+  "espnAbbr": "bkn",
+  "teamName": "Brooklyn Nets",
+  "teamId": 1610612751,
+  "colors": {
+    "primary": "#000000",
+    "secondary": "#ffffff"
+  },
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Jordi Fernandez",
+  "lastUpdated": "2026-10-05",
+  "sources": [
+    {
+      "label": "ESPN roster and depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/bkn"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of roster",
+      "short": "Rest"
+    }
+  ],
+  "players": [
+    {
+      "name": "Mikel Brown Jr.",
+      "espnId": "5101761",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5101761.png",
+      "pos": "G",
+      "slot": "PG",
+      "height": "6-5",
+      "birthDate": "2006-04-03",
+      "exp": 0,
+      "college": "Louisville",
+      "jersey": "0",
+      "unit": "starters"
+    },
+    {
+      "name": "Egor Demin",
+      "espnId": "5175643",
+      "bbrefId": "demineg01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5175643.png",
+      "pos": "G",
+      "slot": "SG",
+      "height": "6-8",
+      "birthDate": "2006-03-03",
+      "exp": 2,
+      "college": "BYU",
+      "jersey": "8",
+      "unit": "starters"
+    },
+    {
+      "name": "Michael Porter Jr.",
+      "espnId": "4278104",
+      "bbrefId": "portemi01",
+      "nbaId": 1629008,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4278104.png",
+      "pos": "F",
+      "slot": "SF",
+      "height": "6-10",
+      "birthDate": "1998-06-29",
+      "exp": 8,
+      "college": "Missouri",
+      "jersey": "17",
+      "unit": "starters"
+    },
+    {
+      "name": "Julius Randle",
+      "espnId": "3064514",
+      "bbrefId": "randlju01",
+      "nbaId": 203944,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3064514.png",
+      "pos": "F",
+      "slot": "PF",
+      "height": "6-9",
+      "birthDate": "1994-11-29",
+      "exp": 13,
+      "college": "Kentucky",
+      "jersey": "30",
+      "unit": "starters"
+    },
+    {
+      "name": "Day'Ron Sharpe",
+      "espnId": "4432194",
+      "bbrefId": "sharpda01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432194.png",
+      "pos": "C",
+      "slot": "C",
+      "height": "6-10",
+      "birthDate": "2001-11-06",
+      "exp": 6,
+      "college": "North Carolina",
+      "jersey": "20",
+      "unit": "starters"
+    },
+    {
+      "name": "Noah Clowney",
+      "espnId": "4712896",
+      "bbrefId": "clownno01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4712896.png",
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2004-07-14",
+      "exp": 4,
+      "college": "Alabama",
+      "jersey": "21",
+      "unit": "second"
+    },
+    {
+      "name": "Keon Ellis",
+      "espnId": "4702177",
+      "bbrefId": "elliske01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4702177.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2000-01-08",
+      "exp": 5,
+      "college": "Alabama",
+      "jersey": "1",
+      "unit": "second"
+    },
+    {
+      "name": "Drake Powell",
+      "espnId": "5037873",
+      "bbrefId": "poweldr01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5037873.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2005-09-08",
+      "exp": 2,
+      "college": "North Carolina",
+      "jersey": "4",
+      "unit": "second"
+    },
+    {
+      "name": "Ben Saraf",
+      "espnId": "5242502",
+      "bbrefId": "sarafbe01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5242502.png",
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2006-04-14",
+      "exp": 2,
+      "college": null,
+      "jersey": "77",
+      "unit": "second"
+    },
+    {
+      "name": "Moritz Wagner",
+      "espnId": "3150844",
+      "bbrefId": "wagnemo01",
+      "nbaId": 1629021,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3150844.png",
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "1997-04-26",
+      "exp": 9,
+      "college": "Michigan",
+      "jersey": "13",
+      "unit": "second"
+    },
+    {
+      "name": "Joshua Jefferson",
+      "espnId": "4870564",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4870564.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2003-11-21",
+      "exp": 0,
+      "college": "Iowa State",
+      "jersey": "9",
+      "unit": "third"
+    },
+    {
+      "name": "Terance Mann",
+      "espnId": "3907823",
+      "bbrefId": "mannte01",
+      "nbaId": 1629611,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3907823.png",
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "1996-10-18",
+      "exp": 8,
+      "college": "Florida State",
+      "jersey": "14",
+      "unit": "third"
+    },
+    {
+      "name": "Josh Minott",
+      "espnId": "4687718",
+      "bbrefId": "minotjo01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4687718.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2002-11-25",
+      "exp": 5,
+      "college": "Memphis",
+      "jersey": "00",
+      "unit": "third"
+    },
+    {
+      "name": "Nolan Traore",
+      "espnId": "5279130",
+      "bbrefId": "traorno01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5279130.png",
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2006-05-28",
+      "exp": 2,
+      "college": null,
+      "jersey": "10",
+      "unit": "third"
+    },
+    {
+      "name": "Danny Wolf",
+      "espnId": "5107173",
+      "bbrefId": "wolfda01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5107173.png",
+      "pos": "F",
+      "height": "6-11",
+      "birthDate": "2004-05-05",
+      "exp": 2,
+      "college": "Michigan",
+      "jersey": "2",
+      "unit": "third"
+    },
+    {
+      "name": "Tyler Bilodeau",
+      "espnId": "5105626",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5105626.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2004-04-17",
+      "exp": 0,
+      "college": "UCLA",
+      "jersey": "34",
+      "unit": "camp"
+    },
+    {
+      "name": "Dain Dainja",
+      "espnId": "4432189",
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2002-07-16",
+      "exp": 0,
+      "college": "Memphis",
+      "jersey": "42",
+      "unit": "camp"
+    },
+    {
+      "name": "Chaney Johnson",
+      "espnId": "5174655",
+      "bbrefId": "johnsch06",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5174655.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2002-06-20",
+      "exp": 2,
+      "college": "Auburn",
+      "jersey": "31",
+      "unit": "camp"
+    },
+    {
+      "name": "Grant Nelson",
+      "espnId": "4702670",
+      "bbrefId": "nelsogr02",
+      "pos": "F",
+      "height": "6-11",
+      "birthDate": "2002-03-18",
+      "exp": 2,
+      "college": "Alabama",
+      "jersey": "16",
+      "unit": "camp"
+    }
+  ]
+}

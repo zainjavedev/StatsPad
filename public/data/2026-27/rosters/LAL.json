@@ -1,0 +1,319 @@
+{
+  "team": "LAL",
+  "espnAbbr": "lal",
+  "teamName": "Los Angeles Lakers",
+  "teamId": 1610612747,
+  "colors": {
+    "primary": "#552583",
+    "secondary": "#fdb927"
+  },
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "JJ Redick",
+  "lastUpdated": "2026-10-05",
+  "sources": [
+    {
+      "label": "ESPN roster and depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/lal"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of roster",
+      "short": "Rest"
+    }
+  ],
+  "players": [
+    {
+      "name": "Luka Doncic",
+      "espnId": "3945274",
+      "bbrefId": "doncilu01",
+      "nbaId": 1629029,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3945274.png",
+      "pos": "G",
+      "slot": "PG",
+      "height": "6-8",
+      "birthDate": "1999-02-28",
+      "exp": 9,
+      "college": null,
+      "jersey": "77",
+      "unit": "starters"
+    },
+    {
+      "name": "Austin Reaves",
+      "espnId": "4066457",
+      "bbrefId": "reaveau01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4066457.png",
+      "pos": "G",
+      "slot": "SG",
+      "height": "6-5",
+      "birthDate": "1998-05-29",
+      "exp": 6,
+      "college": "Oklahoma",
+      "jersey": "15",
+      "unit": "starters"
+    },
+    {
+      "name": "Quentin Grimes",
+      "espnId": "4397014",
+      "bbrefId": "grimequ01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4397014.png",
+      "pos": "G",
+      "slot": "SF",
+      "height": "6-4",
+      "birthDate": "2000-05-08",
+      "exp": 6,
+      "college": "Houston",
+      "jersey": "5",
+      "unit": "starters"
+    },
+    {
+      "name": "Jake LaRavia",
+      "espnId": "4592691",
+      "bbrefId": "laravja01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4592691.png",
+      "pos": "F",
+      "slot": "PF",
+      "height": "6-7",
+      "birthDate": "2001-11-03",
+      "exp": 5,
+      "college": "Wake Forest",
+      "jersey": "12",
+      "unit": "starters"
+    },
+    {
+      "name": "Walker Kessler",
+      "espnId": "4433136",
+      "bbrefId": "kesslwa01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4433136.png",
+      "pos": "C",
+      "slot": "C",
+      "height": "7-2",
+      "birthDate": "2001-07-26",
+      "exp": 5,
+      "college": "Auburn",
+      "jersey": "14",
+      "unit": "starters"
+    },
+    {
+      "name": "Cameron Carr",
+      "espnId": "5113969",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5113969.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2004-11-21",
+      "exp": 0,
+      "college": "Baylor",
+      "jersey": "43",
+      "unit": "second"
+    },
+    {
+      "name": "Kevon Looney",
+      "espnId": "3155535",
+      "bbrefId": "looneke01",
+      "nbaId": 1626172,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3155535.png",
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "1996-02-06",
+      "exp": 12,
+      "college": "UCLA",
+      "jersey": "55",
+      "unit": "second"
+    },
+    {
+      "name": "Sandro Mamukelashvili",
+      "espnId": "4278580",
+      "bbrefId": "mamuksa01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4278580.png",
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "1999-05-23",
+      "exp": 6,
+      "college": "Seton Hall",
+      "jersey": "54",
+      "unit": "second"
+    },
+    {
+      "name": "Collin Sexton",
+      "espnId": "4277811",
+      "bbrefId": "sextoco01",
+      "nbaId": 1629012,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4277811.png",
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "1999-01-04",
+      "exp": 9,
+      "college": "Alabama",
+      "jersey": "10",
+      "unit": "second"
+    },
+    {
+      "name": "Matisse Thybulle",
+      "espnId": "3907498",
+      "bbrefId": "thybuma01",
+      "nbaId": 1629680,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3907498.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "1997-03-04",
+      "exp": 8,
+      "college": "Washington",
+      "jersey": "26",
+      "unit": "second"
+    },
+    {
+      "name": "Bronny James",
+      "espnId": "4683774",
+      "bbrefId": "jamesbr02",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4683774.png",
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "2004-10-06",
+      "exp": 3,
+      "college": "USC",
+      "jersey": "9",
+      "unit": "third"
+    },
+    {
+      "name": "Dalton Knecht",
+      "espnId": "4897943",
+      "bbrefId": "knechda01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4897943.png",
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "2001-04-19",
+      "exp": 3,
+      "college": "Tennessee",
+      "jersey": "4",
+      "unit": "third"
+    },
+    {
+      "name": "Adou Thiero",
+      "espnId": "5060631",
+      "bbrefId": "thierad01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5060631.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2004-05-08",
+      "exp": 2,
+      "college": "Arkansas",
+      "jersey": "1",
+      "unit": "third"
+    },
+    {
+      "name": "Jarred Vanderbilt",
+      "espnId": "4278077",
+      "bbrefId": "vandeja01",
+      "nbaId": 1629020,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4278077.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "1999-04-03",
+      "exp": 9,
+      "college": "Kentucky",
+      "jersey": "2",
+      "unit": "third"
+    },
+    {
+      "name": "Ziaire Williams",
+      "espnId": "4433137",
+      "bbrefId": "willizi02",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4433137.png",
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2001-09-12",
+      "exp": 6,
+      "college": "Stanford",
+      "jersey": "11",
+      "unit": "third"
+    },
+    {
+      "name": "Jaden Hardy",
+      "espnId": "4868423",
+      "bbrefId": "hardyja02",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4868423.png",
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2002-07-05",
+      "exp": 5,
+      "college": null,
+      "jersey": "7",
+      "unit": "camp"
+    },
+    {
+      "name": "Arthur Kaluma",
+      "espnId": "4433599",
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "2002-03-01",
+      "exp": 2,
+      "college": "Texas",
+      "jersey": "47",
+      "unit": "camp"
+    },
+    {
+      "name": "William Kyle III",
+      "espnId": "5107258",
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2004-03-01",
+      "exp": 0,
+      "college": "Syracuse",
+      "jersey": "45",
+      "unit": "camp"
+    },
+    {
+      "name": "Chris Manon",
+      "espnId": "4702972",
+      "bbrefId": "manonch01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4702972.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2001-12-09",
+      "exp": 2,
+      "college": "Vanderbilt",
+      "jersey": "30",
+      "unit": "camp"
+    },
+    {
+      "name": "AK Okereke",
+      "espnId": "5114350",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2003-07-02",
+      "exp": 0,
+      "college": "Vanderbilt",
+      "jersey": "31",
+      "unit": "camp"
+    },
+    {
+      "name": "Cole Swider",
+      "espnId": "4397134",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4397134.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "1999-05-08",
+      "exp": 4,
+      "college": "Syracuse",
+      "jersey": "41",
+      "unit": "camp"
+    }
+  ]
+}

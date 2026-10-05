@@ -1,0 +1,323 @@
+{
+  "team": "MIN",
+  "espnAbbr": "min",
+  "teamName": "Minnesota Timberwolves",
+  "teamId": 1610612750,
+  "colors": {
+    "primary": "#266092",
+    "secondary": "#79bc43"
+  },
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Chris Finch",
+  "lastUpdated": "2026-10-05",
+  "sources": [
+    {
+      "label": "ESPN roster and depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/min"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of roster",
+      "short": "Rest"
+    }
+  ],
+  "players": [
+    {
+      "name": "LaMelo Ball",
+      "espnId": "4432816",
+      "bbrefId": "ballla01",
+      "nbaId": 1630163,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432816.png",
+      "pos": "G",
+      "slot": "PG",
+      "height": "6-7",
+      "birthDate": "2001-08-22",
+      "exp": 7,
+      "college": null,
+      "jersey": "1",
+      "unit": "starters"
+    },
+    {
+      "name": "Anthony Edwards",
+      "espnId": "4594268",
+      "bbrefId": "edwaran01",
+      "nbaId": 1630162,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4594268.png",
+      "pos": "G",
+      "slot": "SG",
+      "height": "6-4",
+      "birthDate": "2001-08-05",
+      "exp": 7,
+      "college": "Georgia",
+      "jersey": "5",
+      "unit": "starters"
+    },
+    {
+      "name": "Jonathan Kuminga",
+      "espnId": "4433247",
+      "bbrefId": "kuminjo01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4433247.png",
+      "pos": "F",
+      "slot": "SF",
+      "height": "6-7",
+      "birthDate": "2002-10-06",
+      "exp": 5,
+      "college": null,
+      "jersey": "24",
+      "unit": "starters"
+    },
+    {
+      "name": "Jaden McDaniels",
+      "espnId": "4431671",
+      "bbrefId": "mcdanja02",
+      "nbaId": 1630183,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4431671.png",
+      "pos": "F",
+      "slot": "PF",
+      "height": "6-9",
+      "birthDate": "2000-09-29",
+      "exp": 7,
+      "college": "Washington",
+      "jersey": "3",
+      "unit": "starters"
+    },
+    {
+      "name": "Rudy Gobert",
+      "espnId": "3032976",
+      "bbrefId": "goberru01",
+      "nbaId": 203497,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3032976.png",
+      "pos": "C",
+      "slot": "C",
+      "height": "7-1",
+      "birthDate": "1992-06-26",
+      "exp": 14,
+      "college": null,
+      "jersey": "27",
+      "unit": "starters"
+    },
+    {
+      "name": "Joan Beringer",
+      "espnId": "5279133",
+      "bbrefId": "berinjo01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5279133.png",
+      "pos": "F",
+      "height": "6-11",
+      "birthDate": "2006-11-11",
+      "exp": 2,
+      "college": null,
+      "jersey": "19",
+      "unit": "second"
+    },
+    {
+      "name": "Ayo Dosunmu",
+      "espnId": "4397002",
+      "bbrefId": "dosunay01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4397002.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2000-01-17",
+      "exp": 6,
+      "college": "Illinois",
+      "jersey": "13",
+      "unit": "second"
+    },
+    {
+      "name": "Isaiah Evans",
+      "espnId": "5061585",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5061585.png",
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "2005-12-06",
+      "exp": 0,
+      "college": "Duke",
+      "jersey": "33",
+      "unit": "second"
+    },
+    {
+      "name": "Bones Hyland",
+      "espnId": "4592492",
+      "bbrefId": "hylanbo01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4592492.png",
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "2000-09-14",
+      "exp": 6,
+      "college": "VCU",
+      "jersey": "8",
+      "unit": "second"
+    },
+    {
+      "name": "Terrence Shannon Jr.",
+      "espnId": "4432847",
+      "bbrefId": "shannte01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432847.png",
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2000-07-30",
+      "exp": 3,
+      "college": "Illinois",
+      "jersey": "4",
+      "unit": "second"
+    },
+    {
+      "name": "Jaylen Clark",
+      "espnId": "4432247",
+      "bbrefId": "clarkja02",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432247.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2001-10-13",
+      "exp": 3,
+      "college": "UCLA",
+      "jersey": "7",
+      "unit": "third"
+    },
+    {
+      "name": "Enrique Freeman",
+      "espnId": "4592699",
+      "bbrefId": "freemen01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4592699.png",
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2000-07-29",
+      "exp": 3,
+      "college": "Akron",
+      "jersey": "25",
+      "unit": "third"
+    },
+    {
+      "name": "Zyon Pullin",
+      "espnId": "4592979",
+      "bbrefId": "pullizy01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4592979.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2001-03-03",
+      "exp": 3,
+      "college": "Florida",
+      "jersey": "15",
+      "unit": "third"
+    },
+    {
+      "name": "Cody Williams",
+      "espnId": "4895758",
+      "bbrefId": "willico04",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4895758.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2004-11-20",
+      "exp": 3,
+      "college": "Colorado",
+      "jersey": "9",
+      "unit": "third"
+    },
+    {
+      "name": "Rocco Zikarsky",
+      "espnId": "5157587",
+      "bbrefId": "zikarro01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5157587.png",
+      "pos": "C",
+      "height": "7-3",
+      "birthDate": "2006-07-11",
+      "exp": 2,
+      "college": null,
+      "jersey": "44",
+      "unit": "third"
+    },
+    {
+      "name": "Donte DiVincenzo",
+      "espnId": "3934673",
+      "bbrefId": "divindo01",
+      "nbaId": 1628978,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3934673.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "1997-01-31",
+      "exp": 9,
+      "college": "Villanova",
+      "jersey": "0",
+      "unit": "camp"
+    },
+    {
+      "name": "Trey Lyles",
+      "espnId": "3136196",
+      "nbaId": 1626168,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3136196.png",
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "1995-11-05",
+      "exp": 11,
+      "college": "Kentucky",
+      "jersey": "41",
+      "unit": "camp"
+    },
+    {
+      "name": "KJ Martin",
+      "espnId": "4431828",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4431828.png",
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "2001-01-06",
+      "exp": 5,
+      "college": null,
+      "jersey": "99",
+      "unit": "camp"
+    },
+    {
+      "name": "Norchad Omier",
+      "espnId": "4702134",
+      "bbrefId": "omierno01",
+      "pos": "F",
+      "height": "6-5",
+      "birthDate": "2001-08-28",
+      "exp": 2,
+      "college": "Baylor",
+      "unit": "camp"
+    },
+    {
+      "name": "Antonio Reeves",
+      "espnId": "4592686",
+      "bbrefId": "reevean01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4592686.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2000-11-20",
+      "exp": 3,
+      "college": "Kentucky",
+      "jersey": "12",
+      "unit": "camp"
+    },
+    {
+      "name": "Drew Timme",
+      "espnId": "4431695",
+      "bbrefId": "timmedr01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4431695.png",
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2000-09-09",
+      "exp": 2,
+      "college": "Gonzaga",
+      "jersey": "17",
+      "unit": "camp"
+    }
+  ]
+}

@@ -1,0 +1,322 @@
+{
+  "team": "WAS",
+  "espnAbbr": "wsh",
+  "teamName": "Washington Wizards",
+  "teamId": 1610612764,
+  "colors": {
+    "primary": "#e31837",
+    "secondary": "#002b5c"
+  },
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Brian Keefe",
+  "lastUpdated": "2026-10-05",
+  "sources": [
+    {
+      "label": "ESPN roster and depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/wsh"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of roster",
+      "short": "Rest"
+    }
+  ],
+  "players": [
+    {
+      "name": "Trae Young",
+      "espnId": "4277905",
+      "bbrefId": "youngtr01",
+      "nbaId": 1629027,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4277905.png",
+      "pos": "G",
+      "slot": "PG",
+      "height": "6-2",
+      "birthDate": "1998-09-19",
+      "exp": 9,
+      "college": "Oklahoma",
+      "jersey": "3",
+      "unit": "starters"
+    },
+    {
+      "name": "Kyshawn George",
+      "espnId": "5174563",
+      "bbrefId": "georgky01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5174563.png",
+      "pos": "F",
+      "slot": "SG",
+      "height": "6-8",
+      "birthDate": "2003-12-12",
+      "exp": 3,
+      "college": "Miami",
+      "jersey": "18",
+      "unit": "starters"
+    },
+    {
+      "name": "AJ Dybantsa",
+      "espnId": "5142718",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5142718.png",
+      "pos": "F",
+      "slot": "SF",
+      "height": "6-9",
+      "birthDate": "2007-01-29",
+      "exp": 0,
+      "college": "BYU",
+      "jersey": "4",
+      "unit": "starters"
+    },
+    {
+      "name": "Anthony Davis",
+      "espnId": "6583",
+      "bbrefId": "davisan02",
+      "nbaId": 203076,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/6583.png",
+      "pos": "F",
+      "slot": "PF",
+      "height": "6-10",
+      "birthDate": "1993-03-11",
+      "exp": 15,
+      "college": "Kentucky",
+      "jersey": "23",
+      "unit": "starters"
+    },
+    {
+      "name": "Alex Sarr",
+      "espnId": "5160992",
+      "bbrefId": "sarral01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5160992.png",
+      "pos": "C",
+      "slot": "C",
+      "height": "7-0",
+      "birthDate": "2005-04-26",
+      "exp": 3,
+      "college": null,
+      "jersey": "20",
+      "unit": "starters"
+    },
+    {
+      "name": "Deandre Ayton",
+      "espnId": "4278129",
+      "bbrefId": "aytonde01",
+      "nbaId": 1629028,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4278129.png",
+      "pos": "C",
+      "height": "7-0",
+      "birthDate": "1998-07-23",
+      "exp": 9,
+      "college": "Arizona",
+      "jersey": "6",
+      "unit": "second"
+    },
+    {
+      "name": "Bub Carrington",
+      "espnId": "4845374",
+      "bbrefId": "carrica01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4845374.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2005-07-21",
+      "exp": 3,
+      "college": "Pittsburgh",
+      "jersey": "7",
+      "unit": "second"
+    },
+    {
+      "name": "Bilal Coulibaly",
+      "espnId": "5104155",
+      "bbrefId": "coulibi01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5104155.png",
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "2004-07-26",
+      "exp": 4,
+      "college": null,
+      "jersey": "0",
+      "unit": "second"
+    },
+    {
+      "name": "Tre Johnson",
+      "espnId": "5238230",
+      "bbrefId": "johnstr03",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5238230.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2006-03-07",
+      "exp": 2,
+      "college": "Texas",
+      "jersey": "12",
+      "unit": "second"
+    },
+    {
+      "name": "Khris Middleton",
+      "espnId": "6609",
+      "bbrefId": "middlkh01",
+      "nbaId": 203114,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/6609.png",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "1991-08-12",
+      "exp": 15,
+      "college": "Texas A&M",
+      "jersey": "22",
+      "unit": "second"
+    },
+    {
+      "name": "Justin Champagnie",
+      "espnId": "4432907",
+      "bbrefId": "champju01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432907.png",
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "2001-06-29",
+      "exp": 6,
+      "college": "Pittsburgh",
+      "jersey": "9",
+      "unit": "third"
+    },
+    {
+      "name": "Anthony Gill",
+      "espnId": "2581184",
+      "bbrefId": "gillan01",
+      "nbaId": 1630264,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/2581184.png",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "1992-10-17",
+      "exp": 7,
+      "college": "Virginia",
+      "jersey": "16",
+      "unit": "third"
+    },
+    {
+      "name": "Tre Mann",
+      "espnId": "4432819",
+      "bbrefId": "manntr01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432819.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2001-02-03",
+      "exp": 6,
+      "college": "Florida",
+      "jersey": "1",
+      "unit": "third"
+    },
+    {
+      "name": "Will Riley",
+      "espnId": "5144126",
+      "bbrefId": "rileywi01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5144126.png",
+      "pos": "G",
+      "height": "6-9",
+      "birthDate": "2006-02-10",
+      "exp": 2,
+      "college": "Illinois",
+      "jersey": "27",
+      "unit": "third"
+    },
+    {
+      "name": "Tristan Vukcevic",
+      "espnId": "4997537",
+      "bbrefId": "vukcetr01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4997537.png",
+      "pos": "F",
+      "height": "7-0",
+      "birthDate": "2003-03-11",
+      "exp": 4,
+      "college": null,
+      "jersey": "00",
+      "unit": "third"
+    },
+    {
+      "name": "Reece Beekman",
+      "espnId": "4432187",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432187.png",
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2001-10-08",
+      "exp": 2,
+      "college": "Virginia",
+      "jersey": "26",
+      "unit": "camp"
+    },
+    {
+      "name": "Trevor Keels",
+      "espnId": "4432645",
+      "bbrefId": "keelstr01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432645.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2003-08-26",
+      "exp": 3,
+      "college": "Duke",
+      "jersey": "13",
+      "unit": "camp"
+    },
+    {
+      "name": "Chris Livingston",
+      "espnId": "4433622",
+      "bbrefId": "livinch01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4433622.png",
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "2003-10-15",
+      "exp": 4,
+      "college": "Kentucky",
+      "jersey": "24",
+      "unit": "camp"
+    },
+    {
+      "name": "Felix Okpara",
+      "espnId": "5105841",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5105841.png",
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2004-04-20",
+      "exp": 0,
+      "college": "Tennessee",
+      "jersey": "34",
+      "unit": "camp"
+    },
+    {
+      "name": "Steve Settle III",
+      "espnId": "4704043",
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2001-02-20",
+      "exp": 0,
+      "college": "Temple",
+      "jersey": "14",
+      "unit": "camp"
+    },
+    {
+      "name": "Jamir Watkins",
+      "espnId": "4606840",
+      "bbrefId": "watkija01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4606840.png",
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2001-07-06",
+      "exp": 2,
+      "college": "Florida State",
+      "jersey": "5",
+      "unit": "camp"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+# Refreshes rosters (ESPN) and stats (Basketball Reference) every morning and
+# commits any changes, which redeploys the site. Run it by hand from the
+# Actions tab with "Run workflow".
+name: Nightly data update
+
+on:
+  schedule:
+    - cron: '17 9 * * *' # 09:17 UTC, after the night's games have finished
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Rosters and current teams (ESPN)
+        run: node scripts/build-rosters.mjs
+      - name: Season stats (Basketball Reference)
+        run: node scripts/update-stats.mjs
+      - name: Commit changes
+        run: |
+          git add public/data src/season.json
+          if git diff --cached --quiet; then
+            echo "No data changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Nightly data update ($(date -u +%Y-%m-%d))"
+          git push

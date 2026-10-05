@@ -1,0 +1,286 @@
+{
+  "team": "POR",
+  "espnAbbr": "por",
+  "teamName": "Portland Trail Blazers",
+  "teamId": 1610612757,
+  "colors": {
+    "primary": "#e03a3e",
+    "secondary": "#000000"
+  },
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Tiago Splitter",
+  "lastUpdated": "2026-10-05",
+  "sources": [
+    {
+      "label": "ESPN roster and depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/por"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of roster",
+      "short": "Rest"
+    }
+  ],
+  "players": [
+    {
+      "name": "Damian Lillard",
+      "espnId": "6606",
+      "nbaId": 203081,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/6606.png",
+      "pos": "G",
+      "slot": "PG",
+      "height": "6-2",
+      "birthDate": "1990-07-15",
+      "exp": 15,
+      "college": "Weber State",
+      "jersey": "0",
+      "unit": "starters"
+    },
+    {
+      "name": "Jrue Holiday",
+      "espnId": "3995",
+      "bbrefId": "holidjr01",
+      "nbaId": 201950,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3995.png",
+      "pos": "G",
+      "slot": "SG",
+      "height": "6-4",
+      "birthDate": "1990-06-12",
+      "exp": 18,
+      "college": "UCLA",
+      "jersey": "5",
+      "unit": "starters"
+    },
+    {
+      "name": "Toumani Camara",
+      "espnId": "4431736",
+      "bbrefId": "camarto01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4431736.png",
+      "pos": "F",
+      "slot": "SF",
+      "height": "6-7",
+      "birthDate": "2000-05-08",
+      "exp": 4,
+      "college": "Dayton",
+      "jersey": "33",
+      "unit": "starters"
+    },
+    {
+      "name": "Deni Avdija",
+      "espnId": "4683021",
+      "bbrefId": "avdijde01",
+      "nbaId": 1630166,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4683021.png",
+      "pos": "F",
+      "slot": "PF",
+      "height": "6-8",
+      "birthDate": "2001-01-03",
+      "exp": 7,
+      "college": null,
+      "jersey": "8",
+      "unit": "starters"
+    },
+    {
+      "name": "Donovan Clingan",
+      "espnId": "5105565",
+      "bbrefId": "clingdo01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5105565.png",
+      "pos": "C",
+      "slot": "C",
+      "height": "7-2",
+      "birthDate": "2004-02-23",
+      "exp": 3,
+      "college": "UConn",
+      "jersey": "23",
+      "unit": "starters"
+    },
+    {
+      "name": "Sidy Cissoko",
+      "espnId": "5081727",
+      "bbrefId": "cissosi01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5081727.png",
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2004-04-02",
+      "exp": 4,
+      "college": null,
+      "jersey": "91",
+      "unit": "second"
+    },
+    {
+      "name": "Scoot Henderson",
+      "espnId": "4683678",
+      "bbrefId": "hendesc01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4683678.png",
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2004-02-03",
+      "exp": 4,
+      "college": null,
+      "jersey": "00",
+      "unit": "second"
+    },
+    {
+      "name": "Vit Krejci",
+      "espnId": "4578893",
+      "bbrefId": "krejcvi01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4578893.png",
+      "pos": "G",
+      "height": "6-8",
+      "birthDate": "2000-06-19",
+      "exp": 6,
+      "college": null,
+      "jersey": "27",
+      "unit": "second"
+    },
+    {
+      "name": "Ja Morant",
+      "espnId": "4279888",
+      "bbrefId": "moranja01",
+      "nbaId": 1629630,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4279888.png",
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "1999-08-10",
+      "exp": 8,
+      "college": "Murray State",
+      "jersey": "1",
+      "unit": "second"
+    },
+    {
+      "name": "Robert Williams III",
+      "espnId": "4066211",
+      "bbrefId": "williro04",
+      "nbaId": 1629057,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4066211.png",
+      "pos": "C",
+      "height": "6-9",
+      "birthDate": "1997-10-17",
+      "exp": 9,
+      "college": "Texas A&M",
+      "jersey": "35",
+      "unit": "second"
+    },
+    {
+      "name": "Branden Carlson",
+      "espnId": "4592435",
+      "bbrefId": "carlsbr01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4592435.png",
+      "pos": "C",
+      "height": "7-0",
+      "birthDate": "1999-06-14",
+      "exp": 3,
+      "college": "Utah",
+      "jersey": "10",
+      "unit": "third"
+    },
+    {
+      "name": "Yang Hansen",
+      "espnId": "5217746",
+      "bbrefId": "yangha01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5217746.png",
+      "pos": "C",
+      "height": "7-1",
+      "birthDate": "2005-06-26",
+      "exp": 2,
+      "college": null,
+      "jersey": "16",
+      "unit": "third"
+    },
+    {
+      "name": "Jayson Kent",
+      "espnId": "4703889",
+      "bbrefId": "kentja01",
+      "pos": "G",
+      "height": "6-8",
+      "birthDate": "2002-02-03",
+      "exp": 2,
+      "college": "Texas",
+      "jersey": "29",
+      "unit": "third"
+    },
+    {
+      "name": "Micah Potter",
+      "espnId": "4066399",
+      "bbrefId": "pottemi01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4066399.png",
+      "pos": "C",
+      "height": "6-9",
+      "birthDate": "1998-04-06",
+      "exp": 6,
+      "college": "Wisconsin",
+      "jersey": "9",
+      "unit": "third"
+    },
+    {
+      "name": "Jeremy Sochan",
+      "espnId": "4610139",
+      "bbrefId": "sochaje01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4610139.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2003-05-20",
+      "exp": 5,
+      "college": "Baylor",
+      "jersey": "4",
+      "unit": "third"
+    },
+    {
+      "name": "Shaedon Sharpe",
+      "espnId": "4914336",
+      "bbrefId": "sharpsh01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4914336.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2003-05-30",
+      "exp": 5,
+      "college": "Kentucky",
+      "jersey": "17",
+      "unit": "camp"
+    },
+    {
+      "name": "John Tonje",
+      "espnId": "4593043",
+      "bbrefId": "tonjejo01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4593043.png",
+      "pos": "F",
+      "height": "6-5",
+      "birthDate": "2001-04-23",
+      "exp": 2,
+      "college": "Wisconsin",
+      "jersey": "2",
+      "unit": "camp"
+    },
+    {
+      "name": "Chris Youngblood",
+      "espnId": "4706557",
+      "bbrefId": "youngch01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4706557.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2002-02-09",
+      "exp": 2,
+      "college": "Alabama",
+      "jersey": "11",
+      "unit": "camp"
+    }
+  ]
+}

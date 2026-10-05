@@ -1,0 +1,320 @@
+{
+  "team": "MEM",
+  "espnAbbr": "mem",
+  "teamName": "Memphis Grizzlies",
+  "teamId": 1610612763,
+  "colors": {
+    "primary": "#5d76a9",
+    "secondary": "#12173f"
+  },
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Tuomas Iisalo",
+  "lastUpdated": "2026-10-05",
+  "sources": [
+    {
+      "label": "ESPN roster and depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/mem"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of roster",
+      "short": "Rest"
+    }
+  ],
+  "players": [
+    {
+      "name": "Ty Jerome",
+      "espnId": "4065733",
+      "bbrefId": "jeromty01",
+      "nbaId": 1629660,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4065733.png",
+      "pos": "G",
+      "slot": "PG",
+      "height": "6-5",
+      "birthDate": "1997-07-08",
+      "exp": 8,
+      "college": "Virginia",
+      "jersey": "2",
+      "unit": "starters"
+    },
+    {
+      "name": "Cedric Coward",
+      "espnId": "4903027",
+      "bbrefId": "cowarce01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4903027.png",
+      "pos": "F",
+      "slot": "SG",
+      "height": "6-5",
+      "birthDate": "2003-09-11",
+      "exp": 2,
+      "college": "Washington State",
+      "jersey": "23",
+      "unit": "starters"
+    },
+    {
+      "name": "Jerami Grant",
+      "espnId": "2991070",
+      "bbrefId": "grantje01",
+      "nbaId": 203924,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/2991070.png",
+      "pos": "F",
+      "slot": "SF",
+      "height": "6-7",
+      "birthDate": "1994-03-12",
+      "exp": 13,
+      "college": "Syracuse",
+      "jersey": "3",
+      "unit": "starters"
+    },
+    {
+      "name": "Cameron Boozer",
+      "espnId": "5041935",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5041935.png",
+      "pos": "F",
+      "slot": "PF",
+      "height": "6-8",
+      "birthDate": "2007-07-18",
+      "exp": 0,
+      "college": "Duke",
+      "jersey": "27",
+      "unit": "starters"
+    },
+    {
+      "name": "Zach Edey",
+      "espnId": "4600663",
+      "bbrefId": "edeyza01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4600663.png",
+      "pos": "C",
+      "slot": "C",
+      "height": "7-3",
+      "birthDate": "2002-03-14",
+      "exp": 3,
+      "college": "Purdue",
+      "jersey": "14",
+      "unit": "starters"
+    },
+    {
+      "name": "Taylor Hendricks",
+      "espnId": "4684806",
+      "bbrefId": "hendrta01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4684806.png",
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2003-11-22",
+      "exp": 4,
+      "college": "UCF",
+      "jersey": "22",
+      "unit": "second"
+    },
+    {
+      "name": "Scotty Pippen Jr.",
+      "espnId": "4431785",
+      "bbrefId": "pippesc02",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4431785.png",
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "2000-11-10",
+      "exp": 5,
+      "college": "Vanderbilt",
+      "jersey": "1",
+      "unit": "second"
+    },
+    {
+      "name": "Cam Spencer",
+      "espnId": "4433083",
+      "bbrefId": "spencca01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4433083.png",
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2000-04-06",
+      "exp": 3,
+      "college": "UConn",
+      "jersey": "24",
+      "unit": "second"
+    },
+    {
+      "name": "Isaiah Stewart",
+      "espnId": "4432810",
+      "bbrefId": "stewais01",
+      "nbaId": 1630191,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432810.png",
+      "pos": "C",
+      "height": "6-8",
+      "birthDate": "2001-05-22",
+      "exp": 7,
+      "college": "Washington",
+      "jersey": "28",
+      "unit": "second"
+    },
+    {
+      "name": "Jaylen Wells",
+      "espnId": "5112087",
+      "bbrefId": "wellsja01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5112087.png",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2003-08-26",
+      "exp": 3,
+      "college": "Washington State",
+      "jersey": "0",
+      "unit": "second"
+    },
+    {
+      "name": "Walter Clayton Jr.",
+      "espnId": "4896372",
+      "bbrefId": "claytwa01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4896372.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2003-03-06",
+      "exp": 2,
+      "college": "Florida",
+      "jersey": "4",
+      "unit": "third"
+    },
+    {
+      "name": "GG Jackson",
+      "espnId": "5105550",
+      "bbrefId": "jacksgg01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5105550.png",
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2004-12-17",
+      "exp": 4,
+      "college": "South Carolina",
+      "jersey": "45",
+      "unit": "third"
+    },
+    {
+      "name": "Karim Lopez",
+      "espnId": "5231919",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2007-04-12",
+      "exp": 0,
+      "college": null,
+      "jersey": "35",
+      "unit": "third"
+    },
+    {
+      "name": "Quinten Post",
+      "espnId": "4593016",
+      "bbrefId": "postqu01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4593016.png",
+      "pos": "C",
+      "height": "7-0",
+      "birthDate": "2000-03-21",
+      "exp": 3,
+      "college": "Boston College",
+      "jersey": "41",
+      "unit": "third"
+    },
+    {
+      "name": "Javon Small",
+      "espnId": "4781746",
+      "bbrefId": "smallja01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4781746.png",
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "2002-12-19",
+      "exp": 2,
+      "college": "West Virginia",
+      "jersey": "10",
+      "unit": "third"
+    },
+    {
+      "name": "Carson Cooper",
+      "espnId": "5105817",
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "2004-04-09",
+      "exp": 0,
+      "college": "Michigan State",
+      "jersey": "20",
+      "unit": "camp"
+    },
+    {
+      "name": "Jordan Hawkins",
+      "espnId": "4683750",
+      "bbrefId": "hawkijo01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4683750.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2002-04-29",
+      "exp": 4,
+      "college": "UConn",
+      "jersey": "19",
+      "unit": "camp"
+    },
+    {
+      "name": "Jahmai Mashack",
+      "espnId": "4683934",
+      "bbrefId": "mashaja01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4683934.png",
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2002-11-10",
+      "exp": 2,
+      "college": "Tennessee",
+      "jersey": "21",
+      "unit": "camp"
+    },
+    {
+      "name": "Kris Murray",
+      "espnId": "4594326",
+      "bbrefId": "murrakr01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4594326.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2000-08-19",
+      "exp": 4,
+      "college": "Iowa",
+      "jersey": "17",
+      "unit": "camp"
+    },
+    {
+      "name": "Micah Peavy",
+      "espnId": "4432185",
+      "bbrefId": "peavymi01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432185.png",
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "2001-07-16",
+      "exp": 2,
+      "college": "Georgetown",
+      "jersey": "7",
+      "unit": "camp"
+    },
+    {
+      "name": "Olivier-Maxence Prosper",
+      "espnId": "4595400",
+      "bbrefId": "prospol01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4595400.png",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2002-07-03",
+      "exp": 4,
+      "college": "Marquette",
+      "jersey": "18",
+      "unit": "camp"
+    }
+  ]
+}

@@ -1,0 +1,319 @@
+{
+  "team": "SAS",
+  "espnAbbr": "sa",
+  "teamName": "San Antonio Spurs",
+  "teamId": 1610612759,
+  "colors": {
+    "primary": "#000000",
+    "secondary": "#c4ced4"
+  },
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Mitch Johnson",
+  "lastUpdated": "2026-10-05",
+  "sources": [
+    {
+      "label": "ESPN roster and depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/sa"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of roster",
+      "short": "Rest"
+    }
+  ],
+  "players": [
+    {
+      "name": "De'Aaron Fox",
+      "espnId": "4066259",
+      "bbrefId": "foxde01",
+      "nbaId": 1628368,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4066259.png",
+      "pos": "G",
+      "slot": "PG",
+      "height": "6-3",
+      "birthDate": "1997-12-20",
+      "exp": 10,
+      "college": "Kentucky",
+      "jersey": "4",
+      "unit": "starters"
+    },
+    {
+      "name": "Stephon Castle",
+      "espnId": "4845367",
+      "bbrefId": "castlst01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4845367.png",
+      "pos": "G",
+      "slot": "SG",
+      "height": "6-6",
+      "birthDate": "2004-11-01",
+      "exp": 3,
+      "college": "UConn",
+      "jersey": "5",
+      "unit": "starters"
+    },
+    {
+      "name": "Devin Vassell",
+      "espnId": "4395630",
+      "bbrefId": "vassede01",
+      "nbaId": 1630170,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4395630.png",
+      "pos": "G",
+      "slot": "SF",
+      "height": "6-5",
+      "birthDate": "2000-08-23",
+      "exp": 7,
+      "college": "Florida State",
+      "jersey": "24",
+      "unit": "starters"
+    },
+    {
+      "name": "Tobias Harris",
+      "espnId": "6440",
+      "bbrefId": "harrito02",
+      "nbaId": 202699,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/6440.png",
+      "pos": "F",
+      "slot": "PF",
+      "height": "6-8",
+      "birthDate": "1992-07-15",
+      "exp": 16,
+      "college": "Tennessee",
+      "jersey": "23",
+      "unit": "starters"
+    },
+    {
+      "name": "Victor Wembanyama",
+      "espnId": "5104157",
+      "bbrefId": "wembavi01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5104157.png",
+      "pos": "F",
+      "slot": "C",
+      "height": "7-4",
+      "birthDate": "2004-01-04",
+      "exp": 4,
+      "college": null,
+      "jersey": "1",
+      "unit": "starters"
+    },
+    {
+      "name": "Carter Bryant",
+      "espnId": "5061568",
+      "bbrefId": "bryanca01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5061568.png",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2005-11-26",
+      "exp": 2,
+      "college": "Arizona",
+      "jersey": "11",
+      "unit": "second"
+    },
+    {
+      "name": "Julian Champagnie",
+      "espnId": "4592479",
+      "bbrefId": "champju02",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4592479.png",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2001-06-29",
+      "exp": 5,
+      "college": "St. John's",
+      "jersey": "30",
+      "unit": "second"
+    },
+    {
+      "name": "Dylan Harper",
+      "espnId": "5037871",
+      "bbrefId": "harpedy01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5037871.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2006-03-02",
+      "exp": 2,
+      "college": "Rutgers",
+      "jersey": "2",
+      "unit": "second"
+    },
+    {
+      "name": "Luke Kornet",
+      "espnId": "3064560",
+      "bbrefId": "kornelu01",
+      "nbaId": 1628436,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3064560.png",
+      "pos": "C",
+      "height": "7-1",
+      "birthDate": "1995-07-15",
+      "exp": 10,
+      "college": "Vanderbilt",
+      "jersey": "7",
+      "unit": "second"
+    },
+    {
+      "name": "Jordan McLaughlin",
+      "espnId": "3134916",
+      "bbrefId": "mclaujo01",
+      "nbaId": 1629162,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3134916.png",
+      "pos": "G",
+      "height": "6-0",
+      "birthDate": "1996-04-09",
+      "exp": 8,
+      "college": "USC",
+      "jersey": "0",
+      "unit": "second"
+    },
+    {
+      "name": "Harrison Barnes",
+      "espnId": "6578",
+      "bbrefId": "barneha02",
+      "nbaId": 203084,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/6578.png",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "1992-05-30",
+      "exp": 15,
+      "college": "North Carolina",
+      "jersey": "40",
+      "unit": "third"
+    },
+    {
+      "name": "Ja'Kobi Gillespie",
+      "espnId": "5107968",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5107968.png",
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "2004-03-10",
+      "exp": 0,
+      "college": "Tennessee",
+      "jersey": "17",
+      "unit": "third"
+    },
+    {
+      "name": "Keldon Johnson",
+      "espnId": "4395723",
+      "bbrefId": "johnske04",
+      "nbaId": 1629640,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4395723.png",
+      "pos": "F",
+      "height": "6-5",
+      "birthDate": "1999-10-11",
+      "exp": 8,
+      "college": "Kentucky",
+      "jersey": "3",
+      "unit": "third"
+    },
+    {
+      "name": "Jayden Quaintance",
+      "espnId": "5101845",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5101845.png",
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2007-07-11",
+      "exp": 0,
+      "college": "Kentucky",
+      "jersey": "22",
+      "unit": "third"
+    },
+    {
+      "name": "Tarris Reed Jr.",
+      "espnId": "5105809",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5105809.png",
+      "pos": "C",
+      "height": "6-10",
+      "birthDate": "2003-08-05",
+      "exp": 0,
+      "college": "UConn",
+      "jersey": "10",
+      "unit": "third"
+    },
+    {
+      "name": "Maliq Brown",
+      "espnId": "5105337",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5105337.png",
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2003-11-15",
+      "exp": 0,
+      "college": "Duke",
+      "jersey": "15",
+      "unit": "camp"
+    },
+    {
+      "name": "RJ Davis",
+      "espnId": "4433176",
+      "pos": "G",
+      "height": "6-0",
+      "birthDate": "2001-10-21",
+      "exp": 2,
+      "college": "North Carolina",
+      "jersey": "14",
+      "unit": "camp"
+    },
+    {
+      "name": "Jon Elmore",
+      "espnId": "3155937",
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "1995-12-20",
+      "exp": 0,
+      "college": "Marshall",
+      "jersey": "33",
+      "unit": "camp"
+    },
+    {
+      "name": "David Jones Garcia",
+      "espnId": "4713010",
+      "bbrefId": "jonesda06",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4713010.png",
+      "pos": "F",
+      "height": "6-4",
+      "birthDate": "2001-11-24",
+      "exp": 2,
+      "college": "Memphis",
+      "jersey": "25",
+      "unit": "camp"
+    },
+    {
+      "name": "Taelon Peter",
+      "espnId": "4703421",
+      "bbrefId": "peterta01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4703421.png",
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2002-02-27",
+      "exp": 2,
+      "college": "Liberty",
+      "jersey": "8",
+      "unit": "camp"
+    },
+    {
+      "name": "Malik Williams",
+      "espnId": "4277880",
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "1998-08-26",
+      "exp": 2,
+      "college": "Louisville",
+      "jersey": "35",
+      "unit": "camp"
+    }
+  ]
+}

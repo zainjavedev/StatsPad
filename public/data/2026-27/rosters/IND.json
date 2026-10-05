@@ -1,0 +1,289 @@
+{
+  "team": "IND",
+  "espnAbbr": "ind",
+  "teamName": "Indiana Pacers",
+  "teamId": 1610612754,
+  "colors": {
+    "primary": "#0c2340",
+    "secondary": "#ffd520"
+  },
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Rick Carlisle",
+  "lastUpdated": "2026-10-05",
+  "sources": [
+    {
+      "label": "ESPN roster and depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/ind"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of roster",
+      "short": "Rest"
+    }
+  ],
+  "players": [
+    {
+      "name": "Tyrese Haliburton",
+      "espnId": "4396993",
+      "nbaId": 1630169,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4396993.png",
+      "pos": "G",
+      "slot": "PG",
+      "height": "6-5",
+      "birthDate": "2000-02-29",
+      "exp": 7,
+      "college": "Iowa State",
+      "jersey": "0",
+      "unit": "starters"
+    },
+    {
+      "name": "Andrew Nembhard",
+      "espnId": "4395712",
+      "bbrefId": "nembhan01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4395712.png",
+      "pos": "G",
+      "slot": "SG",
+      "height": "6-4",
+      "birthDate": "2000-01-16",
+      "exp": 5,
+      "college": "Gonzaga",
+      "jersey": "2",
+      "unit": "starters"
+    },
+    {
+      "name": "Aaron Nesmith",
+      "espnId": "4396909",
+      "bbrefId": "nesmiaa01",
+      "nbaId": 1630174,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4396909.png",
+      "pos": "G",
+      "slot": "SF",
+      "height": "6-5",
+      "birthDate": "1999-10-16",
+      "exp": 7,
+      "college": "Vanderbilt",
+      "jersey": "23",
+      "unit": "starters"
+    },
+    {
+      "name": "Pascal Siakam",
+      "espnId": "3149673",
+      "bbrefId": "siakapa01",
+      "nbaId": 1627783,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3149673.png",
+      "pos": "F",
+      "slot": "PF",
+      "height": "6-8",
+      "birthDate": "1994-04-02",
+      "exp": 11,
+      "college": "New Mexico State",
+      "jersey": "43",
+      "unit": "starters"
+    },
+    {
+      "name": "Ivica Zubac",
+      "espnId": "4017837",
+      "bbrefId": "zubaciv01",
+      "nbaId": 1627826,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4017837.png",
+      "pos": "C",
+      "slot": "C",
+      "height": "7-0",
+      "birthDate": "1997-03-18",
+      "exp": 11,
+      "college": null,
+      "jersey": "40",
+      "unit": "starters"
+    },
+    {
+      "name": "T.J. McConnell",
+      "espnId": "2530530",
+      "bbrefId": "mccontj01",
+      "nbaId": 204456,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/2530530.png",
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "1992-03-25",
+      "exp": 12,
+      "college": "Arizona",
+      "jersey": "9",
+      "unit": "second"
+    },
+    {
+      "name": "Larry Nance Jr.",
+      "espnId": "2580365",
+      "bbrefId": "nancela02",
+      "nbaId": 1626204,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/2580365.png",
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "1993-01-01",
+      "exp": 12,
+      "college": "Wyoming",
+      "jersey": "22",
+      "unit": "second"
+    },
+    {
+      "name": "Kelly Oubre Jr.",
+      "espnId": "3133603",
+      "bbrefId": "oubreke01",
+      "nbaId": 1626162,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3133603.png",
+      "pos": "G",
+      "height": "6-8",
+      "birthDate": "1995-12-09",
+      "exp": 12,
+      "college": "Kansas",
+      "jersey": "10",
+      "unit": "second"
+    },
+    {
+      "name": "Obi Toppin",
+      "espnId": "4278355",
+      "bbrefId": "toppiob01",
+      "nbaId": 1630167,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4278355.png",
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "1998-03-04",
+      "exp": 7,
+      "college": "Dayton",
+      "jersey": "1",
+      "unit": "second"
+    },
+    {
+      "name": "Jarace Walker",
+      "espnId": "5106060",
+      "bbrefId": "walkeja02",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5106060.png",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2003-09-04",
+      "exp": 4,
+      "college": "Houston",
+      "jersey": "5",
+      "unit": "second"
+    },
+    {
+      "name": "Kobe Brown",
+      "espnId": "4431752",
+      "bbrefId": "brownko01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4431752.png",
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "2000-01-01",
+      "exp": 4,
+      "college": "Missouri",
+      "jersey": "24",
+      "unit": "third"
+    },
+    {
+      "name": "Johnny Furphy",
+      "espnId": "5157066",
+      "bbrefId": "furphjo01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5157066.png",
+      "pos": "G",
+      "height": "6-8",
+      "birthDate": "2004-12-07",
+      "exp": 3,
+      "college": "Kansas",
+      "jersey": "12",
+      "unit": "third"
+    },
+    {
+      "name": "Jay Huff",
+      "espnId": "4065731",
+      "bbrefId": "huffja01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4065731.png",
+      "pos": "C",
+      "height": "7-1",
+      "birthDate": "1997-08-25",
+      "exp": 5,
+      "college": "Virginia",
+      "jersey": "32",
+      "unit": "third"
+    },
+    {
+      "name": "Quenton Jackson",
+      "espnId": "4592829",
+      "bbrefId": "jacksqu01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4592829.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "1998-09-15",
+      "exp": 5,
+      "college": "Texas A&M",
+      "jersey": "29",
+      "unit": "third"
+    },
+    {
+      "name": "Ben Sheppard",
+      "espnId": "4433076",
+      "bbrefId": "sheppbe01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4433076.png",
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2001-07-16",
+      "exp": 4,
+      "college": "Belmont",
+      "jersey": "26",
+      "unit": "third"
+    },
+    {
+      "name": "James Johnson",
+      "espnId": "3999",
+      "nbaId": 201949,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3999.png",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "1987-02-20",
+      "exp": 17,
+      "college": "Wake Forest",
+      "jersey": "16",
+      "unit": "camp"
+    },
+    {
+      "name": "Jalen Slawson",
+      "espnId": "4398207",
+      "bbrefId": "slawsja01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4398207.png",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "1999-10-22",
+      "exp": 3,
+      "college": "Furman",
+      "jersey": "18",
+      "unit": "camp"
+    },
+    {
+      "name": "Braden Smith",
+      "espnId": "5105854",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5105854.png",
+      "pos": "G",
+      "height": "5-10",
+      "birthDate": "2003-07-25",
+      "exp": 0,
+      "college": "Purdue",
+      "jersey": "18",
+      "unit": "camp"
+    }
+  ]
+}

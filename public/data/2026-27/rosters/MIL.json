@@ -1,0 +1,321 @@
+{
+  "team": "MIL",
+  "espnAbbr": "mil",
+  "teamName": "Milwaukee Bucks",
+  "teamId": 1610612749,
+  "colors": {
+    "primary": "#00471b",
+    "secondary": "#eee1c6"
+  },
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Taylor Jenkins",
+  "lastUpdated": "2026-10-05",
+  "sources": [
+    {
+      "label": "ESPN roster and depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/mil"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of roster",
+      "short": "Rest"
+    }
+  ],
+  "players": [
+    {
+      "name": "Ryan Rollins",
+      "espnId": "4591725",
+      "bbrefId": "rolliry01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4591725.png",
+      "pos": "G",
+      "slot": "PG",
+      "height": "6-3",
+      "birthDate": "2002-07-03",
+      "exp": 5,
+      "college": "Toledo",
+      "jersey": "13",
+      "unit": "starters"
+    },
+    {
+      "name": "Tyler Herro",
+      "espnId": "4395725",
+      "bbrefId": "herroty01",
+      "nbaId": 1629639,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4395725.png",
+      "pos": "G",
+      "slot": "SG",
+      "height": "6-5",
+      "birthDate": "2000-01-20",
+      "exp": 8,
+      "college": "Kentucky",
+      "jersey": "11",
+      "unit": "starters"
+    },
+    {
+      "name": "Jaime Jaquez Jr.",
+      "espnId": "4432848",
+      "bbrefId": "jaqueja01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432848.png",
+      "pos": "F",
+      "slot": "SF",
+      "height": "6-6",
+      "birthDate": "2001-02-18",
+      "exp": 4,
+      "college": "UCLA",
+      "jersey": "24",
+      "unit": "starters"
+    },
+    {
+      "name": "Kyle Kuzma",
+      "espnId": "3134907",
+      "bbrefId": "kuzmaky01",
+      "nbaId": 1628398,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3134907.png",
+      "pos": "F",
+      "slot": "PF",
+      "height": "6-8",
+      "birthDate": "1995-07-24",
+      "exp": 10,
+      "college": "Utah",
+      "jersey": "18",
+      "unit": "starters"
+    },
+    {
+      "name": "Myles Turner",
+      "espnId": "3133628",
+      "bbrefId": "turnemy01",
+      "nbaId": 1626167,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3133628.png",
+      "pos": "C",
+      "slot": "C",
+      "height": "6-11",
+      "birthDate": "1996-03-24",
+      "exp": 12,
+      "college": "Texas",
+      "jersey": "3",
+      "unit": "starters"
+    },
+    {
+      "name": "Nate Ament",
+      "espnId": "5164559",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5164559.png",
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2006-12-10",
+      "exp": 0,
+      "college": "Tennessee",
+      "jersey": "15",
+      "unit": "second"
+    },
+    {
+      "name": "Brayden Burries",
+      "espnId": "5082206",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5082206.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2005-09-18",
+      "exp": 0,
+      "college": "Arizona",
+      "jersey": "0",
+      "unit": "second"
+    },
+    {
+      "name": "Ousmane Dieng",
+      "espnId": "4997526",
+      "bbrefId": "diengou01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4997526.png",
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2003-05-21",
+      "exp": 5,
+      "college": null,
+      "jersey": "21",
+      "unit": "second"
+    },
+    {
+      "name": "Kevin Porter Jr.",
+      "espnId": "4397140",
+      "bbrefId": "porteke02",
+      "nbaId": 1629645,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4397140.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2000-05-04",
+      "exp": 7,
+      "college": "USC",
+      "jersey": "7",
+      "unit": "second"
+    },
+    {
+      "name": "Kel'el Ware",
+      "espnId": "5105623",
+      "bbrefId": "wareke01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5105623.png",
+      "pos": "C",
+      "height": "7-0",
+      "birthDate": "2004-04-20",
+      "exp": 3,
+      "college": "Indiana",
+      "jersey": "9",
+      "unit": "second"
+    },
+    {
+      "name": "Kasparas Jakucionis",
+      "espnId": "5214640",
+      "bbrefId": "jakucka01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5214640.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2006-05-29",
+      "exp": 2,
+      "college": "Illinois",
+      "jersey": "25",
+      "unit": "third"
+    },
+    {
+      "name": "Caris LeVert",
+      "espnId": "2991043",
+      "bbrefId": "leverca01",
+      "nbaId": 1627747,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/2991043.png",
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "1994-08-25",
+      "exp": 11,
+      "college": "Michigan",
+      "jersey": "12",
+      "unit": "third"
+    },
+    {
+      "name": "Bogoljub Markovic",
+      "espnId": "5214989",
+      "pos": "F",
+      "height": "6-11",
+      "birthDate": "2005-07-12",
+      "exp": 0,
+      "college": null,
+      "jersey": "23",
+      "unit": "third"
+    },
+    {
+      "name": "Jericho Sims",
+      "espnId": "4277922",
+      "bbrefId": "simsje01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4277922.png",
+      "pos": "C",
+      "height": "6-10",
+      "birthDate": "1998-10-20",
+      "exp": 6,
+      "college": "Texas",
+      "jersey": "00",
+      "unit": "third"
+    },
+    {
+      "name": "Gary Trent Jr.",
+      "espnId": "4277843",
+      "bbrefId": "trentga02",
+      "nbaId": 1629018,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4277843.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "1999-01-18",
+      "exp": 9,
+      "college": "Duke",
+      "jersey": "5",
+      "unit": "third"
+    },
+    {
+      "name": "John Butler Jr.",
+      "espnId": "4432588",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4432588.png",
+      "pos": "F",
+      "height": "7-0",
+      "birthDate": "2002-12-04",
+      "exp": 2,
+      "college": "Florida State",
+      "jersey": "27",
+      "unit": "camp"
+    },
+    {
+      "name": "AJ Green",
+      "espnId": "4397475",
+      "bbrefId": "greenaj01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4397475.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "1999-09-27",
+      "exp": 5,
+      "college": "Northern Iowa",
+      "jersey": "20",
+      "unit": "camp"
+    },
+    {
+      "name": "Kam Jones",
+      "espnId": "4697268",
+      "bbrefId": "joneska03",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4697268.png",
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2002-02-25",
+      "exp": 2,
+      "college": "Marquette",
+      "jersey": "19",
+      "unit": "camp"
+    },
+    {
+      "name": "Pete Nance",
+      "espnId": "4397233",
+      "bbrefId": "nancepe01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4397233.png",
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2000-02-19",
+      "exp": 4,
+      "college": "North Carolina",
+      "jersey": "35",
+      "unit": "camp"
+    },
+    {
+      "name": "Cormac Ryan",
+      "espnId": "4397114",
+      "bbrefId": "ryanco01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4397114.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "1998-10-26",
+      "exp": 2,
+      "college": "North Carolina",
+      "jersey": "30",
+      "unit": "camp"
+    },
+    {
+      "name": "Jake Stephens",
+      "espnId": "4398257",
+      "pos": "C",
+      "height": "7-0",
+      "birthDate": "1999-11-05",
+      "exp": 0,
+      "college": "Chattanooga",
+      "jersey": "88",
+      "unit": "camp"
+    }
+  ]
+}

@@ -1,0 +1,297 @@
+{
+  "team": "SAC",
+  "espnAbbr": "sac",
+  "teamName": "Sacramento Kings",
+  "teamId": 1610612758,
+  "colors": {
+    "primary": "#5a2d81",
+    "secondary": "#6a7a82"
+  },
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Doug Christie",
+  "lastUpdated": "2026-10-05",
+  "sources": [
+    {
+      "label": "ESPN roster and depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/sac"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of roster",
+      "short": "Rest"
+    }
+  ],
+  "players": [
+    {
+      "name": "Darius Acuff Jr.",
+      "espnId": "5142620",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5142620.png",
+      "pos": "G",
+      "slot": "PG",
+      "height": "6-2",
+      "birthDate": "2006-11-16",
+      "exp": 0,
+      "college": "Arkansas",
+      "jersey": "5",
+      "unit": "starters"
+    },
+    {
+      "name": "Zach LaVine",
+      "espnId": "3064440",
+      "bbrefId": "lavinza01",
+      "nbaId": 203897,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3064440.png",
+      "pos": "G",
+      "slot": "SG",
+      "height": "6-5",
+      "birthDate": "1995-03-10",
+      "exp": 13,
+      "college": "UCLA",
+      "jersey": "8",
+      "unit": "starters"
+    },
+    {
+      "name": "De'Andre Hunter",
+      "espnId": "4065732",
+      "bbrefId": "huntede01",
+      "nbaId": 1629631,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4065732.png",
+      "pos": "F",
+      "slot": "SF",
+      "height": "6-7",
+      "birthDate": "1997-12-02",
+      "exp": 8,
+      "college": "Virginia",
+      "jersey": "15",
+      "unit": "starters"
+    },
+    {
+      "name": "Keegan Murray",
+      "espnId": "4594327",
+      "bbrefId": "murrake02",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4594327.png",
+      "pos": "F",
+      "slot": "PF",
+      "height": "6-8",
+      "birthDate": "2000-08-19",
+      "exp": 5,
+      "college": "Iowa",
+      "jersey": "13",
+      "unit": "starters"
+    },
+    {
+      "name": "Domantas Sabonis",
+      "espnId": "3155942",
+      "bbrefId": "sabondo01",
+      "nbaId": 1627734,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3155942.png",
+      "pos": "F",
+      "slot": "C",
+      "height": "6-10",
+      "birthDate": "1996-05-03",
+      "exp": 11,
+      "college": "Gonzaga",
+      "jersey": "11",
+      "unit": "starters"
+    },
+    {
+      "name": "Precious Achiuwa",
+      "espnId": "4431679",
+      "bbrefId": "achiupr01",
+      "nbaId": 1630173,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4431679.png",
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "1999-09-19",
+      "exp": 7,
+      "college": "Memphis",
+      "jersey": "9",
+      "unit": "second"
+    },
+    {
+      "name": "Nique Clifford",
+      "espnId": "4702384",
+      "bbrefId": "cliffni01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4702384.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2002-02-09",
+      "exp": 2,
+      "college": "Colorado State",
+      "jersey": "10",
+      "unit": "second"
+    },
+    {
+      "name": "Malik Monk",
+      "espnId": "4066262",
+      "bbrefId": "monkma01",
+      "nbaId": 1628370,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4066262.png",
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "1998-02-04",
+      "exp": 10,
+      "college": "Kentucky",
+      "jersey": "0",
+      "unit": "second"
+    },
+    {
+      "name": "Maxime Raynaud",
+      "espnId": "4898371",
+      "bbrefId": "raynama01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4898371.png",
+      "pos": "C",
+      "height": "7-1",
+      "birthDate": "2003-04-07",
+      "exp": 2,
+      "college": "Stanford",
+      "jersey": "42",
+      "unit": "second"
+    },
+    {
+      "name": "Ben Simmons",
+      "espnId": "3907387",
+      "nbaId": 1627732,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/3907387.png",
+      "pos": "G",
+      "height": "6-10",
+      "birthDate": "1996-07-20",
+      "exp": 10,
+      "college": "LSU",
+      "jersey": "25",
+      "unit": "second"
+    },
+    {
+      "name": "Dylan Cardwell",
+      "espnId": "4433174",
+      "bbrefId": "cardwdy01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4433174.png",
+      "pos": "C",
+      "height": "6-10",
+      "birthDate": "2001-12-16",
+      "exp": 2,
+      "college": "Auburn",
+      "jersey": "32",
+      "unit": "third"
+    },
+    {
+      "name": "Adam Flagler",
+      "espnId": "4397654",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4397654.png",
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "1999-12-01",
+      "exp": 3,
+      "college": "Baylor",
+      "jersey": "20",
+      "unit": "third"
+    },
+    {
+      "name": "Alex Karaban",
+      "espnId": "4917149",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4917149.png",
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2002-11-11",
+      "exp": 0,
+      "college": "UConn",
+      "jersey": "33",
+      "unit": "third"
+    },
+    {
+      "name": "Daeqwon Plowden",
+      "espnId": "4279318",
+      "bbrefId": "plowdda01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4279318.png",
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "1998-08-29",
+      "exp": 3,
+      "college": "Bowling Green",
+      "jersey": "29",
+      "unit": "third"
+    },
+    {
+      "name": "Emanuel Sharp",
+      "espnId": "5106058",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5106058.png",
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2004-03-07",
+      "exp": 0,
+      "college": "Houston",
+      "jersey": "34",
+      "unit": "third"
+    },
+    {
+      "name": "Leaky Black",
+      "espnId": "4395650",
+      "bbrefId": "blackle01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4395650.png",
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "1999-06-14",
+      "exp": 3,
+      "college": "North Carolina",
+      "jersey": "19",
+      "unit": "camp"
+    },
+    {
+      "name": "Jonathan Mogbo",
+      "espnId": "5107897",
+      "bbrefId": "mogbojo01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/5107897.png",
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2001-10-29",
+      "exp": 3,
+      "college": "San Francisco",
+      "jersey": "22",
+      "unit": "camp"
+    },
+    {
+      "name": "Tristen Newton",
+      "espnId": "4592965",
+      "bbrefId": "newtotr01",
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/4592965.png",
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2001-04-26",
+      "exp": 3,
+      "college": "UConn",
+      "jersey": "00",
+      "unit": "camp"
+    },
+    {
+      "name": "Elfrid Payton",
+      "espnId": "2583639",
+      "nbaId": 203901,
+      "headshot": "https://a.espncdn.com/i/headshots/nba/players/full/2583639.png",
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "1994-02-22",
+      "exp": 10,
+      "college": "Louisiana",
+      "jersey": "3",
+      "unit": "camp"
+    }
+  ]
+}
