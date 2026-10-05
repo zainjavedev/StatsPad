@@ -679,3 +679,118 @@ header .brand small{margin-top:3px}
   .board-table td,.board-table .sticky-col{padding-top:12px;padding-bottom:12px}
   .board-note{padding:12px 14px}
 }
+
+/* ==========================================================================
+   Front page: search first, then this week's games and news, a few leaders
+   and the teams. Same neutral surfaces as the team page.
+   ========================================================================== */
+.front-page{width:min(1100px,100%);margin:0 auto;padding:36px 28px 48px;color:var(--text-1)}
+.front-page h2{margin:0;font-size:18px;font-weight:800;letter-spacing:-.02em}
+
+.front-hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:28px;align-items:end}
+.front-hero h1{margin:0;font-family:'Bricolage Grotesque','DM Sans',sans-serif;font-size:clamp(34px,5.4vw,56px);font-weight:800;line-height:1;letter-spacing:-.03em}
+.front-hero p{margin:12px 0 20px;color:var(--text-3);font-size:15px}
+.front-search{position:relative}
+.front-search label{display:flex;align-items:center;gap:12px;height:56px;padding:0 18px;border:1px solid var(--line-2);border-radius:14px;background:var(--ink-1);color:var(--text-3);transition:border-color .15s,box-shadow .15s}
+.front-search label:focus-within{border-color:var(--text-1);box-shadow:0 0 0 4px color-mix(in srgb,var(--text-1) 8%,transparent)}
+.front-search input{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;color:var(--text-1);font-size:17px}
+.front-search input::placeholder{color:var(--text-4)}
+.front-results{position:absolute;inset:calc(100% + 6px) 0 auto;z-index:20;margin:0;padding:6px;list-style:none;border:1px solid var(--line);border-radius:14px;background:var(--ink-1);box-shadow:0 18px 40px rgb(0 0 0 / .14)}
+.front-results button{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:6px 10px;border-radius:9px;color:var(--text-1);text-align:left}
+.front-results button.active{background:var(--ink-2)}
+.front-result-art{flex:none;width:40px;height:40px;border-radius:50%;background:var(--ink-2);object-fit:cover;object-position:top}
+.front-results span{flex:1;min-width:0}
+.front-results b{display:block;overflow:hidden;font-size:14.5px;text-overflow:ellipsis;white-space:nowrap}
+.front-results span small{color:var(--text-3);font-size:12px}
+.front-results strong{font-size:14px;font-variant-numeric:tabular-nums}
+.front-results strong small{color:var(--text-3);font-size:10.5px}
+.front-no-results{padding:14px 12px;color:var(--text-3);font-size:14px}
+
+.front-tiles{display:grid;gap:10px}
+.front-tile{display:flex;align-items:center;gap:14px;width:100%;min-height:76px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--ink-1);color:var(--text-1);text-align:left;transition:border-color .15s,transform .15s}
+.front-tile:hover{border-color:var(--line-2);transform:translateY(-1px)}
+.front-tile:active{transform:scale(.99)}
+.front-tile>span:nth-child(2){flex:1;min-width:0}
+.front-tile b{display:block;font-size:15.5px;font-weight:800}
+.front-tile small{display:block;margin-top:2px;color:var(--text-3);font-size:12.5px}
+.front-tile>svg{flex:none;color:var(--text-4)}
+.front-tile-icon{display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:12px;background:var(--text-1);color:var(--ink-1)}
+.front-tile.sixers .front-tile-icon{background:linear-gradient(135deg,#0a62a8,#00467f)}
+.front-tile-icon img{width:30px;height:30px;padding:2px;border-radius:50%;background:#fff}
+
+.front-feeds{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px}
+.front-panel{padding:18px 18px 8px;border:1px solid var(--line);border-radius:14px;background:var(--ink-1)}
+.front-panel h2{margin-bottom:6px}
+
+.front-block{margin-top:40px}
+.front-block-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.front-block-head button{display:inline-flex;align-items:center;gap:4px;min-height:36px;color:var(--text-2);font-size:13px;font-weight:700}
+.front-block-head button:hover{color:var(--text-1)}
+.front-leaders{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.front-leader{display:flex;align-items:center;gap:12px;min-width:0;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--ink-1);color:var(--text-1);text-align:left;transition:border-color .15s}
+.front-leader:hover{border-color:var(--line-2)}
+.front-leader-art{flex:none;width:54px;height:54px;border-radius:50%;background:var(--ink-2);object-fit:cover;object-position:top}
+.front-leader span{min-width:0}
+.front-leader small{display:block;color:var(--text-3);font-size:11.5px;font-weight:600}
+.front-leader strong{display:block;margin-top:2px;font-size:22px;font-weight:900;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.front-leader em{color:var(--text-3);font-size:11px;font-style:normal;font-weight:700}
+.front-leader b{display:block;overflow:hidden;font-size:13px;font-weight:600;text-overflow:ellipsis;white-space:nowrap}
+.front-teams{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:8px}
+.front-teams button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border:1px solid transparent;border-radius:12px;color:var(--text-3);font-size:11px;font-weight:700;transition:background .15s,border-color .15s}
+.front-teams button:hover{border-color:var(--line);background:var(--ink-1);color:var(--text-1)}
+.front-team-logo{width:40px;height:40px;object-fit:contain}
+
+/* Game and news lists (front page and team pages). */
+.game-list,.news-list{margin:0;padding:0;list-style:none}
+.game-list li{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:72px;padding:12px 0;border-bottom:1px solid var(--line)}
+.game-list li:last-child,.news-list li:last-child{border-bottom:0}
+.game-teams{display:grid;gap:6px;min-width:0}
+.game-side{display:flex;align-items:center;gap:9px;min-width:0}
+.game-side img,.game-side i{flex:none;width:24px;height:24px;object-fit:contain}
+.game-side b{overflow:hidden;font-size:14px;font-weight:700;text-overflow:ellipsis;white-space:nowrap}
+.game-side b em{margin-right:5px;color:var(--text-4);font-style:normal;font-weight:600}
+.game-side strong{margin-left:auto;padding-left:10px;font-variant-numeric:tabular-nums}
+.game-when{flex:none;text-align:right;font-variant-numeric:tabular-nums}
+.game-when b{display:block;font-size:13px}
+.game-when span{display:block;color:var(--text-2);font-size:13px}
+.game-when small{display:block;margin-top:2px;color:var(--text-4);font-size:11px}
+.game-live{display:inline-block!important;padding:1px 7px;border-radius:999px;background:#d92d20;color:#fff!important;font-size:11px!important;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.news-list li{border-bottom:1px solid var(--line)}
+.news-list a{display:flex;align-items:center;gap:14px;min-height:76px;padding:12px 0;color:var(--text-1);text-decoration:none}
+.news-list img{flex:none;width:92px;height:60px;border-radius:8px;background:var(--ink-2);object-fit:cover}
+.news-list b{display:-webkit-box;overflow:hidden;font-size:14px;font-weight:700;line-height:1.3;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+.news-list a:hover b{text-decoration:underline;text-underline-offset:3px}
+.news-list small{display:inline-flex;align-items:center;gap:3px;margin-top:4px;color:var(--text-3);font-size:12px}
+.game-list.loading li,.news-list.loading li{min-height:72px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,transparent,var(--ink-2),transparent) 0 0/200% 100%;animation:feed-shimmer 1.4s linear infinite}
+.feed-empty{margin:0;padding:18px 0;color:var(--text-3);font-size:13.5px}
+@keyframes feed-shimmer{to{background-position:-200% 0}}
+@media(prefers-reduced-motion:reduce){.game-list.loading li,.news-list.loading li{animation:none}}
+
+.team-games .game-list{padding:0 18px;border:1px solid var(--line);border-radius:var(--radius);background:var(--ink-1)}
+
+@media(max-width:1000px){
+  .front-leaders{grid-template-columns:1fr 1fr}
+  .front-teams{grid-template-columns:repeat(6,minmax(0,1fr))}
+}
+@media(max-width:760px){
+  .front-page{padding:22px 16px 40px}
+  .front-hero{grid-template-columns:1fr;gap:16px}
+  .front-hero p{margin:10px 0 16px;font-size:14px}
+  .front-search label{height:52px}
+  .front-search input{font-size:16px}
+  .front-tile{min-height:68px}
+  .front-feeds{grid-template-columns:1fr;gap:12px;margin-top:28px}
+  .front-panel{padding:16px 16px 4px}
+  .front-block{margin-top:30px}
+  .front-leaders{gap:8px}
+  .front-leader{flex-direction:column;align-items:flex-start;gap:8px;padding:12px}
+  .front-leader-art{width:44px;height:44px}
+  .front-leader strong{font-size:20px}
+  .front-teams{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+  .front-team-logo{width:34px;height:34px}
+  .news-list img{width:76px;height:52px}
+  .team-games .game-list{padding:0 14px}
+}
+/* Phones: the wordmark already goes home, so the nav drops its Home tab. */
+@media(max-width:520px){header nav .nav-home{display:none}}
+@media(max-width:360px){header nav button{padding:7px 7px!important;font-size:11px!important}header .brand .brand-word{font-size:17px}}

@@ -1,10 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowDown, ArrowUp, ChevronRight } from 'lucide-react';
+import { GameList } from './Feeds';
+import { useFeed } from '../lib/useFeed';
+import { teamSchedule } from '../lib/espn';
 
 /* Team roster page: who is on the team this season, how the rotation is
    expected to stack up, and each player's previous-season numbers. */
 
 const TEAM_COLORS = {PHI: '#006bb6'};
+const SCHEDULES = {PHI: () => teamSchedule('phi', 5)};
 
 const STAT_COLUMNS = [
   {key: 'gamesPlayed', label: 'GP', places: 0},
@@ -129,6 +133,7 @@ function StatTable({players, onOpen}) {
 
 export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen}) {
   const [roster, setRoster] = useState(null), [error, setError] = useState(false);
+  const games = useFeed(SCHEDULES[teamCode]);
   useEffect(() => {
     let active = true;
     fetch(`/data/2026-27/rosters/${teamCode}.json`).then(response => response.json()).then(data => active && setRoster(data)).catch(() => active && setError(true));
@@ -161,6 +166,11 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen}) {
     <section className="team-block">
       <h2>Starting five</h2>
       <div className="starter-grid">{unit('starters').map(player => <StarterCard key={player.name} player={player} onOpen={open}/>)}</div>
+    </section>
+
+    <section className="team-block team-games">
+      <h2>Next games</h2>
+      <GameList games={games}/>
     </section>
 
     <section className="team-block units">
