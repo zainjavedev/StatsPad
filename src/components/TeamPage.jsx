@@ -73,7 +73,7 @@ function Headshot({player, color, className = ''}) {
   const [failed, setFailed] = useState(false);
   useEffect(() => setFailed(false), [player.nbaId]);
   if (!player.nbaId || failed) return <span className={`${className} roster-monogram`} style={{'--team': color}} aria-hidden="true">{initials(player.name)}</span>;
-  return <img className={className} src={`https://cdn.nba.com/headshots/nba/latest/1040x760/${player.nbaId}.png`} alt="" loading="lazy" onError={() => setFailed(true)}/>;
+  return <img className={className} src={`https://cdn.nba.com/headshots/nba/latest/260x190/${player.nbaId}.png`} alt="" loading="lazy" onError={() => setFailed(true)}/>;
 }
 
 function Origin({player}) {
