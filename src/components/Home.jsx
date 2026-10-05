@@ -4,6 +4,7 @@ import { toPng } from 'html-to-image';
 import TeamPage from './TeamPage';
 import FrontPage from './FrontPage';
 import LeadersPage from './LeadersPage';
+import { ArticlePage, NewsIndex, StoryPage } from './NewsPage';
 import SEASON from '../season.json';
 
 const COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)'];
@@ -26,7 +27,7 @@ function loadSeasonBundle(seasonType){
       fetch(`${base}/splits-${suffix}.json`).then(response=>response.ok?response.json():null).catch(()=>null),
       CURRENT_TEAMS,
     ]).then(([players,teams,splits,current])=>{
-      const withTeam=player=>({...player,currentTeam:current?.byId[player.playerId]||current?.byName[teamKey(player.playerName)]||null});
+      const withTeam=player=>({...player,currentTeam:current?.byId[player.playerId]||current?.byName[teamKey(player.playerName)]||null,espnId:current?.espnIds?.[teamKey(player.playerName)]||null});
       return {players:{...players,players:players.players.map(withTeam)},teams,splits};
     }));
   }
@@ -52,6 +53,7 @@ function EntityArt({entity,playerIds,className=''}){
     return [
       PLAYER_AVATARS[entity.playerName],
       nbaId&&`https://cdn.nba.com/headshots/nba/latest/1040x760/${nbaId}.png`,
+      entity.espnId&&`https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${entity.espnId}.png&w=520&h=380`,
     ].filter(Boolean);
   },[entity,playerIds]);
   useEffect(()=>{setStep(0)},[sources]);
@@ -190,6 +192,9 @@ function ComparisonPage({onTeams,onLeaders,data,entityType,setEntityType,seasonT
 function routeFrom(search){
   const params=new URLSearchParams(search);
   if(params.has('profile'))return {page:'profile',name:params.get('profile')};
+  if(params.has('story'))return {page:'story',id:params.get('story')};
+  if(params.has('article'))return {page:'article',slug:params.get('article')};
+  if(params.get('view')==='news')return {page:'news'};
   if(params.has('team'))return {page:'team',team:params.get('team').toUpperCase()};
   if(params.get('view')==='leaders')return {page:'leaders'};
   if(params.get('view')==='compare'||params.has('players'))return {page:'compare'};
@@ -224,7 +229,7 @@ export default function Home(){
   const enrichedPopulation=useMemo(()=>population.map(enrich),[population]);
   useEffect(()=>{
     const titles={home:'StatsPad · NBA numbers, visualized',leaders:`${SEASON_LABEL} Leaders · StatsPad`};
-    if(route.page==='team')return; // the team page titles itself once its roster loads
+    if(['team','news','story','article'].includes(route.page))return; // these pages title themselves
     document.title=route.page==='profile'&&profile?`${profile.playerName} · StatsPad`:route.page==='compare'&&enriched.length===2?`${enriched[0].playerName} vs ${enriched[1].playerName} · StatsPad`:route.page==='compare'?'Compare · StatsPad':titles[route.page]||titles.home;
   },[route,profile,enriched]);
   const notify=message=>{setToast(message);setTimeout(()=>setToast(''),2200)};
@@ -237,6 +242,8 @@ export default function Home(){
   const navigate=(query,state=null)=>{
     const next=query?`${location.pathname}?${query}`:location.pathname;
     if(next!==location.pathname+location.search){history.pushState(state,'',next);depthRef.current+=1}
+    const names=new URLSearchParams(query).get('players')?.split('|').filter(Boolean);
+    if(names?.length)setSelected(names.map(name=>data.players.find(player=>player.playerName===name)).filter(Boolean).slice(0,2));
     setRoute({...routeFrom(query?`?${query}`:''),state});
     scrollTo({top:0,behavior:'smooth'});
   };
@@ -245,6 +252,9 @@ export default function Home(){
   const openProfile=(item,from=null)=>navigate(`profile=${encodeURIComponent(item.playerName)}`,from?{from}:null);
   const openLeaders=()=>navigate('view=leaders');
   const openTeam=(code='PHI')=>navigate(`team=${code}`);
+  const openNews=()=>navigate('view=news');
+  const openStory=id=>navigate(`story=${encodeURIComponent(id)}`);
+  const openArticle=slug=>navigate(`article=${encodeURIComponent(slug)}`);
   /* Accepts a player, a list of players, or nothing (keeps the current pair).
      Click events are ignored so it can be wired straight to onClick. */
   const openCompare=item=>{
@@ -261,6 +271,10 @@ export default function Home(){
     const entities=profile.entityType==='team'?catalog.teams:catalog.players,from=route.state?.from;
     return <main>{header}<Profile entity={profile} allEntities={entities} playerIds={playerIds} onBack={goBack} backLabel={from?`Back to ${from}`:'Back'} onCompare={openCompare}/><footer><span>StatsPad · NBA numbers, visualized</span>{footerSource(data)}</footer></main>;
   }
+  const newsFooter=<footer><span>StatsPad · NBA numbers, visualized</span><span>Headlines, summaries and photos from <a href="https://www.espn.com/nba/" target="_blank" rel="noreferrer">ESPN</a></span></footer>;
+  if(route.page==='news')return <main>{header}<NewsIndex onStory={openStory} onArticle={openArticle}/>{newsFooter}</main>;
+  if(route.page==='story')return <main>{header}<StoryPage id={route.id} players={regularPlayers||catalog.players} teams={catalog.teams} playerIds={playerIds} Art={EntityArt} seasonLabel={SEASON_LABEL} onOpen={player=>openProfile(player,'the story')} onTeam={openTeam} onStory={openStory} onBack={()=>depthRef.current>0?history.back():openNews()}/>{newsFooter}</main>;
+  if(route.page==='article')return <main>{header}<ArticlePage slug={route.slug} onBack={()=>depthRef.current>0?history.back():openNews()} onNavigate={query=>navigate(query)}/><footer><span>StatsPad · NBA numbers, visualized</span>{footerSource(data)}</footer></main>;
   if(route.page==='compare')return <ComparisonPage onTeams={()=>openTeam()} onLeaders={openLeaders} data={data} entityType={entityType} setEntityType={setEntityType} seasonType={seasonType} switchSeason={switchSeason} enriched={enriched} setSelected={setSelected} playerIds={playerIds} enrichedPopulation={enrichedPopulation} chartRef={chartRef} onHome={goHome} onShare={share} onDownload={download} onCopy={copyTake} toast={toast} theme={theme} onToggleTheme={toggleTheme}/>;
-  return <main>{header}<FrontPage season={SEASON_LABEL} players={regularPlayers||catalog.players} teams={catalog.teams} playerIds={playerIds} Art={EntityArt} onOpen={openProfile} onCompare={()=>openCompare()} onTeam={openTeam} onLeaders={openLeaders}/><footer><span>StatsPad · NBA numbers, visualized</span><span>Stats from <a href={data.source.url} target="_blank" rel="noreferrer">Basketball Reference</a> · games and news from <a href="https://www.espn.com/nba/" target="_blank" rel="noreferrer">ESPN</a></span></footer></main>;
+  return <main>{header}<FrontPage season={SEASON_LABEL} players={regularPlayers||catalog.players} teams={catalog.teams} playerIds={playerIds} Art={EntityArt} onOpen={openProfile} onCompare={()=>openCompare()} onTeam={openTeam} onLeaders={openLeaders} onNews={openNews} onStory={openStory} onArticle={openArticle}/><footer><span>StatsPad · NBA numbers, visualized</span><span>Stats from <a href={data.source.url} target="_blank" rel="noreferrer">Basketball Reference</a> · games and news from <a href="https://www.espn.com/nba/" target="_blank" rel="noreferrer">ESPN</a></span></footer></main>;
 }

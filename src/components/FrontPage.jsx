@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { ArrowRight, BarChart3, Search } from 'lucide-react';
 import { GameList, NewsList } from './Feeds';
+import { FeaturedArticle } from './NewsPage';
 import { useFeed } from '../lib/useFeed';
 import { latestNews, upcomingGames } from '../lib/espn';
 
@@ -51,7 +52,7 @@ function PlayerSearch({players, Art, playerIds, onOpen}) {
   </div>;
 }
 
-export default function FrontPage({season, players, teams, playerIds, Art, onOpen, onCompare, onTeam, onLeaders}) {
+export default function FrontPage({season, players, teams, playerIds, Art, onOpen, onCompare, onTeam, onLeaders, onNews, onStory, onArticle}) {
   const games = useFeed(loadGames), news = useFeed(loadNews);
   const leaders = useMemo(() => {
     const pool = players.filter(player => player.gamesPlayed >= 15 && player.minutesPerGame >= 10);
@@ -100,8 +101,9 @@ export default function FrontPage({season, players, teams, playerIds, Art, onOpe
         <GameList games={games}/>
       </section>
       <section className="front-panel">
-        <h2>Latest news</h2>
-        <NewsList articles={news}/>
+        <div className="front-block-head"><h2>Latest news</h2><button onClick={onNews}>All news <ArrowRight size={14}/></button></div>
+        <FeaturedArticle onOpen={onArticle}/>
+        <NewsList articles={news} onOpen={onStory}/>
       </section>
     </div>
 

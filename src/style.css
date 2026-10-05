@@ -871,3 +871,58 @@ header nav button{white-space:nowrap}
   .lb-sheet-backdrop{place-items:end stretch;padding:0}
   .lb-sheet{width:100%;max-height:85vh;border-radius:18px 18px 0 0}
 }
+
+/* ==========================================================================
+   News: index, ESPN story pages (summary + players) and StatsPad articles.
+   ========================================================================== */
+.news-page{width:min(1100px,100%);margin:0 auto;padding:32px 28px 48px;color:var(--text-1)}
+.news-page>h1{margin:0;font-family:'Bricolage Grotesque','DM Sans',sans-serif;font-size:clamp(30px,4.6vw,46px);font-weight:800;letter-spacing:-.03em}
+.news-section{margin-top:32px}
+.news-section h2{margin:0 0 12px;font-size:18px;font-weight:800;letter-spacing:-.02em}
+.article-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.article-teaser{display:flex;flex-direction:column;gap:6px;padding:18px;border:1px solid var(--line);border-radius:14px;background:var(--ink-1);color:var(--text-1);text-decoration:none;transition:border-color .15s,transform .15s}
+.article-teaser:hover{border-color:var(--line-2);transform:translateY(-1px)}
+.article-teaser small{color:var(--text-3);font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.article-teaser b{font-family:'Bricolage Grotesque','DM Sans',sans-serif;font-size:21px;font-weight:800;line-height:1.15;letter-spacing:-.02em}
+.article-teaser span{color:var(--text-2);font-size:14px;line-height:1.5}
+.article-teaser.compact{margin:6px 0 4px;padding:12px 14px;border-color:var(--lead-edge);background:var(--lead-tint)}
+.article-teaser.compact b{font-size:16px}
+.story-page{max-width:760px}
+.story-page article{margin-top:14px}
+.story-kicker{display:block;color:var(--text-3);font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.story-page h1{margin:8px 0 0;font-family:'Bricolage Grotesque','DM Sans',sans-serif;font-size:clamp(28px,4.4vw,42px);font-weight:800;line-height:1.1;letter-spacing:-.025em}
+.story-byline{margin:10px 0 0;color:var(--text-3);font-size:14px}
+.story-image{display:block;width:100%;margin-top:20px;border-radius:14px;background:var(--ink-2);aspect-ratio:3/2;object-fit:cover}
+.story-summary{margin:20px 0 0;font-size:19px;line-height:1.55}
+.story-cta{display:inline-flex;align-items:center;gap:6px;margin-top:22px;padding:13px 18px;border-radius:12px;background:var(--text-1);color:var(--ink-0);font-size:15px;font-weight:800;text-decoration:none}
+.story-cta:hover{opacity:.9}
+.story-players{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.story-player{display:flex;align-items:center;gap:12px;min-height:68px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:var(--ink-1);color:var(--text-1);text-align:left;transition:border-color .15s}
+.story-player:hover{border-color:var(--line-2)}
+.story-player-art{flex:none;width:46px;height:46px;border-radius:50%;background:var(--ink-2);object-fit:cover;object-position:top}
+.story-player span{min-width:0}
+.story-player b{display:block;font-size:15px;font-weight:800}
+.story-player small{display:block;margin-top:2px;color:var(--text-3);font-size:12.5px;font-variant-numeric:tabular-nums}
+.story-teams{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.story-teams button{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:6px 14px 6px 8px;border:1px solid var(--line);border-radius:999px;background:var(--ink-1);color:var(--text-1);font-size:13px;font-weight:700}
+.story-teams button:hover{border-color:var(--line-2)}
+.story-team-logo{width:26px;height:26px;object-fit:contain}
+.story-note{margin:10px 0 0;color:var(--text-4);font-size:11.5px}
+.article-body h2,.article-body h3,.article-body h4{margin:32px 0 0;font-size:23px;font-weight:800;letter-spacing:-.02em}
+.article-body h3,.article-body h4{font-size:19px}
+.article-body p,.article-body li,.article-body blockquote{font-size:17px;line-height:1.7}
+.article-body p{margin:16px 0 0}
+.article-body ul{margin:14px 0 0;padding-left:22px;list-style:disc}
+.article-body li::marker{color:var(--text-4)}
+.article-body li+li{margin-top:6px}
+.article-body blockquote{margin:20px 0 0;padding:4px 0 4px 18px;border-left:3px solid var(--line-2);color:var(--text-2)}
+.article-body a{color:var(--text-1);text-decoration:underline;text-underline-offset:3px}
+.article-body .story-summary{font-size:19px;color:var(--text-2)}
+.front-panel .front-block-head{margin-bottom:6px}
+@media(max-width:700px){
+  .news-page{padding:20px 16px 36px}
+  .article-grid,.story-players{grid-template-columns:1fr}
+  .story-summary{font-size:17px}
+  .story-cta{width:100%;justify-content:center}
+  .article-body p,.article-body li,.article-body blockquote{font-size:16px}
+}

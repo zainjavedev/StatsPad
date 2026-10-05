@@ -125,11 +125,13 @@ for (const team of teams) {
   console.log(`${code.padEnd(4)} ${String(result.players.length).padStart(2)} players${result.curated ? ' (curated, kept)' : ''}`);
 }
 
-// Who plays where now, keyed by Basketball Reference id and by folded name.
-const current = {season: season.rosters, updated: new Date().toISOString().slice(0, 10), byId: {}, byName: {}};
+// Who plays where now, keyed by Basketball Reference id and by folded name,
+// plus ESPN ids so the site can fall back to ESPN headshots.
+const current = {season: season.rosters, updated: new Date().toISOString().slice(0, 10), byId: {}, byName: {}, espnIds: {}};
 for (const {code, players} of results) for (const player of players) {
   if (player.bbrefId) current.byId[player.bbrefId] = code;
   current.byName[key(player.name)] = code;
+  if (player.espnId) current.espnIds[key(player.name)] = player.espnId;
 }
 await fs.writeFile(`public/data/${season.rosters}/current-teams.json`, `${JSON.stringify(current)}\n`);
 console.log(`current-teams.json: ${Object.keys(current.byName).length} players`);

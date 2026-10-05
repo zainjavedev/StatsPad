@@ -42,6 +42,7 @@
   "players": [
     {
       "name": "Tyrese Maxey",
+      "espnId": "4431678",
       "bbrefId": "maxeyty01",
       "nbaId": 1630178,
       "pos": "G",
@@ -54,6 +55,7 @@
     },
     {
       "name": "VJ Edgecombe",
+      "espnId": "5124612",
       "bbrefId": "edgecvj01",
       "nbaId": 1642845,
       "pos": "G-F",
@@ -66,6 +68,7 @@
     },
     {
       "name": "Jaylen Brown",
+      "espnId": "3917376",
       "bbrefId": "brownja02",
       "nbaId": 1627759,
       "pos": "F-G",
@@ -78,6 +81,7 @@
     },
     {
       "name": "LeBron James",
+      "espnId": "1966",
       "bbrefId": "jamesle01",
       "nbaId": 2544,
       "pos": "F-G",
@@ -90,6 +94,7 @@
     },
     {
       "name": "Joel Embiid",
+      "espnId": "3059318",
       "bbrefId": "embiijo01",
       "nbaId": 203954,
       "pos": "C",
@@ -102,6 +107,7 @@
     },
     {
       "name": "Dean Wade",
+      "espnId": "3912848",
       "bbrefId": "wadede01",
       "nbaId": 1629731,
       "pos": "F",
@@ -113,6 +119,7 @@
     },
     {
       "name": "Anfernee Simons",
+      "espnId": "4351851",
       "bbrefId": "simonan01",
       "nbaId": 1629014,
       "pos": "G",
@@ -124,6 +131,7 @@
     },
     {
       "name": "Dominick Barlow",
+      "espnId": "4870562",
       "bbrefId": "barlodo01",
       "nbaId": 1631230,
       "pos": "F",
@@ -135,6 +143,7 @@
     },
     {
       "name": "Adem Bona",
+      "espnId": "5105637",
       "bbrefId": "bonaad01",
       "nbaId": 1641737,
       "pos": "C-F",
@@ -146,6 +155,7 @@
     },
     {
       "name": "Kentavious Caldwell-Pope",
+      "espnId": "2581018",
       "bbrefId": "caldwke01",
       "nbaId": 203484,
       "pos": "G",
@@ -157,6 +167,7 @@
     },
     {
       "name": "Labaron Philon Jr.",
+      "espnId": "4873090",
       "nbaId": 1642889,
       "pos": "G",
       "height": "6-4",
@@ -167,6 +178,7 @@
     },
     {
       "name": "Justin Edwards",
+      "espnId": "4711297",
       "bbrefId": "edwarju01",
       "nbaId": 1642348,
       "pos": "G",
@@ -178,6 +190,7 @@
     },
     {
       "name": "Jabari Walker",
+      "espnId": "4432446",
       "bbrefId": "walkeja01",
       "nbaId": 1631133,
       "pos": "F-C",
@@ -189,6 +202,7 @@
     },
     {
       "name": "Ariel Hukporti",
+      "espnId": "4871141",
       "bbrefId": "hukpoar01",
       "nbaId": 1630574,
       "pos": "C",
@@ -200,6 +214,7 @@
     },
     {
       "name": "Rayan Rupert",
+      "espnId": "5099752",
       "bbrefId": "ruperra01",
       "nbaId": 1641712,
       "pos": "G",
@@ -211,6 +226,7 @@
     },
     {
       "name": "Caleb Love",
+      "espnId": "4433144",
       "bbrefId": "loveca01",
       "nbaId": 1631126,
       "pos": "G",
@@ -222,6 +238,7 @@
     },
     {
       "name": "Dillon Jones",
+      "espnId": "4702159",
       "bbrefId": "jonesdi01",
       "nbaId": 1641794,
       "pos": "F",
@@ -233,6 +250,7 @@
     },
     {
       "name": "Tacko Fall",
+      "espnId": "3904625",
       "nbaId": 1629605,
       "pos": "C",
       "height": "7-6",
@@ -243,6 +261,7 @@
     },
     {
       "name": "Jameer Nelson Jr.",
+      "espnId": "4592444",
       "nbaId": 1642392,
       "pos": "G",
       "height": "6-2",
@@ -253,6 +272,7 @@
     },
     {
       "name": "Saint Thomas",
+      "espnId": "4897471",
       "nbaId": 1643148,
       "pos": "F",
       "height": "6-7",
@@ -263,6 +283,7 @@
     },
     {
       "name": "Duke Miles",
+      "espnId": "4702049",
       "nbaId": 1643575,
       "pos": "G",
       "height": "6-2",

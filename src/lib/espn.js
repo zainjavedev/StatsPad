@@ -56,20 +56,41 @@ export async function teamSchedule(team, limit = 5) {
   }
 }
 
+/* Headline-level fields only: the summary, photo, byline and the players and
+   teams ESPN tags. The full article text is ESPN's and stays on ESPN. */
+function toStory(article) {
+  const tagged = type => (article.categories || []).filter(category => category.type === type).map(category => category.description).filter(Boolean);
+  return {
+    id: String(article.id),
+    headline: article.headline,
+    summary: article.description || '',
+    byline: article.byline || null,
+    url: article.links?.web?.href,
+    image: article.images?.[0]?.url,
+    published: new Date(article.published),
+    athletes: tagged('athlete'),
+    teams: tagged('team'),
+  };
+}
+
+let newsCache = null;
+const newsList = () => (newsCache ||= getJson(`${BASE}/news?limit=50`)
+  .then(data => data.articles.filter(article => article.type !== 'Media' && article.links?.web?.href).map(toStory))
+  .catch(() => { newsCache = null; return []; }));
+
 export async function latestNews(limit = 5) {
+  return (await newsList()).slice(0, limit);
+}
+
+/* A story from the recent list, or looked up by id once it has rotated out. */
+export async function storyById(id) {
+  const recent = (await newsList()).find(story => story.id === String(id));
+  if (recent) return recent;
   try {
-    const data = await getJson(`${BASE}/news?limit=20`);
-    return data.articles
-      .filter(article => article.type !== 'Media' && article.links?.web?.href)
-      .slice(0, limit)
-      .map(article => ({
-        id: article.id,
-        headline: article.headline,
-        url: article.links.web.href,
-        image: article.images?.[0]?.url,
-        published: new Date(article.published),
-      }));
+    const data = await getJson(`https://content.core.api.espn.com/v1/sports/news/${encodeURIComponent(id)}`);
+    const article = data.headlines?.[0];
+    return article ? toStory(article) : null;
   } catch {
-    return [];
+    return null;
   }
 }

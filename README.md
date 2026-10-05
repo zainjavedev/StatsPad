@@ -34,6 +34,24 @@ To rebuild a stats file manually from a downloaded Basketball Reference page:
 node scripts/build-data.mjs season.html public/data/2025-26/regular-season.json "Regular Season" 2025-26
 ```
 
+## Articles
+
+StatsPad's own articles live in `src/articles/` as Markdown files, newest first by date. Start each file with:
+
+```
+---
+title: The Sixers' new starting five, by the numbers
+summary: One or two sentences for the teaser.
+date: 2026-10-05
+author: StatsPad
+team: PHI
+---
+```
+
+then write with `##` headings, paragraphs, `- ` lists, `**bold**`, `*italic*` and `[links](?team=PHI)`. Links starting with `?` open inside the site. The newest article is featured on the home page.
+
+ESPN stories open on a StatsPad page with ESPN's headline, summary, photo and the players they tag, plus a link to the full story on ESPN. The article text itself is never copied.
+
 ## Development
 
 ```bash

@@ -1,5 +1,4 @@
 import React from 'react';
-import { ArrowUpRight } from 'lucide-react';
 
 /* Renderers for ESPN-backed lists. A null list is still loading and shows
    placeholder rows; an empty one shows a short note. */
@@ -43,13 +42,16 @@ const ago = date => {
   return `${Math.round(minutes / 1440)}d ago`;
 };
 
-export function NewsList({articles}) {
+/* With onOpen, stories open on StatsPad (?story=id); without it they link out. */
+export function NewsList({articles, onOpen}) {
   if (articles === null) return <ul className="news-list loading">{[0, 1, 2].map(index => <li key={index}/>)}</ul>;
   if (!articles.length) return <p className="feed-empty">News is unavailable right now.</p>;
   return <ul className="news-list">{articles.map(article => <li key={article.id}>
-    <a href={article.url} target="_blank" rel="noreferrer">
+    <a {...(onOpen
+      ? {href: `?story=${article.id}`, onClick: event => { if (event.metaKey || event.ctrlKey) return; event.preventDefault(); onOpen(article.id); }}
+      : {href: article.url, target: '_blank', rel: 'noreferrer'})}>
       {article.image && <img src={article.image} alt="" loading="lazy"/>}
-      <span><b>{article.headline}</b><small>ESPN · {ago(article.published)} <ArrowUpRight size={12}/></small></span>
+      <span><b>{article.headline}</b><small>ESPN · {ago(article.published)}</small></span>
     </a>
   </li>)}</ul>;
 }
