@@ -82,17 +82,6 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
       </div>
     </div>
 
-    <div className="front-feeds">
-      <section className="front-panel">
-        <h2>Upcoming games</h2>
-        <GameList games={games}/>
-      </section>
-      <section className="front-panel">
-        <h2>Latest news</h2>
-        <NewsList articles={news}/>
-      </section>
-    </div>
-
     <section className="front-block">
       <div className="front-block-head"><h2>2025–26 leaders</h2><button onClick={onLeaders}>All leaders <ArrowRight size={14}/></button></div>
       <div className="front-leaders">{leaders.map(entry => <button key={entry.key} className="front-leader" onClick={() => onOpen(entry.player)}>
@@ -104,6 +93,17 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
         </span>
       </button>)}</div>
     </section>
+
+    <div className="front-feeds">
+      <section className="front-panel">
+        <h2>Upcoming games</h2>
+        <GameList games={games}/>
+      </section>
+      <section className="front-panel">
+        <h2>Latest news</h2>
+        <NewsList articles={news}/>
+      </section>
+    </div>
 
     <section className="front-block">
       <div className="front-block-head"><h2>Teams</h2></div>

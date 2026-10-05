@@ -719,6 +719,7 @@ header .brand small{margin-top:3px}
 .front-tile-icon img{width:30px;height:30px;padding:2px;border-radius:50%;background:#fff}
 
 .front-feeds{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px}
+.front-hero+.front-block{margin-top:40px}
 .front-panel{padding:18px 18px 8px;border:1px solid var(--line);border-radius:14px;background:var(--ink-1)}
 .front-panel h2{margin-bottom:6px}
 
@@ -792,7 +793,9 @@ header .brand small{margin-top:3px}
   .team-games .game-list{padding:0 14px}
 }
 /* Phones: the wordmark already goes home, so the nav drops its Home tab. */
-@media(max-width:520px){header nav .nav-home{display:none}}
+@media(max-width:520px){header nav .nav-home,header nav .nav-season{display:none}}
+header nav button{white-space:nowrap}
+@media(max-width:400px){header nav .nav-year{display:none}}
 @media(max-width:360px){header nav button{padding:7px 7px!important;font-size:11px!important}header .brand .brand-word{font-size:17px}}
 
 /* Profile: league rank list (replaces the percentile bars). */
