@@ -812,3 +812,62 @@ header nav button{white-space:nowrap}
 .rank-place{justify-self:end;min-width:60px;padding:4px 10px;text-align:center;border-radius:999px;background:var(--ink-2);color:var(--text-1);font-size:13.5px;font-weight:800}
 .rank-place.top{background:var(--lead-tint);box-shadow:inset 0 0 0 1px var(--lead-edge)}
 .rank-note{margin:12px 0 0;color:var(--text-4);font-size:11.5px;line-height:1.5}
+
+/* ==========================================================================
+   Leaders page: neutral leaderboard cards grouped by category.
+   ========================================================================== */
+.leaders-page{width:min(1100px,100%);margin:0 auto;padding:32px 28px 48px;color:var(--text-1);transition:opacity .18s}
+.leaders-page.is-changing{opacity:.45}
+.lb-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.lb-head h1{margin:0;font-family:'Bricolage Grotesque','DM Sans',sans-serif;font-size:clamp(30px,4.6vw,46px);font-weight:800;line-height:1.05;letter-spacing:-.03em}
+.lb-season{display:flex;border:1px solid var(--line)}
+.lb-season button{padding:8px 14px;font-size:12.5px}
+.lb-chips{position:sticky;top:60px;z-index:5;display:flex;gap:6px;margin:20px -28px 0;padding:10px 28px;overflow-x:auto;background:color-mix(in srgb,var(--ink-0) 92%,transparent);backdrop-filter:blur(10px);scrollbar-width:none}
+.lb-chips::-webkit-scrollbar{display:none}
+.lb-chips button{flex:none;padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:var(--ink-1);color:var(--text-2);font-size:13px;font-weight:700;transition:background .15s,border-color .15s,color .15s}
+.lb-chips button:hover{border-color:var(--line-2);color:var(--text-1)}
+.lb-chips button.active{border-color:var(--text-1);background:var(--text-1);color:var(--ink-0)}
+.lb-section{margin-top:28px}
+.lb-section h2{margin:0 0 12px;font-size:18px;font-weight:800;letter-spacing:-.02em}
+.lb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.lb-card{display:flex;flex-direction:column;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--ink-1)}
+.lb-card h3{margin:0 0 10px;color:var(--text-3);font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.lb-first{display:flex;align-items:center;gap:12px;width:100%;padding:8px;margin:0 -8px;width:calc(100% + 16px);border-radius:10px;color:var(--text-1);text-align:left;transition:background .15s}
+.lb-first:hover{background:var(--ink-2)}
+.lb-first-art{flex:none;width:56px;height:56px;border-radius:50%;background:var(--ink-2);object-fit:cover;object-position:top}
+.lb-first>span{flex:1;min-width:0}
+.lb-first b{display:block;overflow:hidden;font-size:15px;font-weight:800;text-overflow:ellipsis;white-space:nowrap}
+.lb-first small{color:var(--text-3);font-size:12px;font-weight:600}
+.lb-first strong{flex:none;font-size:24px;font-weight:900;letter-spacing:-.02em;font-variant-numeric:tabular-nums;text-align:right}
+.lb-first em{display:block;color:var(--text-3);font-size:10.5px;font-style:normal;font-weight:700;letter-spacing:.04em}
+.lb-card ol,.lb-sheet ol{margin:0;padding:0;list-style:none}
+.lb-card ol{margin-top:6px;border-top:1px solid var(--line)}
+.lb-card li button,.lb-sheet li button{display:flex;align-items:center;gap:10px;width:100%;min-height:42px;padding:4px 6px;border-radius:8px;color:var(--text-1);text-align:left;font-variant-numeric:tabular-nums;transition:background .15s}
+.lb-card li button:hover,.lb-sheet li button:hover{background:var(--ink-2)}
+.lb-rank{flex:none;width:18px;color:var(--text-4);font-size:12px;font-weight:700;text-align:center}
+.lb-art{flex:none;width:28px;height:28px;border-radius:50%;background:var(--ink-2);object-fit:cover;object-position:top}
+.lb-card li b{flex:1;min-width:0;overflow:hidden;font-size:13.5px;font-weight:600;text-overflow:ellipsis;white-space:nowrap}
+.lb-card li strong,.lb-sheet li strong{flex:none;font-size:13.5px;font-weight:800}
+.lb-more{align-self:flex-start;margin-top:8px;padding:6px 10px;border-radius:8px;color:var(--text-2);font-size:12.5px;font-weight:700}
+.lb-more:hover{background:var(--ink-2);color:var(--text-1)}
+.lb-note{margin:28px 0 0;color:var(--text-4);font-size:11.5px;line-height:1.5}
+.lb-sheet-backdrop{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:20px;background:rgb(0 0 0 / .45)}
+.lb-sheet{display:flex;flex-direction:column;width:min(460px,100%);max-height:min(720px,90vh);border-radius:16px;background:var(--ink-1);color:var(--text-1);box-shadow:0 24px 60px rgb(0 0 0 / .3)}
+.lb-sheet-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:18px 18px 12px;border-bottom:1px solid var(--line)}
+.lb-sheet-head small{color:var(--text-3);font-size:11.5px;font-weight:600}
+.lb-sheet-head h2{margin:2px 0 0;font-size:20px;font-weight:800}
+.lb-sheet-head button{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--ink-2);color:var(--text-2)}
+.lb-sheet ol{overflow-y:auto;padding:6px 10px 12px}
+.lb-sheet-who{flex:1;min-width:0}
+.lb-sheet-who b{display:block;overflow:hidden;font-size:14px;font-weight:700;text-overflow:ellipsis;white-space:nowrap}
+.lb-sheet-who small{color:var(--text-3);font-size:11.5px}
+@media(max-width:700px){
+  .leaders-page{padding:20px 16px 36px}
+  .lb-chips{top:54px;margin:16px -16px 0;padding:10px 16px}
+  .lb-season{width:100%}
+  .lb-season button{flex:1}
+  .lb-grid{grid-template-columns:1fr}
+  .lb-card li:nth-child(n+3){display:none}
+  .lb-sheet-backdrop{place-items:end stretch;padding:0}
+  .lb-sheet{width:100%;max-height:85vh;border-radius:18px 18px 0 0}
+}
