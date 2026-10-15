@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { ArrowRight, BarChart3, Search } from 'lucide-react';
 import { GameList, NewsList } from './Feeds';
 import { useFeed } from '../lib/useFeed';
-import { latestNews, upcomingGames } from '../lib/espn';
+import { latestNews, recentResults, upcomingGames } from '../lib/espn';
 import { teamCodeOf } from '../lib/teams';
 
 /* The front door: find a player, jump to a tool, see what's on this week.
@@ -16,6 +16,7 @@ const LEADERS = [
   {key: 'threePointPercentage', label: 'Three-point %', unit: '3P%', pct: true},
 ];
 const loadGames = () => upcomingGames(7, 6);
+const loadResults = () => recentResults(7, 6);
 const loadNews = () => latestNews(5);
 
 function PlayerSearch({players, Art, playerIds, onOpen}) {
@@ -53,7 +54,7 @@ function PlayerSearch({players, Art, playerIds, onOpen}) {
 }
 
 export default function FrontPage({players, teams, playerIds, Art, onOpen, onCompare, onTeam, onLeaders}) {
-  const games = useFeed(loadGames), news = useFeed(loadNews);
+  const games = useFeed(loadGames), results = useFeed(loadResults), news = useFeed(loadNews);
   const leaders = useMemo(() => {
     const pool = players.filter(player => player.gamesPlayed >= 15 && player.minutesPerGame >= 10);
     return LEADERS.map(entry => {
@@ -89,6 +90,10 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
         <GameList games={games}/>
       </section>
       <section className="front-panel">
+        <h2>Recent results</h2>
+        <GameList games={results} results empty="No finished games in the last week."/>
+      </section>
+      <section className="front-panel front-panel-wide">
         <h2>Latest news</h2>
         <NewsList articles={news}/>
       </section>

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowDown, ArrowUp, ChevronRight } from 'lucide-react';
 import { GameList } from './Feeds';
 import { useFeed } from '../lib/useFeed';
-import { teamSchedule } from '../lib/espn';
+import { teamResults, teamSchedule } from '../lib/espn';
 import { TEAMS } from '../lib/teams';
 
 /* Team roster page: who is on the team this season, how the rotation is
@@ -138,6 +138,7 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen, onSwi
   const [roster, setRoster] = useState(null), [error, setError] = useState(false);
   const schedule = useCallback(() => teamSchedule(TEAMS[teamCode].espn, 5), [teamCode]);
   const games = useFeed(schedule);
+  const finished = useFeed(useCallback(() => teamResults(TEAMS[teamCode].espn, 5), [teamCode]));
   useEffect(() => {
     let active = true;
     setRoster(null); setError(false);
@@ -183,6 +184,11 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen, onSwi
     <section className="team-block team-games">
       <h2>Next games</h2>
       <GameList games={games}/>
+    </section>
+
+    <section className="team-block team-games">
+      <h2>Recent results</h2>
+      <GameList games={finished} results empty="No games played yet this season."/>
     </section>
 
     <section className="team-block units">

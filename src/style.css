@@ -752,6 +752,8 @@ header .brand small{margin-top:3px}
 .game-side b{overflow:hidden;font-size:14px;font-weight:700;text-overflow:ellipsis;white-space:nowrap}
 .game-side b em{margin-right:5px;color:var(--text-4);font-style:normal;font-weight:600}
 .game-side strong{margin-left:auto;padding-left:10px;font-variant-numeric:tabular-nums}
+.game-list.results .game-side:not(.won) b,.game-list.results .game-side:not(.won) strong{color:var(--text-2);font-weight:500}
+.front-panel-wide{grid-column:1/-1}
 .game-when{flex:none;text-align:right;font-variant-numeric:tabular-nums}
 .game-when b{display:block;font-size:13px}
 .game-when span{display:block;color:var(--text-2);font-size:13px}

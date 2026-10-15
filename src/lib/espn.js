@@ -44,6 +44,30 @@ export async function upcomingGames(days = 7, limit = 6) {
     .slice(0, limit);
 }
 
+/* Finished games from the last few days, newest first. */
+export async function recentResults(days = 7, limit = 6) {
+  const today = new Date();
+  const dates = Array.from({length: days}, (_, offset) => ymd(new Date(today.getFullYear(), today.getMonth(), today.getDate() - offset)));
+  const boards = await Promise.all(dates.map(date => getJson(`${BASE}/scoreboard?dates=${date}`).catch(() => null)));
+  const seen = new Set();
+  return boards.flatMap(board => board?.events || []).map(toGame)
+    .filter(game => game.state === 'post' && !seen.has(game.id) && seen.add(game.id))
+    .sort((a, b) => b.date - a.date)
+    .slice(0, limit);
+}
+
+export async function teamResults(team, limit = 5) {
+  try {
+    const seasons = await Promise.all([1, 2].map(type => getJson(`${BASE}/teams/${team}/schedule?seasontype=${type}`).catch(() => null)));
+    return seasons.flatMap(season => season?.events || []).map(toGame)
+      .filter(game => game.state === 'post')
+      .sort((a, b) => b.date - a.date)
+      .slice(0, limit);
+  } catch {
+    return [];
+  }
+}
+
 export async function teamSchedule(team, limit = 5) {
   try {
     const seasons = await Promise.all([1, 2].map(type => getJson(`${BASE}/teams/${team}/schedule?seasontype=${type}`).catch(() => null)));

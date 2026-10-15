@@ -12,24 +12,25 @@ function gameDay(date) {
   return dayFormat.format(date);
 }
 
-function Side({team, live, home}) {
-  return <span className="game-side">
+function Side({team, scored, won, home}) {
+  return <span className={won ? 'game-side won' : 'game-side'}>
     {team.logo ? <img src={team.logo} alt="" loading="lazy"/> : <i/>}
     <b>{home && <em>@</em>}{team.name}</b>
-    {live && <strong>{team.score}</strong>}
+    {scored && <strong>{team.score}</strong>}
   </span>;
 }
 
-export function GameList({games, empty = 'No games scheduled this week.'}) {
+export function GameList({games, empty = 'No games scheduled this week.', results = false}) {
   if (games === null) return <ul className="game-list loading">{[0, 1, 2].map(index => <li key={index}/>)}</ul>;
   if (!games.length) return <p className="feed-empty">{empty}</p>;
-  return <ul className="game-list">{games.map(game => {
-    const live = game.state === 'in';
+  return <ul className={results ? 'game-list results' : 'game-list'}>{games.map(game => {
+    const live = game.state === 'in', final = game.state === 'post', scored = live || final;
+    const winner = final && Number(game.away.score) !== Number(game.home.score) ? (Number(game.away.score) > Number(game.home.score) ? 'away' : 'home') : null;
     return <li key={game.id}>
-      <div className="game-teams"><Side team={game.away} live={live}/><Side team={game.home} live={live} home/></div>
+      <div className="game-teams"><Side team={game.away} scored={scored} won={winner === 'away'}/><Side team={game.home} scored={scored} won={winner === 'home'} home/></div>
       <div className="game-when">
         {live ? <span className="game-live">Live</span> : <b>{gameDay(game.date)}</b>}
-        <span>{live ? game.detail : timeFormat.format(game.date)}</span>
+        <span>{live ? game.detail : final ? 'Final' : timeFormat.format(game.date)}</span>
         {(game.preseason || game.tv) && <small>{[game.preseason && 'Preseason', game.tv].filter(Boolean).join(' · ')}</small>}
       </div>
     </li>;
