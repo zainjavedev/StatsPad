@@ -5,6 +5,7 @@ import { Resvg } from '@resvg/resvg-js';
 import sharp from 'sharp';
 import { TEAMS, teamCodeOf } from '../src/lib/teams.js';
 import { SEASONS, pretty } from '../src/lib/season.js';
+import { makeCopy } from './seo-copy.mjs';
 import { SITE, compareUrl, playerUrl, slugify, teamUrl } from '../src/lib/routes.js';
 
 /* Runs after `vite build`. Writes a real HTML page (title, description, social
@@ -19,7 +20,8 @@ const dist = path.join(root, 'dist');
 const cacheDir = path.join(root, '.cache', 'og');
 const LIMIT = Number(process.env.SEO_LIMIT) || Infinity;
 const SKIP_OG = process.env.SKIP_OG === '1';
-const TOP_PLAYERS_FOR_PAIRS = 24;
+const TOP_PLAYERS_FOR_PAIRS = 20;
+const TOP_TEAMS_FOR_PAIRS = 12;
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
 const esc = value => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const plain = value => String(value).normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -175,7 +177,15 @@ const topPlayers = players.slice(0, TOP_PLAYERS_FOR_PAIRS);
 const pairs = [];
 for (let i = 0; i < topPlayers.length; i += 1) for (let j = i + 1; j < topPlayers.length; j += 1) pairs.push([topPlayers[i], topPlayers[j]].sort((x, y) => x.slug.localeCompare(y.slug)));
 const teamPairs = [];
-for (let i = 0; i < teams.length; i += 1) for (let j = i + 1; j < teams.length; j += 1) teamPairs.push([teams[i], teams[j]].sort((x, y) => x.slug.localeCompare(y.slug)));
+const topTeams = [...teams].sort((a, b) => b.stats.points - a.stats.points).slice(0, TOP_TEAMS_FOR_PAIRS);
+for (let i = 0; i < topTeams.length; i += 1) for (let j = i + 1; j < topTeams.length; j += 1) teamPairs.push([topTeams[i], topTeams[j]].sort((x, y) => x.slug.localeCompare(y.slug)));
+const pairKeys = new Set(pairs.map(([x, y]) => `${x.slug}|${y.slug}`));
+const pairRoute = (x, y) => {
+  const [first, second] = [x, y].sort((m, n) => m.slug.localeCompare(n.slug));
+  return pairKeys.has(`${first.slug}|${second.slug}`) ? compareUrl([x.playerName, y.playerName]) : null;
+};
+const copy = makeCopy({players, teams, esc, link, nameOf: code => TEAMS[code].name, playerHref: q => playerUrl(q.playerName), pairRoute});
+const starterNames = team => ['PG', 'SG', 'SF', 'PF', 'C'].map(slot => team.roster?.players.find(entry => entry.slot === slot)?.name).filter(Boolean).map(name => (bySlug.get(slugify(name)) ? link(playerUrl(name), name) : esc(name)));
 
 writePage({route: '/', title: 'StatsPad: NBA player and team comparisons, rosters and stats', description: 'Compare any two NBA players or teams side by side with a skill radar, see every roster with its expected starting five, and browse the league leaders.', body: '<main class="seo"><h1>StatsPad: NBA player and team comparisons</h1><p>Compare any two NBA players or teams, browse every roster and see the league leaders.</p></main>'});
 writePage({route: '/compare', title: 'Compare NBA players and teams | StatsPad', description: 'Pick any two NBA players or teams and compare their stats side by side with a skill radar.', body: '<main class="seo"><h1>Compare NBA players and teams</h1></main>'});
@@ -187,7 +197,7 @@ for (const p of cap(players)) {
   writePage({route: playerUrl(p.playerName), ogName: `players/${p.slug}`,
     title: `${p.playerName} stats ${yearLabel}: ${fixed(p.stats.points)} PPG, ${fixed(p.stats.totalRebounds)} RPG, ${fixed(p.stats.assists)} APG | StatsPad`,
     description: `${p.playerName} ${yearLabel} NBA stats: ${statLine(p)}, ${fixed(p.stats.fieldGoalPercentage)}% FG, ${fixed(p.stats.threePointPercentage)}% 3P, ${fixed(p.ts)}% TS in ${p.gamesPlayed} games. Compare ${p.playerName} with any player.`,
-    body: `<main class="seo"><h1>${esc(p.playerName)} stats, ${yearLabel}</h1><p>${esc(p.playerName)} (${esc(p.code ? TEAMS[p.code].name : p.team)}, ${esc(p.position)}) played ${p.gamesPlayed} games at ${fixed(p.minutesPerGame)} minutes per game in ${yearLabel}.</p>${table(['Stat', 'Per game'], PLAYER_ROWS.map(([label, get, places]) => [esc(label), fixed(get(p), places ?? 1)]))}${p.code ? `<p>${link(teamUrl(p.code), `${TEAMS[p.code].name} roster`)}</p>` : ''}${related ? `<h2>Compare</h2><ul>${related}</ul>` : ''}</main>`});
+    body: `<main class="seo"><h1>${esc(p.playerName)} stats, ${yearLabel}</h1>${copy.playerProfile(p)}${table(['Stat', 'Per game'], PLAYER_ROWS.map(([label, get, places]) => [esc(label), fixed(get(p), places ?? 1)]))}${p.code ? `<p>${link(teamUrl(p.code), `${TEAMS[p.code].name} roster`)}</p>` : ''}${copy.teammates(p)}${copy.neighbours(p)}${related ? `<h2>Compare</h2><ul>${related}</ul>` : ''}</main>`});
   card(`players/${p.slug}`, () => playerCard(p));
 }
 for (const team of cap(teams)) {
@@ -198,7 +208,7 @@ for (const team of cap(teams)) {
   writePage({route: teamUrl(team.code), ogName: `teams/${team.slug}`,
     title: `${team.name} roster 2026–27: expected starting five and stats | StatsPad`,
     description: `${team.name} 2026–27 roster with the expected starting five${starters.length ? ` (${starters.map(p => p.name).join(', ')})` : ''}, ${statsWord} per-game stats and recent results.`,
-    body: `<main class="seo"><h1>${esc(team.name)} roster, 2026–27</h1>${starters.length ? `<h2>Expected starting five</h2><ol>${starters.map(p => `<li>${esc(p.slot)} ${line(p)}</li>`).join('')}</ol>` : ''}${roster.length ? `<h2>Full roster</h2><ul>${roster.map(p => `<li>${line(p)}</li>`).join('')}</ul>` : ''}<h2>${yearLabel} team stats</h2>${table(['Stat', 'Per game'], TEAM_ROWS.map(([label, get]) => [esc(label), fixed(get(team))]))}</main>`});
+    body: `<main class="seo"><h1>${esc(team.name)} roster, 2026–27</h1>${copy.teamProfile(team)}${starters.length ? `<h2>Expected starting five</h2><ol>${starters.map(p => `<li>${esc(p.slot)} ${line(p)}</li>`).join('')}</ol>` : ''}${roster.length ? `<h2>Full roster</h2><ul>${roster.map(p => `<li>${line(p)}</li>`).join('')}</ul>` : ''}<h2>${yearLabel} team stats</h2>${table(['Stat', 'Per game'], TEAM_ROWS.map(([label, get]) => [esc(label), fixed(get(team))]))}</main>`});
   card(`teams/${team.slug}`, () => teamCard(team));
 }
 for (const [a, b] of cap(pairs)) {
@@ -206,14 +216,14 @@ for (const [a, b] of cap(pairs)) {
   writePage({route, ogName: `compare/${a.slug}-vs-${b.slug}`,
     title: `${a.playerName} vs ${b.playerName}: ${yearLabel} stats comparison | StatsPad`,
     description: `${a.playerName} vs ${b.playerName} ${yearLabel} stats side by side: ${fixed(a.stats.points)} vs ${fixed(b.stats.points)} PPG, ${fixed(a.stats.totalRebounds)} vs ${fixed(b.stats.totalRebounds)} RPG, ${fixed(a.stats.assists)} vs ${fixed(b.stats.assists)} APG, with a skill radar.`,
-    body: `<main class="seo"><h1>${esc(a.playerName)} vs ${esc(b.playerName)}: ${yearLabel} stats</h1><p>${esc(a.playerName)} averaged ${esc(statLine(a))}. ${esc(b.playerName)} averaged ${esc(statLine(b))}.</p>${table(['Stat', a.playerName, b.playerName], cell(PLAYER_ROWS, a, b))}<p>${link(playerUrl(a.playerName), `${a.playerName} stats`)} · ${link(playerUrl(b.playerName), `${b.playerName} stats`)}</p></main>`});
+    body: `<main class="seo"><h1>${esc(a.playerName)} vs ${esc(b.playerName)}: ${yearLabel} stats</h1><p>${esc(a.playerName)} averaged ${esc(statLine(a))}. ${esc(b.playerName)} averaged ${esc(statLine(b))}.</p>${copy.playerComparison(a, b)}${table(['Stat', a.playerName, b.playerName], cell(PLAYER_ROWS, a, b))}<p>${link(playerUrl(a.playerName), `${a.playerName} stats`)} · ${link(playerUrl(b.playerName), `${b.playerName} stats`)}${a.code ? ` · ${link(teamUrl(a.code), `${TEAMS[a.code].name} roster`)}` : ''}${b.code && b.code !== a.code ? ` · ${link(teamUrl(b.code), `${TEAMS[b.code].name} roster`)}` : ''}</p>${copy.moreComparisons(a, b)}</main>`});
   card(`compare/${a.slug}-vs-${b.slug}`, () => compareCard(a, b));
 }
 for (const [a, b] of cap(teamPairs)) {
   writePage({route: compareUrl([a.name, b.name]), ogName: `compare/${a.slug}-vs-${b.slug}`,
     title: `${a.name} vs ${b.name}: ${yearLabel} team stats comparison | StatsPad`,
     description: `${a.name} vs ${b.name} ${yearLabel} team stats side by side: ${fixed(a.stats.points)} vs ${fixed(b.stats.points)} PPG, ${fixed(a.stats.assists)} vs ${fixed(b.stats.assists)} APG, ${fixed(a.stats.totalRebounds)} vs ${fixed(b.stats.totalRebounds)} RPG, with a skill radar and the expected starting fives.`,
-    body: `<main class="seo"><h1>${esc(a.name)} vs ${esc(b.name)}: ${yearLabel} team stats</h1>${table(['Stat', a.name, b.name], cell(TEAM_ROWS, a, b))}<p>${link(teamUrl(a.code), `${a.name} roster`)} · ${link(teamUrl(b.code), `${b.name} roster`)}</p></main>`});
+    body: `<main class="seo"><h1>${esc(a.name)} vs ${esc(b.name)}: ${yearLabel} team stats</h1>${copy.teamComparison(a, b, starterNames)}${table(['Stat', a.name, b.name], cell(TEAM_ROWS, a, b))}<p>${link(teamUrl(a.code), `${a.name} roster`)} · ${link(teamUrl(b.code), `${b.name} roster`)}</p></main>`});
   card(`compare/${a.slug}-vs-${b.slug}`, () => teamCompareCard(a, b));
 }
 
