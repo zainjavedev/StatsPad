@@ -1,0 +1,275 @@
+{
+  "team": "HOU",
+  "teamName": "Houston Rockets",
+  "teamId": 1610612745,
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Ime Udoka",
+  "lastUpdated": "2026-10-15",
+  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "sources": [
+    {
+      "label": "ESPN roster",
+      "url": "https://www.espn.com/nba/team/roster/_/name/hou"
+    },
+    {
+      "label": "Basketball Reference stats",
+      "url": "https://www.basketball-reference.com/leagues/NBA_2026_per_game.html"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of camp",
+      "short": "Camp"
+    }
+  ],
+  "players": [
+    {
+      "name": "Amen Thompson",
+      "bbrefId": "thompam01",
+      "nbaId": null,
+      "espnId": 4684740,
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "2003-01-30",
+      "exp": 4,
+      "college": null,
+      "jersey": "1",
+      "unit": "starters"
+    },
+    {
+      "name": "Kevin Durant",
+      "bbrefId": "duranke01",
+      "nbaId": 201142,
+      "espnId": 3202,
+      "pos": "F",
+      "height": "6-11",
+      "birthDate": "1988-09-29",
+      "exp": 20,
+      "college": "Texas",
+      "jersey": "7",
+      "unit": "starters"
+    },
+    {
+      "name": "Jabari Smith Jr.",
+      "bbrefId": "smithja05",
+      "nbaId": null,
+      "espnId": 4432639,
+      "pos": "F",
+      "height": "6-11",
+      "birthDate": "2003-05-13",
+      "exp": 5,
+      "college": "Auburn",
+      "jersey": "10",
+      "unit": "starters"
+    },
+    {
+      "name": "Alperen Sengun",
+      "bbrefId": "sengual01",
+      "nbaId": null,
+      "espnId": 4871144,
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "2002-07-25",
+      "exp": 6,
+      "college": null,
+      "jersey": "28",
+      "unit": "starters"
+    },
+    {
+      "name": "Marcus Smart",
+      "bbrefId": "smartma01",
+      "nbaId": 203935,
+      "espnId": 2990992,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "1994-03-06",
+      "exp": 13,
+      "college": "Oklahoma State",
+      "jersey": "36",
+      "unit": "starters"
+    },
+    {
+      "name": "Reed Sheppard",
+      "bbrefId": "sheppre01",
+      "nbaId": null,
+      "espnId": 4711272,
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "2004-06-24",
+      "exp": 3,
+      "college": "Kentucky",
+      "jersey": "15",
+      "unit": "second"
+    },
+    {
+      "name": "Tari Eason",
+      "bbrefId": "easonta01",
+      "nbaId": null,
+      "espnId": 4433192,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2001-05-10",
+      "exp": 5,
+      "college": "LSU",
+      "jersey": "17",
+      "unit": "second"
+    },
+    {
+      "name": "Steven Adams",
+      "bbrefId": "adamsst01",
+      "nbaId": 203500,
+      "espnId": 2991235,
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "1993-07-20",
+      "exp": 14,
+      "college": "Pittsburgh",
+      "jersey": "12",
+      "unit": "second"
+    },
+    {
+      "name": "Bogdan Bogdanovic",
+      "bbrefId": "bogdabo01",
+      "nbaId": 203992,
+      "espnId": 3037789,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "1992-08-18",
+      "exp": 10,
+      "college": null,
+      "jersey": "31",
+      "unit": "second"
+    },
+    {
+      "name": "Oscar Tshiebwe",
+      "bbrefId": "tshieos01",
+      "nbaId": null,
+      "espnId": 4432827,
+      "pos": "C",
+      "height": "6-8",
+      "birthDate": "1999-11-27",
+      "exp": 4,
+      "college": "Kentucky",
+      "jersey": "9",
+      "unit": "second"
+    },
+    {
+      "name": "Clint Capela",
+      "bbrefId": "capelca01",
+      "nbaId": 203991,
+      "espnId": 3102529,
+      "pos": "C",
+      "height": "6-10",
+      "birthDate": "1994-05-18",
+      "exp": 13,
+      "college": null,
+      "jersey": "30",
+      "unit": "third"
+    },
+    {
+      "name": "Julian Phillips",
+      "bbrefId": "phillju01",
+      "nbaId": null,
+      "espnId": 5105553,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "2003-11-05",
+      "exp": 6,
+      "college": "Tennessee",
+      "jersey": "3",
+      "unit": "third"
+    },
+    {
+      "name": "Jae'Sean Tate",
+      "bbrefId": "tateja01",
+      "nbaId": 1630256,
+      "espnId": 3136777,
+      "pos": "F",
+      "height": "6-4",
+      "birthDate": "1995-10-28",
+      "exp": 7,
+      "college": "Ohio State",
+      "jersey": "8",
+      "unit": "third"
+    },
+    {
+      "name": "Isaiah Crawford",
+      "bbrefId": "crawfis01",
+      "nbaId": null,
+      "espnId": 4592857,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "2001-11-01",
+      "exp": 3,
+      "college": "Louisiana Tech",
+      "jersey": "27",
+      "unit": "third"
+    },
+    {
+      "name": "Quadir Copeland",
+      "nbaId": null,
+      "espnId": 4683860,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2003-09-01",
+      "exp": 0,
+      "college": "NC State",
+      "jersey": "25",
+      "unit": "third"
+    },
+    {
+      "name": "Sean Pedulla",
+      "bbrefId": "pedulse01",
+      "nbaId": null,
+      "espnId": 4709131,
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "2002-10-10",
+      "exp": 2,
+      "college": "Ole Miss",
+      "jersey": "0",
+      "unit": "camp"
+    },
+    {
+      "name": "Bruce Thornton",
+      "nbaId": null,
+      "espnId": 5105837,
+      "pos": "G",
+      "height": "6-0",
+      "birthDate": "2003-09-14",
+      "exp": 0,
+      "college": "Ohio State",
+      "jersey": "2",
+      "unit": "camp"
+    },
+    {
+      "name": "Fred VanVleet",
+      "nbaId": 1627832,
+      "espnId": 2991230,
+      "pos": "G",
+      "height": "6-0",
+      "birthDate": "1994-02-25",
+      "exp": 9,
+      "college": "Wichita State",
+      "jersey": "5",
+      "unit": "camp"
+    }
+  ]
+}

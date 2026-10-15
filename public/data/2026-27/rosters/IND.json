@@ -1,0 +1,275 @@
+{
+  "team": "IND",
+  "teamName": "Indiana Pacers",
+  "teamId": 1610612754,
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Rick Carlisle",
+  "lastUpdated": "2026-10-15",
+  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "sources": [
+    {
+      "label": "ESPN roster",
+      "url": "https://www.espn.com/nba/team/roster/_/name/ind"
+    },
+    {
+      "label": "Basketball Reference stats",
+      "url": "https://www.basketball-reference.com/leagues/NBA_2026_per_game.html"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of camp",
+      "short": "Camp"
+    }
+  ],
+  "players": [
+    {
+      "name": "Pascal Siakam",
+      "bbrefId": "siakapa01",
+      "nbaId": 1627783,
+      "espnId": 3149673,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "1994-04-02",
+      "exp": 11,
+      "college": "New Mexico State",
+      "jersey": "43",
+      "unit": "starters"
+    },
+    {
+      "name": "Kelly Oubre Jr.",
+      "bbrefId": "oubreke01",
+      "nbaId": 1626162,
+      "espnId": 3133603,
+      "pos": "G",
+      "height": "6-8",
+      "birthDate": "1995-12-09",
+      "exp": 12,
+      "college": "Kansas",
+      "jersey": "10",
+      "unit": "starters"
+    },
+    {
+      "name": "Andrew Nembhard",
+      "bbrefId": "nembhan01",
+      "nbaId": null,
+      "espnId": 4395712,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2000-01-16",
+      "exp": 5,
+      "college": "Gonzaga",
+      "jersey": "2",
+      "unit": "starters"
+    },
+    {
+      "name": "Ivica Zubac",
+      "bbrefId": "zubaciv01",
+      "nbaId": 1627826,
+      "espnId": 4017837,
+      "pos": "C",
+      "height": "7-0",
+      "birthDate": "1997-03-18",
+      "exp": 11,
+      "college": null,
+      "jersey": "40",
+      "unit": "starters"
+    },
+    {
+      "name": "Aaron Nesmith",
+      "bbrefId": "nesmiaa01",
+      "nbaId": 1630174,
+      "espnId": 4396909,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "1999-10-16",
+      "exp": 7,
+      "college": "Vanderbilt",
+      "jersey": "23",
+      "unit": "starters"
+    },
+    {
+      "name": "Jarace Walker",
+      "bbrefId": "walkeja02",
+      "nbaId": null,
+      "espnId": 5106060,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2003-09-04",
+      "exp": 4,
+      "college": "Houston",
+      "jersey": "5",
+      "unit": "second"
+    },
+    {
+      "name": "Jalen Slawson",
+      "bbrefId": "slawsja01",
+      "nbaId": null,
+      "espnId": 4398207,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "1999-10-22",
+      "exp": 3,
+      "college": "Furman",
+      "jersey": "18",
+      "unit": "second"
+    },
+    {
+      "name": "Ben Sheppard",
+      "bbrefId": "sheppbe01",
+      "nbaId": null,
+      "espnId": 4433076,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2001-07-16",
+      "exp": 4,
+      "college": "Belmont",
+      "jersey": "26",
+      "unit": "second"
+    },
+    {
+      "name": "Jay Huff",
+      "bbrefId": "huffja01",
+      "nbaId": null,
+      "espnId": 4065731,
+      "pos": "C",
+      "height": "7-1",
+      "birthDate": "1997-08-25",
+      "exp": 5,
+      "college": "Virginia",
+      "jersey": "32",
+      "unit": "second"
+    },
+    {
+      "name": "Johnny Furphy",
+      "bbrefId": "furphjo01",
+      "nbaId": null,
+      "espnId": 5157066,
+      "pos": "G",
+      "height": "6-8",
+      "birthDate": "2004-12-07",
+      "exp": 3,
+      "college": "Kansas",
+      "jersey": "12",
+      "unit": "second"
+    },
+    {
+      "name": "Quenton Jackson",
+      "bbrefId": "jacksqu01",
+      "nbaId": null,
+      "espnId": 4592829,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "1998-09-15",
+      "exp": 5,
+      "college": "Texas A&M",
+      "jersey": "29",
+      "unit": "third"
+    },
+    {
+      "name": "Obi Toppin",
+      "bbrefId": "toppiob01",
+      "nbaId": 1630167,
+      "espnId": 4278355,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "1998-03-04",
+      "exp": 7,
+      "college": "Dayton",
+      "jersey": "1",
+      "unit": "third"
+    },
+    {
+      "name": "T.J. McConnell",
+      "bbrefId": "mccontj01",
+      "nbaId": 204456,
+      "espnId": 2530530,
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "1992-03-25",
+      "exp": 12,
+      "college": "Arizona",
+      "jersey": "9",
+      "unit": "third"
+    },
+    {
+      "name": "Kobe Brown",
+      "bbrefId": "brownko01",
+      "nbaId": null,
+      "espnId": 4431752,
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "2000-01-01",
+      "exp": 4,
+      "college": "Missouri",
+      "jersey": "24",
+      "unit": "third"
+    },
+    {
+      "name": "Larry Nance Jr.",
+      "bbrefId": "nancela02",
+      "nbaId": 1626204,
+      "espnId": 2580365,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "1993-01-01",
+      "exp": 12,
+      "college": "Wyoming",
+      "jersey": "22",
+      "unit": "third"
+    },
+    {
+      "name": "Tyrese Haliburton",
+      "nbaId": 1630169,
+      "espnId": 4396993,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2000-02-29",
+      "exp": 7,
+      "college": "Iowa State",
+      "jersey": "0",
+      "unit": "camp"
+    },
+    {
+      "name": "James Johnson",
+      "nbaId": 201949,
+      "espnId": 3999,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "1987-02-20",
+      "exp": 17,
+      "college": "Wake Forest",
+      "jersey": "16",
+      "unit": "camp"
+    },
+    {
+      "name": "Braden Smith",
+      "nbaId": null,
+      "espnId": 5105854,
+      "pos": "G",
+      "height": "5-10",
+      "birthDate": "2003-07-25",
+      "exp": 0,
+      "college": "Purdue",
+      "jersey": "18",
+      "unit": "camp"
+    }
+  ]
+}

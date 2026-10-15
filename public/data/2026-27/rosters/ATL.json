@@ -1,0 +1,311 @@
+{
+  "team": "ATL",
+  "teamName": "Atlanta Hawks",
+  "teamId": 1610612737,
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Quin Snyder",
+  "lastUpdated": "2026-10-15",
+  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "sources": [
+    {
+      "label": "ESPN roster",
+      "url": "https://www.espn.com/nba/team/roster/_/name/atl"
+    },
+    {
+      "label": "Basketball Reference stats",
+      "url": "https://www.basketball-reference.com/leagues/NBA_2026_per_game.html"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of camp",
+      "short": "Camp"
+    }
+  ],
+  "players": [
+    {
+      "name": "Jalen Johnson",
+      "bbrefId": "johnsja05",
+      "nbaId": null,
+      "espnId": 4701230,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2001-12-18",
+      "exp": 6,
+      "college": "Duke",
+      "jersey": "1",
+      "unit": "starters"
+    },
+    {
+      "name": "Nickeil Alexander-Walker",
+      "bbrefId": "alexani01",
+      "nbaId": 1629638,
+      "espnId": 4278039,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "1998-09-02",
+      "exp": 8,
+      "college": "Virginia Tech",
+      "jersey": "7",
+      "unit": "starters"
+    },
+    {
+      "name": "Dyson Daniels",
+      "bbrefId": "daniedy01",
+      "nbaId": null,
+      "espnId": 4869342,
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "2003-03-17",
+      "exp": 5,
+      "college": null,
+      "jersey": "5",
+      "unit": "starters"
+    },
+    {
+      "name": "Onyeka Okongwu",
+      "bbrefId": "okongon01",
+      "nbaId": 1630168,
+      "espnId": 4431680,
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2000-12-11",
+      "exp": 7,
+      "college": "USC",
+      "jersey": "17",
+      "unit": "starters"
+    },
+    {
+      "name": "CJ McCollum",
+      "bbrefId": "mccolcj01",
+      "nbaId": 203468,
+      "espnId": 2490149,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "1991-09-19",
+      "exp": 14,
+      "college": "Lehigh",
+      "jersey": "3",
+      "unit": "starters"
+    },
+    {
+      "name": "Luguentz Dort",
+      "bbrefId": "dortlu01",
+      "nbaId": 1629652,
+      "espnId": 4397020,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "1999-04-19",
+      "exp": 8,
+      "college": "Arizona State",
+      "jersey": "0",
+      "unit": "second"
+    },
+    {
+      "name": "Jock Landale",
+      "bbrefId": "landajo01",
+      "nbaId": null,
+      "espnId": 3146557,
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "1995-10-25",
+      "exp": 6,
+      "college": "Saint Mary's",
+      "jersey": "31",
+      "unit": "second"
+    },
+    {
+      "name": "Aaron Wiggins",
+      "bbrefId": "wiggiaa01",
+      "nbaId": null,
+      "espnId": 4397183,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "1999-01-02",
+      "exp": 6,
+      "college": "Maryland",
+      "jersey": "2",
+      "unit": "second"
+    },
+    {
+      "name": "Corey Kispert",
+      "bbrefId": "kispeco01",
+      "nbaId": null,
+      "espnId": 4280151,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "1999-03-03",
+      "exp": 6,
+      "college": "Gonzaga",
+      "jersey": "24",
+      "unit": "second"
+    },
+    {
+      "name": "Dorian Finney-Smith",
+      "bbrefId": "finnedo01",
+      "nbaId": 1627827,
+      "espnId": 2578185,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "1993-05-04",
+      "exp": 11,
+      "college": "Florida",
+      "jersey": "8",
+      "unit": "second"
+    },
+    {
+      "name": "Jalen Wilson",
+      "bbrefId": "wilsoja03",
+      "nbaId": null,
+      "espnId": 4431714,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "2000-11-04",
+      "exp": 4,
+      "college": "Kansas",
+      "jersey": "22",
+      "unit": "third"
+    },
+    {
+      "name": "Mouhamed Gueye",
+      "bbrefId": "gueyemo02",
+      "nbaId": null,
+      "espnId": 4712863,
+      "pos": "F",
+      "height": "6-11",
+      "birthDate": "2002-11-09",
+      "exp": 4,
+      "college": "Washington State",
+      "jersey": "18",
+      "unit": "third"
+    },
+    {
+      "name": "RayJ Dennis",
+      "bbrefId": "dennira01",
+      "nbaId": null,
+      "espnId": 4431941,
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "2001-03-30",
+      "exp": 3,
+      "college": "Baylor",
+      "jersey": "10",
+      "unit": "third"
+    },
+    {
+      "name": "Asa Newell",
+      "bbrefId": "newelas01",
+      "nbaId": null,
+      "espnId": 4873201,
+      "pos": "F",
+      "height": "6-11",
+      "birthDate": "2005-10-05",
+      "exp": 2,
+      "college": "Georgia",
+      "jersey": "14",
+      "unit": "third"
+    },
+    {
+      "name": "Giorgi Bezhanishvili",
+      "nbaId": null,
+      "espnId": 4397003,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "1998-11-16",
+      "exp": 0,
+      "college": "Illinois",
+      "jersey": null,
+      "unit": "third"
+    },
+    {
+      "name": "Cameron Corhen",
+      "nbaId": null,
+      "espnId": 4712902,
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2004-05-01",
+      "exp": 0,
+      "college": "Pittsburgh",
+      "jersey": null,
+      "unit": "camp"
+    },
+    {
+      "name": "Zuby Ejiofor",
+      "nbaId": null,
+      "espnId": 5106262,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2004-04-20",
+      "exp": 0,
+      "college": "St. John's",
+      "jersey": "20",
+      "unit": "camp"
+    },
+    {
+      "name": "Kingston Flemings",
+      "nbaId": null,
+      "espnId": 5149077,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2007-01-03",
+      "exp": 0,
+      "college": "Houston",
+      "jersey": "4",
+      "unit": "camp"
+    },
+    {
+      "name": "Keshon Gilbert",
+      "bbrefId": "gilbeke01",
+      "nbaId": null,
+      "espnId": 4585618,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2003-06-30",
+      "exp": 2,
+      "college": "Iowa State",
+      "jersey": "51",
+      "unit": "camp"
+    },
+    {
+      "name": "Kobe Johnson",
+      "nbaId": null,
+      "espnId": 4683857,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2003-01-15",
+      "exp": 0,
+      "college": "UCLA",
+      "jersey": "12",
+      "unit": "camp"
+    },
+    {
+      "name": "Henri Veesaar",
+      "nbaId": null,
+      "espnId": 5105571,
+      "pos": "C",
+      "height": "7-0",
+      "birthDate": "2004-03-28",
+      "exp": 0,
+      "college": "North Carolina",
+      "jersey": "13",
+      "unit": "camp"
+    }
+  ]
+}

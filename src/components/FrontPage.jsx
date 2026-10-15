@@ -3,6 +3,7 @@ import { ArrowRight, BarChart3, Search } from 'lucide-react';
 import { GameList, NewsList } from './Feeds';
 import { useFeed } from '../lib/useFeed';
 import { latestNews, upcomingGames } from '../lib/espn';
+import { teamCodeOf } from '../lib/teams';
 
 /* The front door: find a player, jump to a tool, see what's on this week.
    Deep leaderboards live on the Leaders page. */
@@ -74,7 +75,7 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
           <span><b>Compare players</b><small>Head-to-head on every stat</small></span>
           <ArrowRight size={18}/>
         </button>
-        <button className="front-tile sixers" onClick={onTeam}>
+        <button className="front-tile sixers" onClick={() => onTeam('PHI')}>
           <span className="front-tile-icon"><img src="https://cdn.nba.com/logos/nba/1610612755/global/L/logo.svg" alt=""/></span>
           <span><b>Philadelphia 76ers</b><small>2026–27 roster and rotation</small></span>
           <ArrowRight size={18}/>
@@ -107,7 +108,7 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
 
     <section className="front-block">
       <div className="front-block-head"><h2>Teams</h2></div>
-      <div className="front-teams">{[...teams].sort((a, b) => a.playerName.localeCompare(b.playerName)).map(team => <button key={team.teamId} onClick={() => team.team === 'PHI' ? onTeam() : onOpen(team)} title={team.playerName}>
+      <div className="front-teams">{[...teams].sort((a, b) => a.playerName.localeCompare(b.playerName)).map(team => <button key={team.teamId} onClick={() => onTeam(teamCodeOf(team.team))} title={team.playerName}>
         <Art entity={team} playerIds={playerIds} className="front-team-logo"/>
         <span>{team.team}</span>
       </button>)}</div>

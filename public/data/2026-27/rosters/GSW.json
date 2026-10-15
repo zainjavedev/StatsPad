@@ -1,0 +1,313 @@
+{
+  "team": "GSW",
+  "teamName": "Golden State Warriors",
+  "teamId": 1610612744,
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Steve Kerr",
+  "lastUpdated": "2026-10-15",
+  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "sources": [
+    {
+      "label": "ESPN roster",
+      "url": "https://www.espn.com/nba/team/roster/_/name/gs"
+    },
+    {
+      "label": "Basketball Reference stats",
+      "url": "https://www.basketball-reference.com/leagues/NBA_2026_per_game.html"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of camp",
+      "short": "Camp"
+    }
+  ],
+  "players": [
+    {
+      "name": "Jimmy Butler III",
+      "bbrefId": "butleji01",
+      "nbaId": 202710,
+      "espnId": 6430,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "1989-09-14",
+      "exp": 16,
+      "college": "Marquette",
+      "jersey": "10",
+      "unit": "starters"
+    },
+    {
+      "name": "Stephen Curry",
+      "bbrefId": "curryst01",
+      "nbaId": 201939,
+      "espnId": 3975,
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "1988-03-14",
+      "exp": 18,
+      "college": "Davidson",
+      "jersey": "30",
+      "unit": "starters"
+    },
+    {
+      "name": "Brandin Podziemski",
+      "bbrefId": "podzibr01",
+      "nbaId": null,
+      "espnId": 4709138,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2003-02-25",
+      "exp": 4,
+      "college": "Santa Clara",
+      "jersey": "2",
+      "unit": "starters"
+    },
+    {
+      "name": "Draymond Green",
+      "bbrefId": "greendr01",
+      "nbaId": 203110,
+      "espnId": 6589,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "1990-03-04",
+      "exp": 15,
+      "college": "Michigan State",
+      "jersey": "23",
+      "unit": "starters"
+    },
+    {
+      "name": "Moses Moody",
+      "bbrefId": "moodymo01",
+      "nbaId": null,
+      "espnId": 4432171,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2002-05-31",
+      "exp": 6,
+      "college": "Arkansas",
+      "jersey": "4",
+      "unit": "starters"
+    },
+    {
+      "name": "Tyler Burton",
+      "bbrefId": "burtoty01",
+      "nbaId": null,
+      "espnId": 4431914,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2000-02-11",
+      "exp": 0,
+      "college": "Villanova",
+      "jersey": null,
+      "unit": "second"
+    },
+    {
+      "name": "Kristaps Porzingis",
+      "bbrefId": "porzikr01",
+      "nbaId": 204001,
+      "espnId": 3102531,
+      "pos": "C",
+      "height": "7-2",
+      "birthDate": "1995-08-02",
+      "exp": 12,
+      "college": null,
+      "jersey": "7",
+      "unit": "second"
+    },
+    {
+      "name": "De'Anthony Melton",
+      "bbrefId": "meltode01",
+      "nbaId": 1629001,
+      "espnId": 4066436,
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "1998-05-28",
+      "exp": 9,
+      "college": "USC",
+      "jersey": "8",
+      "unit": "second"
+    },
+    {
+      "name": "Brandon Williams",
+      "bbrefId": "willibr03",
+      "nbaId": null,
+      "espnId": 4397040,
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "1999-11-22",
+      "exp": 5,
+      "college": "Arizona",
+      "jersey": "12",
+      "unit": "second"
+    },
+    {
+      "name": "Al Horford",
+      "bbrefId": "horfoal01",
+      "nbaId": 201143,
+      "espnId": 3213,
+      "pos": "C",
+      "height": "6-8",
+      "birthDate": "1986-06-03",
+      "exp": 20,
+      "college": "Florida",
+      "jersey": "20",
+      "unit": "second"
+    },
+    {
+      "name": "Gui Santos",
+      "bbrefId": "santogu01",
+      "nbaId": null,
+      "espnId": 4997536,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2002-06-22",
+      "exp": 4,
+      "college": null,
+      "jersey": "15",
+      "unit": "third"
+    },
+    {
+      "name": "Will Richard",
+      "bbrefId": "richawi02",
+      "nbaId": null,
+      "espnId": 4897262,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2002-12-24",
+      "exp": 2,
+      "college": "Florida",
+      "jersey": "3",
+      "unit": "third"
+    },
+    {
+      "name": "LJ Cryer",
+      "bbrefId": "cryerlj01",
+      "nbaId": null,
+      "espnId": 4433149,
+      "pos": "G",
+      "height": "6-0",
+      "birthDate": "2001-10-09",
+      "exp": 2,
+      "college": "Houston",
+      "jersey": "18",
+      "unit": "third"
+    },
+    {
+      "name": "Gary Payton II",
+      "bbrefId": "paytoga02",
+      "nbaId": 1627780,
+      "espnId": 3134903,
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "1992-12-01",
+      "exp": 11,
+      "college": "Oregon State",
+      "jersey": "0",
+      "unit": "third"
+    },
+    {
+      "name": "Charles Bassey",
+      "bbrefId": "bassech01",
+      "nbaId": null,
+      "espnId": 4397886,
+      "pos": "C",
+      "height": "6-10",
+      "birthDate": "2000-10-28",
+      "exp": 6,
+      "college": "Western Kentucky",
+      "jersey": "28",
+      "unit": "third"
+    },
+    {
+      "name": "Dalen Terry",
+      "bbrefId": "terryda01",
+      "nbaId": null,
+      "espnId": 4433159,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2002-07-12",
+      "exp": 5,
+      "college": "Arizona",
+      "jersey": "21",
+      "unit": "camp"
+    },
+    {
+      "name": "Malevy Leons",
+      "bbrefId": "leonsma01",
+      "nbaId": null,
+      "espnId": 4897449,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "1999-09-23",
+      "exp": 3,
+      "college": "Bradley",
+      "jersey": "33",
+      "unit": "camp"
+    },
+    {
+      "name": "Graham Ike",
+      "nbaId": null,
+      "espnId": 4703396,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2002-08-03",
+      "exp": 0,
+      "college": "Gonzaga",
+      "jersey": null,
+      "unit": "camp"
+    },
+    {
+      "name": "Yaxel Lendeborg",
+      "nbaId": null,
+      "espnId": 5175737,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2002-09-30",
+      "exp": 0,
+      "college": "Michigan",
+      "jersey": "1",
+      "unit": "camp"
+    },
+    {
+      "name": "Georges Niang",
+      "nbaId": 1627777,
+      "espnId": 2990969,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "1993-06-17",
+      "exp": 11,
+      "college": "Iowa State",
+      "jersey": "32",
+      "unit": "camp"
+    },
+    {
+      "name": "Alex Toohey",
+      "nbaId": null,
+      "espnId": 5170949,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2004-05-05",
+      "exp": 2,
+      "college": null,
+      "jersey": "22",
+      "unit": "camp"
+    }
+  ]
+}

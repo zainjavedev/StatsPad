@@ -1,0 +1,314 @@
+{
+  "team": "ORL",
+  "teamName": "Orlando Magic",
+  "teamId": 1610612753,
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Sean Sweeney",
+  "lastUpdated": "2026-10-15",
+  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "sources": [
+    {
+      "label": "ESPN roster",
+      "url": "https://www.espn.com/nba/team/roster/_/name/orl"
+    },
+    {
+      "label": "Basketball Reference stats",
+      "url": "https://www.basketball-reference.com/leagues/NBA_2026_per_game.html"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of camp",
+      "short": "Camp"
+    }
+  ],
+  "players": [
+    {
+      "name": "Paolo Banchero",
+      "bbrefId": "banchpa01",
+      "nbaId": null,
+      "espnId": 4432573,
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2002-11-12",
+      "exp": 5,
+      "college": "Duke",
+      "jersey": "5",
+      "unit": "starters"
+    },
+    {
+      "name": "Desmond Bane",
+      "bbrefId": "banede01",
+      "nbaId": 1630217,
+      "espnId": 4066320,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "1998-06-25",
+      "exp": 7,
+      "college": "TCU",
+      "jersey": "3",
+      "unit": "starters"
+    },
+    {
+      "name": "Franz Wagner",
+      "bbrefId": "wagnefr01",
+      "nbaId": null,
+      "espnId": 4566434,
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2001-08-27",
+      "exp": 6,
+      "college": "Michigan",
+      "jersey": "22",
+      "unit": "starters"
+    },
+    {
+      "name": "Anthony Black",
+      "bbrefId": "blackan01",
+      "nbaId": null,
+      "espnId": 4712849,
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "2004-01-20",
+      "exp": 4,
+      "college": "Arkansas",
+      "jersey": "0",
+      "unit": "starters"
+    },
+    {
+      "name": "Wendell Carter Jr.",
+      "bbrefId": "cartewe01",
+      "nbaId": 1628976,
+      "espnId": 4277847,
+      "pos": "C",
+      "height": "6-10",
+      "birthDate": "1999-04-16",
+      "exp": 9,
+      "college": "Duke",
+      "jersey": "34",
+      "unit": "starters"
+    },
+    {
+      "name": "Nikola Vucevic",
+      "bbrefId": "vucevni01",
+      "nbaId": 202696,
+      "espnId": 6478,
+      "pos": "C",
+      "height": "6-9",
+      "birthDate": "1990-10-24",
+      "exp": 16,
+      "college": "USC",
+      "jersey": "9",
+      "unit": "second"
+    },
+    {
+      "name": "Jalen Suggs",
+      "bbrefId": "suggsja01",
+      "nbaId": null,
+      "espnId": 4432165,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2001-06-03",
+      "exp": 6,
+      "college": "Gonzaga",
+      "jersey": "4",
+      "unit": "second"
+    },
+    {
+      "name": "Tristan da Silva",
+      "bbrefId": "dasiltr01",
+      "nbaId": null,
+      "espnId": 4702382,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2001-05-15",
+      "exp": 3,
+      "college": "Colorado",
+      "jersey": "23",
+      "unit": "second"
+    },
+    {
+      "name": "Jevon Carter",
+      "bbrefId": "carteje01",
+      "nbaId": 1628975,
+      "espnId": 3133635,
+      "pos": "G",
+      "height": "6-0",
+      "birthDate": "1995-09-14",
+      "exp": 9,
+      "college": "West Virginia",
+      "jersey": "2",
+      "unit": "second"
+    },
+    {
+      "name": "Goga Bitadze",
+      "bbrefId": "bitadgo01",
+      "nbaId": 1629048,
+      "espnId": 4348700,
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "1999-07-20",
+      "exp": 8,
+      "college": null,
+      "jersey": "35",
+      "unit": "second"
+    },
+    {
+      "name": "Noah Penda",
+      "bbrefId": "pendano01",
+      "nbaId": null,
+      "espnId": 5214637,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2005-01-07",
+      "exp": 2,
+      "college": null,
+      "jersey": "93",
+      "unit": "third"
+    },
+    {
+      "name": "Jamal Cain",
+      "bbrefId": "cainja01",
+      "nbaId": null,
+      "espnId": 4278572,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "1999-03-20",
+      "exp": 5,
+      "college": "Oakland",
+      "jersey": "8",
+      "unit": "third"
+    },
+    {
+      "name": "Jase Richardson",
+      "bbrefId": "richaja02",
+      "nbaId": null,
+      "espnId": 5239561,
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "2005-10-16",
+      "exp": 2,
+      "college": "Michigan State",
+      "jersey": "11",
+      "unit": "third"
+    },
+    {
+      "name": "Jonathan Isaac",
+      "bbrefId": "isaacjo01",
+      "nbaId": 1628371,
+      "espnId": 4065654,
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "1997-10-03",
+      "exp": 10,
+      "college": "Florida State",
+      "jersey": "1",
+      "unit": "third"
+    },
+    {
+      "name": "Malaki Branham",
+      "bbrefId": "branhma01",
+      "nbaId": null,
+      "espnId": 4565201,
+      "pos": "F",
+      "height": "6-4",
+      "birthDate": "2003-05-12",
+      "exp": 5,
+      "college": "Ohio State",
+      "jersey": "12",
+      "unit": "third"
+    },
+    {
+      "name": "JD Davison",
+      "bbrefId": "davisjd01",
+      "nbaId": null,
+      "espnId": 4576085,
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "2002-10-03",
+      "exp": 5,
+      "college": "Alabama",
+      "jersey": "20",
+      "unit": "camp"
+    },
+    {
+      "name": "Colin Castleton",
+      "bbrefId": "castlco01",
+      "nbaId": null,
+      "espnId": 4397204,
+      "pos": "C",
+      "height": "6-10",
+      "birthDate": "2000-05-25",
+      "exp": 4,
+      "college": "Florida",
+      "jersey": "14",
+      "unit": "camp"
+    },
+    {
+      "name": "Kevin Knox II",
+      "nbaId": 1628995,
+      "espnId": 4278075,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "1999-08-11",
+      "exp": 8,
+      "college": "Kentucky",
+      "jersey": "24",
+      "unit": "camp"
+    },
+    {
+      "name": "Alex Morales",
+      "bbrefId": "moralal01",
+      "nbaId": null,
+      "espnId": 4593034,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "1997-11-21",
+      "exp": 2,
+      "college": "Wagner",
+      "jersey": "30",
+      "unit": "camp"
+    },
+    {
+      "name": "Izaiyah Nelson",
+      "nbaId": null,
+      "espnId": 5107251,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2003-10-01",
+      "exp": 0,
+      "college": "South Florida",
+      "jersey": "25",
+      "unit": "camp"
+    },
+    {
+      "name": "Mike Sharavjamts",
+      "nbaId": null,
+      "espnId": 5105875,
+      "pos": "G",
+      "height": "6-9",
+      "birthDate": "2002-01-01",
+      "exp": 0,
+      "college": "South Carolina",
+      "jersey": null,
+      "unit": "camp"
+    }
+  ]
+}

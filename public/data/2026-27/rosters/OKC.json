@@ -1,0 +1,320 @@
+{
+  "team": "OKC",
+  "teamName": "Oklahoma City Thunder",
+  "teamId": 1610612760,
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Mark Daigneault",
+  "lastUpdated": "2026-10-15",
+  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "sources": [
+    {
+      "label": "ESPN roster",
+      "url": "https://www.espn.com/nba/team/roster/_/name/okc"
+    },
+    {
+      "label": "Basketball Reference stats",
+      "url": "https://www.basketball-reference.com/leagues/NBA_2026_per_game.html"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of camp",
+      "short": "Camp"
+    }
+  ],
+  "players": [
+    {
+      "name": "Shai Gilgeous-Alexander",
+      "bbrefId": "gilgesh01",
+      "nbaId": 1628983,
+      "espnId": 4278073,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "1998-07-12",
+      "exp": 9,
+      "college": "Kentucky",
+      "jersey": "2",
+      "unit": "starters"
+    },
+    {
+      "name": "Chet Holmgren",
+      "bbrefId": "holmgch01",
+      "nbaId": null,
+      "espnId": 4433255,
+      "pos": "C",
+      "height": "7-1",
+      "birthDate": "2002-05-01",
+      "exp": 4,
+      "college": "Gonzaga",
+      "jersey": "7",
+      "unit": "starters"
+    },
+    {
+      "name": "Jalen Williams",
+      "bbrefId": "willija06",
+      "nbaId": null,
+      "espnId": 4593803,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2001-04-14",
+      "exp": 5,
+      "college": "Santa Clara",
+      "jersey": "8",
+      "unit": "starters"
+    },
+    {
+      "name": "Cason Wallace",
+      "bbrefId": "wallaca01",
+      "nbaId": null,
+      "espnId": 4683692,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2003-11-07",
+      "exp": 4,
+      "college": "Kentucky",
+      "jersey": "22",
+      "unit": "starters"
+    },
+    {
+      "name": "Ajay Mitchell",
+      "bbrefId": "mitchaj01",
+      "nbaId": null,
+      "espnId": 4900671,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2002-06-25",
+      "exp": 3,
+      "college": "UC Santa Barbara",
+      "jersey": "25",
+      "unit": "starters"
+    },
+    {
+      "name": "Isaiah Hartenstein",
+      "bbrefId": "harteis01",
+      "nbaId": 1628392,
+      "espnId": 4222252,
+      "pos": "C",
+      "height": "7-0",
+      "birthDate": "1998-05-05",
+      "exp": 9,
+      "college": null,
+      "jersey": "55",
+      "unit": "second"
+    },
+    {
+      "name": "Jaylin Williams",
+      "bbrefId": "willija07",
+      "nbaId": null,
+      "espnId": 4432823,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2002-06-29",
+      "exp": 5,
+      "college": "Arkansas",
+      "jersey": "6",
+      "unit": "second"
+    },
+    {
+      "name": "Alex Caruso",
+      "bbrefId": "carusal01",
+      "nbaId": 1627936,
+      "espnId": 2991350,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "1994-02-28",
+      "exp": 10,
+      "college": "Texas A&M",
+      "jersey": "9",
+      "unit": "second"
+    },
+    {
+      "name": "Jared McCain",
+      "bbrefId": "mccaija01",
+      "nbaId": null,
+      "espnId": 4683778,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2004-02-20",
+      "exp": 3,
+      "college": "Duke",
+      "jersey": "3",
+      "unit": "second"
+    },
+    {
+      "name": "Nikola Topic",
+      "bbrefId": "topicni01",
+      "nbaId": null,
+      "espnId": 5159925,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2005-08-10",
+      "exp": 2,
+      "college": null,
+      "jersey": "44",
+      "unit": "second"
+    },
+    {
+      "name": "Kenrich Williams",
+      "bbrefId": "willike04",
+      "nbaId": 1629026,
+      "espnId": 3133626,
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "1994-12-02",
+      "exp": 9,
+      "college": "TCU",
+      "jersey": "34",
+      "unit": "third"
+    },
+    {
+      "name": "Brooks Barnhizer",
+      "bbrefId": "barnhbr01",
+      "nbaId": null,
+      "espnId": 4684208,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "2002-03-02",
+      "exp": 2,
+      "college": "Northwestern",
+      "jersey": "23",
+      "unit": "third"
+    },
+    {
+      "name": "Josh Dix",
+      "nbaId": null,
+      "espnId": 5105800,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2004-06-29",
+      "exp": 0,
+      "college": "Creighton",
+      "jersey": "21",
+      "unit": "third"
+    },
+    {
+      "name": "Andrew Holifield",
+      "nbaId": null,
+      "espnId": 5116468,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2004-02-02",
+      "exp": 0,
+      "college": "Lamar",
+      "jersey": "17",
+      "unit": "third"
+    },
+    {
+      "name": "Aday Mara",
+      "nbaId": null,
+      "espnId": 5174983,
+      "pos": "C",
+      "height": "7-3",
+      "birthDate": "2005-04-07",
+      "exp": 0,
+      "college": "Michigan",
+      "jersey": "15",
+      "unit": "third"
+    },
+    {
+      "name": "Robert McCray V",
+      "nbaId": null,
+      "espnId": 4685802,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2002-09-26",
+      "exp": 0,
+      "college": "Florida State",
+      "jersey": "16",
+      "unit": "camp"
+    },
+    {
+      "name": "Otega Oweh",
+      "nbaId": null,
+      "espnId": 5106270,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2003-06-21",
+      "exp": 0,
+      "college": "Kentucky",
+      "jersey": "13",
+      "unit": "camp"
+    },
+    {
+      "name": "Anthony Pritchard",
+      "nbaId": null,
+      "espnId": 4897155,
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "2003-05-06",
+      "exp": 0,
+      "college": "Central Michigan",
+      "jersey": "5",
+      "unit": "camp"
+    },
+    {
+      "name": "Zhaire Smith",
+      "nbaId": null,
+      "espnId": 4277923,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "1999-06-04",
+      "exp": 3,
+      "college": "Texas Tech",
+      "jersey": "40",
+      "unit": "camp"
+    },
+    {
+      "name": "Thomas Sorber",
+      "nbaId": null,
+      "espnId": 5061603,
+      "pos": "C",
+      "height": "6-9",
+      "birthDate": "2005-12-25",
+      "exp": 0,
+      "college": "Georgetown",
+      "jersey": "12",
+      "unit": "camp"
+    },
+    {
+      "name": "Bennett Stirtz",
+      "nbaId": null,
+      "espnId": 5241364,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2003-10-03",
+      "exp": 0,
+      "college": "Iowa",
+      "jersey": "14",
+      "unit": "camp"
+    },
+    {
+      "name": "Christoph Tilly",
+      "nbaId": null,
+      "espnId": 5109790,
+      "pos": "C",
+      "height": "7-0",
+      "birthDate": "2003-01-28",
+      "exp": 0,
+      "college": "Ohio State",
+      "jersey": "33",
+      "unit": "camp"
+    }
+  ]
+}

@@ -1,0 +1,338 @@
+{
+  "team": "LAC",
+  "teamName": "LA Clippers",
+  "teamId": 1610612746,
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Tyronn Lue",
+  "lastUpdated": "2026-10-15",
+  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "sources": [
+    {
+      "label": "ESPN roster",
+      "url": "https://www.espn.com/nba/team/roster/_/name/lac"
+    },
+    {
+      "label": "Basketball Reference stats",
+      "url": "https://www.basketball-reference.com/leagues/NBA_2026_per_game.html"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of camp",
+      "short": "Camp"
+    }
+  ],
+  "players": [
+    {
+      "name": "Brandon Ingram",
+      "bbrefId": "ingrabr01",
+      "nbaId": 1627742,
+      "espnId": 3913176,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "1997-09-02",
+      "exp": 11,
+      "college": "Duke",
+      "jersey": "7",
+      "unit": "starters"
+    },
+    {
+      "name": "Darius Garland",
+      "bbrefId": "garlada01",
+      "nbaId": 1629636,
+      "espnId": 4396907,
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "2000-01-26",
+      "exp": 8,
+      "college": "Vanderbilt",
+      "jersey": "10",
+      "unit": "starters"
+    },
+    {
+      "name": "Rui Hachimura",
+      "bbrefId": "hachiru01",
+      "nbaId": 1629060,
+      "espnId": 4066648,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "1998-02-08",
+      "exp": 8,
+      "college": "Gonzaga",
+      "jersey": "28",
+      "unit": "starters"
+    },
+    {
+      "name": "Kris Dunn",
+      "bbrefId": "dunnkr01",
+      "nbaId": 1627739,
+      "espnId": 2991139,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "1994-03-18",
+      "exp": 11,
+      "college": "Providence",
+      "jersey": "8",
+      "unit": "starters"
+    },
+    {
+      "name": "Derrick Jones Jr.",
+      "bbrefId": "jonesde02",
+      "nbaId": 1627884,
+      "espnId": 3936099,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "1997-02-15",
+      "exp": 11,
+      "college": "UNLV",
+      "jersey": "5",
+      "unit": "starters"
+    },
+    {
+      "name": "Max Strus",
+      "bbrefId": "strusma01",
+      "nbaId": 1629622,
+      "espnId": 4065778,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "1996-03-28",
+      "exp": 8,
+      "college": "DePaul",
+      "jersey": "31",
+      "unit": "second"
+    },
+    {
+      "name": "Jordan Miller",
+      "bbrefId": "millejo02",
+      "nbaId": null,
+      "espnId": 4396818,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2000-01-23",
+      "exp": 4,
+      "college": "Miami",
+      "jersey": "22",
+      "unit": "second"
+    },
+    {
+      "name": "Brook Lopez",
+      "bbrefId": "lopezbr01",
+      "nbaId": 201572,
+      "espnId": 3448,
+      "pos": "C",
+      "height": "7-1",
+      "birthDate": "1988-04-01",
+      "exp": 19,
+      "college": "Stanford",
+      "jersey": "11",
+      "unit": "second"
+    },
+    {
+      "name": "Kobe Sanders",
+      "bbrefId": "sandeko01",
+      "nbaId": null,
+      "espnId": 4702352,
+      "pos": "G",
+      "height": "6-8",
+      "birthDate": "2002-05-30",
+      "exp": 2,
+      "college": "Nevada",
+      "jersey": "4",
+      "unit": "second"
+    },
+    {
+      "name": "Isaiah Jackson",
+      "bbrefId": "jacksis01",
+      "nbaId": null,
+      "espnId": 4432170,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2002-01-10",
+      "exp": 6,
+      "college": "Kentucky",
+      "jersey": "23",
+      "unit": "second"
+    },
+    {
+      "name": "Jalen Pickett",
+      "bbrefId": "pickeja02",
+      "nbaId": null,
+      "espnId": 4398390,
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "1999-10-22",
+      "exp": 4,
+      "college": "Penn State",
+      "jersey": "21",
+      "unit": "third"
+    },
+    {
+      "name": "Gradey Dick",
+      "bbrefId": "dickgr01",
+      "nbaId": null,
+      "espnId": 5106258,
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "2003-11-20",
+      "exp": 4,
+      "college": "Kansas",
+      "jersey": "9",
+      "unit": "third"
+    },
+    {
+      "name": "Yuki Kawamura",
+      "bbrefId": "kawamyu01",
+      "nbaId": null,
+      "espnId": 5159895,
+      "pos": "G",
+      "height": "5-7",
+      "birthDate": "2001-05-02",
+      "exp": 3,
+      "college": null,
+      "jersey": "17",
+      "unit": "third"
+    },
+    {
+      "name": "Blake Wesley",
+      "bbrefId": "weslebl01",
+      "nbaId": null,
+      "espnId": 4683935,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2003-03-16",
+      "exp": 5,
+      "college": "Notre Dame",
+      "jersey": "20",
+      "unit": "third"
+    },
+    {
+      "name": "Yanic Konan Niederhauser",
+      "bbrefId": "konanya01",
+      "nbaId": null,
+      "espnId": 5108024,
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "2003-03-14",
+      "exp": 2,
+      "college": "Penn State",
+      "jersey": "14",
+      "unit": "third"
+    },
+    {
+      "name": "Cam Christie",
+      "bbrefId": "chrisca02",
+      "nbaId": null,
+      "espnId": 4845363,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2005-07-24",
+      "exp": 3,
+      "college": "Minnesota",
+      "jersey": "24",
+      "unit": "camp"
+    },
+    {
+      "name": "Bradley Beal",
+      "bbrefId": "bealbr01",
+      "nbaId": 203078,
+      "espnId": 6580,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "1993-06-28",
+      "exp": 15,
+      "college": "Florida",
+      "jersey": "3",
+      "unit": "camp"
+    },
+    {
+      "name": "Fletcher Loyer",
+      "nbaId": null,
+      "espnId": 5105853,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2003-09-01",
+      "exp": 0,
+      "college": "Purdue",
+      "jersey": "26",
+      "unit": "camp"
+    },
+    {
+      "name": "Nick Martinelli",
+      "nbaId": null,
+      "espnId": 5105832,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2004-04-20",
+      "exp": 0,
+      "college": "Northwestern",
+      "jersey": "12",
+      "unit": "camp"
+    },
+    {
+      "name": "Baba Miller",
+      "nbaId": null,
+      "espnId": 5075626,
+      "pos": "F",
+      "height": "6-11",
+      "birthDate": "2004-02-07",
+      "exp": 0,
+      "college": "Cincinnati",
+      "jersey": "18",
+      "unit": "camp"
+    },
+    {
+      "name": "Jahmyl Telfort",
+      "bbrefId": "telfoja01",
+      "nbaId": null,
+      "espnId": 4702785,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2001-04-30",
+      "exp": 0,
+      "college": "Butler",
+      "jersey": "19",
+      "unit": "camp"
+    },
+    {
+      "name": "Keaton Wagler",
+      "nbaId": null,
+      "espnId": 5254165,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2007-02-03",
+      "exp": 0,
+      "college": "Illinois",
+      "jersey": "1",
+      "unit": "camp"
+    },
+    {
+      "name": "DeAndre Williams",
+      "nbaId": null,
+      "espnId": 4397355,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "1996-10-04",
+      "exp": 0,
+      "college": "Memphis",
+      "jersey": null,
+      "unit": "camp"
+    }
+  ]
+}

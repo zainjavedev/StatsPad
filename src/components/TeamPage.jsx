@@ -1,14 +1,12 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowDown, ArrowUp, ChevronRight } from 'lucide-react';
 import { GameList } from './Feeds';
 import { useFeed } from '../lib/useFeed';
 import { teamSchedule } from '../lib/espn';
+import { TEAMS } from '../lib/teams';
 
 /* Team roster page: who is on the team this season, how the rotation is
    expected to stack up, and each player's previous-season numbers. */
-
-const TEAM_COLORS = {PHI: '#006bb6'};
-const SCHEDULES = {PHI: () => teamSchedule('phi', 5)};
 
 const STAT_COLUMNS = [
   {key: 'gamesPlayed', label: 'GP', places: 0},
@@ -37,27 +35,32 @@ const show = (value, column) => value == null ? '—' : `${Number(value).toFixed
 const initials = name => name.replace(/ (Jr\.|Sr\.|II|III)$/, '').split(' ').map(part => part[0]).slice(0, 2).join('');
 
 function Headshot({player, className}) {
-  const [failed, setFailed] = useState(false);
-  useEffect(() => setFailed(false), [player.nbaId]);
-  if (!player.nbaId || failed) return <span className={`${className} roster-monogram`} aria-hidden="true">{initials(player.name)}</span>;
-  return <img className={className} src={`https://cdn.nba.com/headshots/nba/latest/260x190/${player.nbaId}.png`} alt="" loading="lazy" onError={() => setFailed(true)}/>;
+  const sources = useMemo(() => [
+    player.nbaId && `https://cdn.nba.com/headshots/nba/latest/260x190/${player.nbaId}.png`,
+    player.espnId && `https://a.espncdn.com/i/headshots/nba/players/full/${player.espnId}.png`,
+  ].filter(Boolean), [player.nbaId, player.espnId]);
+  const [step, setStep] = useState(0);
+  useEffect(() => setStep(0), [sources]);
+  if (!sources[step]) return <span className={`${className} roster-monogram`} aria-hidden="true">{initials(player.name)}</span>;
+  return <img className={className} src={sources[step]} alt="" loading="lazy" onError={() => setStep(current => current + 1)}/>;
 }
 
 const statLine = player => player.stats
   ? `${player.stats.points.toFixed(1)} pts · ${player.stats.totalRebounds.toFixed(1)} reb · ${player.stats.assists.toFixed(1)} ast`
-  : player.exp === 0 ? 'Rookie' : 'Did not play last season';
+  : player.exp === 0 ? 'Rookie' : 'No NBA stats last season';
+const perGame = (player, key) => player.stats ? player.stats[key].toFixed(1) : '—';
 
 function StarterCard({player, onOpen}) {
   return <button className="starter-card" onClick={() => onOpen(player)} disabled={!player.profile}>
     <span className="starter-stage">
-      <span className="slot-badge">{player.slot}</span>
+      <span className="slot-badge">{player.slot || player.pos}</span>
       <Headshot player={player} className="starter-art"/>
     </span>
     <h3>{player.name}</h3>
     <dl className="starter-line">
-      <div><dt>PTS</dt><dd>{player.stats.points.toFixed(1)}</dd></div>
-      <div><dt>REB</dt><dd>{player.stats.totalRebounds.toFixed(1)}</dd></div>
-      <div><dt>AST</dt><dd>{player.stats.assists.toFixed(1)}</dd></div>
+      <div><dt>PTS</dt><dd>{perGame(player, 'points')}</dd></div>
+      <div><dt>REB</dt><dd>{perGame(player, 'totalRebounds')}</dd></div>
+      <div><dt>AST</dt><dd>{perGame(player, 'assists')}</dd></div>
     </dl>
   </button>;
 }
@@ -131,11 +134,13 @@ function StatTable({players, onOpen}) {
   </section>;
 }
 
-export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen}) {
+export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen, onSwitchTeam}) {
   const [roster, setRoster] = useState(null), [error, setError] = useState(false);
-  const games = useFeed(SCHEDULES[teamCode]);
+  const schedule = useCallback(() => teamSchedule(TEAMS[teamCode].espn, 5), [teamCode]);
+  const games = useFeed(schedule);
   useEffect(() => {
     let active = true;
+    setRoster(null); setError(false);
     fetch(`/data/2026-27/rosters/${teamCode}.json`).then(response => response.json()).then(data => active && setRoster(data)).catch(() => active && setError(true));
     return () => { active = false; };
   }, [teamCode]);
@@ -149,12 +154,19 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen}) {
     });
   }, [roster, leaguePlayers]);
 
-  if (error) return <section className="team-page"><p className="vs-empty">Couldn&apos;t load the roster. Try a refresh.</p></section>;
-  if (!roster) return <section className="team-page"><p className="vs-empty">Loading the roster…</p></section>;
+  const switcher = <label className="team-switch">
+    <span>Team</span>
+    <select value={teamCode} onChange={event => onSwitchTeam(event.target.value)}>
+      {Object.entries(TEAMS).map(([code, team]) => <option key={code} value={code}>{team.name}</option>)}
+    </select>
+  </label>;
+  if (error) return <section className="team-page">{switcher}<p className="vs-empty">Couldn&apos;t load the roster. Try a refresh.</p></section>;
+  if (!roster) return <section className="team-page">{switcher}<p className="vs-empty">Loading the roster…</p></section>;
   const unit = key => players.filter(player => player.unit === key);
   const open = player => player.profile && onOpen(player.profile);
 
-  return <section className="team-page" style={{'--team': TEAM_COLORS[teamCode]}}>
+  return <section className="team-page" style={{'--team': TEAMS[teamCode].color}}>
+    {switcher}
     <div className="team-hero">
       <span className="team-hero-mark"><img className="team-hero-logo" src={`https://cdn.nba.com/logos/nba/${roster.teamId}/global/L/logo.svg`} alt="" onError={event => { event.currentTarget.style.display = 'none'; }}/></span>
       <div>
@@ -182,6 +194,6 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen}) {
 
     <StatTable players={players} onOpen={open}/>
 
-    <p className="team-sources">Roster as of {roster.lastUpdated}. Rotation is a pre-season projection. Sources: {roster.sources.map((source, index) => <React.Fragment key={source.url}>{index ? ', ' : ''}<a href={source.url} target="_blank" rel="noreferrer">{source.label}</a></React.Fragment>)}.</p>
+    <p className="team-sources">Roster as of {roster.lastUpdated}. {roster.note || 'Rotation is a pre-season projection.'} Sources: {roster.sources.map((source, index) => <React.Fragment key={source.url}>{index ? ', ' : ''}<a href={source.url} target="_blank" rel="noreferrer">{source.label}</a></React.Fragment>)}.</p>
   </section>;
 }

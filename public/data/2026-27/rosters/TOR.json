@@ -1,0 +1,310 @@
+{
+  "team": "TOR",
+  "teamName": "Toronto Raptors",
+  "teamId": 1610612761,
+  "season": "2026-27",
+  "statsSeason": "2025-26",
+  "coach": "Darko Rajakovic",
+  "lastUpdated": "2026-10-15",
+  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "sources": [
+    {
+      "label": "ESPN roster",
+      "url": "https://www.espn.com/nba/team/roster/_/name/tor"
+    },
+    {
+      "label": "Basketball Reference stats",
+      "url": "https://www.basketball-reference.com/leagues/NBA_2026_per_game.html"
+    }
+  ],
+  "units": [
+    {
+      "key": "starters",
+      "label": "Expected starting five",
+      "short": "Starters"
+    },
+    {
+      "key": "second",
+      "label": "Second unit",
+      "short": "2nd unit"
+    },
+    {
+      "key": "third",
+      "label": "Third unit",
+      "short": "3rd unit"
+    },
+    {
+      "key": "camp",
+      "label": "Rest of camp",
+      "short": "Camp"
+    }
+  ],
+  "players": [
+    {
+      "name": "Scottie Barnes",
+      "bbrefId": "barnesc01",
+      "nbaId": null,
+      "espnId": 4433134,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2001-08-01",
+      "exp": 5,
+      "college": "Florida State",
+      "jersey": "4",
+      "unit": "starters"
+    },
+    {
+      "name": "Kawhi Leonard",
+      "bbrefId": "leonaka01",
+      "nbaId": 202695,
+      "espnId": 6450,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "1991-06-29",
+      "exp": 15,
+      "college": "San Diego State",
+      "jersey": "2",
+      "unit": "starters"
+    },
+    {
+      "name": "Immanuel Quickley",
+      "bbrefId": "quickim01",
+      "nbaId": 1630193,
+      "espnId": 4395724,
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "1999-06-17",
+      "exp": 6,
+      "college": "Kentucky",
+      "jersey": "5",
+      "unit": "starters"
+    },
+    {
+      "name": "RJ Barrett",
+      "bbrefId": "barrerj01",
+      "nbaId": 1629628,
+      "espnId": 4395625,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "2000-06-14",
+      "exp": 7,
+      "college": "Duke",
+      "jersey": "9",
+      "unit": "starters"
+    },
+    {
+      "name": "Jakob Poeltl",
+      "bbrefId": "poeltja01",
+      "nbaId": 1627751,
+      "espnId": 3134908,
+      "pos": "C",
+      "height": "7-0",
+      "birthDate": "1995-10-15",
+      "exp": 10,
+      "college": "Utah",
+      "jersey": "19",
+      "unit": "starters"
+    },
+    {
+      "name": "Malachi Smith",
+      "bbrefId": "smithma02",
+      "nbaId": null,
+      "espnId": 4397784,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "1999-12-06",
+      "exp": 1,
+      "college": "Gonzaga",
+      "jersey": "18",
+      "unit": "second"
+    },
+    {
+      "name": "Jamal Shead",
+      "bbrefId": "sheadja01",
+      "nbaId": null,
+      "espnId": 4432241,
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "2002-07-24",
+      "exp": 2,
+      "college": "Houston",
+      "jersey": "23",
+      "unit": "second"
+    },
+    {
+      "name": "Collin Murray-Boyles",
+      "bbrefId": "murraco01",
+      "nbaId": null,
+      "espnId": 5093267,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2005-06-10",
+      "exp": 1,
+      "college": "South Carolina",
+      "jersey": "30",
+      "unit": "second"
+    },
+    {
+      "name": "Ja'Kobe Walter",
+      "bbrefId": "walteja01",
+      "nbaId": null,
+      "espnId": 4684272,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2004-09-04",
+      "exp": 2,
+      "college": "Baylor",
+      "jersey": "14",
+      "unit": "second"
+    },
+    {
+      "name": "Kyle Anderson",
+      "bbrefId": "anderky01",
+      "nbaId": 203937,
+      "espnId": 2993874,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "1993-09-20",
+      "exp": 12,
+      "college": "UCLA",
+      "jersey": "12",
+      "unit": "second"
+    },
+    {
+      "name": "Trayce Jackson-Davis",
+      "bbrefId": "jackstr02",
+      "nbaId": null,
+      "espnId": 4431684,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2000-02-22",
+      "exp": 3,
+      "college": "Indiana",
+      "jersey": "32",
+      "unit": "third"
+    },
+    {
+      "name": "Jamison Battle",
+      "bbrefId": "battlja01",
+      "nbaId": null,
+      "espnId": 4431893,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2001-05-10",
+      "exp": 2,
+      "college": "Ohio State",
+      "jersey": "77",
+      "unit": "third"
+    },
+    {
+      "name": "Andre Jackson Jr.",
+      "bbrefId": "jacksan01",
+      "nbaId": null,
+      "espnId": 4432190,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2001-11-13",
+      "exp": 3,
+      "college": "UConn",
+      "jersey": "44",
+      "unit": "third"
+    },
+    {
+      "name": "Alijah Martin",
+      "bbrefId": "martial01",
+      "nbaId": null,
+      "espnId": 4702656,
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "2001-12-26",
+      "exp": 1,
+      "college": "Florida",
+      "jersey": "55",
+      "unit": "third"
+    },
+    {
+      "name": "Nate Bittle",
+      "nbaId": null,
+      "espnId": 4432586,
+      "pos": "C",
+      "height": "7-0",
+      "birthDate": "2003-06-03",
+      "exp": 0,
+      "college": "Oregon",
+      "jersey": null,
+      "unit": "third"
+    },
+    {
+      "name": "Jaden Bradley",
+      "nbaId": null,
+      "espnId": 4432737,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2003-09-14",
+      "exp": 0,
+      "college": "Arizona",
+      "jersey": "8",
+      "unit": "camp"
+    },
+    {
+      "name": "Nimari Burnett",
+      "nbaId": null,
+      "espnId": 4433138,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2001-12-20",
+      "exp": 0,
+      "college": "Michigan",
+      "jersey": "25",
+      "unit": "camp"
+    },
+    {
+      "name": "Tyson Degenhart",
+      "nbaId": null,
+      "espnId": 4898260,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2002-10-13",
+      "exp": 0,
+      "college": "Boise State",
+      "jersey": null,
+      "unit": "camp"
+    },
+    {
+      "name": "Allen Graves",
+      "nbaId": null,
+      "espnId": 5149115,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2006-07-28",
+      "exp": 0,
+      "college": "Santa Clara",
+      "jersey": "22",
+      "unit": "camp"
+    },
+    {
+      "name": "Tyreke Key",
+      "nbaId": null,
+      "espnId": 4279143,
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "1998-10-29",
+      "exp": 2,
+      "college": "Tennessee",
+      "jersey": "11",
+      "unit": "camp"
+    },
+    {
+      "name": "Jamarion Sharp",
+      "nbaId": null,
+      "espnId": 4897696,
+      "pos": "C",
+      "height": "7-5",
+      "birthDate": "2001-08-26",
+      "exp": 0,
+      "college": "Ole Miss",
+      "jersey": null,
+      "unit": "camp"
+    }
+  ]
+}
