@@ -75,8 +75,8 @@ const VS_SECTIONS = [
 const RADAR_AXES = [
   {label:'Scoring',parts:[['points','PPG']]},
   {label:'Efficiency',parts:[['trueShootingPercentage','TS%']]},
-  {label:'3-pt volume',parts:[['threePointersMade','3PM']]},
-  {label:'Touch',parts:[['freeThrowPercentage','FT%']]},
+  {label:'FG%',parts:[['fieldGoalPercentage','FG%']]},
+  {label:'3P%',parts:[['threePointPercentage','3P%']]},
   {label:'Playmaking',parts:[['assists','APG']]},
   {label:'Rebounding',parts:[['totalRebounds','RPG']]},
   {label:'Defense',parts:[['steals','SPG'],['blocks','BPG']]},
@@ -224,7 +224,7 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
     return{pct,text,rank:thin?'too few attempts to rank':`${pct}% of the league range`};
   })})):[];
   const smallSample=entityType==='team'?[]:enriched.slice(0,2).filter(entity=>!(entity.gamesPlayed>=(seasonType==='playoffs'?3:15)&&entity.minutesPerGame>=10));
-  const radarNotes=['The centre is the lowest rotation player in the league and the edge is the highest, so distance shows how far apart two players really are. Defense averages steals and blocks, a box-score stand-in for defending. Turnovers and fouls are in the stat rows below.',...smallSample.map(entity=>`Small sample: ${entity.playerName} played ${entity.gamesPlayed} game${entity.gamesPlayed===1?'':'s'} at ${entity.minutesPerGame} MPG, so these rankings can swing a lot.`)];
+  const radarNotes=['The centre is the lowest rotation player in the league and the edge is the highest, so distance shows how far apart two players really are. 3P% needs at least one attempt a game to count. Defense averages steals and blocks, a box-score stand-in for defending. Turnovers and fouls are in the stat rows below.',...smallSample.map(entity=>`Small sample: ${entity.playerName} played ${entity.gamesPlayed} game${entity.gamesPlayed===1?'':'s'} at ${entity.minutesPerGame} MPG, so these rankings can swing a lot.`)];
   const radarScope=entityType==='team'?'all 30 teams':`${enrichedPopulation.length} ${seasonType==='playoffs'?'playoff':'regular-season'} rotation players`;
   const tally=ready?sections.filter(([title])=>title!=='Season').flatMap(([,metrics])=>metrics).reduce((total,metric)=>{const lead=leadOf(enriched,metric);if(lead>=0)total[lead]+=1;return total},[0,0]):[0,0];
   return <main className="h2h-main"><SiteHeader page="compare" onHome={onHome} onCompare={()=>{}} onTeams={onTeams} onLeaders={onLeaders} theme={theme} onToggleTheme={onToggleTheme}/><section className="h2h-page">
