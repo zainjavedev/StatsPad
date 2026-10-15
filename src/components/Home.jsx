@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, BarChart3, Check, Copy, Download, Moon, Search, Share2, Sun, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BarChart3, Check, Copy, Download, Home as HomeIcon, Moon, Search, Share2, Sun, Trophy, Users, X } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import TeamPage from './TeamPage';
 import TeamsIndex from './TeamsIndex';
@@ -123,8 +123,21 @@ function PlayerPicker({index,player,players,onPick,onRemove,playerIds}){
   return <div className="picker"><button className="add-player" onClick={()=>setOpen(!open)}><span>+</span> Add {players[0]?.entityType==='team'?'team':'player'}</button>{open&&<div className="picker-popover"><label><Search size={16}/><input autoFocus value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search the league"/></label><div>{results.map(p=><button key={p.playerId||p.teamId} onClick={()=>{onPick(p);setOpen(false);setQuery('')}}><EntityArt entity={p} playerIds={playerIds} className="mini-avatar"/><span><b>{p.playerName}</b><small>{p.team} · {p.stats.points} PPG</small></span></button>)}</div></div>}</div>
 }
 
+const NAV_ITEMS = [['home','Home',HomeIcon],['leaders','Leaders',Trophy],['compare','Compare',BarChart3],['teams','Teams',Users]];
+
+/* A banner div, not <header>, so none of the old header rules apply. The tab
+   bar is a sibling because a blurred parent would trap a fixed child. */
 function SiteHeader({page,onHome,onLeaders,onCompare,onTeams,theme,onToggleTheme}){
-  return <header><button className="brand brand-button" onClick={onHome}><span className="brand-text"><span className="brand-word">StatsPad</span><small>NBA numbers, visualized</small></span></button><nav><button className={page==='home'?'active nav-home':'nav-home'} onClick={onHome}>Home</button><button className={page==='leaders'?'active':''} onClick={onLeaders}>Leaders</button><button className={page==='compare'?'active':''} onClick={onCompare}>Compare</button><button className={page==='team'||page==='teams'?'active':''} onClick={onTeams}>Teams</button></nav><div className="header-end"><button className="theme-toggle" onClick={onToggleTheme} aria-label={theme==='dark'?'Switch to light theme':'Switch to dark theme'} title={theme==='dark'?'Light theme':'Dark theme'}>{theme==='dark'?<Sun size={16}/>:<Moon size={16}/>}</button></div></header>
+  const current=page==='team'?'teams':page,go={home:onHome,leaders:onLeaders,compare:onCompare,teams:onTeams};
+  const tabs=className=><nav className={className} aria-label="Main">{NAV_ITEMS.map(([key,label,Icon])=><button key={key} className={current===key?'active':''} aria-current={current===key?'page':undefined} onClick={()=>go[key]()}><Icon size={19} className="nav-icon"/><span>{label}</span></button>)}</nav>;
+  return <>
+    <div className="site-header" role="banner"><div className="site-header-inner">
+      <button className="site-brand" onClick={()=>onHome()}>StatsPad</button>
+      {tabs('site-nav')}
+      <div className="site-header-end"><button className="theme-toggle" onClick={onToggleTheme} aria-label={theme==='dark'?'Switch to light theme':'Switch to dark theme'} title={theme==='dark'?'Light theme':'Dark theme'}>{theme==='dark'?<Sun size={16}/>:<Moon size={16}/>}</button></div>
+    </div></div>
+    {tabs('tabbar')}
+  </>;
 }
 
 function QuickCompareRail({players,playerIds,onCompare}){
