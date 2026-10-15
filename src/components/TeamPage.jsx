@@ -36,7 +36,7 @@ const statOf = (player, key) => key === 'gamesPlayed' || key === 'minutesPerGame
 const show = (value, column) => value == null ? '—' : `${Number(value).toFixed(column.places ?? 1)}${column.pct ? '%' : ''}`;
 const initials = name => name.replace(/ (Jr\.|Sr\.|II|III)$/, '').split(' ').map(part => part[0]).slice(0, 2).join('');
 
-function Headshot({player, className}) {
+export function Headshot({player, className}) {
   const sources = useMemo(() => [
     player.nbaId && `https://cdn.nba.com/headshots/nba/latest/260x190/${player.nbaId}.png`,
     player.espnId && `https://a.espncdn.com/i/headshots/nba/players/full/${player.espnId}.png`,
