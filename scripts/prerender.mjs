@@ -4,6 +4,7 @@ import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
 import sharp from 'sharp';
 import { TEAMS, teamCodeOf } from '../src/lib/teams.js';
+import { SEASONS, pretty } from '../src/lib/season.js';
 import { SITE, compareUrl, playerUrl, slugify, teamUrl } from '../src/lib/routes.js';
 
 /* Runs after `vite build`. Writes a real HTML page (title, description, social
@@ -25,14 +26,29 @@ const plain = value => String(value).normalize('NFD').replace(/[̀-ͯ]/g, '');
 const fixed = (value, places = 1) => Number(value).toFixed(places);
 
 /* ---------- data ---------- */
-const season = read('public/data/2025-26/regular-season.json');
-const teamData = read('public/data/2025-26/teams-regular-season.json').players;
+/* The app switches seasons on the first game (src/lib/season.js), but the static
+   pages search engines index wait until the new season has a body of numbers:
+   after opening week there are 150+ players and every team has played. Until
+   then they keep last season's full set instead of a few dozen thin pages. */
+const readRows = file => { try { const data = read(file); return data.players?.length ? data : null; } catch { return null; } };
+const settled = key => {
+  const players = readRows(`public/data/${key}/regular-season.json`), teamRows = readRows(`public/data/${key}/teams-regular-season.json`);
+  return Boolean(players && teamRows) && (key !== SEASONS[0] || (players.players.length >= 150 && teamRows.players.length >= 30));
+};
+const seasonKey = SEASONS.find(settled);
+if (!seasonKey) throw new Error('No season data found under public/data');
+const season = read(`public/data/${seasonKey}/regular-season.json`);
+const teamData = read(`public/data/${seasonKey}/teams-regular-season.json`).players;
+const statsWord = seasonKey === SEASONS[0] ? 'this season’s' : 'last season’s';
+/* Early in a season nobody has 15 games yet, so the cut-off grows with the schedule. */
+const mostGames = Math.max(...season.players.map(p => p.gamesPlayed));
+const minGames = Math.min(15, Math.max(1, Math.floor(mostGames / 2)));
 const playerIds = Object.fromEntries(Object.entries(read('public/data/player-ids.json')).map(([name, id]) => [plain(name), id]));
 const espnIds = {};
 for (const file of fs.readdirSync(path.join(root, 'public/data/2026-27/rosters'))) for (const entry of read(`public/data/2026-27/rosters/${file}`).players) if (entry.espnId) espnIds[plain(entry.name)] = entry.espnId;
 const fgaPlays = s => s.fieldGoalsAttempted + .44 * s.freeThrowsAttempted;
 const players = season.players
-  .filter(p => p.gamesPlayed >= 15 && p.minutesPerGame >= 10)
+  .filter(p => p.gamesPlayed >= minGames && p.minutesPerGame >= 10)
   .map(p => ({...p, slug: slugify(p.playerName), nbaId: playerIds[plain(p.playerName)] ?? null, espnId: espnIds[plain(p.playerName)] ?? null,
     code: TEAMS[teamCodeOf(p.team)] ? teamCodeOf(p.team) : null,
     ts: p.stats.points / (2 * fgaPlays(p.stats)) * 100, tov: p.stats.turnovers / (fgaPlays(p.stats) + p.stats.turnovers) * 100}))
@@ -70,7 +86,7 @@ function writePage({route, title, description, body, ogName}) {
 }
 const table = (heads, rows) => `<table><thead><tr>${heads.map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
 const link = (href, label) => `<a href="${href}">${esc(label)}</a>`;
-const yearLabel = '2025–26';
+const yearLabel = pretty(seasonKey);
 
 const PLAYER_ROWS = [['GP', p => p.gamesPlayed, 0], ['MPG', p => p.minutesPerGame], ['PPG', p => p.stats.points], ['RPG', p => p.stats.totalRebounds], ['APG', p => p.stats.assists], ['SPG', p => p.stats.steals], ['BPG', p => p.stats.blocks], ['FG%', p => p.stats.fieldGoalPercentage], ['3P%', p => p.stats.threePointPercentage], ['FT%', p => p.stats.freeThrowPercentage], ['TS%', p => p.ts], ['TOV%', p => p.tov]];
 const TEAM_ROWS = [['PPG', t => t.stats.points], ['APG', t => t.stats.assists], ['RPG', t => t.stats.totalRebounds], ['SPG', t => t.stats.steals], ['BPG', t => t.stats.blocks], ['FG%', t => t.stats.fieldGoalPercentage], ['3P%', t => t.stats.threePointPercentage], ['3PM', t => t.stats.threePointersMade], ['FT%', t => t.stats.freeThrowPercentage], ['eFG%', t => t.stats.effectiveFieldGoalPercentage]];
@@ -164,7 +180,7 @@ for (let i = 0; i < teams.length; i += 1) for (let j = i + 1; j < teams.length; 
 writePage({route: '/', title: 'StatsPad: NBA player and team comparisons, rosters and stats', description: 'Compare any two NBA players or teams side by side with a skill radar, see every roster with its expected starting five, and browse the league leaders.', body: '<main class="seo"><h1>StatsPad: NBA player and team comparisons</h1><p>Compare any two NBA players or teams, browse every roster and see the league leaders.</p></main>'});
 writePage({route: '/compare', title: 'Compare NBA players and teams | StatsPad', description: 'Pick any two NBA players or teams and compare their stats side by side with a skill radar.', body: '<main class="seo"><h1>Compare NBA players and teams</h1></main>'});
 writePage({route: '/leaders', title: 'NBA stat leaders | StatsPad', description: 'Points, rebounds, assists, steals, blocks and shooting leaders across the NBA, with the full top five for each.', body: '<main class="seo"><h1>NBA stat leaders</h1></main>'});
-writePage({route: '/teams', title: 'NBA teams and rosters | StatsPad', description: 'Every NBA team with its 2026–27 roster, expected starting five and last season’s stats.', body: `<main class="seo"><h1>NBA teams and rosters</h1><ul>${teams.map(team => `<li>${link(teamUrl(team.code), team.name)}</li>`).join('')}</ul></main>`});
+writePage({route: '/teams', title: 'NBA teams and rosters | StatsPad', description: 'Every NBA team with its 2026–27 roster, expected starting five and ' + statsWord + ' stats.', body: `<main class="seo"><h1>NBA teams and rosters</h1><ul>${teams.map(team => `<li>${link(teamUrl(team.code), team.name)}</li>`).join('')}</ul></main>`});
 
 for (const p of cap(players)) {
   const related = pairs.filter(pair => pair.includes(p)).slice(0, 4).map(([x, y]) => `<li>${link(compareUrl([x.playerName, y.playerName]), `${x.playerName} vs ${y.playerName}`)}</li>`).join('');
@@ -181,7 +197,7 @@ for (const team of cap(teams)) {
   const starters = ['PG', 'SG', 'SF', 'PF', 'C'].map(slot => roster.find(p => p.slot === slot)).filter(Boolean);
   writePage({route: teamUrl(team.code), ogName: `teams/${team.slug}`,
     title: `${team.name} roster 2026–27: expected starting five and stats | StatsPad`,
-    description: `${team.name} 2026–27 roster with the expected starting five${starters.length ? ` (${starters.map(p => p.name).join(', ')})` : ''}, last season’s per-game stats and recent results.`,
+    description: `${team.name} 2026–27 roster with the expected starting five${starters.length ? ` (${starters.map(p => p.name).join(', ')})` : ''}, ${statsWord} per-game stats and recent results.`,
     body: `<main class="seo"><h1>${esc(team.name)} roster, 2026–27</h1>${starters.length ? `<h2>Expected starting five</h2><ol>${starters.map(p => `<li>${esc(p.slot)} ${line(p)}</li>`).join('')}</ol>` : ''}${roster.length ? `<h2>Full roster</h2><ul>${roster.map(p => `<li>${line(p)}</li>`).join('')}</ul>` : ''}<h2>${yearLabel} team stats</h2>${table(['Stat', 'Per game'], TEAM_ROWS.map(([label, get]) => [esc(label), fixed(get(team))]))}</main>`});
   card(`teams/${team.slug}`, () => teamCard(team));
 }

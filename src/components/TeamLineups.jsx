@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { TEAMS, teamCodeOf } from '../lib/teams';
+import { indexPlayers, isCurrent, statsFor } from '../lib/season';
 import { Headshot } from './TeamPage';
 
 /* The two expected starting fives under a team-vs-team header, one row per
@@ -20,11 +21,11 @@ function useRoster(code) {
 }
 
 /* Last season's numbers, joined on the Basketball Reference id. */
-function starters(roster, byId) {
+function starters(roster, index) {
   if (!roster) return {};
   return Object.fromEntries(SLOTS.map(slot => {
     const entry = roster.players.find(player => player.slot === slot);
-    return [slot, entry && {...entry, stats: (entry.bbrefId && byId.get(entry.bbrefId)?.stats) || null}];
+    return [slot, entry && {...entry, stats: statsFor(entry, index)?.stats || null}];
   }));
 }
 
@@ -45,16 +46,16 @@ function Card({slot, player, other, color}) {
   </div>;
 }
 
-export default function TeamLineups({teams, leaguePlayers, colors}) {
+export default function TeamLineups({teams, leaguePlayers, season, colors}) {
   const codes = teams.map(team => teamCodeOf(team.team));
   const first = useRoster(codes[0]), second = useRoster(codes[1]);
-  const byId = useMemo(() => new Map(leaguePlayers.map(player => [player.playerId, player])), [leaguePlayers]);
-  const fives = useMemo(() => [starters(first, byId), starters(second, byId)], [first, second, byId]);
+  const index = useMemo(() => indexPlayers(leaguePlayers), [leaguePlayers]);
+  const fives = useMemo(() => [starters(first, index), starters(second, index)], [first, second, index]);
   if (codes.some(code => !TEAMS[code]) || first === false || second === false) return null;
   if (first === null || second === null) return <section className="lineup" aria-busy="true"><div className="sk" style={{height: 330, borderRadius: 12}}/></section>;
 
   return <section className="lineup">
-    <div className="lineup-head"><small>Expected starting five</small><span>Per game, last season</span></div>
+    <div className="lineup-head"><small>Expected starting five</small><span>Per game, {isCurrent(season) ? 'this season' : 'last season'}</span></div>
     {[0, 1].map(side => <div className="lineup-side" key={codes[side]}>
       <div className="lineup-team"><i style={{background: colors[side]}}/>{TEAMS[codes[side]].name}</div>
       <div className="lineup-grid">{SLOTS.map(slot => <Card key={slot} slot={slot} player={fives[side][slot]} other={fives[1 - side][slot]} color={TEAMS[codes[side]].color}/>)}</div>

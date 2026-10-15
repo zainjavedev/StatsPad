@@ -18,7 +18,10 @@ const readJson = file => JSON.parse(fs.readFileSync(file, 'utf8'));
 const plain = name => name.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ć/g, 'c').toLowerCase().replace(/[.']/g, '').replace(/\s+/g, ' ').trim();
 const noSuffix = name => plain(name).replace(/ (jr|sr|ii|iii|iv)$/, '');
 
-const lastSeason = readJson('public/data/2025-26/regular-season.json').players;
+const {SEASONS} = await import('../src/lib/season.js');
+/* Stats come from the newest season that has any (2025-26 until opening night). */
+const statsSeason = SEASONS.find(key => { const file = `public/data/${key}/regular-season.json`; return fs.existsSync(file) && readJson(file).players?.length; });
+const lastSeason = readJson(`public/data/${statsSeason}/regular-season.json`).players;
 const nbaIds = readJson('public/data/player-ids.json');
 const bestBy = (key, fn) => {
   const map = new Map();
@@ -105,7 +108,7 @@ async function build(code) {
     teamName: team.name,
     teamId: team.id,
     season: '2026-27',
-    statsSeason: '2025-26',
+    statsSeason,
     coach: data.coach?.[0] ? `${data.coach[0].firstName} ${data.coach[0].lastName}` : null,
     lastUpdated: new Date().toISOString().slice(0, 10),
     note: 'Starters follow ESPN\'s depth chart and the rest of the rotation is estimated; coaches can change any of it.',

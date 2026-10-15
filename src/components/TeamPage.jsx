@@ -4,6 +4,7 @@ import { GameList } from './Feeds';
 import { useFeed } from '../lib/useFeed';
 import { teamResults, teamSchedule } from '../lib/espn';
 import { TEAMS, logoUrl } from '../lib/teams';
+import { indexPlayers, isCurrent, pretty, statsFor } from '../lib/season';
 import TeamRail from './TeamRail';
 import { TeamSkeletonBody } from './Skeletons';
 
@@ -49,7 +50,7 @@ export function Headshot({player, className}) {
 
 const statLine = player => player.stats
   ? `${player.stats.points.toFixed(1)} pts · ${player.stats.totalRebounds.toFixed(1)} reb · ${player.stats.assists.toFixed(1)} ast`
-  : player.exp === 0 ? 'Rookie' : 'No NBA stats last season';
+  : player.exp === 0 ? 'Rookie' : 'No NBA stats yet';
 const perGame = (player, key) => player.stats ? player.stats[key].toFixed(1) : '—';
 
 function StarterCard({player, onOpen}) {
@@ -77,7 +78,7 @@ function UnitRow({player, onOpen}) {
     : <div className="unit-row">{body}</div>}</li>;
 }
 
-function StatTable({players, onOpen}) {
+function StatTable({players, season, onOpen}) {
   const [sort, setSort] = useState({key: 'points', desc: true});
   const rows = useMemo(() => {
     const rank = player => !player.stats ? 2 : qualifies(player, sort.key) ? 0 : 1;
@@ -103,7 +104,7 @@ function StatTable({players, onOpen}) {
 
   return <section className="stat-board">
     <div className="board-head">
-      <h2>Last season&apos;s stats</h2>
+      <h2>{isCurrent(season) ? 'This season' : 'Last season'}&apos;s stats</h2>
       <div className="sort-chips" role="group" aria-label="Sort by">
         {SORT_CHIPS.map(key => <button key={key} className={sort.key === key ? 'active' : ''} onClick={() => pick(key)}>
           {STAT_COLUMNS.find(column => column.key === key).label}{arrow(key)}
@@ -130,13 +131,13 @@ function StatTable({players, onOpen}) {
       </table>
     </div>
     <p className="board-note">
-      2025–26 regular season, per game. Faded percentages come from too few attempts and sort last.
+      {season ? pretty(season) : ''} regular season, per game. Faded percentages come from too few attempts and sort last.
       {noStats.length > 0 && <> No NBA stats yet: {noStats.map(player => player.name).join(', ')}.</>}
     </p>
   </section>;
 }
 
-export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen, onSwitchTeam}) {
+export default function TeamPage({teamCode = 'PHI', leaguePlayers, season, onOpen, onSwitchTeam}) {
   const [roster, setRoster] = useState(null), [error, setError] = useState(false);
   const schedule = useCallback(() => teamSchedule(TEAMS[teamCode].espn, 5), [teamCode]);
   const games = useFeed(schedule);
@@ -150,9 +151,9 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen, onSwi
 
   const players = useMemo(() => {
     if (!roster) return [];
-    const byId = new Map(leaguePlayers.map(player => [player.playerId, player]));
+    const index = indexPlayers(leaguePlayers);
     return roster.players.map(entry => {
-      const last = entry.bbrefId && byId.get(entry.bbrefId);
+      const last = statsFor(entry, index);
       return {...entry, profile: last || null, stats: last?.stats ?? null, gamesPlayed: last?.gamesPlayed, minutesPerGame: last?.minutesPerGame};
     });
   }, [roster, leaguePlayers]);
@@ -178,7 +179,7 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen, onSwi
     <section className="team-block">
       <div className="block-head">
         <h2>Expected starting five</h2>
-        <span>Per game, last season ({(roster.statsSeason || '2025-26').replace('-', '–')})</span>
+        <span>Per game, {isCurrent(season) ? 'this season' : `last season (${pretty(season || roster.statsSeason || '2025-26')})`}</span>
       </div>
       <div className="starter-grid">{unit('starters').map(player => <StarterCard key={player.name} player={player} onOpen={open}/>)}</div>
     </section>
@@ -199,7 +200,7 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen, onSwi
       <ul>{players.filter(player => player.unit !== 'starters').map(player => <UnitRow key={player.name} player={player} onOpen={open}/>)}</ul>
     </section>
 
-    <StatTable players={players} onOpen={open}/>
+    <StatTable players={players} season={season} onOpen={open}/>
 
     <p className="team-sources">Roster as of {roster.lastUpdated}. {roster.note || 'Rotation is a pre-season projection.'} Sources: {roster.sources.map((source, index) => <React.Fragment key={source.url}>{index ? ', ' : ''}<a href={source.url} target="_blank" rel="noreferrer">{source.label}</a></React.Fragment>)}.</p>
   </section>);

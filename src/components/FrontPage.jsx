@@ -4,6 +4,7 @@ import { GameList, NewsList } from './Feeds';
 import { useFeed } from '../lib/useFeed';
 import { latestNews, recentResults, upcomingGames } from '../lib/espn';
 import { TEAMS, nickname, teamCodeOf } from '../lib/teams';
+import { pretty } from '../lib/season';
 
 /* The front door: settle a debate, find a player, see the league's top
    performers and what's on. Deep leaderboards live on the Leaders page. */
@@ -76,7 +77,7 @@ function Debate({pair, Art, playerIds, onCompare}) {
   </button>;
 }
 
-export default function FrontPage({players, teams, playerIds, Art, onOpen, onCompare, onTeam, onLeaders}) {
+export default function FrontPage({players, teams, playerIds, season, Art, onOpen, onCompare, onTeam, onLeaders}) {
   const games = useFeed(loadGames), results = useFeed(loadResults), news = useFeed(loadNews);
   const [tab, setTab] = useState(null);
   const view = tab ?? (games?.length ? 'upcoming' : 'results');
@@ -118,7 +119,7 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
         <b>{entry.player.playerName}</b>
         <Art entity={entry.player} playerIds={playerIds} className="leader-art"/>
       </button>)}</div>
-      <p className="front-footnote">2025–26 regular season per-game leaders.</p>
+      <p className="front-footnote">{season ? pretty(season) : ''} regular season per-game leaders.</p>
     </section>
 
     <div className="front-feeds">

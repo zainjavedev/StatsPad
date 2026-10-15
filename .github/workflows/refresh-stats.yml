@@ -1,0 +1,41 @@
+name: Refresh stats
+
+# Pulls the in-progress season's per-game stats from ESPN every four hours and
+# commits them when something changed; Vercel redeploys on that push. Until the
+# first game has been played the script writes nothing, so the site stays on
+# last season.
+on:
+  schedule:
+    - cron: '17 */4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-stats
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Reuse rebound lookups
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: espn-rebounds-${{ github.run_id }}
+          restore-keys: espn-rebounds-
+      - run: node scripts/fetch-espn-stats.mjs auto regular
+      - run: node scripts/fetch-espn-stats.mjs auto playoffs
+      - name: Commit changes
+        run: |
+          git add public/data
+          if git diff --cached --quiet; then echo "No stat changes"; exit 0; fi
+          git config user.name "StatsPad bot"
+          git config user.email "actions@users.noreply.github.com"
+          git commit -m "Refresh stats"
+          git push
