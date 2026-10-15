@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, BarChart3, Check, Copy, Download, Home as HomeIc
 import { toPng } from 'html-to-image';
 import TeamPage from './TeamPage';
 import TeamsIndex from './TeamsIndex';
+import Radar from './Radar';
 import { CompareSkeleton, HomeSkeleton, PageSkeleton, TeamLoading } from './Skeletons';
 import { TEAMS, nickname, teamCodeOf } from '../lib/teams';
 import FrontPage from './FrontPage';
@@ -68,6 +69,7 @@ const VS_SECTIONS = [
   ['Per game', [['points','Points'],['totalRebounds','Rebounds'],['assists','Assists'],['steals','Steals'],['blocks','Blocks'],['turnovers','Turnovers',true]]],
   ['Shooting', [['fieldGoalPercentage','Field goal %'],['threePointPercentage','Three-point %'],['freeThrowPercentage','Free throw %'],['trueShootingPercentage','True shooting %'],['effectiveFieldGoalPercentage','Effective field goal %']]],
 ];
+const RADAR_AXES = [['points','Scoring'],['totalRebounds','Rebounding'],['assists','Assists'],['steals','Steals'],['blocks','Blocks'],['threePointPercentage','3P %'],['trueShootingPercentage','True shooting'],['turnovers','Ball security',true]];
 const TEAM_SECTIONS = [
   ['Per game', [['points','Points'],['assists','Assists'],['totalRebounds','Rebounds'],['offensiveRebounds','Offensive rebounds'],['defensiveRebounds','Defensive rebounds'],['steals','Steals'],['blocks','Blocks'],['turnovers','Turnovers',true],['personalFouls','Fouls',true]]],
   ['Shooting', [['fieldGoalPercentage','Field goal %'],['threePointPercentage','Three-point %'],['threePointersMade','Threes made'],['freeThrowPercentage','Free throw %'],['effectiveFieldGoalPercentage','Effective field goal %'],['trueShootingPercentage','True shooting %']]],
@@ -196,6 +198,7 @@ function ComparisonPage({onTeams,onLeaders,data,entityType,setEntityType,seasonT
   const ready=enriched.length>=2,noun=entityType==='team'?'teams':'players';
   const colors=pairColors(enriched[0],enriched[1]);
   const sections=entityType==='team'?TEAM_SECTIONS:VS_SECTIONS;
+  const radar=ready?RADAR_AXES.map(([key,label,inverse])=>({label,sides:[0,1].map(side=>{const value=statValue(enriched[side],key);return{pct:percentile(enrichedPopulation,key,value,inverse),text:statText(value,key)}})})):[];
   const tally=ready?sections.flatMap(([,metrics])=>metrics).reduce((total,[key,,inverse])=>{const a=statValue(enriched[0],key),b=statValue(enriched[1],key);if(a!==b){const first=inverse?a<b:a>b;total[first?0:1]+=1}return total},[0,0]):[0,0];
   return <main className="h2h-main"><SiteHeader page="compare" onHome={onHome} onCompare={()=>{}} onTeams={onTeams} onLeaders={onLeaders} theme={theme} onToggleTheme={onToggleTheme}/><section className="h2h-page">
     <div className="h2h-bar">
@@ -215,10 +218,10 @@ function ComparisonPage({onTeams,onLeaders,data,entityType,setEntityType,seasonT
           onRemove={()=>setSelected(enriched.filter((_,position)=>position!==index))}/>)}
         {ready?<span className="vs-score"><b>{tally[0]}</b><i>–</i><b>{tally[1]}</b><small>stat leads</small></span>:<span className="vs-badge">VS</span>}
       </div>
-      {ready?<><div className="vs-table" key={enriched.map(player=>player.playerName).join('|')}>
+      {ready?<><Radar axes={radar} names={enriched.slice(0,2).map(entity=>entity.playerName)} colors={COLORS}/><div className="vs-table" key={enriched.map(player=>player.playerName).join('|')}>
         {sections.map(([title,metrics])=><React.Fragment key={title}>
           <div className="vs-section">{title}</div>
-          {metrics.map((metric,row)=><VsRow key={metric[0]} players={enriched} population={enrichedPopulation} metric={metric} row={row} colors={colors}/>)}
+          {metrics.map((metric,row)=><VsRow key={metric[0]} players={enriched} population={enrichedPopulation} metric={metric} row={row} colors={COLORS}/>)}
         </React.Fragment>)}
       </div>
       <p className="vs-note">The coloured bar marks who leads each category; fewer turnovers counts as leading. Bar length shows how close the two are. Hover any value for its league percentile among {enrichedPopulation.length} qualified {noun}.</p></>

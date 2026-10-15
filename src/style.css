@@ -967,3 +967,24 @@ header .brand small{margin-top:3px}
   .tabbar button.active{color:var(--text-1)}
   .tabbar button.active::before{content:'';position:absolute;top:0;left:50%;width:22px;height:3px;border-radius:0 0 3px 3px;background:var(--text-1);transform:translateX(-50%)}
 }
+
+
+/* Radar overlay */
+.vs-radar{padding:18px 20px 8px;border-top:1px solid var(--line)}
+.vs-radar-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px}
+.vs-radar-head small{color:var(--text-3);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.vs-radar-key{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;font-weight:700;color:var(--text-1)}
+.vs-radar-key span{display:inline-flex;align-items:center;gap:7px}
+.vs-radar-key i{width:10px;height:10px;border-radius:50%}
+.vs-radar svg{display:block;width:100%;max-width:560px;height:auto;margin:6px auto 0}
+.radar-ring{fill:none;stroke:var(--line);stroke-width:1}
+.radar-ring:last-of-type{stroke:var(--line-2)}
+.radar-spoke{stroke:var(--line);stroke-width:1}
+.radar-label{fill:var(--text-2);font-size:12px;font-weight:700}
+.radar-halo{fill:none;stroke:var(--ink-1);stroke-width:5;stroke-linejoin:round}
+.radar-shape{fill-opacity:.18;stroke-width:2.5;stroke-linejoin:round}
+.radar-dot{stroke:var(--ink-1);stroke-width:1.5}
+@media(max-width:700px){.vs-radar{padding:14px 8px 4px}.radar-label{font-size:11px}}
+
+/* Each side keeps one data colour everywhere: name underline, radar, bars. */
+.vs-person:not(.is-empty) strong:after{width:38px;height:3px;background:var(--player-color);opacity:1}
