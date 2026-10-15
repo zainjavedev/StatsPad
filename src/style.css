@@ -619,9 +619,9 @@ footer a:hover{color:var(--text-1)}
 
 .roster-monogram{display:grid;place-items:center;flex:none;border-radius:50%;background:var(--ink-2);color:var(--text-2);font-weight:800}
 
-.team-block.units{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:start}
-.unit-card ul{margin:0;padding:0;list-style:none;border-top:1px solid var(--line)}
-.unit-card li{border-bottom:1px solid var(--line)}
+.team-block.bench ul{columns:3;column-gap:24px}
+.bench ul{margin:0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.bench li{break-inside:avoid;border-bottom:1px solid var(--line)}
 .unit-row{display:flex;align-items:center;gap:12px;width:100%;min-height:60px;padding:10px 4px 10px 0;color:var(--text-1);text-align:left;-webkit-tap-highlight-color:transparent}
 button.unit-row{border-radius:8px;transition:background .15s}
 button.unit-row:hover{background:var(--ink-2)}
@@ -663,7 +663,7 @@ button.unit-row:active{background:var(--line)}
 
 @media(max-width:1000px){
   .starter-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .team-block.units{grid-template-columns:1fr 1fr}
+  .team-block.bench ul{columns:2}
 }
 /* Wordmark: the name alone, set in Bricolage Grotesque. */
 header .brand .brand-word{display:block;font-family:'Bricolage Grotesque','DM Sans',sans-serif;font-size:23px;font-weight:800;font-variation-settings:'opsz' 96;line-height:1;letter-spacing:-.015em;color:var(--text-1)}
@@ -705,7 +705,7 @@ header .brand small{margin-top:3px}
   .starter-line div{display:flex;align-items:baseline;gap:4px;flex-direction:row-reverse;justify-content:flex-end}
   .starter-line dt{font-size:10px}
   .starter-line dd{margin:0;font-size:15px}
-  .team-block.units{grid-template-columns:1fr;gap:28px}
+  .team-block.bench ul{columns:1}
   .board-head{padding:14px}
   /* Chips scroll sideways; fade the right edge so it's obvious there's more. */
   .sort-chips{width:calc(100% + 14px);margin-right:-14px;padding-right:14px;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}

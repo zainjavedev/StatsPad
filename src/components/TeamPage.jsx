@@ -190,11 +190,9 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen, onSwi
       </div>
     </section>
 
-    <section className="team-block units">
-      {roster.units.filter(entry => entry.key !== 'starters').map(entry => <div className="unit-card" key={entry.key}>
-        <h2>{entry.label}</h2>
-        <ul>{unit(entry.key).map(player => <UnitRow key={player.name} player={player} onOpen={open}/>)}</ul>
-      </div>)}
+    <section className="team-block bench">
+      <h2>Bench</h2>
+      <ul>{players.filter(player => player.unit !== 'starters').map(player => <UnitRow key={player.name} player={player} onOpen={open}/>)}</ul>
     </section>
 
     <StatTable players={players} onOpen={open}/>
