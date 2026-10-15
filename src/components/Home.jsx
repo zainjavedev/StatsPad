@@ -71,11 +71,16 @@ const VS_SECTIONS = [
   ['Per game', [metric('points','PPG','Points per game'),metric('totalRebounds','RPG','Rebounds per game'),metric('assists','APG','Assists per game'),metric('steals','SPG','Steals per game'),metric('blocks','BPG','Blocks per game'),metric('turnoverPercentage','TOV%','Turnover rate: turnovers per 100 plays (lower is better)',true)]],
   ['Shooting', [metric('fieldGoalPercentage','FG%','Field goal %'),metric('threePointPercentage','3P%','Three-point % (needs 1+ attempt a game)'),metric('freeThrowPercentage','FT%','Free throw % (needs 1+ attempt a game)'),metric('trueShootingPercentage','TS%','True shooting %'),metric('effectiveFieldGoalPercentage','eFG%','Effective field goal %')]],
 ];
-/* Offence and defence are drawn on separate radars, so each shape means one thing. */
-const RADAR_VIEWS = {
-  offense: {label:'Offense',blurb:'Scoring, creating and taking care of the ball.',lower:'turnovers',axes:[['points','PPG'],['trueShootingPercentage','TS%'],['threePointersMade','3PM'],['assists','APG'],['turnoverPercentage','TOV%',true],['offensiveRebounds','ORB']]},
-  defense: {label:'Defense',blurb:'Rebounding, steals, blocks and fouls, from the box score.',lower:'fouls',axes:[['defensiveRebounds','DRB'],['steals','SPG'],['blocks','BPG'],['personalFouls','PF',true]]},
-};
+/* One radar of seven skills. Each axis is one or two box-score stats, scaled from the league's lowest to highest rotation player; a two-stat axis averages them. */
+const RADAR_AXES = [
+  {label:'Scoring',parts:[['points','PPG']]},
+  {label:'Efficiency',parts:[['trueShootingPercentage','TS%']]},
+  {label:'3-pt volume',parts:[['threePointersMade','3PM']]},
+  {label:'Touch',parts:[['freeThrowPercentage','FT%']]},
+  {label:'Playmaking',parts:[['assists','APG']]},
+  {label:'Rebounding',parts:[['totalRebounds','RPG']]},
+  {label:'Defense',parts:[['steals','SPG'],['blocks','BPG']]},
+];
 const TEAM_SECTIONS = [
   ['Per game', [metric('points','PPG','Points per game'),metric('assists','APG','Assists per game'),metric('totalRebounds','RPG','Rebounds per game'),metric('offensiveRebounds','ORB','Offensive rebounds per game'),metric('defensiveRebounds','DRB','Defensive rebounds per game'),metric('steals','SPG','Steals per game'),metric('blocks','BPG','Blocks per game'),metric('turnoverPercentage','TOV%','Turnover rate: turnovers per 100 plays (lower is better)',true),metric('personalFouls','PF','Fouls per game (fewer is better)',true)]],
   ['Shooting', [metric('fieldGoalPercentage','FG%','Field goal %'),metric('threePointPercentage','3P%','Three-point %'),metric('threePointersMade','3PM','Threes made per game'),metric('freeThrowPercentage','FT%','Free throw %'),metric('effectiveFieldGoalPercentage','eFG%','Effective field goal %'),metric('trueShootingPercentage','TS%','True shooting %')]],
@@ -207,16 +212,19 @@ function Profile({entity,allEntities,playerIds,onBack,backLabel='Back to explore
 
 function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEntityType,seasonType,switchSeason,enriched,setSelected,playerIds,enrichedPopulation,chartRef,onHome,onShare,onDownload,onCopy,toast,theme,onToggleTheme}){
   const ready=enriched.length>=2,noun=entityType==='team'?'teams':'players';
-  const[radarView,setRadarView]=useState('offense'),view=RADAR_VIEWS[radarView];
   const colors=[0,1].map(index=>sideColor(enriched[index]));
   const sections=entityType==='team'?TEAM_SECTIONS:VS_SECTIONS;
   /* Each axis runs from the league's lowest rotation player at the centre to its highest at the edge, so the gap between two stars shows (a percentile would put the top two scorers on the same dot). */
-  const radar=ready?view.axes.map(([key,label,inverse])=>{
-    const values=enrichedPopulation.map(entity=>valueOf(entity,key)).filter(Number.isFinite),low=Math.min(...values),high=Math.max(...values);
-    return{label,sides:[0,1].map(side=>{const value=statValue(enriched[side],key),share=high>low?Math.max(0,Math.min(1,(value-low)/(high-low))):.5,pct=Math.round((inverse?1-share:share)*100);return{pct,rank:`${pct}% of the league range, ${ordinal(percentile(enrichedPopulation,key,value,inverse))} percentile`,text:statText(value,key)}})};
-  }):[];
+  const radarRange=part=>{const values=enrichedPopulation.map(entity=>valueOf(entity,part)).filter(Number.isFinite);return[Math.min(...values),Math.max(...values)]};
+  const radar=ready?RADAR_AXES.map(({label,parts})=>({label,sides:[0,1].map(side=>{
+    const entity=enriched[side],thin=parts.some(([key])=>!volumeOk(entity,key));
+    const shares=parts.map(([key])=>{const[low,high]=radarRange(key);return high>low?Math.max(0,Math.min(1,(statValue(entity,key)-low)/(high-low))):.5});
+    const pct=thin?0:Math.round(shares.reduce((sum,share)=>sum+share,0)/shares.length*100);
+    const text=parts.map(([key,short])=>`${statText(statValue(entity,key),key)} ${short}`).join(' · ');
+    return{pct,text,rank:thin?'too few attempts to rank':`${pct}% of the league range`};
+  })})):[];
   const smallSample=entityType==='team'?[]:enriched.slice(0,2).filter(entity=>!(entity.gamesPlayed>=(seasonType==='playoffs'?3:15)&&entity.minutesPerGame>=10));
-  const radarNotes=[`The centre is the lowest rotation player in the league and the edge is the highest, so distance shows how far apart two players really are. Further out is better on every axis; for ${view.axes.filter(axis=>axis[2]).map(axis=>axis[1]).join(' and ')} that means fewer ${view.lower}.`,...smallSample.map(entity=>`Small sample: ${entity.playerName} played ${entity.gamesPlayed} game${entity.gamesPlayed===1?'':'s'} at ${entity.minutesPerGame} MPG, so these rankings can swing a lot.`)];
+  const radarNotes=['The centre is the lowest rotation player in the league and the edge is the highest, so distance shows how far apart two players really are. Defense averages steals and blocks, a box-score stand-in for defending. Turnovers and fouls are in the stat rows below.',...smallSample.map(entity=>`Small sample: ${entity.playerName} played ${entity.gamesPlayed} game${entity.gamesPlayed===1?'':'s'} at ${entity.minutesPerGame} MPG, so these rankings can swing a lot.`)];
   const radarScope=entityType==='team'?'all 30 teams':`${enrichedPopulation.length} ${seasonType==='playoffs'?'playoff':'regular-season'} rotation players`;
   const tally=ready?sections.filter(([title])=>title!=='Season').flatMap(([,metrics])=>metrics).reduce((total,metric)=>{const lead=leadOf(enriched,metric);if(lead>=0)total[lead]+=1;return total},[0,0]):[0,0];
   return <main className="h2h-main"><SiteHeader page="compare" onHome={onHome} onCompare={()=>{}} onTeams={onTeams} onLeaders={onLeaders} theme={theme} onToggleTheme={onToggleTheme}/><section className="h2h-page">
@@ -237,7 +245,7 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
           onRemove={()=>setSelected(enriched.filter((_,position)=>position!==index))}/>)}
         {ready?<span className="vs-score"><b>{tally[0]}</b><i>–</i><b>{tally[1]}</b><small>stat leads</small></span>:<span className="vs-badge">VS</span>}
       </div>
-      {ready?<>{entityType==='team'&&<TeamLineups teams={enriched.slice(0,2)} leaguePlayers={leaguePlayers} colors={COLORS}/>}<Radar axes={radar} names={enriched.slice(0,2).map(entity=>entity.playerName)} colors={COLORS} scope={radarScope} notes={radarNotes} views={Object.entries(RADAR_VIEWS).map(([key,item])=>({key,label:item.label}))} view={radarView} onView={setRadarView} blurb={view.blurb}/><div className="vs-table" key={enriched.map(player=>player.playerName).join('|')}>
+      {ready?<>{entityType==='team'&&<TeamLineups teams={enriched.slice(0,2)} leaguePlayers={leaguePlayers} colors={COLORS}/>}<Radar axes={radar} names={enriched.slice(0,2).map(entity=>entity.playerName)} colors={COLORS} scope={radarScope} notes={radarNotes}/><div className="vs-table" key={enriched.map(player=>player.playerName).join('|')}>
         {sections.map(([title,metrics])=><React.Fragment key={title}>
           <div className="vs-section">{title}</div>
           {metrics.map((metric,row)=><VsRow key={metric[0]} players={enriched} population={enrichedPopulation} metric={metric} row={row} colors={COLORS}/>)}
