@@ -12,12 +12,12 @@ import { TeamSkeletonBody } from './Skeletons';
 
 const STAT_COLUMNS = [
   {key: 'gamesPlayed', label: 'GP', places: 0},
-  {key: 'minutesPerGame', label: 'MIN'},
-  {key: 'points', label: 'PTS'},
-  {key: 'totalRebounds', label: 'REB'},
-  {key: 'assists', label: 'AST'},
-  {key: 'steals', label: 'STL'},
-  {key: 'blocks', label: 'BLK'},
+  {key: 'minutesPerGame', label: 'MPG'},
+  {key: 'points', label: 'PPG'},
+  {key: 'totalRebounds', label: 'RPG'},
+  {key: 'assists', label: 'APG'},
+  {key: 'steals', label: 'SPG'},
+  {key: 'blocks', label: 'BPG'},
   {key: 'fieldGoalPercentage', label: 'FG%', pct: true},
   {key: 'threePointPercentage', label: '3P%', pct: true},
   {key: 'freeThrowPercentage', label: 'FT%', pct: true},
@@ -60,9 +60,9 @@ function StarterCard({player, onOpen}) {
     </span>
     <h3>{player.name}</h3>
     <dl className="starter-line">
-      <div><dt>PTS</dt><dd>{perGame(player, 'points')}</dd></div>
-      <div><dt>REB</dt><dd>{perGame(player, 'totalRebounds')}</dd></div>
-      <div><dt>AST</dt><dd>{perGame(player, 'assists')}</dd></div>
+      <div><dt>PPG</dt><dd>{perGame(player, 'points')}</dd></div>
+      <div><dt>RPG</dt><dd>{perGame(player, 'totalRebounds')}</dd></div>
+      <div><dt>APG</dt><dd>{perGame(player, 'assists')}</dd></div>
     </dl>
   </button>;
 }

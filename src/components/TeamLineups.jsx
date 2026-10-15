@@ -6,7 +6,7 @@ import { Headshot } from './TeamPage';
    team with the positions lined up, so each card sits over its opposite. */
 
 const SLOTS = ['PG', 'SG', 'SF', 'PF', 'C'];
-const LINE = [['points', 'PTS'], ['totalRebounds', 'REB'], ['assists', 'AST']];
+const LINE = [['points', 'PPG'], ['totalRebounds', 'RPG'], ['assists', 'APG']];
 
 function useRoster(code) {
   const [roster, setRoster] = useState(null);

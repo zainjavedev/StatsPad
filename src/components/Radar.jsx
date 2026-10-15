@@ -15,11 +15,11 @@ const point = (index, count, fraction, push = 0) => {
 const path = (count, fractionOf) => Array.from({length: count}, (_, index) => point(index, count, fractionOf(index)).map(value => value.toFixed(1)).join(',')).join(' ');
 const anchorFor = x => x < SIZE.cx - 8 ? 'end' : x > SIZE.cx + 8 ? 'start' : 'middle';
 
-export default function Radar({axes, names, colors}) {
+export default function Radar({axes, names, colors, scope, notes = []}) {
   const count = axes.length;
   return <section className="vs-radar">
     <div className="vs-radar-head">
-      <small>Shape of their game · league percentile</small>
+      <small>Shape of their game · league percentile{scope ? ` vs ${scope}` : ''}</small>
       <span className="vs-radar-key">{names.map((name, side) => <span key={name}><i style={{background: colors[side]}}/>{name}</span>)}</span>
     </div>
     <svg viewBox={`0 0 ${SIZE.width} ${SIZE.height}`} role="img" aria-label={`Radar chart comparing ${names.join(' and ')} across ${axes.map(axis => axis.label).join(', ')}`}>
@@ -40,11 +40,12 @@ export default function Radar({axes, names, colors}) {
           {axes.map((axis, index) => {
             const [x, y] = point(index, count, Math.max(axis.sides[side].pct, 3) / 100);
             return <circle key={axis.label} className="radar-dot" cx={x} cy={y} r="4" style={{fill: colors[side]}}>
-              <title>{`${name} · ${axis.label}: ${axis.sides[side].text} (${axis.sides[side].pct}th percentile)`}</title>
+              <title>{`${name} · ${axis.label}: ${axis.sides[side].text} (${axis.sides[side].rank})`}</title>
             </circle>;
           })}
         </g>;
       })}
     </svg>
+    {notes.length > 0 && <ul className="vs-radar-notes">{notes.map(note => <li key={note}>{note}</li>)}</ul>}
   </section>;
 }

@@ -23,12 +23,12 @@ function loadSeasonBundle(seasonType){
 }
 function playerTheme(player,index){if(PLAYER_COLOR_OVERRIDES[player.playerName])return PLAYER_COLOR_OVERRIDES[player.playerName];const background=JERSEY_COLORS[player.team]||CARD_THEMES[index%CARD_THEMES.length][0];const hex=background.replace('#','');const red=parseInt(hex.slice(0,2),16),green=parseInt(hex.slice(2,4),16),blue=parseInt(hex.slice(4,6),16);return [background,(red*299+green*587+blue*114)>145000?'#171717':'#fff']}
 const STAT_GROUPS = {
-  impact: [['points','PTS'],['assists','AST'],['totalRebounds','REB'],['trueShootingPercentage','TS%'],['steals','STL'],['blocks','BLK']],
-  offense: [['points','PTS'],['assists','AST'],['fieldGoalPercentage','FG%'],['threePointPercentage','3P%'],['trueShootingPercentage','TS%'],['turnovers','TOV',true]],
-  defense: [['steals','STL'],['blocks','BLK'],['totalRebounds','REB'],['defensiveRebounds','DREB'],['personalFouls','PF',true],['turnovers','TOV',true]],
+  impact: [['points','PPG'],['assists','APG'],['totalRebounds','RPG'],['trueShootingPercentage','TS%'],['steals','SPG'],['blocks','BPG']],
+  offense: [['points','PPG'],['assists','APG'],['fieldGoalPercentage','FG%'],['threePointPercentage','3P%'],['trueShootingPercentage','TS%'],['turnovers','TOV',true]],
+  defense: [['steals','SPG'],['blocks','BPG'],['totalRebounds','RPG'],['defensiveRebounds','DRB'],['personalFouls','PF',true],['turnovers','TOV',true]],
 };
-const TABLE_STATS = [['points','Points / game'],['assists','Assists / game'],['totalRebounds','Rebounds / game'],['steals','Steals / game'],['blocks','Blocks / game'],['fieldGoalPercentage','Field goal %'],['threePointPercentage','Three-point %'],['freeThrowPercentage','Free throw %'],['trueShootingPercentage','True shooting %'],['effectiveFieldGoalPercentage','Effective FG %'],['turnovers','Turnovers / game',true]];
-const pctKeys = new Set(['fieldGoalPercentage','threePointPercentage','freeThrowPercentage','trueShootingPercentage','effectiveFieldGoalPercentage']);
+const TABLE_STATS = [['points','PPG'],['assists','APG'],['totalRebounds','RPG'],['steals','SPG'],['blocks','BPG'],['fieldGoalPercentage','FG%'],['threePointPercentage','3P%'],['freeThrowPercentage','FT%'],['trueShootingPercentage','TS%'],['effectiveFieldGoalPercentage','eFG%'],['turnovers','TOV',true]];
+const pctKeys = new Set(['turnoverPercentage','fieldGoalPercentage','threePointPercentage','freeThrowPercentage','trueShootingPercentage','effectiveFieldGoalPercentage']);
 const valueOf = (player,key) => player?.stats?.[key] ?? 0;
 const metricValue = (player,key) => key==='trueShootingPercentage' ? (player?.stats?.fieldGoalsAttempted ? Number((player.stats.points/(2*(player.stats.fieldGoalsAttempted+.44*player.stats.freeThrowsAttempted))*100).toFixed(1)) : 0) : key==='stocks' ? valueOf(player,'steals')+valueOf(player,'blocks') : player?.stats?.[key] ?? player?.[key] ?? 0;
 const format = (value,key) => `${Number(value).toFixed(1)}${pctKeys.has(key)?'%':''}`;
@@ -65,40 +65,46 @@ function PercentileBars({entity,population,metrics}){
   </div>
 }
 
+const metric = (key,label,full,inverse=false,places) => [key,label,inverse,places,full];
 const VS_SECTIONS = [
-  ['Season', [['gamesPlayed','Games played',false,0],['minutesPerGame','Minutes per game']]],
-  ['Per game', [['points','Points'],['totalRebounds','Rebounds'],['assists','Assists'],['steals','Steals'],['blocks','Blocks'],['turnovers','Turnovers',true]]],
-  ['Shooting', [['fieldGoalPercentage','Field goal %'],['threePointPercentage','Three-point %'],['freeThrowPercentage','Free throw %'],['trueShootingPercentage','True shooting %'],['effectiveFieldGoalPercentage','Effective field goal %']]],
+  ['Season', [metric('gamesPlayed','GP','Games played',false,0),metric('minutesPerGame','MPG','Minutes per game')]],
+  ['Per game', [metric('points','PPG','Points per game'),metric('totalRebounds','RPG','Rebounds per game'),metric('assists','APG','Assists per game'),metric('steals','SPG','Steals per game'),metric('blocks','BPG','Blocks per game'),metric('turnoverPercentage','TOV%','Turnover rate: turnovers per 100 plays (lower is better)',true)]],
+  ['Shooting', [metric('fieldGoalPercentage','FG%','Field goal %'),metric('threePointPercentage','3P%','Three-point % (needs 1+ attempt a game)'),metric('freeThrowPercentage','FT%','Free throw % (needs 1+ attempt a game)'),metric('trueShootingPercentage','TS%','True shooting %'),metric('effectiveFieldGoalPercentage','eFG%','Effective field goal %')]],
 ];
-const RADAR_AXES = [['points','Scoring'],['totalRebounds','Rebounding'],['assists','Assists'],['steals','Steals'],['blocks','Blocks'],['threePointPercentage','3P %'],['trueShootingPercentage','True shooting'],['turnovers','Ball security',true]];
+const RADAR_AXES = [['points','PPG'],['totalRebounds','RPG'],['assists','APG'],['steals','SPG'],['blocks','BPG'],['threePointersMade','3PM'],['trueShootingPercentage','TS%'],['turnoverPercentage','TOV%',true]];
 const TEAM_SECTIONS = [
-  ['Per game', [['points','Points'],['assists','Assists'],['totalRebounds','Rebounds'],['offensiveRebounds','Offensive rebounds'],['defensiveRebounds','Defensive rebounds'],['steals','Steals'],['blocks','Blocks'],['turnovers','Turnovers',true],['personalFouls','Fouls',true]]],
-  ['Shooting', [['fieldGoalPercentage','Field goal %'],['threePointPercentage','Three-point %'],['threePointersMade','Threes made'],['freeThrowPercentage','Free throw %'],['effectiveFieldGoalPercentage','Effective field goal %'],['trueShootingPercentage','True shooting %']]],
+  ['Per game', [metric('points','PPG','Points per game'),metric('assists','APG','Assists per game'),metric('totalRebounds','RPG','Rebounds per game'),metric('offensiveRebounds','ORB','Offensive rebounds per game'),metric('defensiveRebounds','DRB','Defensive rebounds per game'),metric('steals','SPG','Steals per game'),metric('blocks','BPG','Blocks per game'),metric('turnoverPercentage','TOV%','Turnover rate: turnovers per 100 plays (lower is better)',true),metric('personalFouls','PF','Fouls per game (fewer is better)',true)]],
+  ['Shooting', [metric('fieldGoalPercentage','FG%','Field goal %'),metric('threePointPercentage','3P%','Three-point %'),metric('threePointersMade','3PM','Threes made per game'),metric('freeThrowPercentage','FT%','Free throw %'),metric('effectiveFieldGoalPercentage','eFG%','Effective field goal %'),metric('trueShootingPercentage','TS%','True shooting %')]],
 ];
 const sideColor = entity => TEAMS[teamCodeOf(entity?.team)]?.color || '#3b3b45';
-const channels = hex => [1,3,5].map(index=>parseInt(hex.slice(index,index+2),16));
-const colorGap = (a,b) => Math.hypot(...channels(a).map((value,index)=>value-channels(b)[index]));
-/* Each side keeps its team colour, unless the two are too alike to tell apart. */
-const FALLBACK_COLORS = ['#eb6834','#2a78d6','#1a9c6b'];
-function pairColors(a,b){
-  const first=sideColor(a),second=sideColor(b);
-  if(!a||!b||colorGap(first,second)>=90)return[first,second];
-  return[first,[...FALLBACK_COLORS].sort((x,y)=>colorGap(first,y)-colorGap(first,x))[0]];
-}
+/* Turnovers per 100 plays that end in a shot, free throw or turnover: fairer than raw turnovers, which punish anyone who handles the ball a lot. */
+const turnoverRate = stats => {const plays=stats.fieldGoalsAttempted+.44*stats.freeThrowsAttempted+stats.turnovers;return plays?Number((stats.turnovers/plays*100).toFixed(1)):0};
+/* A percentage only counts once there is a real sample behind it: a centre who takes 0.1 threes a game has no three-point percentage worth ranking. */
+const volumeOk = (entity,key) => key==='threePointPercentage'?(entity.stats?.threePointersAttempted??0)>=1:key==='freeThrowPercentage'?(entity.stats?.freeThrowsAttempted??0)>=1:true;
+const teamLabel = code => /^\dTM$/.test(code)?`${code[0]} teams`:code;
 const statValue = (entity,key) => entity?.stats?.[key] ?? entity?.[key] ?? 0;
 const statText = (value,key,places) => `${Number(value).toFixed(places ?? 1)}${pctKeys.has(key) ? '%' : ''}`;
 
 /* One table row: a value per entity either side of the category name, the
    leader's cell tinted. Percentile rank rides along in the title attribute. */
+function leadOf(players,[key,,inverse]){
+  const eligible=players.map(player=>volumeOk(player,key));
+  if(!eligible[0]&&!eligible[1])return -1;
+  if(eligible[0]!==eligible[1])return eligible[0]?0:1;
+  const values=players.map(player=>statValue(player,key));
+  if(values[0]===values[1])return -1;
+  return (inverse?values[0]<values[1]:values[0]>values[1])?0:1;
+}
+
 function VsRow({players,population,metric,row,colors}){
-  const[key,label,inverse,places]=metric,values=players.map(player=>statValue(player,key));
-  const tied=values[0]===values[1],best=inverse?Math.min(...values):Math.max(...values);
+  const[key,label,inverse,places,full]=metric,values=players.map(player=>statValue(player,key)),lead=leadOf(players,metric);
+  const best=inverse?Math.min(...values):Math.max(...values);
   const ratio=value=>inverse?(value<=0?1:best/value):(best>0?Math.max(0,value)/best:0);
   const cell=index=><span
-    className={!tied&&values[index]===best?'vs-cell lead':'vs-cell'}
+    className={['vs-cell',lead===index&&'lead',!volumeOk(players[index],key)&&'thin'].filter(Boolean).join(' ')}
     style={{'--wr':Math.max(.04,ratio(values[index])),'--c':colors[index]}}
     key={players[index].playerId||players[index].teamId}
-    title={`${players[index].playerName} · ${label}: ${statText(values[index],key,places)} (${ordinal(percentile(population,key,values[index],inverse))} percentile)`}
+    title={volumeOk(players[index],key)?`${players[index].playerName} · ${full||label}: ${statText(values[index],key,places)} (${ordinal(percentile(population,key,values[index],inverse))} percentile)`:`${players[index].playerName} · ${full||label}: ${statText(values[index],key,places)}, too few attempts to rank`}
   >{statText(values[index],key,places)}</span>;
   return <div className="vs-row" style={{'--row':row}}>{cell(0)}<span className="vs-cat">{label}</span>{cell(1)}</div>
 }
@@ -114,7 +120,7 @@ function VsSlot({index,entity,options,playerIds,noun,onPick,onRemove,color}){
       <button className="vs-remove" onClick={onRemove} aria-label={`Remove ${entity.playerName}`}><X size={14}/></button>
       <EntityArt entity={entity} playerIds={playerIds} className={entity.entityType==='team'?'vs-art is-logo':'vs-art'}/>
       <strong>{entity.playerName}</strong>
-      {entity.entityType!=='team'&&<small>{[entity.team,entity.position].filter(Boolean).join(' · ')}</small>}
+      {entity.entityType!=='team'&&<small>{[teamLabel(entity.team),entity.position].filter(Boolean).join(' · ')}</small>}
     </>:
       <button className="vs-add" onClick={()=>setOpen(!open)}><span>+</span> Add {noun}</button>
     }
@@ -186,7 +192,7 @@ function StoryCard({player,leaders,index,label,statKey,suffix,playerIds,onOpenLi
 function StatListModal({card,playerIds,onOpen,onClose}){return <div className="stat-modal-backdrop" onClick={onClose}><section className="stat-modal" onClick={event=>event.stopPropagation()}><button className="stat-modal-close" onClick={onClose} aria-label="Close"><X size={18}/></button><small>FULL LEADERBOARD</small><h2>{card.title}</h2><p>2025–26 regular season · top {card.leaders.length}</p>{card.leaders.map((leader,index)=><button className="stat-modal-row" key={leader.playerId} onClick={()=>onOpen(leader)}><span>{index+1}</span><EntityArt entity={leader} playerIds={playerIds} className="split-avatar"/><b>{leader.playerName}</b><strong>{format(metricValue(leader,card.statKey),card.statKey)} {card.suffix}</strong></button>)}</section></div>}
 
 function Profile({entity,allEntities,playerIds,onBack,backLabel='Back to explore',onCompare}){
-  const stats=[['points','PTS'],['totalRebounds','REB'],['assists','AST'],['steals','STL'],['blocks','BLK'],['trueShootingPercentage','TS%']];
+  const stats=[['points','PPG'],['totalRebounds','RPG'],['assists','APG'],['steals','SPG'],['blocks','BPG'],['trueShootingPercentage','TS%']];
   const enriched={...entity,stats:{...entity.stats,trueShootingPercentage:entity.stats.fieldGoalsAttempted?entity.stats.points/(2*(entity.stats.fieldGoalsAttempted+.44*entity.stats.freeThrowsAttempted))*100:0}};
   const population=allEntities.map(item=>({...item,stats:{...item.stats,trueShootingPercentage:item.stats.fieldGoalsAttempted?item.stats.points/(2*(item.stats.fieldGoalsAttempted+.44*item.stats.freeThrowsAttempted))*100:0}}));
   return <section className="profile-page"><button className="back-button" onClick={onBack}><ArrowLeft size={16}/> {backLabel}</button><div className="profile-hero" style={{'--team':TEAM_COLORS[entity.team]||'#333'}}><div className="profile-copy"><small>{entity.entityType==='team'?'NBA TEAM':`${entity.team} · ${entity.position}`} · 2025–26</small><h1>{entity.playerName}</h1><p>{entity.entityType==='team'?`${entity.gamesPlayed} games · ${format(entity.stats.points,'points')} points per game`:`Age ${entity.age} · ${entity.gamesPlayed} games · ${entity.gamesStarted} starts`}</p><button onClick={()=>onCompare(entity)}><BarChart3 size={17}/> Compare {entity.entityType==='team'?'team':'player'}</button></div><div className="profile-art-wrap"><div></div><EntityArt entity={entity} playerIds={playerIds} className="profile-art"/></div></div>
@@ -197,10 +203,13 @@ function Profile({entity,allEntities,playerIds,onBack,backLabel='Back to explore
 
 function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEntityType,seasonType,switchSeason,enriched,setSelected,playerIds,enrichedPopulation,chartRef,onHome,onShare,onDownload,onCopy,toast,theme,onToggleTheme}){
   const ready=enriched.length>=2,noun=entityType==='team'?'teams':'players';
-  const colors=pairColors(enriched[0],enriched[1]);
+  const colors=[0,1].map(index=>sideColor(enriched[index]));
   const sections=entityType==='team'?TEAM_SECTIONS:VS_SECTIONS;
-  const radar=ready?RADAR_AXES.map(([key,label,inverse])=>({label,sides:[0,1].map(side=>{const value=statValue(enriched[side],key);return{pct:percentile(enrichedPopulation,key,value,inverse),text:statText(value,key)}})})):[];
-  const tally=ready?sections.flatMap(([,metrics])=>metrics).reduce((total,[key,,inverse])=>{const a=statValue(enriched[0],key),b=statValue(enriched[1],key);if(a!==b){const first=inverse?a<b:a>b;total[first?0:1]+=1}return total},[0,0]):[0,0];
+  const radar=ready?RADAR_AXES.map(([key,label,inverse])=>({label,sides:[0,1].map(side=>{const value=statValue(enriched[side],key),pct=percentile(enrichedPopulation,key,value,inverse);return{pct,rank:`${ordinal(pct)} percentile`,text:statText(value,key)}})})):[];
+  const smallSample=entityType==='team'?[]:enriched.slice(0,2).filter(entity=>!(entity.gamesPlayed>=(seasonType==='playoffs'?3:15)&&entity.minutesPerGame>=10));
+  const radarNotes=['Further out is better on every axis; for TOV% that means fewer turnovers.',...smallSample.map(entity=>`Small sample: ${entity.playerName} played ${entity.gamesPlayed} game${entity.gamesPlayed===1?'':'s'} at ${entity.minutesPerGame} MPG, so these rankings can swing a lot.`)];
+  const radarScope=entityType==='team'?'all 30 teams':`${enrichedPopulation.length} ${seasonType==='playoffs'?'playoff':'regular-season'} rotation players`;
+  const tally=ready?sections.filter(([title])=>title!=='Season').flatMap(([,metrics])=>metrics).reduce((total,metric)=>{const lead=leadOf(enriched,metric);if(lead>=0)total[lead]+=1;return total},[0,0]):[0,0];
   return <main className="h2h-main"><SiteHeader page="compare" onHome={onHome} onCompare={()=>{}} onTeams={onTeams} onLeaders={onLeaders} theme={theme} onToggleTheme={onToggleTheme}/><section className="h2h-page">
     <div className="h2h-bar">
       <div className="segmented mode"><button className={entityType==='player'?'active':''} onClick={()=>setEntityType('player')}>Players</button><button className={entityType==='team'?'active':''} onClick={()=>setEntityType('team')}>Teams</button></div>
@@ -219,13 +228,13 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
           onRemove={()=>setSelected(enriched.filter((_,position)=>position!==index))}/>)}
         {ready?<span className="vs-score"><b>{tally[0]}</b><i>–</i><b>{tally[1]}</b><small>stat leads</small></span>:<span className="vs-badge">VS</span>}
       </div>
-      {ready?<>{entityType==='team'&&<TeamLineups teams={enriched.slice(0,2)} leaguePlayers={leaguePlayers} colors={COLORS}/>}<Radar axes={radar} names={enriched.slice(0,2).map(entity=>entity.playerName)} colors={COLORS}/><div className="vs-table" key={enriched.map(player=>player.playerName).join('|')}>
+      {ready?<>{entityType==='team'&&<TeamLineups teams={enriched.slice(0,2)} leaguePlayers={leaguePlayers} colors={COLORS}/>}<Radar axes={radar} names={enriched.slice(0,2).map(entity=>entity.playerName)} colors={COLORS} scope={radarScope} notes={radarNotes}/><div className="vs-table" key={enriched.map(player=>player.playerName).join('|')}>
         {sections.map(([title,metrics])=><React.Fragment key={title}>
           <div className="vs-section">{title}</div>
           {metrics.map((metric,row)=><VsRow key={metric[0]} players={enriched} population={enrichedPopulation} metric={metric} row={row} colors={COLORS}/>)}
         </React.Fragment>)}
       </div>
-      <p className="vs-note">The coloured bar marks who leads each category; fewer turnovers counts as leading. Bar length shows how close the two are. Hover any value for its league percentile among {enrichedPopulation.length} qualified {noun}.</p></>
+      <p className="vs-note">The coloured bar marks who leads each category; for TOV% and PF, lower leads. GP and MPG are context and are not counted. 3P% and FT% need at least one attempt a game to lead. Bar length shows how close the two are. Hover any value for its league percentile among {enrichedPopulation.length} qualified {noun}.</p></>
       :<p className="vs-empty">Pick two {noun} above and the comparison builds itself.</p>}
     </section>
   </section><footer><span>StatsPad · made for smarter hoops arguments</span><span>2025–26 data from <a href={data.source.url} target="_blank" rel="noreferrer">Basketball Reference</a> · Updated {data.lastUpdated}</span></footer>{toast&&<div className="toast"><Check size={16}/>{toast}</div>}</main>
@@ -244,7 +253,7 @@ export default function Home(){
   useEffect(()=>{const name=paramsOnLoad.get('profile');if(!name||profile)return;const match=[...catalog.players,...catalog.teams].find(item=>item.playerName===name);if(match)setProfile(match)},[catalog,paramsOnLoad,profile]);
   useEffect(()=>{if(!data)return;const params=new URLSearchParams(location.search),names=params.get('players')?.split('|').filter(Boolean);const defaults=names?.length?names:(entityType==='team'?['Oklahoma City Thunder','New York Knicks']:['Luka Dončić','Shai Gilgeous-Alexander']);setSelected(defaults.map(name=>data.players.find(p=>p.playerName===name)).filter(Boolean).slice(0,2))},[data,entityType]);
   const population=useMemo(()=>data?.players.filter(p=>entityType==='team'||(p.gamesPlayed>=(seasonType==='playoffs'?3:15)&&p.minutesPerGame>=10))||[],[data,seasonType,entityType]);
-  const enrich=p=>({...p,stats:{...p.stats,trueShootingPercentage:p.stats.fieldGoalsAttempted?Number((p.stats.points/(2*(p.stats.fieldGoalsAttempted+.44*p.stats.freeThrowsAttempted))*100).toFixed(1)):0}});
+  const enrich=p=>({...p,stats:{...p.stats,trueShootingPercentage:p.stats.fieldGoalsAttempted?Number((p.stats.points/(2*(p.stats.fieldGoalsAttempted+.44*p.stats.freeThrowsAttempted))*100).toFixed(1)):0,turnoverPercentage:turnoverRate(p.stats)}});
   const enriched=useMemo(()=>selected.map(enrich),[selected]);
   const enrichedPopulation=useMemo(()=>population.map(enrich),[population]);
   const notify=message=>{setToast(message);setTimeout(()=>setToast(''),2200)};

@@ -1029,3 +1029,7 @@ header .brand small{margin-top:3px}
   .lineup-grid{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory;scrollbar-width:thin}
   .lc{flex:0 0 112px;scroll-snap-align:start}
 }
+
+.vs-cell.thin{opacity:.55}
+.vs-radar-notes{margin:6px 0 10px;padding:0;list-style:none;color:var(--text-3);font-size:11.5px;line-height:1.5}
+.vs-radar-notes li+li{margin-top:2px}
