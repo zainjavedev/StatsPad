@@ -21,9 +21,9 @@ const DEBATES = [
   ['Victor Wembanyama', 'Chet Holmgren'],
 ];
 const colorOf = player => TEAMS[teamCodeOf(player.team)]?.color || '#3b3b45';
-const loadGames = () => upcomingGames(7, 6);
-const loadResults = () => recentResults(7, 6);
-const loadNews = () => latestNews(5);
+const loadGames = () => upcomingGames(7, 8);
+const loadResults = () => recentResults(7, 8);
+const loadNews = () => latestNews(4);
 
 function PlayerSearch({players, Art, playerIds, onOpen}) {
   const [query, setQuery] = useState(''), [active, setActive] = useState(0);

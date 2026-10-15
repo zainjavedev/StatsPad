@@ -742,7 +742,7 @@ header .brand small{margin-top:3px}
 .front-no-results{padding:14px 12px;color:var(--text-3);font-size:14px}
 
 
-.front-feeds{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px}
+.front-feeds{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px;align-items:start}
 .front-panel{padding:18px 18px 8px;border:1px solid var(--line);border-radius:14px;background:var(--ink-1)}
 .front-panel h2{margin-bottom:6px}
 
