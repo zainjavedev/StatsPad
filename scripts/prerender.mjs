@@ -6,6 +6,7 @@ import sharp from 'sharp';
 import { TEAMS, teamCodeOf } from '../src/lib/teams.js';
 import { SEASONS, pretty } from '../src/lib/season.js';
 import { makeCopy } from './seo-copy.mjs';
+import { bestSeason, careerOf, liveRow, seasonsOf, tsOf } from '../src/lib/career.js';
 import { SITE, compareUrl, playerUrl, slugify, teamUrl } from '../src/lib/routes.js';
 
 /* Runs after `vite build`. Writes a real HTML page (title, description, social
@@ -185,6 +186,18 @@ const pairRoute = (x, y) => {
   return pairKeys.has(`${first.slug}|${second.slug}`) ? compareUrl([x.playerName, y.playerName]) : null;
 };
 const copy = makeCopy({players, teams, esc, link, nameOf: code => TEAMS[code].name, playerHref: q => playerUrl(q.playerName), pairRoute});
+/* Season-by-season history from public/data/careers, with this season's live line on the end. */
+function careerHtml(p) {
+  const file = path.join(root, 'public/data/careers', `${p.slug}.json`);
+  const rows = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')).rows : [];
+  const seasons = seasonsOf(rows, liveRow(p, seasonKey));
+  if (seasons.length < 2) return '';
+  const career = careerOf(seasons);
+  const high = bestSeason(seasons, 'pts');
+  const body = [...seasons].reverse().map(({s, main}) => [esc(pretty(s)), esc(main.tot ? 'TOT' : main.t), main.gp, ...[main.mpg, main.pts, main.reb, main.ast, main.fgp, main.tpp, tsOf(main)].map(value => fixed(value))]);
+  body.push(['Career', '', career.gp, ...[career.mpg, career.pts, career.reb, career.ast, career.fgp, career.tpp, tsOf(career)].map(value => fixed(value))]);
+  return `<h2>${esc(p.playerName)} career stats by season</h2><p>Across ${seasons.length} seasons and ${career.gp} games, ${esc(p.playerName)} has averaged ${fixed(career.pts)} points, ${fixed(career.reb)} rebounds and ${fixed(career.ast)} assists per game${high ? `, with a best scoring season of ${fixed(high.main.pts)} PPG in ${esc(pretty(high.s))}` : ''}.</p>${table(['Season', 'Team', 'GP', 'MPG', 'PPG', 'RPG', 'APG', 'FG%', '3P%', 'TS%'], body)}`;
+}
 const starterNames = team => ['PG', 'SG', 'SF', 'PF', 'C'].map(slot => team.roster?.players.find(entry => entry.slot === slot)?.name).filter(Boolean).map(name => (bySlug.get(slugify(name)) ? link(playerUrl(name), name) : esc(name)));
 
 writePage({route: '/', title: 'StatsPad: NBA player and team comparisons, rosters and stats', description: 'Compare any two NBA players or teams side by side with a skill radar, see every roster with its expected starting five, and browse the league leaders.', body: '<main class="seo"><h1>StatsPad: NBA player and team comparisons</h1><p>Compare any two NBA players or teams, browse every roster and see the league leaders.</p></main>'});
@@ -197,7 +210,7 @@ for (const p of cap(players)) {
   writePage({route: playerUrl(p.playerName), ogName: `players/${p.slug}`,
     title: `${p.playerName} stats ${yearLabel}: ${fixed(p.stats.points)} PPG, ${fixed(p.stats.totalRebounds)} RPG, ${fixed(p.stats.assists)} APG | StatsPad`,
     description: `${p.playerName} ${yearLabel} NBA stats: ${statLine(p)}, ${fixed(p.stats.fieldGoalPercentage)}% FG, ${fixed(p.stats.threePointPercentage)}% 3P, ${fixed(p.ts)}% TS in ${p.gamesPlayed} games. Compare ${p.playerName} with any player.`,
-    body: `<main class="seo"><h1>${esc(p.playerName)} stats, ${yearLabel}</h1>${copy.playerProfile(p)}${table(['Stat', 'Per game'], PLAYER_ROWS.map(([label, get, places]) => [esc(label), fixed(get(p), places ?? 1)]))}${p.code ? `<p>${link(teamUrl(p.code), `${TEAMS[p.code].name} roster`)}</p>` : ''}${copy.teammates(p)}${copy.neighbours(p)}${related ? `<h2>Compare</h2><ul>${related}</ul>` : ''}</main>`});
+    body: `<main class="seo"><h1>${esc(p.playerName)} stats, ${yearLabel}</h1>${copy.playerProfile(p)}${table(['Stat', 'Per game'], PLAYER_ROWS.map(([label, get, places]) => [esc(label), fixed(get(p), places ?? 1)]))}${p.code ? `<p>${link(teamUrl(p.code), `${TEAMS[p.code].name} roster`)}</p>` : ''}${careerHtml(p)}${copy.teammates(p)}${copy.neighbours(p)}${related ? `<h2>Compare</h2><ul>${related}</ul>` : ''}</main>`});
   card(`players/${p.slug}`, () => playerCard(p));
 }
 for (const team of cap(teams)) {

@@ -4,7 +4,7 @@ import { GameList, NewsList } from './Feeds';
 import { useFeed } from '../lib/useFeed';
 import { latestNews, recentResults, upcomingGames } from '../lib/espn';
 import { TEAMS, nickname, teamCodeOf } from '../lib/teams';
-import { pretty } from '../lib/season';
+import { pretty, qualified } from '../lib/season';
 
 /* The front door: settle a debate, find a player, see the league's top
    performers and what's on. Deep leaderboards live on the Leaders page. */
@@ -81,7 +81,7 @@ export default function FrontPage({players, teams, playerIds, season, Art, onOpe
   const games = useFeed(loadGames), results = useFeed(loadResults), news = useFeed(loadNews);
   const [tab, setTab] = useState(null);
   const view = tab ?? (games?.length ? 'upcoming' : 'results');
-  const pool = useMemo(() => players.filter(player => player.gamesPlayed >= 15 && player.minutesPerGame >= 10), [players]);
+  const pool = useMemo(() => qualified(players), [players]);
   const stars = useMemo(() => [...pool].sort((a, b) => b.stats.points - a.stats.points).slice(0, 3), [pool]);
   const leaders = useMemo(() => {
     const base = pool.length ? pool : players;

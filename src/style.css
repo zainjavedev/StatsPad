@@ -1051,3 +1051,53 @@ header .brand small{margin-top:3px}
   .vs-person{padding-top:54px}
   .radar-label{font-size:15px}
 }
+
+/* ---- Player page: tiles, career trend and table ---- */
+.pp-tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:15px}
+.pp-tile{display:flex;flex-direction:column;gap:3px;padding:14px 16px;border:1px solid var(--line);border-radius:var(--radius);background:var(--ink-1)}
+.pp-tile span{color:var(--text-3);font-size:11px;font-weight:800;letter-spacing:.08em}
+.pp-tile strong{color:var(--text-1);font:700 30px/1.05 'DM Sans',sans-serif;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.pp-tile small{color:var(--text-2);font-size:11.5px;font-weight:600}
+.pp-grid-2{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.85fr);gap:15px;margin-top:15px;align-items:start}
+.pp-card{padding:22px;border:1px solid var(--line);border-radius:var(--radius);background:var(--ink-1);margin-top:15px;min-width:0}
+.pp-grid-2 .pp-card{margin-top:0}
+.pp-head{margin-bottom:14px}
+.pp-head small{color:var(--text-3);font-size:10px;font-weight:800;letter-spacing:.13em}
+.pp-head h2{margin:5px 0 0;color:var(--text-1);font:700 20px/1.2 'DM Sans',sans-serif;letter-spacing:-.02em}
+.pp-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.pp-tabs button{padding:6px 11px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--text-2);font-size:12px;font-weight:700}
+.pp-tabs button:hover{color:var(--text-1)}
+.pp-tabs button.active{border-color:var(--text-1);background:var(--text-1);color:var(--ink-1)}
+.pp-trend svg{display:block;width:100%;height:auto;overflow:visible}
+.pp-grid{stroke:var(--line);stroke-width:1}
+.pp-line{fill:none;stroke:var(--series-1);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.pp-dot{fill:var(--ink-1);stroke:var(--series-1);stroke-width:2.5}
+.pp-dot.live{fill:var(--series-1)}
+.pp-val{fill:var(--text-1);font-size:11.5px;font-weight:700;font-variant-numeric:tabular-nums}
+.pp-axis{fill:var(--text-3);font-size:11px}
+.pp-empty{margin:18px 0;color:var(--text-2);font-size:14px}
+.pp-highs{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line);color:var(--text-2);font-size:13px}
+.pp-highs span{display:flex;flex-direction:column;gap:1px}
+.pp-highs b{color:var(--text-1);font-size:19px;font-variant-numeric:tabular-nums}
+.pp-highs small{color:var(--text-3);font-size:11px}
+.pp-bars .stat-bars{margin-top:6px}
+.pp-table-wrap{overflow-x:auto;margin:0 -6px;padding:0 6px}
+.pp-table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pp-table th,.pp-table td{padding:8px 9px;border-bottom:1px solid var(--line);text-align:right;color:var(--text-1)}
+.pp-table thead th{color:var(--text-3);font-size:11px;font-weight:800;letter-spacing:.06em;position:sticky;top:0;background:var(--ink-1)}
+.pp-table th:first-child,.pp-table td:first-child,.pp-table th:nth-child(2),.pp-table td:nth-child(2){text-align:left}
+.pp-table tbody th{font-weight:700}
+.pp-table tr.current td,.pp-table tr.current th{background:color-mix(in srgb,var(--series-1) 9%,transparent)}
+.pp-table tr.stint td,.pp-table tr.stint th{color:var(--text-3);font-weight:500;font-size:12px}
+.pp-table tr.stint th{padding-left:22px}
+.pp-table tr.career td,.pp-table tr.career th{border-top:2px solid var(--text-1);border-bottom:0;font-weight:800}
+.pp-note{margin:12px 0 0;color:var(--text-3);font-size:12px}
+.pp-suggest{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.pp-suggest-item{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--ink-2)}
+.pp-open{flex:1;min-width:0;border:0;background:transparent;text-align:left;color:var(--text-1);padding:0}
+.pp-open b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pp-open small{color:var(--text-3);font-size:11.5px}
+.pp-versus{display:flex;align-items:center;gap:5px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--ink-1);color:var(--text-1);font-size:12px;font-weight:700}
+.pp-versus:hover{border-color:var(--text-1)}
+@media(max-width:900px){.pp-tiles{grid-template-columns:repeat(3,minmax(0,1fr))}.pp-grid-2{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:520px){.pp-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.pp-tile strong{font-size:26px}.pp-card{padding:16px}}

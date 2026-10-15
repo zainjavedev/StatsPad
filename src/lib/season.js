@@ -41,3 +41,8 @@ export const indexPlayers = list => ({
   byName: new Map(list.map(player => [plain(player.playerName), player])),
 });
 export const statsFor = (entry, {byId, byName}) => byId.get(`espn-${entry.espnId}`) || (entry.bbrefId && byId.get(entry.bbrefId)) || byName.get(plain(entry.name)) || null;
+
+/* "Qualified" players for rankings and the radar: 15 games and 10 minutes, but
+   early in a season the games bar is half of what the busiest team has played. */
+export const minGames = list => Math.min(15, Math.max(1, Math.floor(Math.max(0, ...list.map(player => player.gamesPlayed)) / 2)));
+export const qualified = list => { const games = minGames(list); return list.filter(player => player.gamesPlayed >= games && player.minutesPerGame >= 10); };

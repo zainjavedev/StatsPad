@@ -31,6 +31,7 @@ jobs:
           restore-keys: espn-rebounds-
       - run: node scripts/fetch-espn-stats.mjs auto regular
       - run: node scripts/fetch-espn-stats.mjs auto playoffs
+      - run: node scripts/build-careers.mjs
       - name: Commit changes
         run: |
           git add public/data
