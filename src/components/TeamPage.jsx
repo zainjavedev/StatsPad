@@ -175,7 +175,10 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen, onSwi
     </div>
 
     <section className="team-block">
-      <h2>Starting five</h2>
+      <div className="block-head">
+        <h2>Expected starting five</h2>
+        <span>Per game, last season ({(roster.statsSeason || '2025-26').replace('-', '–')})</span>
+      </div>
       <div className="starter-grid">{unit('starters').map(player => <StarterCard key={player.name} player={player} onOpen={open}/>)}</div>
     </section>
 
