@@ -56,11 +56,18 @@ export async function recentResults(days = 7, limit = 6) {
     .slice(0, limit);
 }
 
+/* A team's finished games, each marked W or L from that team's side. */
 export async function teamResults(team, limit = 5) {
   try {
     const seasons = await Promise.all([1, 2].map(type => getJson(`${BASE}/teams/${team}/schedule?seasontype=${type}`).catch(() => null)));
-    return seasons.flatMap(season => season?.events || []).map(toGame)
-      .filter(game => game.state === 'post')
+    return seasons.flatMap(season => (season?.events || []).map(event => ({game: toGame(event), abbr: season.team?.abbreviation})))
+      .filter(({game}) => game.state === 'post')
+      .map(({game, abbr}) => {
+        const mine = game.home.abbr === abbr ? game.home : game.away.abbr === abbr ? game.away : null;
+        const theirs = mine === game.home ? game.away : game.home;
+        const margin = mine ? Number(mine.score) - Number(theirs.score) : 0;
+        return {...game, result: margin > 0 ? 'W' : margin < 0 ? 'L' : null};
+      })
       .sort((a, b) => b.date - a.date)
       .slice(0, limit);
   } catch {

@@ -783,6 +783,10 @@ header .brand small{margin-top:3px}
 .game-team{display:inline-flex;align-items:center;gap:6px}
 .game-team img,.game-team i{flex:none;width:20px;height:20px;object-fit:contain}
 .game-team b{font-size:13px;font-weight:700}
+.game-result{flex:none;display:grid;place-items:center;width:24px;height:24px;border-radius:6px;color:#fff;font-size:12px;font-weight:800}
+.game-result.win{background:#1a7f4b}
+.game-result.loss{background:#c43d33}
+.game-list li:has(.game-result) .game-line{margin-right:auto}
 .game-sep{color:var(--text-4);font-size:12px}
 .game-score{min-width:2.2ch;text-align:center;color:var(--text-2);font-size:13px;font-weight:500}
 .game-score.won{color:var(--text-1);font-weight:800}

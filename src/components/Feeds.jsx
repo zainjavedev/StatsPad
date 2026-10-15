@@ -25,6 +25,7 @@ export function GameList({games, empty = 'No games scheduled this week.', result
     const away = Number(game.away.score), home = Number(game.home.score);
     const lead = final && away !== home ? (away > home ? 'away' : 'home') : null;
     return <li key={game.id}>
+      {game.result && <span className={`game-result ${game.result === 'W' ? 'win' : 'loss'}`} title={game.result === 'W' ? 'Win' : 'Loss'}>{game.result}</span>}
       <span className="game-line">
         <Team team={game.away}/>
         {scored ? <><b className={lead === 'away' ? 'game-score won' : 'game-score'}>{game.away.score}</b><span className="game-sep">–</span><b className={lead === 'home' ? 'game-score won' : 'game-score'}>{game.home.score}</b></> : <span className="game-sep">@</span>}
