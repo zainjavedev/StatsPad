@@ -6,11 +6,15 @@
   "statsSeason": "2025-26",
   "coach": "Darko Rajakovic",
   "lastUpdated": "2026-10-15",
-  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
       "url": "https://www.espn.com/nba/team/roster/_/name/tor"
+    },
+    {
+      "label": "ESPN depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/tor"
     },
     {
       "label": "Basketball Reference stats",
@@ -41,32 +45,6 @@
   ],
   "players": [
     {
-      "name": "Scottie Barnes",
-      "bbrefId": "barnesc01",
-      "nbaId": null,
-      "espnId": 4433134,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2001-08-01",
-      "exp": 5,
-      "college": "Florida State",
-      "jersey": "4",
-      "unit": "starters"
-    },
-    {
-      "name": "Kawhi Leonard",
-      "bbrefId": "leonaka01",
-      "nbaId": 202695,
-      "espnId": 6450,
-      "pos": "F",
-      "height": "6-6",
-      "birthDate": "1991-06-29",
-      "exp": 15,
-      "college": "San Diego State",
-      "jersey": "2",
-      "unit": "starters"
-    },
-    {
       "name": "Immanuel Quickley",
       "bbrefId": "quickim01",
       "nbaId": 1630193,
@@ -77,7 +55,8 @@
       "exp": 6,
       "college": "Kentucky",
       "jersey": "5",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "PG"
     },
     {
       "name": "RJ Barrett",
@@ -90,7 +69,36 @@
       "exp": 7,
       "college": "Duke",
       "jersey": "9",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SG"
+    },
+    {
+      "name": "Kawhi Leonard",
+      "bbrefId": "leonaka01",
+      "nbaId": 202695,
+      "espnId": 6450,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "1991-06-29",
+      "exp": 15,
+      "college": "San Diego State",
+      "jersey": "2",
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Scottie Barnes",
+      "bbrefId": "barnesc01",
+      "nbaId": null,
+      "espnId": 4433134,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2001-08-01",
+      "exp": 5,
+      "college": "Florida State",
+      "jersey": "4",
+      "unit": "starters",
+      "slot": "PF"
     },
     {
       "name": "Jakob Poeltl",
@@ -103,20 +111,8 @@
       "exp": 10,
       "college": "Utah",
       "jersey": "19",
-      "unit": "starters"
-    },
-    {
-      "name": "Malachi Smith",
-      "bbrefId": "smithma02",
-      "nbaId": null,
-      "espnId": 4397784,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "1999-12-06",
-      "exp": 1,
-      "college": "Gonzaga",
-      "jersey": "18",
-      "unit": "second"
+      "unit": "starters",
+      "slot": "C"
     },
     {
       "name": "Jamal Shead",
@@ -155,6 +151,18 @@
       "exp": 2,
       "college": "Baylor",
       "jersey": "14",
+      "unit": "second"
+    },
+    {
+      "name": "Allen Graves",
+      "nbaId": null,
+      "espnId": 5149115,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2006-07-28",
+      "exp": 0,
+      "college": "Santa Clara",
+      "jersey": "22",
       "unit": "second"
     },
     {
@@ -197,16 +205,15 @@
       "unit": "third"
     },
     {
-      "name": "Andre Jackson Jr.",
-      "bbrefId": "jacksan01",
+      "name": "Jaden Bradley",
       "nbaId": null,
-      "espnId": 4432190,
+      "espnId": 4432737,
       "pos": "G",
-      "height": "6-6",
-      "birthDate": "2001-11-13",
-      "exp": 3,
-      "college": "UConn",
-      "jersey": "44",
+      "height": "6-3",
+      "birthDate": "2003-09-14",
+      "exp": 0,
+      "college": "Arizona",
+      "jersey": "8",
       "unit": "third"
     },
     {
@@ -223,6 +230,32 @@
       "unit": "third"
     },
     {
+      "name": "Malachi Smith",
+      "bbrefId": "smithma02",
+      "nbaId": null,
+      "espnId": 4397784,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "1999-12-06",
+      "exp": 1,
+      "college": "Gonzaga",
+      "jersey": "18",
+      "unit": "third"
+    },
+    {
+      "name": "Andre Jackson Jr.",
+      "bbrefId": "jacksan01",
+      "nbaId": null,
+      "espnId": 4432190,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2001-11-13",
+      "exp": 3,
+      "college": "UConn",
+      "jersey": "44",
+      "unit": "camp"
+    },
+    {
       "name": "Nate Bittle",
       "nbaId": null,
       "espnId": 4432586,
@@ -232,18 +265,6 @@
       "exp": 0,
       "college": "Oregon",
       "jersey": null,
-      "unit": "third"
-    },
-    {
-      "name": "Jaden Bradley",
-      "nbaId": null,
-      "espnId": 4432737,
-      "pos": "G",
-      "height": "6-3",
-      "birthDate": "2003-09-14",
-      "exp": 0,
-      "college": "Arizona",
-      "jersey": "8",
       "unit": "camp"
     },
     {
@@ -268,18 +289,6 @@
       "exp": 0,
       "college": "Boise State",
       "jersey": null,
-      "unit": "camp"
-    },
-    {
-      "name": "Allen Graves",
-      "nbaId": null,
-      "espnId": 5149115,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2006-07-28",
-      "exp": 0,
-      "college": "Santa Clara",
-      "jersey": "22",
       "unit": "camp"
     },
     {

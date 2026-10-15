@@ -6,11 +6,15 @@
   "statsSeason": "2025-26",
   "coach": "Ime Udoka",
   "lastUpdated": "2026-10-15",
-  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
       "url": "https://www.espn.com/nba/team/roster/_/name/hou"
+    },
+    {
+      "label": "ESPN depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/hou"
     },
     {
       "label": "Basketball Reference stats",
@@ -41,6 +45,19 @@
   ],
   "players": [
     {
+      "name": "Fred VanVleet",
+      "nbaId": 1627832,
+      "espnId": 2991230,
+      "pos": "G",
+      "height": "6-0",
+      "birthDate": "1994-02-25",
+      "exp": 9,
+      "college": "Wichita State",
+      "jersey": "5",
+      "unit": "starters",
+      "slot": "PG"
+    },
+    {
       "name": "Amen Thompson",
       "bbrefId": "thompam01",
       "nbaId": null,
@@ -51,7 +68,8 @@
       "exp": 4,
       "college": null,
       "jersey": "1",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SG"
     },
     {
       "name": "Kevin Durant",
@@ -64,7 +82,8 @@
       "exp": 20,
       "college": "Texas",
       "jersey": "7",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SF"
     },
     {
       "name": "Jabari Smith Jr.",
@@ -77,7 +96,8 @@
       "exp": 5,
       "college": "Auburn",
       "jersey": "10",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "PF"
     },
     {
       "name": "Alperen Sengun",
@@ -90,7 +110,8 @@
       "exp": 6,
       "college": null,
       "jersey": "28",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "C"
     },
     {
       "name": "Marcus Smart",
@@ -103,7 +124,7 @@
       "exp": 13,
       "college": "Oklahoma State",
       "jersey": "36",
-      "unit": "starters"
+      "unit": "second"
     },
     {
       "name": "Reed Sheppard",
@@ -158,17 +179,17 @@
       "unit": "second"
     },
     {
-      "name": "Oscar Tshiebwe",
-      "bbrefId": "tshieos01",
-      "nbaId": null,
-      "espnId": 4432827,
-      "pos": "C",
-      "height": "6-8",
-      "birthDate": "1999-11-27",
-      "exp": 4,
-      "college": "Kentucky",
-      "jersey": "9",
-      "unit": "second"
+      "name": "Jae'Sean Tate",
+      "bbrefId": "tateja01",
+      "nbaId": 1630256,
+      "espnId": 3136777,
+      "pos": "F",
+      "height": "6-4",
+      "birthDate": "1995-10-28",
+      "exp": 7,
+      "college": "Ohio State",
+      "jersey": "8",
+      "unit": "third"
     },
     {
       "name": "Clint Capela",
@@ -184,29 +205,28 @@
       "unit": "third"
     },
     {
-      "name": "Julian Phillips",
-      "bbrefId": "phillju01",
+      "name": "Bruce Thornton",
       "nbaId": null,
-      "espnId": 5105553,
-      "pos": "F",
-      "height": "6-6",
-      "birthDate": "2003-11-05",
-      "exp": 6,
-      "college": "Tennessee",
-      "jersey": "3",
+      "espnId": 5105837,
+      "pos": "G",
+      "height": "6-0",
+      "birthDate": "2003-09-14",
+      "exp": 0,
+      "college": "Ohio State",
+      "jersey": "2",
       "unit": "third"
     },
     {
-      "name": "Jae'Sean Tate",
-      "bbrefId": "tateja01",
-      "nbaId": 1630256,
-      "espnId": 3136777,
-      "pos": "F",
-      "height": "6-4",
-      "birthDate": "1995-10-28",
-      "exp": 7,
-      "college": "Ohio State",
-      "jersey": "8",
+      "name": "Oscar Tshiebwe",
+      "bbrefId": "tshieos01",
+      "nbaId": null,
+      "espnId": 4432827,
+      "pos": "C",
+      "height": "6-8",
+      "birthDate": "1999-11-27",
+      "exp": 4,
+      "college": "Kentucky",
+      "jersey": "9",
       "unit": "third"
     },
     {
@@ -232,7 +252,7 @@
       "exp": 0,
       "college": "NC State",
       "jersey": "25",
-      "unit": "third"
+      "unit": "camp"
     },
     {
       "name": "Sean Pedulla",
@@ -248,27 +268,16 @@
       "unit": "camp"
     },
     {
-      "name": "Bruce Thornton",
+      "name": "Julian Phillips",
+      "bbrefId": "phillju01",
       "nbaId": null,
-      "espnId": 5105837,
-      "pos": "G",
-      "height": "6-0",
-      "birthDate": "2003-09-14",
-      "exp": 0,
-      "college": "Ohio State",
-      "jersey": "2",
-      "unit": "camp"
-    },
-    {
-      "name": "Fred VanVleet",
-      "nbaId": 1627832,
-      "espnId": 2991230,
-      "pos": "G",
-      "height": "6-0",
-      "birthDate": "1994-02-25",
-      "exp": 9,
-      "college": "Wichita State",
-      "jersey": "5",
+      "espnId": 5105553,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "2003-11-05",
+      "exp": 6,
+      "college": "Tennessee",
+      "jersey": "3",
       "unit": "camp"
     }
   ]

@@ -6,11 +6,15 @@
   "statsSeason": "2025-26",
   "coach": "JJ Redick",
   "lastUpdated": "2026-10-15",
-  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
       "url": "https://www.espn.com/nba/team/roster/_/name/lal"
+    },
+    {
+      "label": "ESPN depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/lal"
     },
     {
       "label": "Basketball Reference stats",
@@ -51,7 +55,8 @@
       "exp": 9,
       "college": null,
       "jersey": "77",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "PG"
     },
     {
       "name": "Austin Reaves",
@@ -64,7 +69,8 @@
       "exp": 6,
       "college": "Oklahoma",
       "jersey": "15",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SG"
     },
     {
       "name": "Quentin Grimes",
@@ -77,7 +83,8 @@
       "exp": 6,
       "college": "Houston",
       "jersey": "5",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SF"
     },
     {
       "name": "Jake LaRavia",
@@ -90,7 +97,22 @@
       "exp": 5,
       "college": "Wake Forest",
       "jersey": "12",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "PF"
+    },
+    {
+      "name": "Walker Kessler",
+      "bbrefId": "kesslwa01",
+      "nbaId": null,
+      "espnId": 4433136,
+      "pos": "C",
+      "height": "7-2",
+      "birthDate": "2001-07-26",
+      "exp": 5,
+      "college": "Auburn",
+      "jersey": "14",
+      "unit": "starters",
+      "slot": "C"
     },
     {
       "name": "Collin Sexton",
@@ -103,19 +125,6 @@
       "exp": 9,
       "college": "Alabama",
       "jersey": "10",
-      "unit": "starters"
-    },
-    {
-      "name": "Ziaire Williams",
-      "bbrefId": "willizi02",
-      "nbaId": null,
-      "espnId": 4433137,
-      "pos": "F",
-      "height": "6-9",
-      "birthDate": "2001-09-12",
-      "exp": 6,
-      "college": "Stanford",
-      "jersey": "11",
       "unit": "second"
     },
     {
@@ -132,16 +141,41 @@
       "unit": "second"
     },
     {
-      "name": "Jarred Vanderbilt",
-      "bbrefId": "vandeja01",
-      "nbaId": 1629020,
-      "espnId": 4278077,
+      "name": "Kevon Looney",
+      "bbrefId": "looneke01",
+      "nbaId": 1626172,
+      "espnId": 3155535,
       "pos": "F",
-      "height": "6-8",
-      "birthDate": "1999-04-03",
-      "exp": 9,
-      "college": "Kentucky",
-      "jersey": "2",
+      "height": "6-9",
+      "birthDate": "1996-02-06",
+      "exp": 12,
+      "college": "UCLA",
+      "jersey": "55",
+      "unit": "second"
+    },
+    {
+      "name": "Cameron Carr",
+      "nbaId": null,
+      "espnId": 5113969,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2004-11-21",
+      "exp": 0,
+      "college": "Baylor",
+      "jersey": "43",
+      "unit": "second"
+    },
+    {
+      "name": "Ziaire Williams",
+      "bbrefId": "willizi02",
+      "nbaId": null,
+      "espnId": 4433137,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2001-09-12",
+      "exp": 6,
+      "college": "Stanford",
+      "jersey": "11",
       "unit": "second"
     },
     {
@@ -155,32 +189,19 @@
       "exp": 8,
       "college": "Washington",
       "jersey": "26",
-      "unit": "second"
+      "unit": "third"
     },
     {
-      "name": "Jaden Hardy",
-      "bbrefId": "hardyja02",
-      "nbaId": null,
-      "espnId": 4868423,
-      "pos": "G",
-      "height": "6-3",
-      "birthDate": "2002-07-05",
-      "exp": 5,
-      "college": null,
-      "jersey": "7",
-      "unit": "second"
-    },
-    {
-      "name": "Kevon Looney",
-      "bbrefId": "looneke01",
-      "nbaId": 1626172,
-      "espnId": 3155535,
+      "name": "Jarred Vanderbilt",
+      "bbrefId": "vandeja01",
+      "nbaId": 1629020,
+      "espnId": 4278077,
       "pos": "F",
-      "height": "6-9",
-      "birthDate": "1996-02-06",
-      "exp": 12,
-      "college": "UCLA",
-      "jersey": "55",
+      "height": "6-8",
+      "birthDate": "1999-04-03",
+      "exp": 9,
+      "college": "Kentucky",
+      "jersey": "2",
       "unit": "third"
     },
     {
@@ -223,30 +244,6 @@
       "unit": "third"
     },
     {
-      "name": "Cameron Carr",
-      "nbaId": null,
-      "espnId": 5113969,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "2004-11-21",
-      "exp": 0,
-      "college": "Baylor",
-      "jersey": "43",
-      "unit": "third"
-    },
-    {
-      "name": "Rafael Castro",
-      "nbaId": null,
-      "espnId": 4684443,
-      "pos": "F",
-      "height": "6-9",
-      "birthDate": "2003-03-30",
-      "exp": 0,
-      "college": "George Washington",
-      "jersey": null,
-      "unit": "camp"
-    },
-    {
       "name": "Arthur Kaluma",
       "nbaId": null,
       "espnId": 4433599,
@@ -259,28 +256,28 @@
       "unit": "camp"
     },
     {
-      "name": "Walker Kessler",
-      "bbrefId": "kesslwa01",
+      "name": "Jaden Hardy",
+      "bbrefId": "hardyja02",
       "nbaId": null,
-      "espnId": 4433136,
-      "pos": "C",
-      "height": "7-2",
-      "birthDate": "2001-07-26",
+      "espnId": 4868423,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2002-07-05",
       "exp": 5,
-      "college": "Auburn",
-      "jersey": "14",
+      "college": null,
+      "jersey": "7",
       "unit": "camp"
     },
     {
-      "name": "William Kyle III",
+      "name": "AK Okereke",
       "nbaId": null,
-      "espnId": 5107258,
+      "espnId": 5114350,
       "pos": "F",
-      "height": "6-9",
-      "birthDate": "2004-03-01",
+      "height": "6-7",
+      "birthDate": "2003-07-02",
       "exp": 0,
-      "college": "Syracuse",
-      "jersey": "45",
+      "college": "Vanderbilt",
+      "jersey": "31",
       "unit": "camp"
     },
     {
@@ -297,15 +294,27 @@
       "unit": "camp"
     },
     {
-      "name": "AK Okereke",
+      "name": "Rafael Castro",
       "nbaId": null,
-      "espnId": 5114350,
+      "espnId": 4684443,
       "pos": "F",
-      "height": "6-7",
-      "birthDate": "2003-07-02",
+      "height": "6-9",
+      "birthDate": "2003-03-30",
       "exp": 0,
-      "college": "Vanderbilt",
-      "jersey": "31",
+      "college": "George Washington",
+      "jersey": null,
+      "unit": "camp"
+    },
+    {
+      "name": "William Kyle III",
+      "nbaId": null,
+      "espnId": 5107258,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2004-03-01",
+      "exp": 0,
+      "college": "Syracuse",
+      "jersey": "45",
       "unit": "camp"
     }
   ]

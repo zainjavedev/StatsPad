@@ -6,11 +6,15 @@
   "statsSeason": "2025-26",
   "coach": "Chris Finch",
   "lastUpdated": "2026-10-15",
-  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
       "url": "https://www.espn.com/nba/team/roster/_/name/min"
+    },
+    {
+      "label": "ESPN depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/min"
     },
     {
       "label": "Basketball Reference stats",
@@ -41,6 +45,20 @@
   ],
   "players": [
     {
+      "name": "LaMelo Ball",
+      "bbrefId": "ballla01",
+      "nbaId": 1630163,
+      "espnId": 4432816,
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "2001-08-22",
+      "exp": 7,
+      "college": null,
+      "jersey": "1",
+      "unit": "starters",
+      "slot": "PG"
+    },
+    {
       "name": "Anthony Edwards",
       "bbrefId": "edwaran01",
       "nbaId": 1630162,
@@ -51,7 +69,22 @@
       "exp": 7,
       "college": "Georgia",
       "jersey": "5",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SG"
+    },
+    {
+      "name": "Jonathan Kuminga",
+      "bbrefId": "kuminjo01",
+      "nbaId": null,
+      "espnId": 4433247,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2002-10-06",
+      "exp": 5,
+      "college": null,
+      "jersey": "24",
+      "unit": "starters",
+      "slot": "SF"
     },
     {
       "name": "Jaden McDaniels",
@@ -64,7 +97,8 @@
       "exp": 7,
       "college": "Washington",
       "jersey": "3",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "PF"
     },
     {
       "name": "Rudy Gobert",
@@ -77,33 +111,8 @@
       "exp": 14,
       "college": null,
       "jersey": "27",
-      "unit": "starters"
-    },
-    {
-      "name": "Donte DiVincenzo",
-      "bbrefId": "divindo01",
-      "nbaId": 1628978,
-      "espnId": 3934673,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "1997-01-31",
-      "exp": 9,
-      "college": "Villanova",
-      "jersey": "0",
-      "unit": "starters"
-    },
-    {
-      "name": "LaMelo Ball",
-      "bbrefId": "ballla01",
-      "nbaId": 1630163,
-      "espnId": 4432816,
-      "pos": "G",
-      "height": "6-7",
-      "birthDate": "2001-08-22",
-      "exp": 7,
-      "college": null,
-      "jersey": "1",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "C"
     },
     {
       "name": "Ayo Dosunmu",
@@ -119,29 +128,41 @@
       "unit": "second"
     },
     {
-      "name": "Cody Williams",
-      "bbrefId": "willico04",
+      "name": "Terrence Shannon Jr.",
+      "bbrefId": "shannte01",
       "nbaId": null,
-      "espnId": 4895758,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2004-11-20",
+      "espnId": 4432847,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2000-07-30",
       "exp": 3,
-      "college": "Colorado",
-      "jersey": "9",
+      "college": "Illinois",
+      "jersey": "4",
       "unit": "second"
     },
     {
-      "name": "Jonathan Kuminga",
-      "bbrefId": "kuminjo01",
+      "name": "Joan Beringer",
+      "bbrefId": "berinjo01",
       "nbaId": null,
-      "espnId": 4433247,
+      "espnId": 5279133,
       "pos": "F",
-      "height": "6-7",
-      "birthDate": "2002-10-06",
-      "exp": 5,
+      "height": "6-11",
+      "birthDate": "2006-11-11",
+      "exp": 2,
       "college": null,
-      "jersey": "24",
+      "jersey": "19",
+      "unit": "second"
+    },
+    {
+      "name": "Isaiah Evans",
+      "nbaId": null,
+      "espnId": 5061585,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "2005-12-06",
+      "exp": 0,
+      "college": "Duke",
+      "jersey": "33",
       "unit": "second"
     },
     {
@@ -158,6 +179,32 @@
       "unit": "second"
     },
     {
+      "name": "Enrique Freeman",
+      "bbrefId": "freemen01",
+      "nbaId": null,
+      "espnId": 4592699,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2000-07-29",
+      "exp": 3,
+      "college": "Akron",
+      "jersey": "25",
+      "unit": "third"
+    },
+    {
+      "name": "Rocco Zikarsky",
+      "bbrefId": "zikarro01",
+      "nbaId": null,
+      "espnId": 5157587,
+      "pos": "C",
+      "height": "7-3",
+      "birthDate": "2006-07-11",
+      "exp": 2,
+      "college": null,
+      "jersey": "44",
+      "unit": "third"
+    },
+    {
       "name": "Jaylen Clark",
       "bbrefId": "clarkja02",
       "nbaId": null,
@@ -168,20 +215,58 @@
       "exp": 3,
       "college": "UCLA",
       "jersey": "7",
-      "unit": "second"
+      "unit": "third"
     },
     {
-      "name": "Terrence Shannon Jr.",
-      "bbrefId": "shannte01",
+      "name": "Cody Williams",
+      "bbrefId": "willico04",
       "nbaId": null,
-      "espnId": 4432847,
-      "pos": "G",
-      "height": "6-6",
-      "birthDate": "2000-07-30",
+      "espnId": 4895758,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2004-11-20",
       "exp": 3,
-      "college": "Illinois",
-      "jersey": "4",
+      "college": "Colorado",
+      "jersey": "9",
       "unit": "third"
+    },
+    {
+      "name": "Trey Lyles",
+      "nbaId": 1626168,
+      "espnId": 3136196,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "1995-11-05",
+      "exp": 11,
+      "college": "Kentucky",
+      "jersey": "41",
+      "unit": "third"
+    },
+    {
+      "name": "Zyon Pullin",
+      "bbrefId": "pullizy01",
+      "nbaId": null,
+      "espnId": 4592979,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2001-03-03",
+      "exp": 3,
+      "college": "Florida",
+      "jersey": "15",
+      "unit": "camp"
+    },
+    {
+      "name": "Donte DiVincenzo",
+      "bbrefId": "divindo01",
+      "nbaId": 1628978,
+      "espnId": 3934673,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "1997-01-31",
+      "exp": 9,
+      "college": "Villanova",
+      "jersey": "0",
+      "unit": "camp"
     },
     {
       "name": "Drew Timme",
@@ -194,20 +279,7 @@
       "exp": 2,
       "college": "Gonzaga",
       "jersey": "17",
-      "unit": "third"
-    },
-    {
-      "name": "Joan Beringer",
-      "bbrefId": "berinjo01",
-      "nbaId": null,
-      "espnId": 5279133,
-      "pos": "F",
-      "height": "6-11",
-      "birthDate": "2006-11-11",
-      "exp": 2,
-      "college": null,
-      "jersey": "19",
-      "unit": "third"
+      "unit": "camp"
     },
     {
       "name": "Antonio Reeves",
@@ -220,43 +292,6 @@
       "exp": 3,
       "college": "Kentucky",
       "jersey": "12",
-      "unit": "third"
-    },
-    {
-      "name": "Isaiah Evans",
-      "nbaId": null,
-      "espnId": 5061585,
-      "pos": "F",
-      "height": "6-6",
-      "birthDate": "2005-12-06",
-      "exp": 0,
-      "college": "Duke",
-      "jersey": "33",
-      "unit": "third"
-    },
-    {
-      "name": "Enrique Freeman",
-      "bbrefId": "freemen01",
-      "nbaId": null,
-      "espnId": 4592699,
-      "pos": "F",
-      "height": "6-9",
-      "birthDate": "2000-07-29",
-      "exp": 3,
-      "college": "Akron",
-      "jersey": "25",
-      "unit": "camp"
-    },
-    {
-      "name": "Trey Lyles",
-      "nbaId": 1626168,
-      "espnId": 3136196,
-      "pos": "F",
-      "height": "6-9",
-      "birthDate": "1995-11-05",
-      "exp": 11,
-      "college": "Kentucky",
-      "jersey": "41",
       "unit": "camp"
     },
     {
@@ -282,32 +317,6 @@
       "exp": 2,
       "college": "Baylor",
       "jersey": "23",
-      "unit": "camp"
-    },
-    {
-      "name": "Zyon Pullin",
-      "bbrefId": "pullizy01",
-      "nbaId": null,
-      "espnId": 4592979,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "2001-03-03",
-      "exp": 3,
-      "college": "Florida",
-      "jersey": "15",
-      "unit": "camp"
-    },
-    {
-      "name": "Rocco Zikarsky",
-      "bbrefId": "zikarro01",
-      "nbaId": null,
-      "espnId": 5157587,
-      "pos": "C",
-      "height": "7-3",
-      "birthDate": "2006-07-11",
-      "exp": 2,
-      "college": null,
-      "jersey": "44",
       "unit": "camp"
     }
   ]

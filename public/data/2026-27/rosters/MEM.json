@@ -6,11 +6,15 @@
   "statsSeason": "2025-26",
   "coach": "Tuomas Iisalo",
   "lastUpdated": "2026-10-15",
-  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
       "url": "https://www.espn.com/nba/team/roster/_/name/mem"
+    },
+    {
+      "label": "ESPN depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/mem"
     },
     {
       "label": "Basketball Reference stats",
@@ -41,30 +45,18 @@
   ],
   "players": [
     {
-      "name": "Jerami Grant",
-      "bbrefId": "grantje01",
-      "nbaId": 203924,
-      "espnId": 2991070,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "1994-03-12",
-      "exp": 13,
-      "college": "Syracuse",
-      "jersey": "3",
-      "unit": "starters"
-    },
-    {
-      "name": "Jaylen Wells",
-      "bbrefId": "wellsja01",
-      "nbaId": null,
-      "espnId": 5112087,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "2003-08-26",
-      "exp": 3,
-      "college": "Washington State",
-      "jersey": "0",
-      "unit": "starters"
+      "name": "Ty Jerome",
+      "bbrefId": "jeromty01",
+      "nbaId": 1629660,
+      "espnId": 4065733,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "1997-07-08",
+      "exp": 8,
+      "college": "Virginia",
+      "jersey": "2",
+      "unit": "starters",
+      "slot": "PG"
     },
     {
       "name": "Cedric Coward",
@@ -77,7 +69,35 @@
       "exp": 2,
       "college": "Washington State",
       "jersey": "23",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SG"
+    },
+    {
+      "name": "Jaylen Wells",
+      "bbrefId": "wellsja01",
+      "nbaId": null,
+      "espnId": 5112087,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2003-08-26",
+      "exp": 3,
+      "college": "Washington State",
+      "jersey": "0",
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Cameron Boozer",
+      "nbaId": null,
+      "espnId": 5041935,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2007-07-18",
+      "exp": 0,
+      "college": "Duke",
+      "jersey": "27",
+      "unit": "starters",
+      "slot": "PF"
     },
     {
       "name": "Zach Edey",
@@ -90,7 +110,21 @@
       "exp": 3,
       "college": "Purdue",
       "jersey": "14",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "C"
+    },
+    {
+      "name": "Jerami Grant",
+      "bbrefId": "grantje01",
+      "nbaId": 203924,
+      "espnId": 2991070,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "1994-03-12",
+      "exp": 13,
+      "college": "Syracuse",
+      "jersey": "3",
+      "unit": "second"
     },
     {
       "name": "Cam Spencer",
@@ -103,19 +137,6 @@
       "exp": 3,
       "college": "UConn",
       "jersey": "24",
-      "unit": "starters"
-    },
-    {
-      "name": "Kris Murray",
-      "bbrefId": "murrakr01",
-      "nbaId": null,
-      "espnId": 4594326,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2000-08-19",
-      "exp": 4,
-      "college": "Iowa",
-      "jersey": "17",
       "unit": "second"
     },
     {
@@ -132,29 +153,29 @@
       "unit": "second"
     },
     {
-      "name": "Ty Jerome",
-      "bbrefId": "jeromty01",
-      "nbaId": 1629660,
-      "espnId": 4065733,
+      "name": "Scotty Pippen Jr.",
+      "bbrefId": "pippesc02",
+      "nbaId": null,
+      "espnId": 4431785,
       "pos": "G",
-      "height": "6-5",
-      "birthDate": "1997-07-08",
-      "exp": 8,
-      "college": "Virginia",
-      "jersey": "2",
+      "height": "6-2",
+      "birthDate": "2000-11-10",
+      "exp": 5,
+      "college": "Vanderbilt",
+      "jersey": "1",
       "unit": "second"
     },
     {
-      "name": "Jahmai Mashack",
-      "bbrefId": "mashaja01",
+      "name": "Taylor Hendricks",
+      "bbrefId": "hendrta01",
       "nbaId": null,
-      "espnId": 4683934,
-      "pos": "G",
-      "height": "6-3",
-      "birthDate": "2002-11-10",
-      "exp": 2,
-      "college": "Tennessee",
-      "jersey": "21",
+      "espnId": 4684806,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2003-11-22",
+      "exp": 4,
+      "college": "UCF",
+      "jersey": "22",
       "unit": "second"
     },
     {
@@ -168,19 +189,19 @@
       "exp": 4,
       "college": "South Carolina",
       "jersey": "45",
-      "unit": "second"
+      "unit": "third"
     },
     {
-      "name": "Scotty Pippen Jr.",
-      "bbrefId": "pippesc02",
+      "name": "Quinten Post",
+      "bbrefId": "postqu01",
       "nbaId": null,
-      "espnId": 4431785,
-      "pos": "G",
-      "height": "6-2",
-      "birthDate": "2000-11-10",
-      "exp": 5,
-      "college": "Vanderbilt",
-      "jersey": "1",
+      "espnId": 4593016,
+      "pos": "C",
+      "height": "7-0",
+      "birthDate": "2000-03-21",
+      "exp": 3,
+      "college": "Boston College",
+      "jersey": "41",
       "unit": "third"
     },
     {
@@ -210,17 +231,29 @@
       "unit": "third"
     },
     {
-      "name": "Taylor Hendricks",
-      "bbrefId": "hendrta01",
+      "name": "Karim Lopez",
       "nbaId": null,
-      "espnId": 4684806,
+      "espnId": 5231919,
       "pos": "F",
-      "height": "6-9",
-      "birthDate": "2003-11-22",
-      "exp": 4,
-      "college": "UCF",
-      "jersey": "22",
+      "height": "6-8",
+      "birthDate": "2007-04-12",
+      "exp": 0,
+      "college": null,
+      "jersey": "35",
       "unit": "third"
+    },
+    {
+      "name": "Jahmai Mashack",
+      "bbrefId": "mashaja01",
+      "nbaId": null,
+      "espnId": 4683934,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2002-11-10",
+      "exp": 2,
+      "college": "Tennessee",
+      "jersey": "21",
+      "unit": "camp"
     },
     {
       "name": "Olivier-Maxence Prosper",
@@ -233,44 +266,19 @@
       "exp": 4,
       "college": "Marquette",
       "jersey": "18",
-      "unit": "third"
-    },
-    {
-      "name": "Quinten Post",
-      "bbrefId": "postqu01",
-      "nbaId": null,
-      "espnId": 4593016,
-      "pos": "C",
-      "height": "7-0",
-      "birthDate": "2000-03-21",
-      "exp": 3,
-      "college": "Boston College",
-      "jersey": "41",
       "unit": "camp"
     },
     {
-      "name": "Micah Peavy",
-      "bbrefId": "peavymi01",
+      "name": "Kris Murray",
+      "bbrefId": "murrakr01",
       "nbaId": null,
-      "espnId": 4432185,
-      "pos": "G",
-      "height": "6-7",
-      "birthDate": "2001-07-16",
-      "exp": 2,
-      "college": "Georgetown",
-      "jersey": "7",
-      "unit": "camp"
-    },
-    {
-      "name": "Cameron Boozer",
-      "nbaId": null,
-      "espnId": 5041935,
+      "espnId": 4594326,
       "pos": "F",
       "height": "6-8",
-      "birthDate": "2007-07-18",
-      "exp": 0,
-      "college": "Duke",
-      "jersey": "27",
+      "birthDate": "2000-08-19",
+      "exp": 4,
+      "college": "Iowa",
+      "jersey": "17",
       "unit": "camp"
     },
     {
@@ -286,15 +294,16 @@
       "unit": "camp"
     },
     {
-      "name": "Karim Lopez",
+      "name": "Micah Peavy",
+      "bbrefId": "peavymi01",
       "nbaId": null,
-      "espnId": 5231919,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2007-04-12",
-      "exp": 0,
-      "college": null,
-      "jersey": "35",
+      "espnId": 4432185,
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "2001-07-16",
+      "exp": 2,
+      "college": "Georgetown",
+      "jersey": "7",
       "unit": "camp"
     }
   ]

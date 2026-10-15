@@ -6,11 +6,15 @@
   "statsSeason": "2025-26",
   "coach": "Charles Lee",
   "lastUpdated": "2026-10-15",
-  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
       "url": "https://www.espn.com/nba/team/roster/_/name/cha"
+    },
+    {
+      "label": "ESPN depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/cha"
     },
     {
       "label": "Basketball Reference stats",
@@ -41,6 +45,20 @@
   ],
   "players": [
     {
+      "name": "Coby White",
+      "bbrefId": "whiteco01",
+      "nbaId": 1629632,
+      "espnId": 4395651,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2000-02-16",
+      "exp": 8,
+      "college": "North Carolina",
+      "jersey": "3",
+      "unit": "starters",
+      "slot": "PG"
+    },
+    {
       "name": "Kon Knueppel",
       "bbrefId": "knuepko01",
       "nbaId": null,
@@ -51,7 +69,8 @@
       "exp": 2,
       "college": "Duke",
       "jersey": "7",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SG"
     },
     {
       "name": "Brandon Miller",
@@ -64,33 +83,8 @@
       "exp": 4,
       "college": "Alabama",
       "jersey": "24",
-      "unit": "starters"
-    },
-    {
-      "name": "Grayson Allen",
-      "bbrefId": "allengr01",
-      "nbaId": 1628960,
-      "espnId": 3135045,
-      "pos": "G",
-      "height": "6-3",
-      "birthDate": "1995-10-08",
-      "exp": 9,
-      "college": "Duke",
-      "jersey": "8",
-      "unit": "starters"
-    },
-    {
-      "name": "Royce O'Neale",
-      "bbrefId": "onealro01",
-      "nbaId": 1626220,
-      "espnId": 2583632,
-      "pos": "F",
-      "height": "6-6",
-      "birthDate": "1993-06-05",
-      "exp": 10,
-      "college": "Baylor",
-      "jersey": "00",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SF"
     },
     {
       "name": "Naz Reid",
@@ -103,7 +97,8 @@
       "exp": 8,
       "college": "LSU",
       "jersey": "0",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "PF"
     },
     {
       "name": "Moussa Diabate",
@@ -116,19 +111,33 @@
       "exp": 5,
       "college": "Michigan",
       "jersey": "14",
+      "unit": "starters",
+      "slot": "C"
+    },
+    {
+      "name": "Grayson Allen",
+      "bbrefId": "allengr01",
+      "nbaId": 1628960,
+      "espnId": 3135045,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "1995-10-08",
+      "exp": 9,
+      "college": "Duke",
+      "jersey": "8",
       "unit": "second"
     },
     {
-      "name": "Coby White",
-      "bbrefId": "whiteco01",
-      "nbaId": 1629632,
-      "espnId": 4395651,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "2000-02-16",
-      "exp": 8,
-      "college": "North Carolina",
-      "jersey": "3",
+      "name": "Royce O'Neale",
+      "bbrefId": "onealro01",
+      "nbaId": 1626220,
+      "espnId": 2583632,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "1993-06-05",
+      "exp": 10,
+      "college": "Baylor",
+      "jersey": "00",
       "unit": "second"
     },
     {
@@ -158,6 +167,18 @@
       "unit": "second"
     },
     {
+      "name": "Hannes Steinbach",
+      "nbaId": null,
+      "espnId": 5281370,
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2006-05-01",
+      "exp": 0,
+      "college": "Washington",
+      "jersey": "22",
+      "unit": "second"
+    },
+    {
       "name": "Ryan Kalkbrenner",
       "bbrefId": "kalkbry01",
       "nbaId": null,
@@ -168,7 +189,7 @@
       "exp": 2,
       "college": "Creighton",
       "jersey": "11",
-      "unit": "second"
+      "unit": "third"
     },
     {
       "name": "Grant Williams",
@@ -181,6 +202,18 @@
       "exp": 8,
       "college": "Tennessee",
       "jersey": "2",
+      "unit": "third"
+    },
+    {
+      "name": "Christian Anderson",
+      "nbaId": null,
+      "espnId": 5060701,
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "2006-04-02",
+      "exp": 0,
+      "college": "Texas Tech",
+      "jersey": "5",
       "unit": "third"
     },
     {
@@ -197,6 +230,18 @@
       "unit": "third"
     },
     {
+      "name": "Kylan Boswell",
+      "nbaId": null,
+      "espnId": 4684269,
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "2005-04-18",
+      "exp": 0,
+      "college": "Illinois",
+      "jersey": "18",
+      "unit": "third"
+    },
+    {
       "name": "Liam McNeeley",
       "bbrefId": "mcneeli01",
       "nbaId": null,
@@ -207,7 +252,7 @@
       "exp": 2,
       "college": "UConn",
       "jersey": "33",
-      "unit": "third"
+      "unit": "camp"
     },
     {
       "name": "PJ Hall",
@@ -220,7 +265,7 @@
       "exp": 3,
       "college": "Clemson",
       "jersey": "16",
-      "unit": "third"
+      "unit": "camp"
     },
     {
       "name": "Pat Connaughton",
@@ -233,30 +278,6 @@
       "exp": 12,
       "college": "Notre Dame",
       "jersey": "21",
-      "unit": "third"
-    },
-    {
-      "name": "Christian Anderson",
-      "nbaId": null,
-      "espnId": 5060701,
-      "pos": "G",
-      "height": "6-1",
-      "birthDate": "2006-04-02",
-      "exp": 0,
-      "college": "Texas Tech",
-      "jersey": "5",
-      "unit": "camp"
-    },
-    {
-      "name": "Kylan Boswell",
-      "nbaId": null,
-      "espnId": 4684269,
-      "pos": "G",
-      "height": "6-1",
-      "birthDate": "2005-04-18",
-      "exp": 0,
-      "college": "Illinois",
-      "jersey": "18",
       "unit": "camp"
     },
     {
@@ -281,18 +302,6 @@
       "exp": 4,
       "college": "NC State",
       "jersey": "20",
-      "unit": "camp"
-    },
-    {
-      "name": "Hannes Steinbach",
-      "nbaId": null,
-      "espnId": 5281370,
-      "pos": "F",
-      "height": "6-10",
-      "birthDate": "2006-05-01",
-      "exp": 0,
-      "college": "Washington",
-      "jersey": "22",
       "unit": "camp"
     }
   ]

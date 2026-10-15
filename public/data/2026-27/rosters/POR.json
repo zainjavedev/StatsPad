@@ -6,11 +6,15 @@
   "statsSeason": "2025-26",
   "coach": "Micah Nori",
   "lastUpdated": "2026-10-15",
-  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
       "url": "https://www.espn.com/nba/team/roster/_/name/por"
+    },
+    {
+      "label": "ESPN depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/por"
     },
     {
       "label": "Basketball Reference stats",
@@ -41,56 +45,17 @@
   ],
   "players": [
     {
-      "name": "Deni Avdija",
-      "bbrefId": "avdijde01",
-      "nbaId": 1630166,
-      "espnId": 4683021,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2001-01-03",
-      "exp": 7,
-      "college": null,
-      "jersey": "8",
-      "unit": "starters"
-    },
-    {
-      "name": "Toumani Camara",
-      "bbrefId": "camarto01",
-      "nbaId": null,
-      "espnId": 4431736,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "2000-05-08",
-      "exp": 4,
-      "college": "Dayton",
-      "jersey": "33",
-      "unit": "starters"
-    },
-    {
-      "name": "Jrue Holiday",
-      "bbrefId": "holidjr01",
-      "nbaId": 201950,
-      "espnId": 3995,
+      "name": "Damian Lillard",
+      "nbaId": 203081,
+      "espnId": 6606,
       "pos": "G",
-      "height": "6-4",
-      "birthDate": "1990-06-12",
-      "exp": 18,
-      "college": "UCLA",
-      "jersey": "5",
-      "unit": "starters"
-    },
-    {
-      "name": "Shaedon Sharpe",
-      "bbrefId": "sharpsh01",
-      "nbaId": null,
-      "espnId": 4914336,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "2003-05-30",
-      "exp": 5,
-      "college": "Kentucky",
-      "jersey": "17",
-      "unit": "starters"
+      "height": "6-2",
+      "birthDate": "1990-07-15",
+      "exp": 15,
+      "college": "Weber State",
+      "jersey": "0",
+      "unit": "starters",
+      "slot": "PG"
     },
     {
       "name": "Ja Morant",
@@ -103,7 +68,36 @@
       "exp": 8,
       "college": "Murray State",
       "jersey": "1",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SG"
+    },
+    {
+      "name": "Toumani Camara",
+      "bbrefId": "camarto01",
+      "nbaId": null,
+      "espnId": 4431736,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2000-05-08",
+      "exp": 4,
+      "college": "Dayton",
+      "jersey": "33",
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Deni Avdija",
+      "bbrefId": "avdijde01",
+      "nbaId": 1630166,
+      "espnId": 4683021,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2001-01-03",
+      "exp": 7,
+      "college": null,
+      "jersey": "8",
+      "unit": "starters",
+      "slot": "PF"
     },
     {
       "name": "Donovan Clingan",
@@ -116,19 +110,20 @@
       "exp": 3,
       "college": "UConn",
       "jersey": "23",
-      "unit": "second"
+      "unit": "starters",
+      "slot": "C"
     },
     {
-      "name": "Scoot Henderson",
-      "bbrefId": "hendesc01",
-      "nbaId": null,
-      "espnId": 4683678,
+      "name": "Jrue Holiday",
+      "bbrefId": "holidjr01",
+      "nbaId": 201950,
+      "espnId": 3995,
       "pos": "G",
-      "height": "6-3",
-      "birthDate": "2004-02-03",
-      "exp": 4,
-      "college": null,
-      "jersey": "00",
+      "height": "6-4",
+      "birthDate": "1990-06-12",
+      "exp": 18,
+      "college": "UCLA",
+      "jersey": "5",
       "unit": "second"
     },
     {
@@ -142,19 +137,6 @@
       "exp": 6,
       "college": null,
       "jersey": "27",
-      "unit": "second"
-    },
-    {
-      "name": "Micah Potter",
-      "bbrefId": "pottemi01",
-      "nbaId": null,
-      "espnId": 4066399,
-      "pos": "C",
-      "height": "6-9",
-      "birthDate": "1998-04-06",
-      "exp": 6,
-      "college": "Wisconsin",
-      "jersey": "9",
       "unit": "second"
     },
     {
@@ -181,19 +163,32 @@
       "exp": 9,
       "college": "Texas A&M",
       "jersey": "35",
-      "unit": "third"
+      "unit": "second"
     },
     {
-      "name": "Branden Carlson",
-      "bbrefId": "carlsbr01",
+      "name": "Scoot Henderson",
+      "bbrefId": "hendesc01",
       "nbaId": null,
-      "espnId": 4592435,
+      "espnId": 4683678,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2004-02-03",
+      "exp": 4,
+      "college": null,
+      "jersey": "00",
+      "unit": "second"
+    },
+    {
+      "name": "Micah Potter",
+      "bbrefId": "pottemi01",
+      "nbaId": null,
+      "espnId": 4066399,
       "pos": "C",
-      "height": "7-0",
-      "birthDate": "1999-06-14",
-      "exp": 3,
-      "college": "Utah",
-      "jersey": "10",
+      "height": "6-9",
+      "birthDate": "1998-04-06",
+      "exp": 6,
+      "college": "Wisconsin",
+      "jersey": "9",
       "unit": "third"
     },
     {
@@ -223,16 +218,16 @@
       "unit": "third"
     },
     {
-      "name": "Chris Youngblood",
-      "bbrefId": "youngch01",
+      "name": "Branden Carlson",
+      "bbrefId": "carlsbr01",
       "nbaId": null,
-      "espnId": 4706557,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "2002-02-09",
-      "exp": 2,
-      "college": "Alabama",
-      "jersey": "11",
+      "espnId": 4592435,
+      "pos": "C",
+      "height": "7-0",
+      "birthDate": "1999-06-14",
+      "exp": 3,
+      "college": "Utah",
+      "jersey": "10",
       "unit": "third"
     },
     {
@@ -246,30 +241,32 @@
       "exp": 2,
       "college": "Texas",
       "jersey": "29",
-      "unit": "camp"
+      "unit": "third"
     },
     {
-      "name": "Damian Lillard",
-      "nbaId": 203081,
-      "espnId": 6606,
-      "pos": "G",
-      "height": "6-2",
-      "birthDate": "1990-07-15",
-      "exp": 15,
-      "college": "Weber State",
-      "jersey": "0",
-      "unit": "camp"
-    },
-    {
-      "name": "Jaylen Martin",
+      "name": "Shaedon Sharpe",
+      "bbrefId": "sharpsh01",
       "nbaId": null,
-      "espnId": 4684737,
+      "espnId": 4914336,
       "pos": "G",
-      "height": "6-6",
-      "birthDate": "2004-01-28",
-      "exp": 3,
-      "college": null,
-      "jersey": null,
+      "height": "6-5",
+      "birthDate": "2003-05-30",
+      "exp": 5,
+      "college": "Kentucky",
+      "jersey": "17",
+      "unit": "camp"
+    },
+    {
+      "name": "Chris Youngblood",
+      "bbrefId": "youngch01",
+      "nbaId": null,
+      "espnId": 4706557,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2002-02-09",
+      "exp": 2,
+      "college": "Alabama",
+      "jersey": "11",
       "unit": "camp"
     },
     {
@@ -283,6 +280,18 @@
       "exp": 2,
       "college": "Wisconsin",
       "jersey": "2",
+      "unit": "camp"
+    },
+    {
+      "name": "Jaylen Martin",
+      "nbaId": null,
+      "espnId": 4684737,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2004-01-28",
+      "exp": 3,
+      "college": null,
+      "jersey": null,
       "unit": "camp"
     }
   ]

@@ -6,11 +6,15 @@
   "statsSeason": "2025-26",
   "coach": "Will Hardy",
   "lastUpdated": "2026-10-15",
-  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
       "url": "https://www.espn.com/nba/team/roster/_/name/utah"
+    },
+    {
+      "label": "ESPN depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/utah"
     },
     {
       "label": "Basketball Reference stats",
@@ -41,19 +45,6 @@
   ],
   "players": [
     {
-      "name": "Lauri Markkanen",
-      "bbrefId": "markkla01",
-      "nbaId": 1628374,
-      "espnId": 4066336,
-      "pos": "F",
-      "height": "7-1",
-      "birthDate": "1997-05-22",
-      "exp": 10,
-      "college": "Arizona",
-      "jersey": "23",
-      "unit": "starters"
-    },
-    {
       "name": "Keyonte George",
       "bbrefId": "georgke01",
       "nbaId": null,
@@ -64,20 +55,21 @@
       "exp": 4,
       "college": "Baylor",
       "jersey": "3",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "PG"
     },
     {
-      "name": "Jaren Jackson Jr.",
-      "bbrefId": "jacksja02",
-      "nbaId": 1628991,
-      "espnId": 4277961,
-      "pos": "F",
-      "height": "6-10",
-      "birthDate": "1999-09-15",
-      "exp": 9,
-      "college": "Michigan State",
-      "jersey": "20",
-      "unit": "starters"
+      "name": "Darryn Peterson",
+      "nbaId": null,
+      "espnId": 5041955,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2007-01-17",
+      "exp": 0,
+      "college": "Kansas",
+      "jersey": "22",
+      "unit": "starters",
+      "slot": "SG"
     },
     {
       "name": "Ace Bailey",
@@ -90,20 +82,36 @@
       "exp": 2,
       "college": "Rutgers",
       "jersey": "19",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SF"
     },
     {
-      "name": "Jusuf Nurkic",
-      "bbrefId": "nurkiju01",
-      "nbaId": 203994,
-      "espnId": 3102530,
-      "pos": "C",
-      "height": "6-11",
-      "birthDate": "1994-08-23",
-      "exp": 13,
-      "college": null,
-      "jersey": "30",
-      "unit": "starters"
+      "name": "Lauri Markkanen",
+      "bbrefId": "markkla01",
+      "nbaId": 1628374,
+      "espnId": 4066336,
+      "pos": "F",
+      "height": "7-1",
+      "birthDate": "1997-05-22",
+      "exp": 10,
+      "college": "Arizona",
+      "jersey": "23",
+      "unit": "starters",
+      "slot": "PF"
+    },
+    {
+      "name": "Jaren Jackson Jr.",
+      "bbrefId": "jacksja02",
+      "nbaId": 1628991,
+      "espnId": 4277961,
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "1999-09-15",
+      "exp": 9,
+      "college": "Michigan State",
+      "jersey": "20",
+      "unit": "starters",
+      "slot": "C"
     },
     {
       "name": "Isaiah Collier",
@@ -145,32 +153,6 @@
       "unit": "second"
     },
     {
-      "name": "Svi Mykhailiuk",
-      "bbrefId": "mykhasv01",
-      "nbaId": 1629004,
-      "espnId": 3133602,
-      "pos": "G",
-      "height": "6-7",
-      "birthDate": "1997-06-10",
-      "exp": 9,
-      "college": "Kansas",
-      "jersey": "10",
-      "unit": "second"
-    },
-    {
-      "name": "Blake Hinson",
-      "bbrefId": "hinsobl01",
-      "nbaId": null,
-      "espnId": 4396963,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "1999-12-26",
-      "exp": 2,
-      "college": "Pittsburgh",
-      "jersey": "25",
-      "unit": "second"
-    },
-    {
       "name": "Jaxson Hayes",
       "bbrefId": "hayesja02",
       "nbaId": 1629637,
@@ -181,7 +163,7 @@
       "exp": 8,
       "college": "Texas",
       "jersey": "11",
-      "unit": "third"
+      "unit": "second"
     },
     {
       "name": "Josh Okogie",
@@ -194,32 +176,7 @@
       "exp": 9,
       "college": "Georgia Tech",
       "jersey": "21",
-      "unit": "third"
-    },
-    {
-      "name": "Josh Green",
-      "bbrefId": "greenjo02",
-      "nbaId": 1630182,
-      "espnId": 4432811,
-      "pos": "G",
-      "height": "6-6",
-      "birthDate": "2000-11-16",
-      "exp": 7,
-      "college": "Arizona",
-      "jersey": "5",
-      "unit": "third"
-    },
-    {
-      "name": "Jonas Aidoo",
-      "nbaId": null,
-      "espnId": 4684682,
-      "pos": "C",
-      "height": "6-11",
-      "birthDate": "2002-12-10",
-      "exp": 0,
-      "college": "Arkansas",
-      "jersey": "13",
-      "unit": "third"
+      "unit": "second"
     },
     {
       "name": "Trey Alexander",
@@ -245,6 +202,58 @@
       "exp": 9,
       "college": "Texas",
       "jersey": "44",
+      "unit": "third"
+    },
+    {
+      "name": "Svi Mykhailiuk",
+      "bbrefId": "mykhasv01",
+      "nbaId": 1629004,
+      "espnId": 3133602,
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "1997-06-10",
+      "exp": 9,
+      "college": "Kansas",
+      "jersey": "10",
+      "unit": "third"
+    },
+    {
+      "name": "Blake Hinson",
+      "bbrefId": "hinsobl01",
+      "nbaId": null,
+      "espnId": 4396963,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "1999-12-26",
+      "exp": 2,
+      "college": "Pittsburgh",
+      "jersey": "25",
+      "unit": "third"
+    },
+    {
+      "name": "Josh Green",
+      "bbrefId": "greenjo02",
+      "nbaId": 1630182,
+      "espnId": 4432811,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2000-11-16",
+      "exp": 7,
+      "college": "Arizona",
+      "jersey": "5",
+      "unit": "third"
+    },
+    {
+      "name": "Jusuf Nurkic",
+      "bbrefId": "nurkiju01",
+      "nbaId": 203994,
+      "espnId": 3102530,
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "1994-08-23",
+      "exp": 13,
+      "college": null,
+      "jersey": "30",
       "unit": "camp"
     },
     {
@@ -257,6 +266,31 @@
       "exp": 0,
       "college": "Missouri",
       "jersey": "0",
+      "unit": "camp"
+    },
+    {
+      "name": "Harrison Ingram",
+      "bbrefId": "ingraha01",
+      "nbaId": null,
+      "espnId": 4433618,
+      "pos": "F",
+      "height": "6-5",
+      "birthDate": "2002-11-27",
+      "exp": 3,
+      "college": "North Carolina",
+      "jersey": "00",
+      "unit": "camp"
+    },
+    {
+      "name": "Jonas Aidoo",
+      "nbaId": null,
+      "espnId": 4684682,
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "2002-12-10",
+      "exp": 0,
+      "college": "Arkansas",
+      "jersey": "13",
       "unit": "camp"
     },
     {
@@ -281,31 +315,6 @@
       "exp": 0,
       "college": "Utah State",
       "jersey": "33",
-      "unit": "camp"
-    },
-    {
-      "name": "Harrison Ingram",
-      "bbrefId": "ingraha01",
-      "nbaId": null,
-      "espnId": 4433618,
-      "pos": "F",
-      "height": "6-5",
-      "birthDate": "2002-11-27",
-      "exp": 3,
-      "college": "North Carolina",
-      "jersey": "00",
-      "unit": "camp"
-    },
-    {
-      "name": "Darryn Peterson",
-      "nbaId": null,
-      "espnId": 5041955,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "2007-01-17",
-      "exp": 0,
-      "college": "Kansas",
-      "jersey": "22",
       "unit": "camp"
     }
   ]

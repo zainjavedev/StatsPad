@@ -6,11 +6,15 @@
   "statsSeason": "2025-26",
   "coach": "Joe Mazzulla",
   "lastUpdated": "2026-10-15",
-  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
       "url": "https://www.espn.com/nba/team/roster/_/name/bos"
+    },
+    {
+      "label": "ESPN depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/bos"
     },
     {
       "label": "Basketball Reference stats",
@@ -51,33 +55,22 @@
       "exp": 10,
       "college": "Colorado",
       "jersey": "9",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "PG"
     },
     {
-      "name": "Jayson Tatum",
-      "bbrefId": "tatumja01",
-      "nbaId": 1628369,
-      "espnId": 4065648,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "1998-03-03",
-      "exp": 10,
-      "college": "Duke",
-      "jersey": "0",
-      "unit": "starters"
-    },
-    {
-      "name": "Payton Pritchard",
-      "bbrefId": "pritcpa01",
-      "nbaId": 1630202,
-      "espnId": 4066354,
+      "name": "Baylor Scheierman",
+      "bbrefId": "scheiba01",
+      "nbaId": null,
+      "espnId": 4593841,
       "pos": "G",
-      "height": "6-2",
-      "birthDate": "1998-01-28",
-      "exp": 7,
-      "college": "Oregon",
-      "jersey": "11",
-      "unit": "starters"
+      "height": "6-6",
+      "birthDate": "2000-09-26",
+      "exp": 3,
+      "college": "Creighton",
+      "jersey": "55",
+      "unit": "starters",
+      "slot": "SG"
     },
     {
       "name": "Paul George",
@@ -90,7 +83,22 @@
       "exp": 17,
       "college": "Fresno State",
       "jersey": "13",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Jayson Tatum",
+      "bbrefId": "tatumja01",
+      "nbaId": 1628369,
+      "espnId": 4065648,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "1998-03-03",
+      "exp": 10,
+      "college": "Duke",
+      "jersey": "0",
+      "unit": "starters",
+      "slot": "PF"
     },
     {
       "name": "Neemias Queta",
@@ -103,7 +111,21 @@
       "exp": 6,
       "college": "Utah State",
       "jersey": "88",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "C"
+    },
+    {
+      "name": "Payton Pritchard",
+      "bbrefId": "pritcpa01",
+      "nbaId": 1630202,
+      "espnId": 4066354,
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "1998-01-28",
+      "exp": 7,
+      "college": "Oregon",
+      "jersey": "11",
+      "unit": "second"
     },
     {
       "name": "Sam Hauser",
@@ -132,29 +154,16 @@
       "unit": "second"
     },
     {
-      "name": "Baylor Scheierman",
-      "bbrefId": "scheiba01",
+      "name": "Jordan Walsh",
+      "bbrefId": "walshjo01",
       "nbaId": null,
-      "espnId": 4593841,
+      "espnId": 4683689,
       "pos": "G",
-      "height": "6-6",
-      "birthDate": "2000-09-26",
-      "exp": 3,
-      "college": "Creighton",
-      "jersey": "55",
-      "unit": "second"
-    },
-    {
-      "name": "Devin Carter",
-      "bbrefId": "cartede02",
-      "nbaId": null,
-      "espnId": 4433188,
-      "pos": "G",
-      "height": "6-2",
-      "birthDate": "2002-03-18",
-      "exp": 3,
-      "college": "Providence",
-      "jersey": "99",
+      "height": "6-7",
+      "birthDate": "2004-03-03",
+      "exp": 4,
+      "college": "Arkansas",
+      "jersey": "27",
       "unit": "second"
     },
     {
@@ -169,19 +178,6 @@
       "college": "Ohio State",
       "jersey": "45",
       "unit": "second"
-    },
-    {
-      "name": "Jordan Walsh",
-      "bbrefId": "walshjo01",
-      "nbaId": null,
-      "espnId": 4683689,
-      "pos": "G",
-      "height": "6-7",
-      "birthDate": "2004-03-03",
-      "exp": 4,
-      "college": "Arkansas",
-      "jersey": "27",
-      "unit": "third"
     },
     {
       "name": "Luka Garza",
@@ -207,6 +203,18 @@
       "exp": 2,
       "college": null,
       "jersey": "28",
+      "unit": "third"
+    },
+    {
+      "name": "Chris Cenac Jr.",
+      "nbaId": null,
+      "espnId": 5142621,
+      "pos": "F",
+      "height": "6-11",
+      "birthDate": "2007-02-01",
+      "exp": 0,
+      "college": "Houston",
+      "jersey": "12",
       "unit": "third"
     },
     {
@@ -236,15 +244,28 @@
       "unit": "third"
     },
     {
-      "name": "Chris Cenac Jr.",
+      "name": "Dillon Mitchell",
       "nbaId": null,
-      "espnId": 5142621,
+      "espnId": 5106283,
       "pos": "F",
-      "height": "6-11",
-      "birthDate": "2007-02-01",
+      "height": "6-8",
+      "birthDate": "2003-10-03",
       "exp": 0,
-      "college": "Houston",
-      "jersey": "12",
+      "college": "St. John's",
+      "jersey": "20",
+      "unit": "camp"
+    },
+    {
+      "name": "Devin Carter",
+      "bbrefId": "cartede02",
+      "nbaId": null,
+      "espnId": 4433188,
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "2002-03-18",
+      "exp": 3,
+      "college": "Providence",
+      "jersey": "99",
       "unit": "camp"
     },
     {
@@ -282,18 +303,6 @@
       "exp": 0,
       "college": "Grand Canyon",
       "jersey": "41",
-      "unit": "camp"
-    },
-    {
-      "name": "Dillon Mitchell",
-      "nbaId": null,
-      "espnId": 5106283,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2003-10-03",
-      "exp": 0,
-      "college": "St. John's",
-      "jersey": "20",
       "unit": "camp"
     },
     {

@@ -6,11 +6,15 @@
   "statsSeason": "2025-26",
   "coach": "Tiago Splitter",
   "lastUpdated": "2026-10-15",
-  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
       "url": "https://www.espn.com/nba/team/roster/_/name/chi"
+    },
+    {
+      "label": "ESPN depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/chi"
     },
     {
       "label": "Basketball Reference stats",
@@ -51,7 +55,8 @@
       "exp": 6,
       "college": null,
       "jersey": "3",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "PG"
     },
     {
       "name": "Norman Powell",
@@ -64,7 +69,8 @@
       "exp": 12,
       "college": "UCLA",
       "jersey": "24",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SG"
     },
     {
       "name": "Matas Buzelis",
@@ -77,7 +83,21 @@
       "exp": 3,
       "college": null,
       "jersey": "14",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Caleb Wilson",
+      "nbaId": null,
+      "espnId": 5095151,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2006-07-18",
+      "exp": 0,
+      "college": "North Carolina",
+      "jersey": "8",
+      "unit": "starters",
+      "slot": "PF"
     },
     {
       "name": "Nic Claxton",
@@ -90,7 +110,8 @@
       "exp": 8,
       "college": "Georgia",
       "jersey": "9",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "C"
     },
     {
       "name": "Tre Jones",
@@ -103,7 +124,7 @@
       "exp": 7,
       "college": "Duke",
       "jersey": "30",
-      "unit": "starters"
+      "unit": "second"
     },
     {
       "name": "Isaac Okoro",
@@ -145,6 +166,18 @@
       "unit": "second"
     },
     {
+      "name": "Dailyn Swain",
+      "nbaId": null,
+      "espnId": 4848625,
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "2005-07-15",
+      "exp": 0,
+      "college": "Texas",
+      "jersey": "5",
+      "unit": "second"
+    },
+    {
       "name": "Zach Collins",
       "bbrefId": "colliza01",
       "nbaId": 1628380,
@@ -155,7 +188,7 @@
       "exp": 10,
       "college": "Gonzaga",
       "jersey": "12",
-      "unit": "second"
+      "unit": "third"
     },
     {
       "name": "Buddy Hield",
@@ -168,7 +201,19 @@
       "exp": 12,
       "college": "Oklahoma",
       "jersey": "7",
-      "unit": "second"
+      "unit": "third"
+    },
+    {
+      "name": "Tobe Awaka",
+      "nbaId": null,
+      "espnId": 5105555,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2004-01-30",
+      "exp": 0,
+      "college": "Arizona",
+      "jersey": "19",
+      "unit": "third"
     },
     {
       "name": "Leonard Miller",
@@ -197,40 +242,16 @@
       "unit": "third"
     },
     {
-      "name": "Tobe Awaka",
+      "name": "Jaylin Sellers",
       "nbaId": null,
-      "espnId": 5105555,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2004-01-30",
-      "exp": 0,
-      "college": "Arizona",
-      "jersey": "19",
-      "unit": "third"
-    },
-    {
-      "name": "Brandon Boston Jr.",
-      "nbaId": null,
-      "espnId": 4432162,
+      "espnId": 4898010,
       "pos": "G",
-      "height": "6-6",
-      "birthDate": "2001-11-28",
-      "exp": 4,
-      "college": "Kentucky",
-      "jersey": "13",
-      "unit": "third"
-    },
-    {
-      "name": "Jalen Bridges",
-      "nbaId": null,
-      "espnId": 4432946,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "2001-05-14",
-      "exp": 2,
-      "college": "Baylor",
-      "jersey": "20",
-      "unit": "third"
+      "height": "6-5",
+      "birthDate": "2003-06-03",
+      "exp": 0,
+      "college": "Providence",
+      "jersey": "22",
+      "unit": "camp"
     },
     {
       "name": "Noa Essengue",
@@ -243,6 +264,30 @@
       "exp": 2,
       "college": null,
       "jersey": "2",
+      "unit": "camp"
+    },
+    {
+      "name": "Brandon Boston Jr.",
+      "nbaId": null,
+      "espnId": 4432162,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2001-11-28",
+      "exp": 4,
+      "college": "Kentucky",
+      "jersey": "13",
+      "unit": "camp"
+    },
+    {
+      "name": "Jalen Bridges",
+      "nbaId": null,
+      "espnId": 4432946,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2001-05-14",
+      "exp": 2,
+      "college": "Baylor",
+      "jersey": "20",
       "unit": "camp"
     },
     {
@@ -272,18 +317,6 @@
       "unit": "camp"
     },
     {
-      "name": "Jaylin Sellers",
-      "nbaId": null,
-      "espnId": 4898010,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "2003-06-03",
-      "exp": 0,
-      "college": "Providence",
-      "jersey": "22",
-      "unit": "camp"
-    },
-    {
       "name": "Isaiah Stevens",
       "bbrefId": "steveis01",
       "nbaId": null,
@@ -294,30 +327,6 @@
       "exp": 3,
       "college": "Colorado State",
       "jersey": "99",
-      "unit": "camp"
-    },
-    {
-      "name": "Dailyn Swain",
-      "nbaId": null,
-      "espnId": 4848625,
-      "pos": "G",
-      "height": "6-7",
-      "birthDate": "2005-07-15",
-      "exp": 0,
-      "college": "Texas",
-      "jersey": "5",
-      "unit": "camp"
-    },
-    {
-      "name": "Caleb Wilson",
-      "nbaId": null,
-      "espnId": 5095151,
-      "pos": "F",
-      "height": "6-9",
-      "birthDate": "2006-07-18",
-      "exp": 0,
-      "college": "North Carolina",
-      "jersey": "8",
       "unit": "camp"
     }
   ]

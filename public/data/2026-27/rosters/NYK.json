@@ -6,11 +6,15 @@
   "statsSeason": "2025-26",
   "coach": "Mike Brown",
   "lastUpdated": "2026-10-15",
-  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
       "url": "https://www.espn.com/nba/team/roster/_/name/ny"
+    },
+    {
+      "label": "ESPN depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/ny"
     },
     {
       "label": "Basketball Reference stats",
@@ -51,46 +55,8 @@
       "exp": 9,
       "college": "Villanova",
       "jersey": "11",
-      "unit": "starters"
-    },
-    {
-      "name": "OG Anunoby",
-      "bbrefId": "anunoog01",
-      "nbaId": 1628384,
-      "espnId": 3934719,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "1997-07-17",
-      "exp": 10,
-      "college": "Indiana",
-      "jersey": "8",
-      "unit": "starters"
-    },
-    {
-      "name": "Mikal Bridges",
-      "bbrefId": "bridgmi01",
-      "nbaId": 1628969,
-      "espnId": 3147657,
-      "pos": "G",
-      "height": "6-6",
-      "birthDate": "1996-08-30",
-      "exp": 9,
-      "college": "Villanova",
-      "jersey": "25",
-      "unit": "starters"
-    },
-    {
-      "name": "Karl-Anthony Towns",
-      "bbrefId": "townska01",
-      "nbaId": 1626157,
-      "espnId": 3136195,
-      "pos": "C",
-      "height": "7-0",
-      "birthDate": "1995-11-15",
-      "exp": 12,
-      "college": "Kentucky",
-      "jersey": "32",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "PG"
     },
     {
       "name": "Josh Hart",
@@ -103,7 +69,50 @@
       "exp": 10,
       "college": "Villanova",
       "jersey": "3",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SG"
+    },
+    {
+      "name": "Mikal Bridges",
+      "bbrefId": "bridgmi01",
+      "nbaId": 1628969,
+      "espnId": 3147657,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "1996-08-30",
+      "exp": 9,
+      "college": "Villanova",
+      "jersey": "25",
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "OG Anunoby",
+      "bbrefId": "anunoog01",
+      "nbaId": 1628384,
+      "espnId": 3934719,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "1997-07-17",
+      "exp": 10,
+      "college": "Indiana",
+      "jersey": "8",
+      "unit": "starters",
+      "slot": "PF"
+    },
+    {
+      "name": "Karl-Anthony Towns",
+      "bbrefId": "townska01",
+      "nbaId": 1626157,
+      "espnId": 3136195,
+      "pos": "C",
+      "height": "7-0",
+      "birthDate": "1995-11-15",
+      "exp": 12,
+      "college": "Kentucky",
+      "jersey": "32",
+      "unit": "starters",
+      "slot": "C"
     },
     {
       "name": "Miles McBride",
@@ -119,19 +128,6 @@
       "unit": "second"
     },
     {
-      "name": "Bruce Brown",
-      "bbrefId": "brownbr01",
-      "nbaId": 1628971,
-      "espnId": 4065670,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "1996-08-15",
-      "exp": 9,
-      "college": "Miami",
-      "jersey": "1",
-      "unit": "second"
-    },
-    {
       "name": "Landry Shamet",
       "bbrefId": "shamela01",
       "nbaId": 1629013,
@@ -142,19 +138,6 @@
       "exp": 9,
       "college": "Wichita State",
       "jersey": "44",
-      "unit": "second"
-    },
-    {
-      "name": "Jose Alvarado",
-      "bbrefId": "alvarjo01",
-      "nbaId": null,
-      "espnId": 4277869,
-      "pos": "G",
-      "height": "6-0",
-      "birthDate": "1998-04-12",
-      "exp": 6,
-      "college": "Georgia Tech",
-      "jersey": "5",
       "unit": "second"
     },
     {
@@ -181,32 +164,32 @@
       "exp": 13,
       "college": "Missouri",
       "jersey": "00",
-      "unit": "third"
+      "unit": "second"
     },
     {
-      "name": "Ochai Agbaji",
-      "bbrefId": "agbajoc01",
+      "name": "Jose Alvarado",
+      "bbrefId": "alvarjo01",
       "nbaId": null,
-      "espnId": 4397018,
+      "espnId": 4277869,
       "pos": "G",
-      "height": "6-5",
-      "birthDate": "2000-04-20",
-      "exp": 5,
-      "college": "Kansas",
-      "jersey": "30",
-      "unit": "third"
+      "height": "6-0",
+      "birthDate": "1998-04-12",
+      "exp": 6,
+      "college": "Georgia Tech",
+      "jersey": "5",
+      "unit": "second"
     },
     {
-      "name": "Drew Eubanks",
-      "bbrefId": "eubandr01",
-      "nbaId": 1629234,
-      "espnId": 3914285,
+      "name": "Mohamed Diawara",
+      "bbrefId": "diawamo01",
+      "nbaId": null,
+      "espnId": 5289900,
       "pos": "F",
-      "height": "6-10",
-      "birthDate": "1997-02-01",
-      "exp": 9,
-      "college": "Oregon State",
-      "jersey": "19",
+      "height": "6-9",
+      "birthDate": "2005-04-29",
+      "exp": 2,
+      "college": null,
+      "jersey": "51",
       "unit": "third"
     },
     {
@@ -223,43 +206,16 @@
       "unit": "third"
     },
     {
-      "name": "Tony Bradley",
-      "bbrefId": "bradlto01",
-      "nbaId": 1628396,
-      "espnId": 4065673,
-      "pos": "C",
-      "height": "6-10",
-      "birthDate": "1998-01-08",
-      "exp": 9,
-      "college": "North Carolina",
-      "jersey": "18",
-      "unit": "third"
-    },
-    {
-      "name": "Mohamed Diawara",
-      "bbrefId": "diawamo01",
+      "name": "Tyler Nickel",
       "nbaId": null,
-      "espnId": 5289900,
+      "espnId": 4838721,
       "pos": "F",
-      "height": "6-9",
-      "birthDate": "2005-04-29",
-      "exp": 2,
-      "college": null,
-      "jersey": "51",
-      "unit": "camp"
-    },
-    {
-      "name": "Kevin McCullar Jr.",
-      "bbrefId": "mcculke01",
-      "nbaId": null,
-      "espnId": 4411057,
-      "pos": "G",
-      "height": "6-6",
-      "birthDate": "2001-03-15",
-      "exp": 3,
-      "college": "Kansas",
-      "jersey": "9",
-      "unit": "camp"
+      "height": "6-8",
+      "birthDate": "2003-09-05",
+      "exp": 0,
+      "college": "Vanderbilt",
+      "jersey": "55",
+      "unit": "third"
     },
     {
       "name": "Pacome Dadiet",
@@ -272,7 +228,20 @@
       "exp": 3,
       "college": null,
       "jersey": "4",
-      "unit": "camp"
+      "unit": "third"
+    },
+    {
+      "name": "Kevin McCullar Jr.",
+      "bbrefId": "mcculke01",
+      "nbaId": null,
+      "espnId": 4411057,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2001-03-15",
+      "exp": 3,
+      "college": "Kansas",
+      "jersey": "9",
+      "unit": "third"
     },
     {
       "name": "Jaden Akins",
@@ -287,15 +256,55 @@
       "unit": "camp"
     },
     {
-      "name": "Tyler Nickel",
+      "name": "Bruce Brown",
+      "bbrefId": "brownbr01",
+      "nbaId": 1628971,
+      "espnId": 4065670,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "1996-08-15",
+      "exp": 9,
+      "college": "Miami",
+      "jersey": "1",
+      "unit": "camp"
+    },
+    {
+      "name": "Ochai Agbaji",
+      "bbrefId": "agbajoc01",
       "nbaId": null,
-      "espnId": 4838721,
+      "espnId": 4397018,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2000-04-20",
+      "exp": 5,
+      "college": "Kansas",
+      "jersey": "30",
+      "unit": "camp"
+    },
+    {
+      "name": "Drew Eubanks",
+      "bbrefId": "eubandr01",
+      "nbaId": 1629234,
+      "espnId": 3914285,
       "pos": "F",
-      "height": "6-8",
-      "birthDate": "2003-09-05",
-      "exp": 0,
-      "college": "Vanderbilt",
-      "jersey": "55",
+      "height": "6-10",
+      "birthDate": "1997-02-01",
+      "exp": 9,
+      "college": "Oregon State",
+      "jersey": "19",
+      "unit": "camp"
+    },
+    {
+      "name": "Tony Bradley",
+      "bbrefId": "bradlto01",
+      "nbaId": 1628396,
+      "espnId": 4065673,
+      "pos": "C",
+      "height": "6-10",
+      "birthDate": "1998-01-08",
+      "exp": 9,
+      "college": "North Carolina",
+      "jersey": "18",
       "unit": "camp"
     },
     {

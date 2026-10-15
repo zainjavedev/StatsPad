@@ -6,11 +6,15 @@
   "statsSeason": "2025-26",
   "coach": "Erik Spoelstra",
   "lastUpdated": "2026-10-15",
-  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
       "url": "https://www.espn.com/nba/team/roster/_/name/mia"
+    },
+    {
+      "label": "ESPN depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/mia"
     },
     {
       "label": "Basketball Reference stats",
@@ -41,30 +45,32 @@
   ],
   "players": [
     {
-      "name": "Bez Mbeng",
-      "bbrefId": "mbengbe01",
+      "name": "Davion Mitchell",
+      "bbrefId": "mitchda01",
       "nbaId": null,
-      "espnId": 4898237,
+      "espnId": 4278053,
       "pos": "G",
-      "height": "6-4",
-      "birthDate": "2003-05-02",
-      "exp": 0,
-      "college": "Yale",
-      "jersey": "19",
-      "unit": "starters"
+      "height": "6-0",
+      "birthDate": "1998-09-05",
+      "exp": 5,
+      "college": "Baylor",
+      "jersey": "2",
+      "unit": "starters",
+      "slot": "PG"
     },
     {
-      "name": "Bam Adebayo",
-      "bbrefId": "adebaba01",
-      "nbaId": 1628389,
-      "espnId": 4066261,
-      "pos": "C",
-      "height": "6-9",
-      "birthDate": "1997-07-18",
-      "exp": 9,
-      "college": "Kentucky",
-      "jersey": "13",
-      "unit": "starters"
+      "name": "Klay Thompson",
+      "bbrefId": "thompkl01",
+      "nbaId": 202691,
+      "espnId": 6475,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "1990-02-08",
+      "exp": 15,
+      "college": "Washington State",
+      "jersey": "11",
+      "unit": "starters",
+      "slot": "SG"
     },
     {
       "name": "Andrew Wiggins",
@@ -77,7 +83,8 @@
       "exp": 12,
       "college": "Kansas",
       "jersey": "22",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SF"
     },
     {
       "name": "Giannis Antetokounmpo",
@@ -90,20 +97,22 @@
       "exp": 13,
       "college": null,
       "jersey": "7",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "PF"
     },
     {
-      "name": "Davion Mitchell",
-      "bbrefId": "mitchda01",
-      "nbaId": null,
-      "espnId": 4278053,
-      "pos": "G",
-      "height": "6-0",
-      "birthDate": "1998-09-05",
-      "exp": 5,
-      "college": "Baylor",
-      "jersey": "2",
-      "unit": "starters"
+      "name": "Bam Adebayo",
+      "bbrefId": "adebaba01",
+      "nbaId": 1628389,
+      "espnId": 4066261,
+      "pos": "C",
+      "height": "6-9",
+      "birthDate": "1997-07-18",
+      "exp": 9,
+      "college": "Kentucky",
+      "jersey": "13",
+      "unit": "starters",
+      "slot": "C"
     },
     {
       "name": "Tim Hardaway Jr.",
@@ -145,17 +154,42 @@
       "unit": "second"
     },
     {
-      "name": "Klay Thompson",
-      "bbrefId": "thompkl01",
-      "nbaId": 202691,
-      "espnId": 6475,
+      "name": "Dru Smith",
+      "bbrefId": "smithdr01",
+      "nbaId": null,
+      "espnId": 4066993,
       "pos": "G",
-      "height": "6-5",
-      "birthDate": "1990-02-08",
-      "exp": 15,
-      "college": "Washington State",
-      "jersey": "11",
+      "height": "6-2",
+      "birthDate": "1997-12-30",
+      "exp": 4,
+      "college": "Missouri",
+      "jersey": "12",
       "unit": "second"
+    },
+    {
+      "name": "Nick Richards",
+      "bbrefId": "richani01",
+      "nbaId": 1630208,
+      "espnId": 4278076,
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "1997-11-29",
+      "exp": 6,
+      "college": "Kentucky",
+      "jersey": "8",
+      "unit": "second"
+    },
+    {
+      "name": "Ryan Conwell",
+      "nbaId": null,
+      "espnId": 5107157,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2004-06-15",
+      "exp": 0,
+      "college": "Louisville",
+      "jersey": "4",
+      "unit": "third"
     },
     {
       "name": "Nikola Jovic",
@@ -168,7 +202,32 @@
       "exp": 4,
       "college": null,
       "jersey": "5",
-      "unit": "second"
+      "unit": "third"
+    },
+    {
+      "name": "Tre Donaldson",
+      "nbaId": null,
+      "espnId": 4837356,
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "2003-12-11",
+      "exp": 0,
+      "college": "Miami",
+      "jersey": "24",
+      "unit": "third"
+    },
+    {
+      "name": "Bez Mbeng",
+      "bbrefId": "mbengbe01",
+      "nbaId": null,
+      "espnId": 4898237,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2003-05-02",
+      "exp": 0,
+      "college": "Yale",
+      "jersey": "19",
+      "unit": "third"
     },
     {
       "name": "Simone Fontecchio",
@@ -184,32 +243,6 @@
       "unit": "third"
     },
     {
-      "name": "Dru Smith",
-      "bbrefId": "smithdr01",
-      "nbaId": null,
-      "espnId": 4066993,
-      "pos": "G",
-      "height": "6-2",
-      "birthDate": "1997-12-30",
-      "exp": 4,
-      "college": "Missouri",
-      "jersey": "12",
-      "unit": "third"
-    },
-    {
-      "name": "Nick Richards",
-      "bbrefId": "richani01",
-      "nbaId": 1630208,
-      "espnId": 4278076,
-      "pos": "C",
-      "height": "6-11",
-      "birthDate": "1997-11-29",
-      "exp": 6,
-      "college": "Kentucky",
-      "jersey": "8",
-      "unit": "third"
-    },
-    {
       "name": "Myron Gardner",
       "bbrefId": "gardnmy01",
       "nbaId": null,
@@ -220,43 +253,6 @@
       "exp": 1,
       "college": "Little Rock",
       "jersey": "15",
-      "unit": "third"
-    },
-    {
-      "name": "Keshad Johnson",
-      "bbrefId": "johnske10",
-      "nbaId": null,
-      "espnId": 4431786,
-      "pos": "F",
-      "height": "6-6",
-      "birthDate": "2001-06-23",
-      "exp": 2,
-      "college": "Arizona",
-      "jersey": "16",
-      "unit": "third"
-    },
-    {
-      "name": "Ryan Conwell",
-      "nbaId": null,
-      "espnId": 5107157,
-      "pos": "G",
-      "height": "6-3",
-      "birthDate": "2004-06-15",
-      "exp": 0,
-      "college": "Louisville",
-      "jersey": "4",
-      "unit": "camp"
-    },
-    {
-      "name": "Tre Donaldson",
-      "nbaId": null,
-      "espnId": 4837356,
-      "pos": "G",
-      "height": "6-2",
-      "birthDate": "2003-12-11",
-      "exp": 0,
-      "college": "Miami",
-      "jersey": "24",
       "unit": "camp"
     },
     {
@@ -270,6 +266,19 @@
       "exp": 1,
       "college": "Michigan",
       "jersey": "50",
+      "unit": "camp"
+    },
+    {
+      "name": "Keshad Johnson",
+      "bbrefId": "johnske10",
+      "nbaId": null,
+      "espnId": 4431786,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "2001-06-23",
+      "exp": 2,
+      "college": "Arizona",
+      "jersey": "16",
       "unit": "camp"
     },
     {

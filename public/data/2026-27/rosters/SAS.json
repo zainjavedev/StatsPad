@@ -6,11 +6,15 @@
   "statsSeason": "2025-26",
   "coach": "Mitch Johnson",
   "lastUpdated": "2026-10-15",
-  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
       "url": "https://www.espn.com/nba/team/roster/_/name/sa"
+    },
+    {
+      "label": "ESPN depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/sa"
     },
     {
       "label": "Basketball Reference stats",
@@ -51,20 +55,8 @@
       "exp": 10,
       "college": "Kentucky",
       "jersey": "4",
-      "unit": "starters"
-    },
-    {
-      "name": "Devin Vassell",
-      "bbrefId": "vassede01",
-      "nbaId": 1630170,
-      "espnId": 4395630,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "2000-08-23",
-      "exp": 7,
-      "college": "Florida State",
-      "jersey": "24",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "PG"
     },
     {
       "name": "Stephon Castle",
@@ -77,20 +69,22 @@
       "exp": 3,
       "college": "UConn",
       "jersey": "5",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SG"
     },
     {
-      "name": "Victor Wembanyama",
-      "bbrefId": "wembavi01",
-      "nbaId": null,
-      "espnId": 5104157,
-      "pos": "F",
-      "height": "7-4",
-      "birthDate": "2004-01-04",
-      "exp": 4,
-      "college": null,
-      "jersey": "1",
-      "unit": "starters"
+      "name": "Devin Vassell",
+      "bbrefId": "vassede01",
+      "nbaId": 1630170,
+      "espnId": 4395630,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2000-08-23",
+      "exp": 7,
+      "college": "Florida State",
+      "jersey": "24",
+      "unit": "starters",
+      "slot": "SF"
     },
     {
       "name": "Tobias Harris",
@@ -103,7 +97,22 @@
       "exp": 16,
       "college": "Tennessee",
       "jersey": "23",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "PF"
+    },
+    {
+      "name": "Victor Wembanyama",
+      "bbrefId": "wembavi01",
+      "nbaId": null,
+      "espnId": 5104157,
+      "pos": "F",
+      "height": "7-4",
+      "birthDate": "2004-01-04",
+      "exp": 4,
+      "college": null,
+      "jersey": "1",
+      "unit": "starters",
+      "slot": "C"
     },
     {
       "name": "Julian Champagnie",
@@ -116,32 +125,6 @@
       "exp": 5,
       "college": "St. John's",
       "jersey": "30",
-      "unit": "second"
-    },
-    {
-      "name": "Harrison Barnes",
-      "bbrefId": "barneha02",
-      "nbaId": 203084,
-      "espnId": 6578,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "1992-05-30",
-      "exp": 15,
-      "college": "North Carolina",
-      "jersey": "40",
-      "unit": "second"
-    },
-    {
-      "name": "Keldon Johnson",
-      "bbrefId": "johnske04",
-      "nbaId": 1629640,
-      "espnId": 4395723,
-      "pos": "F",
-      "height": "6-5",
-      "birthDate": "1999-10-11",
-      "exp": 8,
-      "college": "Kentucky",
-      "jersey": "3",
       "unit": "second"
     },
     {
@@ -181,7 +164,20 @@
       "exp": 2,
       "college": "Arizona",
       "jersey": "11",
-      "unit": "third"
+      "unit": "second"
+    },
+    {
+      "name": "Keldon Johnson",
+      "bbrefId": "johnske04",
+      "nbaId": 1629640,
+      "espnId": 4395723,
+      "pos": "F",
+      "height": "6-5",
+      "birthDate": "1999-10-11",
+      "exp": 8,
+      "college": "Kentucky",
+      "jersey": "3",
+      "unit": "second"
     },
     {
       "name": "Jordan McLaughlin",
@@ -197,53 +193,29 @@
       "unit": "third"
     },
     {
-      "name": "David Jones Garcia",
-      "bbrefId": "jonesda06",
+      "name": "Tarris Reed Jr.",
       "nbaId": null,
-      "espnId": 4713010,
-      "pos": "F",
-      "height": "6-4",
-      "birthDate": "2001-11-24",
-      "exp": 2,
-      "college": "Memphis",
-      "jersey": "25",
-      "unit": "third"
-    },
-    {
-      "name": "Maliq Brown",
-      "nbaId": null,
-      "espnId": 5105337,
-      "pos": "F",
-      "height": "6-9",
-      "birthDate": "2003-11-15",
+      "espnId": 5105809,
+      "pos": "C",
+      "height": "6-10",
+      "birthDate": "2003-08-05",
       "exp": 0,
-      "college": "Duke",
-      "jersey": "15",
+      "college": "UConn",
+      "jersey": "10",
       "unit": "third"
     },
     {
-      "name": "RJ Davis",
-      "nbaId": null,
-      "espnId": 4433176,
-      "pos": "G",
-      "height": "6-0",
-      "birthDate": "2001-10-21",
-      "exp": 2,
+      "name": "Harrison Barnes",
+      "bbrefId": "barneha02",
+      "nbaId": 203084,
+      "espnId": 6578,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "1992-05-30",
+      "exp": 15,
       "college": "North Carolina",
-      "jersey": "14",
+      "jersey": "40",
       "unit": "third"
-    },
-    {
-      "name": "Jon Elmore",
-      "nbaId": null,
-      "espnId": 3155937,
-      "pos": "G",
-      "height": "6-3",
-      "birthDate": "1995-12-20",
-      "exp": 0,
-      "college": "Marshall",
-      "jersey": "33",
-      "unit": "camp"
     },
     {
       "name": "Ja'Kobi Gillespie",
@@ -255,7 +227,7 @@
       "exp": 0,
       "college": "Tennessee",
       "jersey": "17",
-      "unit": "camp"
+      "unit": "third"
     },
     {
       "name": "Jayden Quaintance",
@@ -267,18 +239,55 @@
       "exp": 0,
       "college": "Kentucky",
       "jersey": "22",
+      "unit": "third"
+    },
+    {
+      "name": "David Jones Garcia",
+      "bbrefId": "jonesda06",
+      "nbaId": null,
+      "espnId": 4713010,
+      "pos": "F",
+      "height": "6-4",
+      "birthDate": "2001-11-24",
+      "exp": 2,
+      "college": "Memphis",
+      "jersey": "25",
       "unit": "camp"
     },
     {
-      "name": "Tarris Reed Jr.",
+      "name": "Maliq Brown",
       "nbaId": null,
-      "espnId": 5105809,
-      "pos": "C",
-      "height": "6-10",
-      "birthDate": "2003-08-05",
+      "espnId": 5105337,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2003-11-15",
       "exp": 0,
-      "college": "UConn",
-      "jersey": "10",
+      "college": "Duke",
+      "jersey": "15",
+      "unit": "camp"
+    },
+    {
+      "name": "RJ Davis",
+      "nbaId": null,
+      "espnId": 4433176,
+      "pos": "G",
+      "height": "6-0",
+      "birthDate": "2001-10-21",
+      "exp": 2,
+      "college": "North Carolina",
+      "jersey": "14",
+      "unit": "camp"
+    },
+    {
+      "name": "Jon Elmore",
+      "nbaId": null,
+      "espnId": 3155937,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "1995-12-20",
+      "exp": 0,
+      "college": "Marshall",
+      "jersey": "33",
       "unit": "camp"
     },
     {

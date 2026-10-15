@@ -6,11 +6,15 @@
   "statsSeason": "2025-26",
   "coach": "Brian Keefe",
   "lastUpdated": "2026-10-15",
-  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
       "url": "https://www.espn.com/nba/team/roster/_/name/wsh"
+    },
+    {
+      "label": "ESPN depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/wsh"
     },
     {
       "label": "Basketball Reference stats",
@@ -41,17 +45,18 @@
   ],
   "players": [
     {
-      "name": "Anthony Davis",
-      "bbrefId": "davisan02",
-      "nbaId": 203076,
-      "espnId": 6583,
-      "pos": "F",
-      "height": "6-10",
-      "birthDate": "1993-03-11",
-      "exp": 15,
-      "college": "Kentucky",
-      "jersey": "23",
-      "unit": "starters"
+      "name": "Trae Young",
+      "bbrefId": "youngtr01",
+      "nbaId": 1629027,
+      "espnId": 4277905,
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "1998-09-19",
+      "exp": 9,
+      "college": "Oklahoma",
+      "jersey": "3",
+      "unit": "starters",
+      "slot": "PG"
     },
     {
       "name": "Kyshawn George",
@@ -64,33 +69,35 @@
       "exp": 3,
       "college": "Miami",
       "jersey": "18",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SG"
     },
     {
-      "name": "Bub Carrington",
-      "bbrefId": "carrica01",
+      "name": "AJ Dybantsa",
       "nbaId": null,
-      "espnId": 4845374,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "2005-07-21",
-      "exp": 3,
-      "college": "Pittsburgh",
-      "jersey": "7",
-      "unit": "starters"
+      "espnId": 5142718,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2007-01-29",
+      "exp": 0,
+      "college": "BYU",
+      "jersey": "4",
+      "unit": "starters",
+      "slot": "SF"
     },
     {
-      "name": "Deandre Ayton",
-      "bbrefId": "aytonde01",
-      "nbaId": 1629028,
-      "espnId": 4278129,
-      "pos": "C",
-      "height": "7-0",
-      "birthDate": "1998-07-23",
-      "exp": 9,
-      "college": "Arizona",
-      "jersey": "6",
-      "unit": "starters"
+      "name": "Anthony Davis",
+      "bbrefId": "davisan02",
+      "nbaId": 203076,
+      "espnId": 6583,
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "1993-03-11",
+      "exp": 15,
+      "college": "Kentucky",
+      "jersey": "23",
+      "unit": "starters",
+      "slot": "PF"
     },
     {
       "name": "Alex Sarr",
@@ -103,7 +110,34 @@
       "exp": 3,
       "college": null,
       "jersey": "20",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "C"
+    },
+    {
+      "name": "Bub Carrington",
+      "bbrefId": "carrica01",
+      "nbaId": null,
+      "espnId": 4845374,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2005-07-21",
+      "exp": 3,
+      "college": "Pittsburgh",
+      "jersey": "7",
+      "unit": "second"
+    },
+    {
+      "name": "Deandre Ayton",
+      "bbrefId": "aytonde01",
+      "nbaId": 1629028,
+      "espnId": 4278129,
+      "pos": "C",
+      "height": "7-0",
+      "birthDate": "1998-07-23",
+      "exp": 9,
+      "college": "Arizona",
+      "jersey": "6",
+      "unit": "second"
     },
     {
       "name": "Bilal Coulibaly",
@@ -116,19 +150,6 @@
       "exp": 4,
       "college": null,
       "jersey": "0",
-      "unit": "second"
-    },
-    {
-      "name": "Trae Young",
-      "bbrefId": "youngtr01",
-      "nbaId": 1629027,
-      "espnId": 4277905,
-      "pos": "G",
-      "height": "6-2",
-      "birthDate": "1998-09-19",
-      "exp": 9,
-      "college": "Oklahoma",
-      "jersey": "3",
       "unit": "second"
     },
     {
@@ -168,19 +189,6 @@
       "exp": 2,
       "college": "Illinois",
       "jersey": "27",
-      "unit": "second"
-    },
-    {
-      "name": "Jamir Watkins",
-      "bbrefId": "watkija01",
-      "nbaId": null,
-      "espnId": 4606840,
-      "pos": "G",
-      "height": "6-6",
-      "birthDate": "2001-07-06",
-      "exp": 2,
-      "college": "Florida State",
-      "jersey": "5",
       "unit": "third"
     },
     {
@@ -194,19 +202,6 @@
       "exp": 6,
       "college": "Pittsburgh",
       "jersey": "9",
-      "unit": "third"
-    },
-    {
-      "name": "Anthony Gill",
-      "bbrefId": "gillan01",
-      "nbaId": 1630264,
-      "espnId": 2581184,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "1992-10-17",
-      "exp": 7,
-      "college": "Virginia",
-      "jersey": "16",
       "unit": "third"
     },
     {
@@ -236,6 +231,44 @@
       "unit": "third"
     },
     {
+      "name": "Anthony Gill",
+      "bbrefId": "gillan01",
+      "nbaId": 1630264,
+      "espnId": 2581184,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "1992-10-17",
+      "exp": 7,
+      "college": "Virginia",
+      "jersey": "16",
+      "unit": "third"
+    },
+    {
+      "name": "Jamir Watkins",
+      "bbrefId": "watkija01",
+      "nbaId": null,
+      "espnId": 4606840,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2001-07-06",
+      "exp": 2,
+      "college": "Florida State",
+      "jersey": "5",
+      "unit": "camp"
+    },
+    {
+      "name": "Felix Okpara",
+      "nbaId": null,
+      "espnId": 5105841,
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2004-04-20",
+      "exp": 0,
+      "college": "Tennessee",
+      "jersey": "34",
+      "unit": "camp"
+    },
+    {
       "name": "Reece Beekman",
       "nbaId": null,
       "espnId": 4432187,
@@ -245,18 +278,6 @@
       "exp": 2,
       "college": "Virginia",
       "jersey": "26",
-      "unit": "camp"
-    },
-    {
-      "name": "AJ Dybantsa",
-      "nbaId": null,
-      "espnId": 5142718,
-      "pos": "F",
-      "height": "6-9",
-      "birthDate": "2007-01-29",
-      "exp": 0,
-      "college": "BYU",
-      "jersey": "4",
       "unit": "camp"
     },
     {
@@ -308,18 +329,6 @@
       "exp": 4,
       "college": "Kentucky",
       "jersey": "24",
-      "unit": "camp"
-    },
-    {
-      "name": "Felix Okpara",
-      "nbaId": null,
-      "espnId": 5105841,
-      "pos": "F",
-      "height": "6-10",
-      "birthDate": "2004-04-20",
-      "exp": 0,
-      "college": "Tennessee",
-      "jersey": "34",
       "unit": "camp"
     },
     {

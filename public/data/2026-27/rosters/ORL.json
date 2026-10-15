@@ -6,11 +6,15 @@
   "statsSeason": "2025-26",
   "coach": "Sean Sweeney",
   "lastUpdated": "2026-10-15",
-  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
       "url": "https://www.espn.com/nba/team/roster/_/name/orl"
+    },
+    {
+      "label": "ESPN depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/orl"
     },
     {
       "label": "Basketball Reference stats",
@@ -41,17 +45,18 @@
   ],
   "players": [
     {
-      "name": "Paolo Banchero",
-      "bbrefId": "banchpa01",
+      "name": "Jalen Suggs",
+      "bbrefId": "suggsja01",
       "nbaId": null,
-      "espnId": 4432573,
-      "pos": "F",
-      "height": "6-10",
-      "birthDate": "2002-11-12",
-      "exp": 5,
-      "college": "Duke",
-      "jersey": "5",
-      "unit": "starters"
+      "espnId": 4432165,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2001-06-03",
+      "exp": 6,
+      "college": "Gonzaga",
+      "jersey": "4",
+      "unit": "starters",
+      "slot": "PG"
     },
     {
       "name": "Desmond Bane",
@@ -64,7 +69,8 @@
       "exp": 7,
       "college": "TCU",
       "jersey": "3",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SG"
     },
     {
       "name": "Franz Wagner",
@@ -77,20 +83,22 @@
       "exp": 6,
       "college": "Michigan",
       "jersey": "22",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SF"
     },
     {
-      "name": "Anthony Black",
-      "bbrefId": "blackan01",
+      "name": "Paolo Banchero",
+      "bbrefId": "banchpa01",
       "nbaId": null,
-      "espnId": 4712849,
-      "pos": "G",
-      "height": "6-7",
-      "birthDate": "2004-01-20",
-      "exp": 4,
-      "college": "Arkansas",
-      "jersey": "0",
-      "unit": "starters"
+      "espnId": 4432573,
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2002-11-12",
+      "exp": 5,
+      "college": "Duke",
+      "jersey": "5",
+      "unit": "starters",
+      "slot": "PF"
     },
     {
       "name": "Wendell Carter Jr.",
@@ -103,7 +111,21 @@
       "exp": 9,
       "college": "Duke",
       "jersey": "34",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "C"
+    },
+    {
+      "name": "Anthony Black",
+      "bbrefId": "blackan01",
+      "nbaId": null,
+      "espnId": 4712849,
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "2004-01-20",
+      "exp": 4,
+      "college": "Arkansas",
+      "jersey": "0",
+      "unit": "second"
     },
     {
       "name": "Nikola Vucevic",
@@ -119,19 +141,6 @@
       "unit": "second"
     },
     {
-      "name": "Jalen Suggs",
-      "bbrefId": "suggsja01",
-      "nbaId": null,
-      "espnId": 4432165,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "2001-06-03",
-      "exp": 6,
-      "college": "Gonzaga",
-      "jersey": "4",
-      "unit": "second"
-    },
-    {
       "name": "Tristan da Silva",
       "bbrefId": "dasiltr01",
       "nbaId": null,
@@ -142,6 +151,19 @@
       "exp": 3,
       "college": "Colorado",
       "jersey": "23",
+      "unit": "second"
+    },
+    {
+      "name": "Jamal Cain",
+      "bbrefId": "cainja01",
+      "nbaId": null,
+      "espnId": 4278572,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "1999-03-20",
+      "exp": 5,
+      "college": "Oakland",
+      "jersey": "8",
       "unit": "second"
     },
     {
@@ -168,7 +190,7 @@
       "exp": 8,
       "college": null,
       "jersey": "35",
-      "unit": "second"
+      "unit": "third"
     },
     {
       "name": "Noah Penda",
@@ -181,19 +203,6 @@
       "exp": 2,
       "college": null,
       "jersey": "93",
-      "unit": "third"
-    },
-    {
-      "name": "Jamal Cain",
-      "bbrefId": "cainja01",
-      "nbaId": null,
-      "espnId": 4278572,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "1999-03-20",
-      "exp": 5,
-      "college": "Oakland",
-      "jersey": "8",
       "unit": "third"
     },
     {
@@ -210,6 +219,18 @@
       "unit": "third"
     },
     {
+      "name": "Izaiyah Nelson",
+      "nbaId": null,
+      "espnId": 5107251,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2003-10-01",
+      "exp": 0,
+      "college": "South Florida",
+      "jersey": "25",
+      "unit": "third"
+    },
+    {
       "name": "Jonathan Isaac",
       "bbrefId": "isaacjo01",
       "nbaId": 1628371,
@@ -223,32 +244,6 @@
       "unit": "third"
     },
     {
-      "name": "Malaki Branham",
-      "bbrefId": "branhma01",
-      "nbaId": null,
-      "espnId": 4565201,
-      "pos": "F",
-      "height": "6-4",
-      "birthDate": "2003-05-12",
-      "exp": 5,
-      "college": "Ohio State",
-      "jersey": "12",
-      "unit": "third"
-    },
-    {
-      "name": "JD Davison",
-      "bbrefId": "davisjd01",
-      "nbaId": null,
-      "espnId": 4576085,
-      "pos": "G",
-      "height": "6-1",
-      "birthDate": "2002-10-03",
-      "exp": 5,
-      "college": "Alabama",
-      "jersey": "20",
-      "unit": "camp"
-    },
-    {
       "name": "Colin Castleton",
       "bbrefId": "castlco01",
       "nbaId": null,
@@ -259,18 +254,6 @@
       "exp": 4,
       "college": "Florida",
       "jersey": "14",
-      "unit": "camp"
-    },
-    {
-      "name": "Kevin Knox II",
-      "nbaId": 1628995,
-      "espnId": 4278075,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "1999-08-11",
-      "exp": 8,
-      "college": "Kentucky",
-      "jersey": "24",
       "unit": "camp"
     },
     {
@@ -287,15 +270,41 @@
       "unit": "camp"
     },
     {
-      "name": "Izaiyah Nelson",
+      "name": "Malaki Branham",
+      "bbrefId": "branhma01",
       "nbaId": null,
-      "espnId": 5107251,
+      "espnId": 4565201,
+      "pos": "F",
+      "height": "6-4",
+      "birthDate": "2003-05-12",
+      "exp": 5,
+      "college": "Ohio State",
+      "jersey": "12",
+      "unit": "camp"
+    },
+    {
+      "name": "JD Davison",
+      "bbrefId": "davisjd01",
+      "nbaId": null,
+      "espnId": 4576085,
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "2002-10-03",
+      "exp": 5,
+      "college": "Alabama",
+      "jersey": "20",
+      "unit": "camp"
+    },
+    {
+      "name": "Kevin Knox II",
+      "nbaId": 1628995,
+      "espnId": 4278075,
       "pos": "F",
       "height": "6-8",
-      "birthDate": "2003-10-01",
-      "exp": 0,
-      "college": "South Florida",
-      "jersey": "25",
+      "birthDate": "1999-08-11",
+      "exp": 8,
+      "college": "Kentucky",
+      "jersey": "24",
       "unit": "camp"
     },
     {

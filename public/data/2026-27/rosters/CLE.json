@@ -6,11 +6,15 @@
   "statsSeason": "2025-26",
   "coach": "Kenny Atkinson",
   "lastUpdated": "2026-10-15",
-  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
       "url": "https://www.espn.com/nba/team/roster/_/name/cle"
+    },
+    {
+      "label": "ESPN depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/cle"
     },
     {
       "label": "Basketball Reference stats",
@@ -51,7 +55,8 @@
       "exp": 18,
       "college": "Arizona State",
       "jersey": "1",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "PG"
     },
     {
       "name": "Donovan Mitchell",
@@ -64,20 +69,8 @@
       "exp": 10,
       "college": "Louisville",
       "jersey": "45",
-      "unit": "starters"
-    },
-    {
-      "name": "Evan Mobley",
-      "bbrefId": "mobleev01",
-      "nbaId": null,
-      "espnId": 4432158,
-      "pos": "C",
-      "height": "6-11",
-      "birthDate": "2001-06-18",
-      "exp": 6,
-      "college": "USC",
-      "jersey": "4",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SG"
     },
     {
       "name": "Peyton Watson",
@@ -90,7 +83,22 @@
       "exp": 5,
       "college": "UCLA",
       "jersey": "8",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Evan Mobley",
+      "bbrefId": "mobleev01",
+      "nbaId": null,
+      "espnId": 4432158,
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "2001-06-18",
+      "exp": 6,
+      "college": "USC",
+      "jersey": "4",
+      "unit": "starters",
+      "slot": "PF"
     },
     {
       "name": "Jarrett Allen",
@@ -103,7 +111,8 @@
       "exp": 10,
       "college": "Texas",
       "jersey": "31",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "C"
     },
     {
       "name": "Jaylon Tyson",
@@ -184,43 +193,6 @@
       "unit": "third"
     },
     {
-      "name": "Curtis Jones",
-      "bbrefId": "jonescu01",
-      "nbaId": null,
-      "espnId": 4898369,
-      "pos": "G",
-      "height": "6-3",
-      "birthDate": "2001-10-04",
-      "exp": 2,
-      "college": "Iowa State",
-      "jersey": "14",
-      "unit": "third"
-    },
-    {
-      "name": "Rashaun Agee",
-      "nbaId": null,
-      "espnId": 4593815,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2000-11-02",
-      "exp": 0,
-      "college": "Texas A&M",
-      "jersey": "19",
-      "unit": "third"
-    },
-    {
-      "name": "Zack Austin",
-      "nbaId": null,
-      "espnId": 4702099,
-      "pos": "F",
-      "height": "6-5",
-      "birthDate": "2001-08-11",
-      "exp": 0,
-      "college": "Pittsburgh",
-      "jersey": "55",
-      "unit": "third"
-    },
-    {
       "name": "Khalifa Diop",
       "nbaId": null,
       "espnId": 4997530,
@@ -230,6 +202,30 @@
       "exp": 0,
       "college": null,
       "jersey": "18",
+      "unit": "third"
+    },
+    {
+      "name": "Mario Hezonja",
+      "nbaId": null,
+      "espnId": 2995706,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "1995-02-25",
+      "exp": 6,
+      "college": null,
+      "jersey": "33",
+      "unit": "third"
+    },
+    {
+      "name": "Ernest Udeh Jr.",
+      "nbaId": null,
+      "espnId": 5106261,
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "2004-01-08",
+      "exp": 0,
+      "college": "Miami",
+      "jersey": "39",
       "unit": "third"
     },
     {
@@ -243,18 +239,18 @@
       "exp": 2,
       "college": "Cleveland State",
       "jersey": "21",
-      "unit": "camp"
+      "unit": "third"
     },
     {
-      "name": "Mario Hezonja",
+      "name": "Meleek Thomas",
       "nbaId": null,
-      "espnId": 2995706,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "1995-02-25",
-      "exp": 6,
-      "college": null,
-      "jersey": "33",
+      "espnId": 5041951,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2006-08-06",
+      "exp": 0,
+      "college": "Arkansas",
+      "jersey": "15",
       "unit": "camp"
     },
     {
@@ -271,6 +267,43 @@
       "unit": "camp"
     },
     {
+      "name": "Curtis Jones",
+      "bbrefId": "jonescu01",
+      "nbaId": null,
+      "espnId": 4898369,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2001-10-04",
+      "exp": 2,
+      "college": "Iowa State",
+      "jersey": "14",
+      "unit": "camp"
+    },
+    {
+      "name": "Rashaun Agee",
+      "nbaId": null,
+      "espnId": 4593815,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2000-11-02",
+      "exp": 0,
+      "college": "Texas A&M",
+      "jersey": "19",
+      "unit": "camp"
+    },
+    {
+      "name": "Zack Austin",
+      "nbaId": null,
+      "espnId": 4702099,
+      "pos": "F",
+      "height": "6-5",
+      "birthDate": "2001-08-11",
+      "exp": 0,
+      "college": "Pittsburgh",
+      "jersey": "55",
+      "unit": "camp"
+    },
+    {
       "name": "Kadary Richmond",
       "bbrefId": "richmka01",
       "nbaId": null,
@@ -281,30 +314,6 @@
       "exp": 2,
       "college": "St. John's",
       "jersey": "16",
-      "unit": "camp"
-    },
-    {
-      "name": "Meleek Thomas",
-      "nbaId": null,
-      "espnId": 5041951,
-      "pos": "G",
-      "height": "6-3",
-      "birthDate": "2006-08-06",
-      "exp": 0,
-      "college": "Arkansas",
-      "jersey": "15",
-      "unit": "camp"
-    },
-    {
-      "name": "Ernest Udeh Jr.",
-      "nbaId": null,
-      "espnId": 5106261,
-      "pos": "C",
-      "height": "6-11",
-      "birthDate": "2004-01-08",
-      "exp": 0,
-      "college": "Miami",
-      "jersey": "39",
       "unit": "camp"
     },
     {

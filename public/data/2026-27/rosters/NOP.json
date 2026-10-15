@@ -6,11 +6,15 @@
   "statsSeason": "2025-26",
   "coach": "Jamahl Mosley",
   "lastUpdated": "2026-10-15",
-  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
       "url": "https://www.espn.com/nba/team/roster/_/name/no"
+    },
+    {
+      "label": "ESPN depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/no"
     },
     {
       "label": "Basketball Reference stats",
@@ -41,6 +45,20 @@
   ],
   "players": [
     {
+      "name": "Dejounte Murray",
+      "bbrefId": "murrade01",
+      "nbaId": 1627749,
+      "espnId": 3907497,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "1996-09-19",
+      "exp": 10,
+      "college": "Washington",
+      "jersey": "5",
+      "unit": "starters",
+      "slot": "PG"
+    },
+    {
       "name": "Trey Murphy III",
       "bbrefId": "murphtr02",
       "nbaId": null,
@@ -51,59 +69,8 @@
       "exp": 6,
       "college": "Virginia",
       "jersey": "25",
-      "unit": "starters"
-    },
-    {
-      "name": "Saddiq Bey",
-      "bbrefId": "beysa01",
-      "nbaId": 1630180,
-      "espnId": 4397136,
-      "pos": "G",
-      "height": "6-8",
-      "birthDate": "1999-04-09",
-      "exp": 6,
-      "college": "Villanova",
-      "jersey": "41",
-      "unit": "starters"
-    },
-    {
-      "name": "Julian Reese",
-      "bbrefId": "reeseju01",
-      "nbaId": null,
-      "espnId": 4683742,
-      "pos": "F",
-      "height": "6-9",
-      "birthDate": "2003-06-30",
-      "exp": 2,
-      "college": "Maryland",
-      "jersey": "13",
-      "unit": "starters"
-    },
-    {
-      "name": "Bennedict Mathurin",
-      "bbrefId": "mathube01",
-      "nbaId": null,
-      "espnId": 4683634,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "2002-06-19",
-      "exp": 5,
-      "college": "Arizona",
-      "jersey": "24",
-      "unit": "starters"
-    },
-    {
-      "name": "Zion Williamson",
-      "bbrefId": "willizi01",
-      "nbaId": 1629627,
-      "espnId": 4395628,
-      "pos": "F",
-      "height": "6-6",
-      "birthDate": "2000-07-06",
-      "exp": 7,
-      "college": "Duke",
-      "jersey": "1",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SG"
     },
     {
       "name": "Herbert Jones",
@@ -116,19 +83,61 @@
       "exp": 6,
       "college": "Alabama",
       "jersey": "2",
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Zion Williamson",
+      "bbrefId": "willizi01",
+      "nbaId": 1629627,
+      "espnId": 4395628,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "2000-07-06",
+      "exp": 7,
+      "college": "Duke",
+      "jersey": "1",
+      "unit": "starters",
+      "slot": "PF"
+    },
+    {
+      "name": "Yves Missi",
+      "bbrefId": "missiyv01",
+      "nbaId": null,
+      "espnId": 5061589,
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "2004-05-14",
+      "exp": 3,
+      "college": "Baylor",
+      "jersey": "21",
+      "unit": "starters",
+      "slot": "C"
+    },
+    {
+      "name": "Saddiq Bey",
+      "bbrefId": "beysa01",
+      "nbaId": 1630180,
+      "espnId": 4397136,
+      "pos": "G",
+      "height": "6-8",
+      "birthDate": "1999-04-09",
+      "exp": 6,
+      "college": "Villanova",
+      "jersey": "41",
       "unit": "second"
     },
     {
-      "name": "Dejounte Murray",
-      "bbrefId": "murrade01",
-      "nbaId": 1627749,
-      "espnId": 3907497,
+      "name": "Bennedict Mathurin",
+      "bbrefId": "mathube01",
+      "nbaId": null,
+      "espnId": 4683634,
       "pos": "G",
-      "height": "6-4",
-      "birthDate": "1996-09-19",
-      "exp": 10,
-      "college": "Washington",
-      "jersey": "5",
+      "height": "6-5",
+      "birthDate": "2002-06-19",
+      "exp": 5,
+      "college": "Arizona",
+      "jersey": "24",
       "unit": "second"
     },
     {
@@ -158,6 +167,19 @@
       "unit": "second"
     },
     {
+      "name": "Karlo Matkovic",
+      "bbrefId": "matkoka01",
+      "nbaId": null,
+      "espnId": 4997538,
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2001-03-30",
+      "exp": 3,
+      "college": null,
+      "jersey": "17",
+      "unit": "second"
+    },
+    {
       "name": "Jordan Poole",
       "bbrefId": "poolejo01",
       "nbaId": 1629673,
@@ -168,32 +190,6 @@
       "exp": 8,
       "college": "Michigan",
       "jersey": "3",
-      "unit": "second"
-    },
-    {
-      "name": "Bryce McGowens",
-      "bbrefId": "mcgowbr01",
-      "nbaId": null,
-      "espnId": 4576086,
-      "pos": "G",
-      "height": "6-6",
-      "birthDate": "2002-11-08",
-      "exp": 5,
-      "college": "Nebraska",
-      "jersey": "11",
-      "unit": "third"
-    },
-    {
-      "name": "Yves Missi",
-      "bbrefId": "missiyv01",
-      "nbaId": null,
-      "espnId": 5061589,
-      "pos": "C",
-      "height": "6-11",
-      "birthDate": "2004-05-14",
-      "exp": 3,
-      "college": "Baylor",
-      "jersey": "21",
       "unit": "third"
     },
     {
@@ -210,6 +206,31 @@
       "unit": "third"
     },
     {
+      "name": "Jaron Pierre Jr.",
+      "nbaId": null,
+      "espnId": 4703115,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2002-07-12",
+      "exp": 0,
+      "college": "SMU",
+      "jersey": "10",
+      "unit": "third"
+    },
+    {
+      "name": "Bryce McGowens",
+      "bbrefId": "mcgowbr01",
+      "nbaId": null,
+      "espnId": 4576086,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2002-11-08",
+      "exp": 5,
+      "college": "Nebraska",
+      "jersey": "11",
+      "unit": "third"
+    },
+    {
       "name": "Trendon Watford",
       "bbrefId": "watfotr01",
       "nbaId": null,
@@ -223,29 +244,28 @@
       "unit": "third"
     },
     {
-      "name": "Karlo Matkovic",
-      "bbrefId": "matkoka01",
+      "name": "Malik Dia",
       "nbaId": null,
-      "espnId": 4997538,
+      "espnId": 4712862,
       "pos": "F",
-      "height": "6-10",
-      "birthDate": "2001-03-30",
-      "exp": 3,
-      "college": null,
-      "jersey": "17",
-      "unit": "third"
+      "height": "6-9",
+      "birthDate": "2004-02-04",
+      "exp": 0,
+      "college": "Ole Miss",
+      "jersey": "8",
+      "unit": "camp"
     },
     {
-      "name": "Christian Koloko",
-      "bbrefId": "kolokch01",
+      "name": "Julian Reese",
+      "bbrefId": "reeseju01",
       "nbaId": null,
-      "espnId": 4431778,
-      "pos": "C",
-      "height": "6-11",
-      "birthDate": "2000-06-20",
-      "exp": 4,
-      "college": "Arizona",
-      "jersey": "35",
+      "espnId": 4683742,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2003-06-30",
+      "exp": 2,
+      "college": "Maryland",
+      "jersey": "13",
       "unit": "camp"
     },
     {
@@ -259,6 +279,19 @@
       "exp": 3,
       "college": null,
       "jersey": "14",
+      "unit": "camp"
+    },
+    {
+      "name": "Christian Koloko",
+      "bbrefId": "kolokch01",
+      "nbaId": null,
+      "espnId": 4431778,
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "2000-06-20",
+      "exp": 4,
+      "college": "Arizona",
+      "jersey": "35",
       "unit": "camp"
     },
     {
@@ -288,18 +321,6 @@
       "unit": "camp"
     },
     {
-      "name": "Malik Dia",
-      "nbaId": null,
-      "espnId": 4712862,
-      "pos": "F",
-      "height": "6-9",
-      "birthDate": "2004-02-04",
-      "exp": 0,
-      "college": "Ole Miss",
-      "jersey": "8",
-      "unit": "camp"
-    },
-    {
       "name": "Jalon Moore",
       "nbaId": null,
       "espnId": 4701819,
@@ -309,18 +330,6 @@
       "exp": 0,
       "college": "Oklahoma",
       "jersey": null,
-      "unit": "camp"
-    },
-    {
-      "name": "Jaron Pierre Jr.",
-      "nbaId": null,
-      "espnId": 4703115,
-      "pos": "G",
-      "height": "6-6",
-      "birthDate": "2002-07-12",
-      "exp": 0,
-      "college": "SMU",
-      "jersey": "10",
       "unit": "camp"
     }
   ]

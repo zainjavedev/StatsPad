@@ -6,11 +6,15 @@
   "statsSeason": "2025-26",
   "coach": "Doug Christie",
   "lastUpdated": "2026-10-15",
-  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
       "url": "https://www.espn.com/nba/team/roster/_/name/sac"
+    },
+    {
+      "label": "ESPN depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/sac"
     },
     {
       "label": "Basketball Reference stats",
@@ -41,17 +45,30 @@
   ],
   "players": [
     {
-      "name": "Keegan Murray",
-      "bbrefId": "murrake02",
+      "name": "Ben Simmons",
+      "nbaId": 1627732,
+      "espnId": 3907387,
+      "pos": "G",
+      "height": "6-10",
+      "birthDate": "1996-07-20",
+      "exp": 10,
+      "college": "LSU",
+      "jersey": "25",
+      "unit": "starters",
+      "slot": "PG"
+    },
+    {
+      "name": "Darius Acuff Jr.",
       "nbaId": null,
-      "espnId": 4594327,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2000-08-19",
-      "exp": 5,
-      "college": "Iowa",
-      "jersey": "13",
-      "unit": "starters"
+      "espnId": 5142620,
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "2006-11-16",
+      "exp": 0,
+      "college": "Arkansas",
+      "jersey": "5",
+      "unit": "starters",
+      "slot": "SG"
     },
     {
       "name": "Zach LaVine",
@@ -64,7 +81,22 @@
       "exp": 13,
       "college": "UCLA",
       "jersey": "8",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Keegan Murray",
+      "bbrefId": "murrake02",
+      "nbaId": null,
+      "espnId": 4594327,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2000-08-19",
+      "exp": 5,
+      "college": "Iowa",
+      "jersey": "13",
+      "unit": "starters",
+      "slot": "PF"
     },
     {
       "name": "Domantas Sabonis",
@@ -77,20 +109,8 @@
       "exp": 11,
       "college": "Gonzaga",
       "jersey": "11",
-      "unit": "starters"
-    },
-    {
-      "name": "Leaky Black",
-      "bbrefId": "blackle01",
-      "nbaId": null,
-      "espnId": 4395650,
-      "pos": "F",
-      "height": "6-6",
-      "birthDate": "1999-06-14",
-      "exp": 3,
-      "college": "North Carolina",
-      "jersey": "19",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "C"
     },
     {
       "name": "Maxime Raynaud",
@@ -103,19 +123,6 @@
       "exp": 2,
       "college": "Stanford",
       "jersey": "42",
-      "unit": "starters"
-    },
-    {
-      "name": "Daeqwon Plowden",
-      "bbrefId": "plowdda01",
-      "nbaId": null,
-      "espnId": 4279318,
-      "pos": "G",
-      "height": "6-6",
-      "birthDate": "1998-08-29",
-      "exp": 3,
-      "college": "Bowling Green",
-      "jersey": "29",
       "unit": "second"
     },
     {
@@ -184,6 +191,18 @@
       "unit": "third"
     },
     {
+      "name": "Adam Flagler",
+      "nbaId": null,
+      "espnId": 4397654,
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "1999-12-01",
+      "exp": 3,
+      "college": "Baylor",
+      "jersey": "20",
+      "unit": "third"
+    },
+    {
       "name": "Jonathan Mogbo",
       "bbrefId": "mogbojo01",
       "nbaId": null,
@@ -197,30 +216,6 @@
       "unit": "third"
     },
     {
-      "name": "Darius Acuff Jr.",
-      "nbaId": null,
-      "espnId": 5142620,
-      "pos": "G",
-      "height": "6-2",
-      "birthDate": "2006-11-16",
-      "exp": 0,
-      "college": "Arkansas",
-      "jersey": "5",
-      "unit": "third"
-    },
-    {
-      "name": "Adam Flagler",
-      "nbaId": null,
-      "espnId": 4397654,
-      "pos": "G",
-      "height": "6-1",
-      "birthDate": "1999-12-01",
-      "exp": 3,
-      "college": "Baylor",
-      "jersey": "20",
-      "unit": "third"
-    },
-    {
       "name": "Alex Karaban",
       "nbaId": null,
       "espnId": 4917149,
@@ -231,6 +226,44 @@
       "college": "UConn",
       "jersey": "33",
       "unit": "third"
+    },
+    {
+      "name": "Emanuel Sharp",
+      "nbaId": null,
+      "espnId": 5106058,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2004-03-07",
+      "exp": 0,
+      "college": "Houston",
+      "jersey": "34",
+      "unit": "third"
+    },
+    {
+      "name": "Daeqwon Plowden",
+      "bbrefId": "plowdda01",
+      "nbaId": null,
+      "espnId": 4279318,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "1998-08-29",
+      "exp": 3,
+      "college": "Bowling Green",
+      "jersey": "29",
+      "unit": "camp"
+    },
+    {
+      "name": "Leaky Black",
+      "bbrefId": "blackle01",
+      "nbaId": null,
+      "espnId": 4395650,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "1999-06-14",
+      "exp": 3,
+      "college": "North Carolina",
+      "jersey": "19",
+      "unit": "camp"
     },
     {
       "name": "Viktor Lakhin",
@@ -267,30 +300,6 @@
       "exp": 10,
       "college": "Louisiana",
       "jersey": "3",
-      "unit": "camp"
-    },
-    {
-      "name": "Emanuel Sharp",
-      "nbaId": null,
-      "espnId": 5106058,
-      "pos": "G",
-      "height": "6-3",
-      "birthDate": "2004-03-07",
-      "exp": 0,
-      "college": "Houston",
-      "jersey": "34",
-      "unit": "camp"
-    },
-    {
-      "name": "Ben Simmons",
-      "nbaId": 1627732,
-      "espnId": 3907387,
-      "pos": "G",
-      "height": "6-10",
-      "birthDate": "1996-07-20",
-      "exp": 10,
-      "college": "LSU",
-      "jersey": "25",
       "unit": "camp"
     }
   ]

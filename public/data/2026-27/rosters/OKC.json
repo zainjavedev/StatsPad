@@ -6,11 +6,15 @@
   "statsSeason": "2025-26",
   "coach": "Mark Daigneault",
   "lastUpdated": "2026-10-15",
-  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
       "url": "https://www.espn.com/nba/team/roster/_/name/okc"
+    },
+    {
+      "label": "ESPN depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/okc"
     },
     {
       "label": "Basketball Reference stats",
@@ -51,33 +55,8 @@
       "exp": 9,
       "college": "Kentucky",
       "jersey": "2",
-      "unit": "starters"
-    },
-    {
-      "name": "Chet Holmgren",
-      "bbrefId": "holmgch01",
-      "nbaId": null,
-      "espnId": 4433255,
-      "pos": "C",
-      "height": "7-1",
-      "birthDate": "2002-05-01",
-      "exp": 4,
-      "college": "Gonzaga",
-      "jersey": "7",
-      "unit": "starters"
-    },
-    {
-      "name": "Jalen Williams",
-      "bbrefId": "willija06",
-      "nbaId": null,
-      "espnId": 4593803,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "2001-04-14",
-      "exp": 5,
-      "college": "Santa Clara",
-      "jersey": "8",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "PG"
     },
     {
       "name": "Cason Wallace",
@@ -90,20 +69,36 @@
       "exp": 4,
       "college": "Kentucky",
       "jersey": "22",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SG"
     },
     {
-      "name": "Ajay Mitchell",
-      "bbrefId": "mitchaj01",
+      "name": "Jalen Williams",
+      "bbrefId": "willija06",
       "nbaId": null,
-      "espnId": 4900671,
+      "espnId": 4593803,
       "pos": "G",
-      "height": "6-4",
-      "birthDate": "2002-06-25",
-      "exp": 3,
-      "college": "UC Santa Barbara",
-      "jersey": "25",
-      "unit": "starters"
+      "height": "6-5",
+      "birthDate": "2001-04-14",
+      "exp": 5,
+      "college": "Santa Clara",
+      "jersey": "8",
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Chet Holmgren",
+      "bbrefId": "holmgch01",
+      "nbaId": null,
+      "espnId": 4433255,
+      "pos": "C",
+      "height": "7-1",
+      "birthDate": "2002-05-01",
+      "exp": 4,
+      "college": "Gonzaga",
+      "jersey": "7",
+      "unit": "starters",
+      "slot": "PF"
     },
     {
       "name": "Isaiah Hartenstein",
@@ -116,6 +111,20 @@
       "exp": 9,
       "college": null,
       "jersey": "55",
+      "unit": "starters",
+      "slot": "C"
+    },
+    {
+      "name": "Ajay Mitchell",
+      "bbrefId": "mitchaj01",
+      "nbaId": null,
+      "espnId": 4900671,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2002-06-25",
+      "exp": 3,
+      "college": "UC Santa Barbara",
+      "jersey": "25",
       "unit": "second"
     },
     {
@@ -158,19 +167,6 @@
       "unit": "second"
     },
     {
-      "name": "Nikola Topic",
-      "bbrefId": "topicni01",
-      "nbaId": null,
-      "espnId": 5159925,
-      "pos": "G",
-      "height": "6-6",
-      "birthDate": "2005-08-10",
-      "exp": 2,
-      "college": null,
-      "jersey": "44",
-      "unit": "second"
-    },
-    {
       "name": "Kenrich Williams",
       "bbrefId": "willike04",
       "nbaId": 1629026,
@@ -181,6 +177,55 @@
       "exp": 9,
       "college": "TCU",
       "jersey": "34",
+      "unit": "second"
+    },
+    {
+      "name": "Aday Mara",
+      "nbaId": null,
+      "espnId": 5174983,
+      "pos": "C",
+      "height": "7-3",
+      "birthDate": "2005-04-07",
+      "exp": 0,
+      "college": "Michigan",
+      "jersey": "15",
+      "unit": "third"
+    },
+    {
+      "name": "Bennett Stirtz",
+      "nbaId": null,
+      "espnId": 5241364,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2003-10-03",
+      "exp": 0,
+      "college": "Iowa",
+      "jersey": "14",
+      "unit": "third"
+    },
+    {
+      "name": "Nikola Topic",
+      "bbrefId": "topicni01",
+      "nbaId": null,
+      "espnId": 5159925,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2005-08-10",
+      "exp": 2,
+      "college": null,
+      "jersey": "44",
+      "unit": "third"
+    },
+    {
+      "name": "Thomas Sorber",
+      "nbaId": null,
+      "espnId": 5061603,
+      "pos": "C",
+      "height": "6-9",
+      "birthDate": "2005-12-25",
+      "exp": 0,
+      "college": "Georgetown",
+      "jersey": "12",
       "unit": "third"
     },
     {
@@ -206,42 +251,6 @@
       "exp": 0,
       "college": "Creighton",
       "jersey": "21",
-      "unit": "third"
-    },
-    {
-      "name": "Andrew Holifield",
-      "nbaId": null,
-      "espnId": 5116468,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2004-02-02",
-      "exp": 0,
-      "college": "Lamar",
-      "jersey": "17",
-      "unit": "third"
-    },
-    {
-      "name": "Aday Mara",
-      "nbaId": null,
-      "espnId": 5174983,
-      "pos": "C",
-      "height": "7-3",
-      "birthDate": "2005-04-07",
-      "exp": 0,
-      "college": "Michigan",
-      "jersey": "15",
-      "unit": "third"
-    },
-    {
-      "name": "Robert McCray V",
-      "nbaId": null,
-      "espnId": 4685802,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "2002-09-26",
-      "exp": 0,
-      "college": "Florida State",
-      "jersey": "16",
       "unit": "camp"
     },
     {
@@ -254,6 +263,30 @@
       "exp": 0,
       "college": "Kentucky",
       "jersey": "13",
+      "unit": "camp"
+    },
+    {
+      "name": "Andrew Holifield",
+      "nbaId": null,
+      "espnId": 5116468,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2004-02-02",
+      "exp": 0,
+      "college": "Lamar",
+      "jersey": "17",
+      "unit": "camp"
+    },
+    {
+      "name": "Robert McCray V",
+      "nbaId": null,
+      "espnId": 4685802,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2002-09-26",
+      "exp": 0,
+      "college": "Florida State",
+      "jersey": "16",
       "unit": "camp"
     },
     {
@@ -278,30 +311,6 @@
       "exp": 3,
       "college": "Texas Tech",
       "jersey": "40",
-      "unit": "camp"
-    },
-    {
-      "name": "Thomas Sorber",
-      "nbaId": null,
-      "espnId": 5061603,
-      "pos": "C",
-      "height": "6-9",
-      "birthDate": "2005-12-25",
-      "exp": 0,
-      "college": "Georgetown",
-      "jersey": "12",
-      "unit": "camp"
-    },
-    {
-      "name": "Bennett Stirtz",
-      "nbaId": null,
-      "espnId": 5241364,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "2003-10-03",
-      "exp": 0,
-      "college": "Iowa",
-      "jersey": "14",
       "unit": "camp"
     },
     {

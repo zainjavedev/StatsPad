@@ -6,11 +6,15 @@
   "statsSeason": "2025-26",
   "coach": "David Adelman",
   "lastUpdated": "2026-10-15",
-  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
       "url": "https://www.espn.com/nba/team/roster/_/name/den"
+    },
+    {
+      "label": "ESPN depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/den"
     },
     {
       "label": "Basketball Reference stats",
@@ -51,20 +55,8 @@
       "exp": 10,
       "college": "Kentucky",
       "jersey": "27",
-      "unit": "starters"
-    },
-    {
-      "name": "Nikola Jokic",
-      "bbrefId": "jokicni01",
-      "nbaId": 203999,
-      "espnId": 3112335,
-      "pos": "C",
-      "height": "6-11",
-      "birthDate": "1995-02-19",
-      "exp": 12,
-      "college": null,
-      "jersey": "15",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "PG"
     },
     {
       "name": "Christian Braun",
@@ -77,20 +69,8 @@
       "exp": 5,
       "college": "Kansas",
       "jersey": "0",
-      "unit": "starters"
-    },
-    {
-      "name": "DeMar DeRozan",
-      "bbrefId": "derozde01",
-      "nbaId": 201942,
-      "espnId": 3978,
-      "pos": "G",
-      "height": "6-6",
-      "birthDate": "1989-08-07",
-      "exp": 18,
-      "college": "USC",
-      "jersey": "10",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SG"
     },
     {
       "name": "Cameron Johnson",
@@ -103,7 +83,8 @@
       "exp": 8,
       "college": "North Carolina",
       "jersey": "23",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SF"
     },
     {
       "name": "Aaron Gordon",
@@ -116,19 +97,34 @@
       "exp": 13,
       "college": "Arizona",
       "jersey": "32",
-      "unit": "second"
+      "unit": "starters",
+      "slot": "PF"
     },
     {
-      "name": "Spencer Jones",
-      "bbrefId": "jonessp01",
-      "nbaId": null,
-      "espnId": 4592427,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "2001-06-14",
-      "exp": 3,
-      "college": "Stanford",
-      "jersey": "21",
+      "name": "Nikola Jokic",
+      "bbrefId": "jokicni01",
+      "nbaId": 203999,
+      "espnId": 3112335,
+      "pos": "C",
+      "height": "6-11",
+      "birthDate": "1995-02-19",
+      "exp": 12,
+      "college": null,
+      "jersey": "15",
+      "unit": "starters",
+      "slot": "C"
+    },
+    {
+      "name": "DeMar DeRozan",
+      "bbrefId": "derozde01",
+      "nbaId": 201942,
+      "espnId": 3978,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "1989-08-07",
+      "exp": 18,
+      "college": "USC",
+      "jersey": "10",
       "unit": "second"
     },
     {
@@ -145,29 +141,29 @@
       "unit": "second"
     },
     {
-      "name": "Ryan Nembhard",
-      "bbrefId": "nembhry01",
-      "nbaId": null,
-      "espnId": 4433629,
+      "name": "Tyus Jones",
+      "bbrefId": "jonesty01",
+      "nbaId": 1626145,
+      "espnId": 3135046,
       "pos": "G",
-      "height": "5-11",
-      "birthDate": "2003-03-10",
-      "exp": 2,
-      "college": "Gonzaga",
-      "jersey": "9",
+      "height": "6-0",
+      "birthDate": "1996-05-10",
+      "exp": 12,
+      "college": "Duke",
+      "jersey": "5",
       "unit": "second"
     },
     {
-      "name": "Cam Whitmore",
-      "bbrefId": "whitmca01",
+      "name": "Spencer Jones",
+      "bbrefId": "jonessp01",
       "nbaId": null,
-      "espnId": 5105592,
+      "espnId": 4592427,
       "pos": "F",
-      "height": "6-6",
-      "birthDate": "2004-07-08",
-      "exp": 4,
-      "college": "Villanova",
-      "jersey": "00",
+      "height": "6-7",
+      "birthDate": "2001-06-14",
+      "exp": 3,
+      "college": "Stanford",
+      "jersey": "21",
       "unit": "second"
     },
     {
@@ -181,20 +177,7 @@
       "exp": 4,
       "college": "Gonzaga",
       "jersey": "1",
-      "unit": "third"
-    },
-    {
-      "name": "Tyus Jones",
-      "bbrefId": "jonesty01",
-      "nbaId": 1626145,
-      "espnId": 3135046,
-      "pos": "G",
-      "height": "6-0",
-      "birthDate": "1996-05-10",
-      "exp": 12,
-      "college": "Duke",
-      "jersey": "5",
-      "unit": "third"
+      "unit": "second"
     },
     {
       "name": "Zeke Nnaji",
@@ -207,6 +190,18 @@
       "exp": 7,
       "college": "Arizona",
       "jersey": "22",
+      "unit": "third"
+    },
+    {
+      "name": "Alpha Diallo",
+      "nbaId": null,
+      "espnId": 4065813,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "1997-06-29",
+      "exp": 0,
+      "college": "Providence",
+      "jersey": "11",
       "unit": "third"
     },
     {
@@ -235,6 +230,44 @@
       "unit": "third"
     },
     {
+      "name": "Bryce Hopkins",
+      "nbaId": null,
+      "espnId": 4565698,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2002-09-07",
+      "exp": 0,
+      "college": "St. John's",
+      "jersey": "13",
+      "unit": "third"
+    },
+    {
+      "name": "Ryan Nembhard",
+      "bbrefId": "nembhry01",
+      "nbaId": null,
+      "espnId": 4433629,
+      "pos": "G",
+      "height": "5-11",
+      "birthDate": "2003-03-10",
+      "exp": 2,
+      "college": "Gonzaga",
+      "jersey": "9",
+      "unit": "camp"
+    },
+    {
+      "name": "Cam Whitmore",
+      "bbrefId": "whitmca01",
+      "nbaId": null,
+      "espnId": 5105592,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "2004-07-08",
+      "exp": 4,
+      "college": "Villanova",
+      "jersey": "00",
+      "unit": "camp"
+    },
+    {
       "name": "Steven Crowl",
       "nbaId": null,
       "espnId": 4588201,
@@ -244,18 +277,6 @@
       "exp": 0,
       "college": "Wisconsin",
       "jersey": null,
-      "unit": "camp"
-    },
-    {
-      "name": "Alpha Diallo",
-      "nbaId": null,
-      "espnId": 4065813,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "1997-06-29",
-      "exp": 0,
-      "college": "Providence",
-      "jersey": "11",
       "unit": "camp"
     },
     {
@@ -280,18 +301,6 @@
       "exp": 0,
       "college": "Kansas State",
       "jersey": "43",
-      "unit": "camp"
-    },
-    {
-      "name": "Bryce Hopkins",
-      "nbaId": null,
-      "espnId": 4565698,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "2002-09-07",
-      "exp": 0,
-      "college": "St. John's",
-      "jersey": "13",
       "unit": "camp"
     },
     {

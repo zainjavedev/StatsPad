@@ -6,11 +6,15 @@
   "statsSeason": "2025-26",
   "coach": "J.B. Bickerstaff",
   "lastUpdated": "2026-10-15",
-  "note": "Rotation is estimated from last season's minutes, not an announced lineup.",
+  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
       "url": "https://www.espn.com/nba/team/roster/_/name/det"
+    },
+    {
+      "label": "ESPN depth chart",
+      "url": "https://www.espn.com/nba/team/depth/_/name/det"
     },
     {
       "label": "Basketball Reference stats",
@@ -51,20 +55,8 @@
       "exp": 6,
       "college": "Oklahoma State",
       "jersey": "2",
-      "unit": "starters"
-    },
-    {
-      "name": "Jalen Duren",
-      "bbrefId": "durenja01",
-      "nbaId": null,
-      "espnId": 4433621,
-      "pos": "C",
-      "height": "6-10",
-      "birthDate": "2003-11-18",
-      "exp": 5,
-      "college": "Memphis",
-      "jersey": "0",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "PG"
     },
     {
       "name": "Duncan Robinson",
@@ -77,20 +69,8 @@
       "exp": 9,
       "college": "Michigan",
       "jersey": "55",
-      "unit": "starters"
-    },
-    {
-      "name": "John Collins",
-      "bbrefId": "collijo01",
-      "nbaId": 1628381,
-      "espnId": 3908845,
-      "pos": "F",
-      "height": "6-9",
-      "birthDate": "1997-09-23",
-      "exp": 10,
-      "college": "Wake Forest",
-      "jersey": "20",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SG"
     },
     {
       "name": "Ausar Thompson",
@@ -103,7 +83,87 @@
       "exp": 4,
       "college": null,
       "jersey": "9",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "John Collins",
+      "bbrefId": "collijo01",
+      "nbaId": 1628381,
+      "espnId": 3908845,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "1997-09-23",
+      "exp": 10,
+      "college": "Wake Forest",
+      "jersey": "20",
+      "unit": "starters",
+      "slot": "PF"
+    },
+    {
+      "name": "Jalen Duren",
+      "bbrefId": "durenja01",
+      "nbaId": null,
+      "espnId": 4433621,
+      "pos": "C",
+      "height": "6-10",
+      "birthDate": "2003-11-18",
+      "exp": 5,
+      "college": "Memphis",
+      "jersey": "0",
+      "unit": "starters",
+      "slot": "C"
+    },
+    {
+      "name": "Isaiah Joe",
+      "bbrefId": "joeis01",
+      "nbaId": 1630198,
+      "espnId": 4395702,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "1999-07-02",
+      "exp": 7,
+      "college": "Arkansas",
+      "jersey": "17",
+      "unit": "second"
+    },
+    {
+      "name": "Daniss Jenkins",
+      "bbrefId": "jenkida01",
+      "nbaId": null,
+      "espnId": 5107199,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2001-08-17",
+      "exp": 3,
+      "college": "St. John's",
+      "jersey": "24",
+      "unit": "second"
+    },
+    {
+      "name": "Paul Reed",
+      "bbrefId": "reedpa01",
+      "nbaId": 1630194,
+      "espnId": 4278562,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "1999-06-14",
+      "exp": 7,
+      "college": "DePaul",
+      "jersey": "7",
+      "unit": "second"
+    },
+    {
+      "name": "Ronald Holland II",
+      "nbaId": null,
+      "espnId": 4683771,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2005-07-07",
+      "exp": 3,
+      "college": null,
+      "jersey": "5",
+      "unit": "second"
     },
     {
       "name": "Taurean Prince",
@@ -129,20 +189,19 @@
       "exp": 9,
       "college": "Maryland",
       "jersey": "27",
-      "unit": "second"
+      "unit": "third"
     },
     {
-      "name": "Isaiah Joe",
-      "bbrefId": "joeis01",
-      "nbaId": 1630198,
-      "espnId": 4395702,
+      "name": "Ebuka Okorie",
+      "nbaId": null,
+      "espnId": 5258459,
       "pos": "G",
-      "height": "6-4",
-      "birthDate": "1999-07-02",
-      "exp": 7,
-      "college": "Arkansas",
-      "jersey": "17",
-      "unit": "second"
+      "height": "6-2",
+      "birthDate": "2007-04-10",
+      "exp": 0,
+      "college": "Stanford",
+      "jersey": "23",
+      "unit": "third"
     },
     {
       "name": "Elijah Harkless",
@@ -155,45 +214,6 @@
       "exp": 2,
       "college": "UNLV",
       "jersey": "94",
-      "unit": "second"
-    },
-    {
-      "name": "Daniss Jenkins",
-      "bbrefId": "jenkida01",
-      "nbaId": null,
-      "espnId": 5107199,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "2001-08-17",
-      "exp": 3,
-      "college": "St. John's",
-      "jersey": "24",
-      "unit": "second"
-    },
-    {
-      "name": "Javonte Green",
-      "bbrefId": "greenja02",
-      "nbaId": 1629750,
-      "espnId": 2596112,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "1993-07-23",
-      "exp": 7,
-      "college": "Radford",
-      "jersey": "31",
-      "unit": "third"
-    },
-    {
-      "name": "Paul Reed",
-      "bbrefId": "reedpa01",
-      "nbaId": 1630194,
-      "espnId": 4278562,
-      "pos": "F",
-      "height": "6-9",
-      "birthDate": "1999-06-14",
-      "exp": 7,
-      "college": "DePaul",
-      "jersey": "7",
       "unit": "third"
     },
     {
@@ -210,31 +230,6 @@
       "unit": "third"
     },
     {
-      "name": "Chaz Lanier",
-      "bbrefId": "laniech01",
-      "nbaId": null,
-      "espnId": 4700852,
-      "pos": "G",
-      "height": "6-3",
-      "birthDate": "2001-12-19",
-      "exp": 2,
-      "college": "Tennessee",
-      "jersey": "8",
-      "unit": "third"
-    },
-    {
-      "name": "Ronald Holland II",
-      "nbaId": null,
-      "espnId": 4683771,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2005-07-07",
-      "exp": 3,
-      "college": null,
-      "jersey": "5",
-      "unit": "third"
-    },
-    {
       "name": "Isaac Jones",
       "bbrefId": "jonesis01",
       "nbaId": null,
@@ -245,18 +240,19 @@
       "exp": 3,
       "college": "Washington State",
       "jersey": "13",
-      "unit": "camp"
+      "unit": "third"
     },
     {
-      "name": "Ebuka Okorie",
-      "nbaId": null,
-      "espnId": 5258459,
+      "name": "Javonte Green",
+      "bbrefId": "greenja02",
+      "nbaId": 1629750,
+      "espnId": 2596112,
       "pos": "G",
-      "height": "6-2",
-      "birthDate": "2007-04-10",
-      "exp": 0,
-      "college": "Stanford",
-      "jersey": "23",
+      "height": "6-5",
+      "birthDate": "1993-07-23",
+      "exp": 7,
+      "college": "Radford",
+      "jersey": "31",
       "unit": "camp"
     },
     {
@@ -269,6 +265,19 @@
       "exp": 0,
       "college": "Virginia",
       "jersey": "34",
+      "unit": "camp"
+    },
+    {
+      "name": "Chaz Lanier",
+      "bbrefId": "laniech01",
+      "nbaId": null,
+      "espnId": 4700852,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2001-12-19",
+      "exp": 2,
+      "college": "Tennessee",
+      "jersey": "8",
       "unit": "camp"
     },
     {

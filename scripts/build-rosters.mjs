@@ -32,6 +32,7 @@ const byFull = bestBy('full', plain), byShort = bestBy('short', noSuffix);
 const idByName = new Map(Object.entries(nbaIds).map(([name, id]) => [plain(name), id]));
 const idByShort = new Map(Object.entries(nbaIds).map(([name, id]) => [noSuffix(name), id]));
 
+const SLOTS = ['PG', 'SG', 'SF', 'PF', 'C'];
 const UNITS = [
   {key: 'starters', label: 'Expected starting five', short: 'Starters', size: 5},
   {key: 'second', label: 'Second unit', short: '2nd unit', size: 5},
@@ -46,6 +47,8 @@ async function build(code) {
   const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/${team.espn}/roster`);
   if (!response.ok) throw new Error(`${code}: ESPN answered ${response.status}`);
   const data = await response.json();
+  const depthResponse = await fetch(`https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/${team.espn}/depthcharts`);
+  const depth = depthResponse.ok ? (await depthResponse.json()).depthchart?.[0]?.positions ?? {} : {};
 
   const players = data.athletes.map(athlete => {
     const name = athlete.fullName;
@@ -66,16 +69,36 @@ async function build(code) {
     };
   });
 
-  /* Rotation: whoever played the most minutes last season, rookies and
-     unknowns after. It is an estimate; the page says so. */
-  players.sort((a, b) => b._minutes - a._minutes);
+  /* Starters come from ESPN's depth chart: the first name at each position,
+     skipping anyone already taken at an earlier slot. Everyone else is ordered
+     by how high they sit on the chart, then by last season's minutes. Without
+     a depth chart it falls back to minutes alone. */
+  const byEspnId = new Map(players.map(player => [String(player.espnId), player]));
+  const taken = new Set();
+  for (const slot of SLOTS) {
+    const pick = (depth[slot.toLowerCase()]?.athletes ?? []).map(entry => byEspnId.get(String(entry.id))).find(player => player && !taken.has(player));
+    if (pick) { pick.unit = 'starters'; pick.slot = slot; taken.add(pick); }
+  }
+  const spare = players.filter(player => !taken.has(player)).sort((a, b) => b._minutes - a._minutes);
+  while (taken.size < 5 && spare.length) { const player = spare.shift(); player.unit = 'starters'; taken.add(player); }
+  const depthRank = new Map();
+  for (const slot of SLOTS) (depth[slot.toLowerCase()]?.athletes ?? []).forEach((entry, index) => {
+    const player = byEspnId.get(String(entry.id));
+    if (player) depthRank.set(player, Math.min(depthRank.get(player) ?? Infinity, index));
+  });
+  const rest = players.filter(player => !taken.has(player))
+    .sort((a, b) => (depthRank.get(a) ?? 99) - (depthRank.get(b) ?? 99) || b._minutes - a._minutes);
+  const open = UNITS.filter(unit => unit.key !== 'starters');
   let cursor = 0;
-  for (const unit of UNITS) {
-    const members = players.slice(cursor, cursor + unit.size);
+  for (const unit of open) {
+    const members = rest.slice(cursor, cursor + unit.size);
     members.forEach(player => { player.unit = unit.key; });
     cursor += members.length;
   }
-  const ordered = UNITS.flatMap(unit => players.filter(player => player.unit === unit.key));
+
+  const ordered = UNITS.flatMap(unit => unit.key === 'starters'
+    ? [...SLOTS.map(slot => players.find(player => player.slot === slot)).filter(Boolean), ...players.filter(player => player.unit === 'starters' && !player.slot)]
+    : rest.filter(player => player.unit === unit.key));
   const clean = ordered.map(({_minutes, ...player}) => player);
   return {
     team: code,
@@ -85,9 +108,10 @@ async function build(code) {
     statsSeason: '2025-26',
     coach: data.coach?.[0] ? `${data.coach[0].firstName} ${data.coach[0].lastName}` : null,
     lastUpdated: new Date().toISOString().slice(0, 10),
-    note: 'Rotation is estimated from last season\'s minutes, not an announced lineup.',
+    note: 'Starters follow ESPN\'s depth chart and the rest of the rotation is estimated; coaches can change any of it.',
     sources: [
       {label: 'ESPN roster', url: `https://www.espn.com/nba/team/roster/_/name/${team.espn}`},
+      {label: 'ESPN depth chart', url: `https://www.espn.com/nba/team/depth/_/name/${team.espn}`},
       {label: 'Basketball Reference stats', url: 'https://www.basketball-reference.com/leagues/NBA_2026_per_game.html'},
     ],
     units: UNITS.map(({size, ...unit}) => unit),
