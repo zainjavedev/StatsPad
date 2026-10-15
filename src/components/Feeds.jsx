@@ -12,12 +12,9 @@ function gameDay(date) {
   return dayFormat.format(date);
 }
 
-function Side({team, scored, won, home}) {
-  return <span className={won ? 'game-side won' : 'game-side'}>
-    {team.logo ? <img src={team.logo} alt="" loading="lazy"/> : <i/>}
-    <b>{home && <em>@</em>}{team.name}</b>
-    {scored && <strong>{team.score}</strong>}
-  </span>;
+function Team({team, home}) {
+  const logo = team.logo ? <img src={team.logo} alt="" loading="lazy"/> : <i/>;
+  return <span className="game-team" title={team.name}>{!home && logo}<b>{team.abbr}</b>{home && logo}</span>;
 }
 
 export function GameList({games, empty = 'No games scheduled this week.', results = false}) {
@@ -25,14 +22,17 @@ export function GameList({games, empty = 'No games scheduled this week.', result
   if (!games.length) return <p className="feed-empty">{empty}</p>;
   return <ul className={results ? 'game-list results' : 'game-list'}>{games.map(game => {
     const live = game.state === 'in', final = game.state === 'post', scored = live || final;
-    const winner = final && Number(game.away.score) !== Number(game.home.score) ? (Number(game.away.score) > Number(game.home.score) ? 'away' : 'home') : null;
+    const away = Number(game.away.score), home = Number(game.home.score);
+    const lead = final && away !== home ? (away > home ? 'away' : 'home') : null;
     return <li key={game.id}>
-      <div className="game-teams"><Side team={game.away} scored={scored} won={winner === 'away'}/><Side team={game.home} scored={scored} won={winner === 'home'} home/></div>
-      <div className="game-when">
-        {live ? <span className="game-live">Live</span> : <b>{gameDay(game.date)}</b>}
-        <span>{live ? game.detail : final ? 'Final' : timeFormat.format(game.date)}</span>
-        {(game.preseason || game.tv) && <small>{[game.preseason && 'Preseason', game.tv].filter(Boolean).join(' · ')}</small>}
-      </div>
+      <span className="game-line">
+        <Team team={game.away}/>
+        {scored ? <><b className={lead === 'away' ? 'game-score won' : 'game-score'}>{game.away.score}</b><span className="game-sep">–</span><b className={lead === 'home' ? 'game-score won' : 'game-score'}>{game.home.score}</b></> : <span className="game-sep">@</span>}
+        <Team team={game.home} home/>
+      </span>
+      <span className="game-when">
+        {live ? <><span className="game-live">Live</span> {game.detail}</> : <>{gameDay(game.date)} · {final ? 'Final' : timeFormat.format(game.date)}</>}
+      </span>
     </li>;
   })}</ul>;
 }

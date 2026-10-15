@@ -777,28 +777,26 @@ header .brand small{margin-top:3px}
 
 /* Game and news lists (front page and team pages). */
 .game-list,.news-list{margin:0;padding:0;list-style:none}
-.game-list li{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:72px;padding:12px 0;border-bottom:1px solid var(--line)}
+.game-list li{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:38px;padding:7px 0;border-bottom:1px solid var(--line)}
 .game-list li:last-child,.news-list li:last-child{border-bottom:0}
-.game-teams{display:grid;gap:6px;min-width:0}
-.game-side{display:flex;align-items:center;gap:9px;min-width:0}
-.game-side img,.game-side i{flex:none;width:24px;height:24px;object-fit:contain}
-.game-side b{overflow:hidden;font-size:14px;font-weight:700;text-overflow:ellipsis;white-space:nowrap}
-.game-side b em{margin-right:5px;color:var(--text-4);font-style:normal;font-weight:600}
-.game-side strong{margin-left:auto;padding-left:10px;font-variant-numeric:tabular-nums}
-.game-list.results .game-side:not(.won) b,.game-list.results .game-side:not(.won) strong{color:var(--text-2);font-weight:500}
+.game-line{display:inline-flex;align-items:center;gap:8px;min-width:0;font-variant-numeric:tabular-nums}
+.game-team{display:inline-flex;align-items:center;gap:6px}
+.game-team img,.game-team i{flex:none;width:20px;height:20px;object-fit:contain}
+.game-team b{font-size:13px;font-weight:700}
+.game-sep{color:var(--text-4);font-size:12px}
+.game-score{min-width:2.2ch;text-align:center;color:var(--text-2);font-size:13px;font-weight:500}
+.game-score.won{color:var(--text-1);font-weight:800}
 .front-panel-wide{grid-column:1/-1}
-.game-when{flex:none;text-align:right;font-variant-numeric:tabular-nums}
-.game-when b{display:block;font-size:13px}
-.game-when span{display:block;color:var(--text-2);font-size:13px}
-.game-when small{display:block;margin-top:2px;color:var(--text-4);font-size:11px}
-.game-live{display:inline-block!important;padding:1px 7px;border-radius:999px;background:#d92d20;color:#fff!important;font-size:11px!important;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.game-when{flex:none;color:var(--text-3);font-size:12px;white-space:nowrap}
+.game-live{display:inline-block;padding:1px 6px;border-radius:999px;background:#d92d20;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
 .news-list li{border-bottom:1px solid var(--line)}
 .news-list a{display:flex;align-items:center;gap:14px;min-height:76px;padding:12px 0;color:var(--text-1);text-decoration:none}
 .news-list img{flex:none;width:92px;height:60px;border-radius:8px;background:var(--ink-2);object-fit:cover}
 .news-list b{display:-webkit-box;overflow:hidden;font-size:14px;font-weight:700;line-height:1.3;-webkit-box-orient:vertical;-webkit-line-clamp:2}
 .news-list a:hover b{text-decoration:underline;text-underline-offset:3px}
 .news-list small{display:inline-flex;align-items:center;gap:3px;margin-top:4px;color:var(--text-3);font-size:12px}
-.game-list.loading li,.news-list.loading li{min-height:72px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,transparent,var(--ink-2),transparent) 0 0/200% 100%;animation:feed-shimmer 1.4s linear infinite}
+.game-list.loading li{min-height:38px}.news-list.loading li{min-height:72px}
+.game-list.loading li,.news-list.loading li{border-bottom:1px solid var(--line);background:linear-gradient(90deg,transparent,var(--ink-2),transparent) 0 0/200% 100%;animation:feed-shimmer 1.4s linear infinite}
 .feed-empty{margin:0;padding:18px 0;color:var(--text-3);font-size:13.5px}
 @keyframes feed-shimmer{to{background-position:-200% 0}}
 @media(prefers-reduced-motion:reduce){.game-list.loading li,.news-list.loading li{animation:none}}
