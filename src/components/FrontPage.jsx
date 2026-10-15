@@ -94,7 +94,6 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
   return <section className="front-page">
     <div className="front-hero">
       <div className="front-hero-copy">
-        <span className="front-eyebrow">NBA 2026–27 · Preseason</span>
         <h1>Settle every hoops <em>debate.</em></h1>
         <p>Put any two players or teams head to head, browse every roster, and see who is really leading the league.</p>
         <PlayerSearch players={players} Art={Art} playerIds={playerIds} onOpen={onOpen}/>

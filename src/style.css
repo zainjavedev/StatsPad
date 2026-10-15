@@ -805,9 +805,8 @@ header .brand small{margin-top:3px}
 /* Home page */
 .front-hero{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:20px;align-items:end;min-height:360px;padding:44px 0 0 40px;border-radius:24px;color:#fff}
 .front-hero::before{content:'';position:absolute;inset:0;z-index:-1;border-radius:24px;background:radial-gradient(70% 120% at 100% 0,rgb(255 122 48 / .45),transparent 60%),radial-gradient(60% 100% at 0 100%,rgb(60 110 255 / .4),transparent 60%),#0d0f14}
-.front-hero-copy{padding-bottom:40px}
+.front-hero-copy{padding-bottom:40px;padding-top:8px}
 .front-cast{overflow:hidden;border-bottom-right-radius:24px}
-.front-eyebrow{display:inline-block;margin-bottom:14px;color:rgb(255 255 255 / .7);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
 .front-hero h1{margin:0;font-family:'Bricolage Grotesque','DM Sans',sans-serif;font-size:clamp(38px,6vw,66px);font-weight:800;line-height:.98;letter-spacing:-.035em}
 .front-hero h1 em{color:#ffb347;font-style:normal}
 .front-hero p{max-width:480px;margin:14px 0 22px;color:rgb(255 255 255 / .74);font-size:16px;line-height:1.45}
