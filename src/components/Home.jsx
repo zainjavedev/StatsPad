@@ -113,7 +113,7 @@ function VsRow({players,population,metric,row,colors}){
     className={['vs-cell',lead===index&&'lead',!volumeOk(players[index],key)&&'thin'].filter(Boolean).join(' ')}
     style={{'--wr':Math.max(.04,ratio(values[index])),'--c':colors[index]}}
     key={players[index].playerId||players[index].teamId}
-    title={volumeOk(players[index],key)?`${players[index].playerName} · ${full||label}: ${statText(values[index],key,places)} (${ordinal(percentile(population,key,values[index],inverse))} percentile)`:`${players[index].playerName} · ${full||label}: ${statText(values[index],key,places)}, too few attempts to rank`}
+    title={volumeOk(players[index],key)?`${players[index].playerName} · ${full||label}: ${statText(values[index],key,places)} (${ordinal(percentile(population.filter(entity=>volumeOk(entity,key)),key,values[index],inverse))} percentile)`:`${players[index].playerName} · ${full||label}: ${statText(values[index],key,places)}, too few attempts to rank`}
   >{statText(values[index],key,places)}</span>;
   return <div className="vs-row" style={{'--row':row}}>{cell(0)}<span className="vs-cat">{label}</span>{cell(1)}</div>
 }
@@ -215,7 +215,7 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
   const colors=[0,1].map(index=>sideColor(enriched[index]));
   const sections=entityType==='team'?TEAM_SECTIONS:VS_SECTIONS;
   /* Each axis runs from the league's lowest rotation player at the centre to its highest at the edge, so the gap between two stars shows (a percentile would put the top two scorers on the same dot). */
-  const radarRange=part=>{const values=enrichedPopulation.map(entity=>valueOf(entity,part)).filter(Number.isFinite);return[Math.min(...values),Math.max(...values)]};
+  const radarRange=part=>{const values=enrichedPopulation.filter(entity=>volumeOk(entity,part)).map(entity=>valueOf(entity,part)).filter(Number.isFinite);return[Math.min(...values),Math.max(...values)]};
   const radar=ready?RADAR_AXES.map(({label,parts})=>({label,sides:[0,1].map(side=>{
     const entity=enriched[side],thin=parts.some(([key])=>!volumeOk(entity,key));
     const shares=parts.map(([key])=>{const[low,high]=radarRange(key);return high>low?Math.max(0,Math.min(1,(statValue(entity,key)-low)/(high-low))):.5});
