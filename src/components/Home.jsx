@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight, BarChart3, Check, Copy, Download, Moon, Search, 
 import { toPng } from 'html-to-image';
 import TeamPage from './TeamPage';
 import TeamsIndex from './TeamsIndex';
-import { TEAMS, nickname } from '../lib/teams';
+import { TEAMS, nickname, teamCodeOf } from '../lib/teams';
 import FrontPage from './FrontPage';
 
 const COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)'];
@@ -71,16 +71,19 @@ const TEAM_SECTIONS = [
   ['Per game', [['points','Points'],['assists','Assists'],['totalRebounds','Rebounds'],['offensiveRebounds','Offensive rebounds'],['defensiveRebounds','Defensive rebounds'],['steals','Steals'],['blocks','Blocks'],['turnovers','Turnovers',true],['personalFouls','Fouls',true]]],
   ['Shooting', [['fieldGoalPercentage','Field goal %'],['threePointPercentage','Three-point %'],['threePointersMade','Threes made'],['freeThrowPercentage','Free throw %'],['effectiveFieldGoalPercentage','Effective field goal %'],['trueShootingPercentage','True shooting %']]],
 ];
+const sideColor = entity => TEAMS[teamCodeOf(entity?.team)]?.color || '#3b3b45';
 const statValue = (entity,key) => entity?.stats?.[key] ?? entity?.[key] ?? 0;
 const statText = (value,key,places) => `${Number(value).toFixed(places ?? 1)}${pctKeys.has(key) ? '%' : ''}`;
 
 /* One table row: a value per entity either side of the category name, the
    leader's cell tinted. Percentile rank rides along in the title attribute. */
-function VsRow({players,population,metric,row}){
+function VsRow({players,population,metric,row,colors}){
   const[key,label,inverse,places]=metric,values=players.map(player=>statValue(player,key));
   const tied=values[0]===values[1],best=inverse?Math.min(...values):Math.max(...values);
+  const ratio=value=>inverse?(value<=0?1:best/value):(best>0?Math.max(0,value)/best:0);
   const cell=index=><span
     className={!tied&&values[index]===best?'vs-cell lead':'vs-cell'}
+    style={{'--wr':Math.max(.04,ratio(values[index])),'--c':colors[index]}}
     key={players[index].playerId||players[index].teamId}
     title={`${players[index].playerName} · ${label}: ${statText(values[index],key,places)} (${ordinal(percentile(population,key,values[index],inverse))} percentile)`}
   >{statText(values[index],key,places)}</span>;
@@ -89,15 +92,16 @@ function VsRow({players,population,metric,row}){
 
 /* Each side of the card header is also its own picker: a cross to clear the
    slot, an add button and search popover when it is empty. */
-function VsSlot({index,entity,options,playerIds,noun,onPick,onRemove}){
+function VsSlot({index,entity,options,playerIds,noun,onPick,onRemove,color}){
   const[open,setOpen]=useState(false),[query,setQuery]=useState('');
   const results=options.filter(option=>`${option.playerName} ${option.team}`.toLowerCase().includes(query.toLowerCase())).slice(0,8);
   const choose=option=>{onPick(option);setOpen(false);setQuery('')};
-  return <div className={entity?'vs-person':'vs-person is-empty'} style={{'--player-color':COLORS[index]}}>
+  return <div className={entity?'vs-person':'vs-person is-empty'} style={{'--player-color':COLORS[index],'--team':color}}>
     {entity?<>
       <button className="vs-remove" onClick={onRemove} aria-label={`Remove ${entity.playerName}`}><X size={14}/></button>
-      <EntityArt entity={entity} playerIds={playerIds} className="vs-art"/>
+      <EntityArt entity={entity} playerIds={playerIds} className={entity.entityType==='team'?'vs-art is-logo':'vs-art'}/>
       <strong>{entity.playerName}</strong>
+      {entity.entityType!=='team'&&<small>{[entity.team,entity.position].filter(Boolean).join(' · ')}</small>}
     </>:
       <button className="vs-add" onClick={()=>setOpen(!open)}><span>+</span> Add {noun}</button>
     }
@@ -167,6 +171,9 @@ function Profile({entity,allEntities,playerIds,onBack,backLabel='Back to explore
 
 function ComparisonPage({onTeams,onLeaders,data,entityType,setEntityType,seasonType,switchSeason,enriched,setSelected,playerIds,enrichedPopulation,chartRef,onHome,onShare,onDownload,onCopy,toast,theme,onToggleTheme}){
   const ready=enriched.length>=2,noun=entityType==='team'?'teams':'players';
+  const colors=[0,1].map(index=>sideColor(enriched[index]));
+  const sections=entityType==='team'?TEAM_SECTIONS:VS_SECTIONS;
+  const tally=ready?sections.flatMap(([,metrics])=>metrics).reduce((total,[key,,inverse])=>{const a=statValue(enriched[0],key),b=statValue(enriched[1],key);if(a!==b){const first=inverse?a<b:a>b;total[first?0:1]+=1}return total},[0,0]):[0,0];
   return <main className="h2h-main"><SiteHeader page="compare" onHome={onHome} onCompare={()=>{}} onTeams={onTeams} onLeaders={onLeaders} theme={theme} onToggleTheme={onToggleTheme}/><section className="h2h-page">
     <div className="h2h-bar">
       <div className="segmented mode"><button className={entityType==='player'?'active':''} onClick={()=>setEntityType('player')}>Players</button><button className={entityType==='team'?'active':''} onClick={()=>setEntityType('team')}>Teams</button></div>
@@ -179,19 +186,19 @@ function ComparisonPage({onTeams,onLeaders,data,entityType,setEntityType,seasonT
     </div>
     <section className="vs-card" ref={chartRef}>
       <div className="vs-head">
-        {[0,1].map(index=><VsSlot key={index} index={index} entity={enriched[index]} playerIds={playerIds} noun={entityType==='team'?'team':'player'}
+        {[0,1].map(index=><VsSlot key={index} index={index} entity={enriched[index]} playerIds={playerIds} noun={entityType==='team'?'team':'player'} color={colors[index]}
           options={data.players.filter(option=>!enriched.some(selected=>selected.playerName===option.playerName))}
           onPick={option=>setSelected([...enriched,option].slice(0,2))}
           onRemove={()=>setSelected(enriched.filter((_,position)=>position!==index))}/>)}
-        <span className="vs-badge">VS</span>
+        {ready?<span className="vs-score"><b className={tally[0]>=tally[1]?'won':''}>{tally[0]}</b><i>–</i><b className={tally[1]>=tally[0]?'won':''}>{tally[1]}</b><small>categories won</small></span>:<span className="vs-badge">VS</span>}
       </div>
       {ready?<><div className="vs-table" key={enriched.map(player=>player.playerName).join('|')}>
-        {(entityType==='team'?TEAM_SECTIONS:VS_SECTIONS).map(([title,metrics])=><React.Fragment key={title}>
+        {sections.map(([title,metrics])=><React.Fragment key={title}>
           <div className="vs-section">{title}</div>
-          {metrics.map((metric,row)=><VsRow key={metric[0]} players={enriched} population={enrichedPopulation} metric={metric} row={row}/>)}
+          {metrics.map((metric,row)=><VsRow key={metric[0]} players={enriched} population={enrichedPopulation} metric={metric} row={row} colors={colors}/>)}
         </React.Fragment>)}
       </div>
-      <p className="vs-note">Highlighted cell leads the category; fewer turnovers counts as leading. Hover any value for its league percentile among {enrichedPopulation.length} qualified {noun}.</p></>
+      <p className="vs-note">The darker, bolder bar leads each category; fewer turnovers counts as leading. Bar length shows how close the two are. Hover any value for its league percentile among {enrichedPopulation.length} qualified {noun}.</p></>
       :<p className="vs-empty">Pick two {noun} above and the comparison builds itself.</p>}
     </section>
   </section><footer><span>StatsPad · made for smarter hoops arguments</span><span>2025–26 data from <a href={data.source.url} target="_blank" rel="noreferrer">Basketball Reference</a> · Updated {data.lastUpdated}</span></footer>{toast&&<div className="toast"><Check size={16}/>{toast}</div>}</main>
