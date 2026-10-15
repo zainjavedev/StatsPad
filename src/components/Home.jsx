@@ -73,6 +73,15 @@ const TEAM_SECTIONS = [
   ['Shooting', [['fieldGoalPercentage','Field goal %'],['threePointPercentage','Three-point %'],['threePointersMade','Threes made'],['freeThrowPercentage','Free throw %'],['effectiveFieldGoalPercentage','Effective field goal %'],['trueShootingPercentage','True shooting %']]],
 ];
 const sideColor = entity => TEAMS[teamCodeOf(entity?.team)]?.color || '#3b3b45';
+const channels = hex => [1,3,5].map(index=>parseInt(hex.slice(index,index+2),16));
+const colorGap = (a,b) => Math.hypot(...channels(a).map((value,index)=>value-channels(b)[index]));
+/* Each side keeps its team colour, unless the two are too alike to tell apart. */
+const FALLBACK_COLORS = ['#eb6834','#2a78d6','#1a9c6b'];
+function pairColors(a,b){
+  const first=sideColor(a),second=sideColor(b);
+  if(!a||!b||colorGap(first,second)>=90)return[first,second];
+  return[first,[...FALLBACK_COLORS].sort((x,y)=>colorGap(first,y)-colorGap(first,x))[0]];
+}
 const statValue = (entity,key) => entity?.stats?.[key] ?? entity?.[key] ?? 0;
 const statText = (value,key,places) => `${Number(value).toFixed(places ?? 1)}${pctKeys.has(key) ? '%' : ''}`;
 
@@ -185,7 +194,7 @@ function Profile({entity,allEntities,playerIds,onBack,backLabel='Back to explore
 
 function ComparisonPage({onTeams,onLeaders,data,entityType,setEntityType,seasonType,switchSeason,enriched,setSelected,playerIds,enrichedPopulation,chartRef,onHome,onShare,onDownload,onCopy,toast,theme,onToggleTheme}){
   const ready=enriched.length>=2,noun=entityType==='team'?'teams':'players';
-  const colors=[0,1].map(index=>sideColor(enriched[index]));
+  const colors=pairColors(enriched[0],enriched[1]);
   const sections=entityType==='team'?TEAM_SECTIONS:VS_SECTIONS;
   const tally=ready?sections.flatMap(([,metrics])=>metrics).reduce((total,[key,,inverse])=>{const a=statValue(enriched[0],key),b=statValue(enriched[1],key);if(a!==b){const first=inverse?a<b:a>b;total[first?0:1]+=1}return total},[0,0]):[0,0];
   return <main className="h2h-main"><SiteHeader page="compare" onHome={onHome} onCompare={()=>{}} onTeams={onTeams} onLeaders={onLeaders} theme={theme} onToggleTheme={onToggleTheme}/><section className="h2h-page">
@@ -204,7 +213,7 @@ function ComparisonPage({onTeams,onLeaders,data,entityType,setEntityType,seasonT
           options={data.players.filter(option=>!enriched.some(selected=>selected.playerName===option.playerName))}
           onPick={option=>setSelected([...enriched,option].slice(0,2))}
           onRemove={()=>setSelected(enriched.filter((_,position)=>position!==index))}/>)}
-        {ready?<span className="vs-score"><b className={tally[0]>=tally[1]?'won':''}>{tally[0]}</b><i>–</i><b className={tally[1]>=tally[0]?'won':''}>{tally[1]}</b><small>categories won</small></span>:<span className="vs-badge">VS</span>}
+        {ready?<span className="vs-score"><b>{tally[0]}</b><i>–</i><b>{tally[1]}</b><small>stat leads</small></span>:<span className="vs-badge">VS</span>}
       </div>
       {ready?<><div className="vs-table" key={enriched.map(player=>player.playerName).join('|')}>
         {sections.map(([title,metrics])=><React.Fragment key={title}>
@@ -212,7 +221,7 @@ function ComparisonPage({onTeams,onLeaders,data,entityType,setEntityType,seasonT
           {metrics.map((metric,row)=><VsRow key={metric[0]} players={enriched} population={enrichedPopulation} metric={metric} row={row} colors={colors}/>)}
         </React.Fragment>)}
       </div>
-      <p className="vs-note">The darker, bolder bar leads each category; fewer turnovers counts as leading. Bar length shows how close the two are. Hover any value for its league percentile among {enrichedPopulation.length} qualified {noun}.</p></>
+      <p className="vs-note">The coloured bar marks who leads each category; fewer turnovers counts as leading. Bar length shows how close the two are. Hover any value for its league percentile among {enrichedPopulation.length} qualified {noun}.</p></>
       :<p className="vs-empty">Pick two {noun} above and the comparison builds itself.</p>}
     </section>
   </section><footer><span>StatsPad · made for smarter hoops arguments</span><span>2025–26 data from <a href={data.source.url} target="_blank" rel="noreferrer">Basketball Reference</a> · Updated {data.lastUpdated}</span></footer>{toast&&<div className="toast"><Check size={16}/>{toast}</div>}</main>
