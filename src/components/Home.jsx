@@ -219,7 +219,7 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
           onRemove={()=>setSelected(enriched.filter((_,position)=>position!==index))}/>)}
         {ready?<span className="vs-score"><b>{tally[0]}</b><i>–</i><b>{tally[1]}</b><small>stat leads</small></span>:<span className="vs-badge">VS</span>}
       </div>
-      {ready?<><Radar axes={radar} names={enriched.slice(0,2).map(entity=>entity.playerName)} colors={COLORS}/><div className="vs-table" key={enriched.map(player=>player.playerName).join('|')}>
+      {ready?<>{entityType==='team'&&<TeamLineups teams={enriched.slice(0,2)} leaguePlayers={leaguePlayers} colors={COLORS}/>}<Radar axes={radar} names={enriched.slice(0,2).map(entity=>entity.playerName)} colors={COLORS}/><div className="vs-table" key={enriched.map(player=>player.playerName).join('|')}>
         {sections.map(([title,metrics])=><React.Fragment key={title}>
           <div className="vs-section">{title}</div>
           {metrics.map((metric,row)=><VsRow key={metric[0]} players={enriched} population={enrichedPopulation} metric={metric} row={row} colors={COLORS}/>)}
@@ -228,7 +228,6 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
       <p className="vs-note">The coloured bar marks who leads each category; fewer turnovers counts as leading. Bar length shows how close the two are. Hover any value for its league percentile among {enrichedPopulation.length} qualified {noun}.</p></>
       :<p className="vs-empty">Pick two {noun} above and the comparison builds itself.</p>}
     </section>
-    {ready&&entityType==='team'&&<TeamLineups teams={enriched.slice(0,2)} leaguePlayers={leaguePlayers} colors={COLORS}/>}
   </section><footer><span>StatsPad · made for smarter hoops arguments</span><span>2025–26 data from <a href={data.source.url} target="_blank" rel="noreferrer">Basketball Reference</a> · Updated {data.lastUpdated}</span></footer>{toast&&<div className="toast"><Check size={16}/>{toast}</div>}</main>
 }
 
