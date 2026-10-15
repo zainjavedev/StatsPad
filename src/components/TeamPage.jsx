@@ -3,7 +3,8 @@ import { ArrowDown, ArrowUp, ChevronRight } from 'lucide-react';
 import { GameList } from './Feeds';
 import { useFeed } from '../lib/useFeed';
 import { teamResults, teamSchedule } from '../lib/espn';
-import { TEAMS } from '../lib/teams';
+import { TEAMS, logoUrl } from '../lib/teams';
+import TeamRail from './TeamRail';
 
 /* Team roster page: who is on the team this season, how the rotation is
    expected to stack up, and each player's previous-season numbers. */
@@ -155,21 +156,18 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen, onSwi
     });
   }, [roster, leaguePlayers]);
 
-  const switcher = <label className="team-switch">
-    <span>Team</span>
-    <select value={teamCode} onChange={event => onSwitchTeam(event.target.value)}>
-      {Object.entries(TEAMS).map(([code, team]) => <option key={code} value={code}>{team.name}</option>)}
-    </select>
-  </label>;
-  if (error) return <section className="team-page">{switcher}<p className="vs-empty">Couldn&apos;t load the roster. Try a refresh.</p></section>;
-  if (!roster) return <section className="team-page">{switcher}<p className="vs-empty">Loading the roster…</p></section>;
+  const shell = content => <div className="team-shell" style={{'--team': TEAMS[teamCode].color}}>
+    <TeamRail current={teamCode} onPick={onSwitchTeam}/>
+    {content}
+  </div>;
+  if (error) return shell(<section className="team-page"><p className="vs-empty">Couldn&apos;t load the roster. Try a refresh.</p></section>);
+  if (!roster) return shell(<section className="team-page"><p className="vs-empty">Loading the roster…</p></section>);
   const unit = key => players.filter(player => player.unit === key);
   const open = player => player.profile && onOpen(player.profile);
 
-  return <section className="team-page" style={{'--team': TEAMS[teamCode].color}}>
-    {switcher}
+  return shell(<section className="team-page">
     <div className="team-hero">
-      <span className="team-hero-mark"><img className="team-hero-logo" src={`https://cdn.nba.com/logos/nba/${roster.teamId}/global/L/logo.svg`} alt="" onError={event => { event.currentTarget.style.display = 'none'; }}/></span>
+      <span className="team-hero-mark"><img className="team-hero-logo" src={logoUrl(teamCode)} alt="" onError={event => { event.currentTarget.style.display = 'none'; }}/></span>
       <div>
         <h1>{roster.teamName}</h1>
         <p>{roster.season.replace('-', '–')} roster</p>
@@ -201,5 +199,5 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen, onSwi
     <StatTable players={players} onOpen={open}/>
 
     <p className="team-sources">Roster as of {roster.lastUpdated}. {roster.note || 'Rotation is a pre-season projection.'} Sources: {roster.sources.map((source, index) => <React.Fragment key={source.url}>{index ? ', ' : ''}<a href={source.url} target="_blank" rel="noreferrer">{source.label}</a></React.Fragment>)}.</p>
-  </section>;
+  </section>);
 }
