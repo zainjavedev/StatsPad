@@ -179,14 +179,15 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen, onSwi
       <div className="starter-grid">{unit('starters').map(player => <StarterCard key={player.name} player={player} onOpen={open}/>)}</div>
     </section>
 
-    <section className="team-block team-games">
-      <h2>Next games</h2>
-      <GameList games={games}/>
-    </section>
-
-    <section className="team-block team-games">
-      <h2>Recent results</h2>
-      <GameList games={finished} results empty="No games played yet this season."/>
+    <section className="team-block team-feeds">
+      <div className="team-games">
+        <h2>Next games</h2>
+        <GameList games={games}/>
+      </div>
+      <div className="team-games">
+        <h2>Recent results</h2>
+        <GameList games={finished} results empty="No games played yet this season."/>
+      </div>
     </section>
 
     <section className="team-block units">

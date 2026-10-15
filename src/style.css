@@ -801,7 +801,10 @@ header .brand small{margin-top:3px}
 @keyframes feed-shimmer{to{background-position:-200% 0}}
 @media(prefers-reduced-motion:reduce){.game-list.loading li,.news-list.loading li{animation:none}}
 
-.team-games .game-list{padding:0 18px;border:1px solid var(--line);border-radius:var(--radius);background:var(--ink-1)}
+.team-feeds{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:22px}
+.team-games{min-width:0;padding:12px 16px 4px;border:1px solid var(--line);border-radius:var(--radius);background:var(--ink-1)}
+.team-games h2{margin:0 0 2px;color:var(--text-3);font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.team-games .feed-empty{padding:8px 0 12px;font-size:13px}
 
 @media(max-width:1000px){
   .front-leaders{grid-template-columns:1fr 1fr}
@@ -824,7 +827,7 @@ header .brand small{margin-top:3px}
   .front-teams{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
   .front-team-logo{width:34px;height:34px}
   .news-list img{width:76px;height:52px}
-  .team-games .game-list{padding:0 14px}
+  .team-feeds{grid-template-columns:1fr;gap:10px}
 }
 /* Phones: the wordmark already goes home, so the nav drops its Home tab. */
 @media(max-width:520px){header nav .nav-home{display:none}}
