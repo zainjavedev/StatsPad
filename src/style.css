@@ -1040,3 +1040,14 @@ header .brand small{margin-top:3px}
 .radar-tabs button.active{background:var(--text-1);color:var(--ink-1)}
 .radar-tabs button:focus-visible{outline:2px solid var(--text-1);outline-offset:2px}
 .vs-radar-tabs>span{color:var(--text-3);font-size:12.5px;font-weight:600}
+
+@media(max-width:700px){
+  .lc{flex:0 0 158px}
+  .lc-line{gap:7px;padding:0 4px 11px;font-size:12px}
+  .lc-line small{font-size:8.5px}
+  .vs-score{top:10px;padding:5px 12px 4px;border-radius:14px;transform:translateX(-50%);animation:none}
+  .vs-score b{font-size:22px}
+  .vs-score small{margin-top:2px;font-size:8.5px}
+  .vs-person{padding-top:54px}
+  .radar-label{font-size:15px}
+}
