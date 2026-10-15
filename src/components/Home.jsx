@@ -7,6 +7,7 @@ import Radar from './Radar';
 import TeamLineups from './TeamLineups';
 import { CompareSkeleton, HomeSkeleton, PageSkeleton, TeamLoading } from './Skeletons';
 import { TEAMS, nickname, teamCodeOf } from '../lib/teams';
+import { compareUrl, matchesName, playerUrl, routeParams, teamUrl } from '../lib/routes';
 import FrontPage from './FrontPage';
 
 const COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)'];
@@ -258,7 +259,7 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
 }
 
 export default function Home(){
-  const paramsOnLoad=useMemo(()=>new URLSearchParams(location.search),[]);
+  const paramsOnLoad=useMemo(()=>routeParams(location.pathname,location.search),[]);
   const[seasonType,setSeasonType]=useState(()=>paramsOnLoad.get('type')||'regular-season'),[seasonChanging,setSeasonChanging]=useState(false),[entityType,setEntityType]=useState(()=>paramsOnLoad.get('mode')||'player'),[data,setData]=useState(null),[splits,setSplits]=useState(null),[selected,setSelected]=useState([]),[toast,setToast]=useState(''),[playerIds,setPlayerIds]=useState({}),[catalog,setCatalog]=useState({players:[],teams:[]}),[page,setPage]=useState(paramsOnLoad.get('view')==='leaders'?'leaders':paramsOnLoad.get('view')==='teams'?'teams':paramsOnLoad.has('team')?'team':paramsOnLoad.has('players')?'compare':paramsOnLoad.has('profile')?'profile':'home'),[regularPlayers,setRegularPlayers]=useState(null),[profileFrom,setProfileFrom]=useState(null),[profile,setProfile]=useState(null),[teamCode,setTeamCode]=useState(()=>TEAMS[paramsOnLoad.get('team')]?paramsOnLoad.get('team'):'PHI');
   const chartRef=useRef(null),seasonTransitionRef=useRef(0);
   const[theme,setTheme]=useState(()=>{try{return localStorage.getItem('statspad-theme')||'light'}catch{return 'light'}});
@@ -267,15 +268,29 @@ export default function Home(){
   useEffect(()=>{fetch('/data/player-ids.json').then(r=>r.json()).then(ids=>setPlayerIds(Object.fromEntries(Object.entries(ids).map(([name,id])=>[normalizedName(name),id]))))},[]);
   useEffect(()=>{loadSeasonBundle('regular-season').then(bundle=>setRegularPlayers(bundle.players.players));loadSeasonBundle('playoffs')},[]);
   useEffect(()=>{let active=true;loadSeasonBundle(seasonType).then(bundle=>{if(!active)return;setCatalog({players:bundle.players.players,teams:bundle.teams.players});setSplits(bundle.splits);setData(entityType==='team'?bundle.teams:bundle.players)});return()=>{active=false}},[seasonType,entityType]);
-  useEffect(()=>{const name=paramsOnLoad.get('profile');if(!name||profile)return;const match=[...catalog.players,...catalog.teams].find(item=>item.playerName===name);if(match)setProfile(match)},[catalog,paramsOnLoad,profile]);
-  useEffect(()=>{if(!data)return;const params=new URLSearchParams(location.search),names=params.get('players')?.split('|').filter(Boolean);const defaults=names?.length?names:(entityType==='team'?['Oklahoma City Thunder','New York Knicks']:['Luka Dončić','Shai Gilgeous-Alexander']);setSelected(defaults.map(name=>data.players.find(p=>p.playerName===name)).filter(Boolean).slice(0,2))},[data,entityType]);
+  useEffect(()=>{const name=paramsOnLoad.get('profile');if(!name||profile)return;const match=[...catalog.players,...catalog.teams].find(item=>matchesName(item.playerName,name));if(match)setProfile(match)},[catalog,paramsOnLoad,profile]);
+  useEffect(()=>{if(!data)return;const params=routeParams(location.pathname,location.search),names=params.get('players')?.split('|').filter(Boolean);const defaults=names?.length?names:(entityType==='team'?['Oklahoma City Thunder','New York Knicks']:['Luka Dončić','Shai Gilgeous-Alexander']);const pick=list=>list.map(name=>data.players.find(p=>matchesName(p.playerName,name))).filter(Boolean);const found=pick(defaults);setSelected((found.length?found:pick(entityType==='team'?['Oklahoma City Thunder','New York Knicks']:['Luka Dončić','Shai Gilgeous-Alexander'])).slice(0,2))},[data,entityType]);
   const population=useMemo(()=>data?.players.filter(p=>entityType==='team'||(p.gamesPlayed>=(seasonType==='playoffs'?3:15)&&p.minutesPerGame>=10))||[],[data,seasonType,entityType]);
   const enrich=p=>({...p,stats:{...p.stats,trueShootingPercentage:p.stats.fieldGoalsAttempted?Number((p.stats.points/(2*(p.stats.fieldGoalsAttempted+.44*p.stats.freeThrowsAttempted))*100).toFixed(1)):0,turnoverPercentage:turnoverRate(p.stats)}});
   const enriched=useMemo(()=>selected.map(enrich),[selected]);
+  /* Keep the address bar and tab title in step with what is on screen, so links and bookmarks are clean. */
+  useEffect(()=>{
+    if(page!=='compare'||enriched.length<2)return;
+    const url=compareUrl(enriched.map(entity=>entity.playerName),entityType,seasonType);
+    if(url!==location.pathname+location.search)history.replaceState({},'',url);
+  },[page,enriched,entityType,seasonType]);
+  useEffect(()=>{
+    const names=enriched.slice(0,2).map(entity=>entity.playerName).join(' vs ');
+    const titles={home:'StatsPad: NBA player and team comparisons, rosters and stats',leaders:'NBA stat leaders | StatsPad',teams:'NBA teams and rosters | StatsPad',compare:names?`${names}: stats comparison | StatsPad`:'Compare NBA players and teams | StatsPad',team:`${TEAMS[teamCode]?.name} roster and stats | StatsPad`,profile:profile?`${profile.playerName} stats | StatsPad`:'StatsPad'};
+    document.title=titles[page]||titles.home;
+    let canonical=document.querySelector('link[rel="canonical"]');if(!canonical){canonical=document.createElement('link');canonical.rel='canonical';document.head.appendChild(canonical)}
+    canonical.href=`${location.origin}${location.pathname}`;
+  },[page,enriched,teamCode,profile]);
+  useEffect(()=>{const back=()=>location.reload();window.addEventListener('popstate',back);return()=>window.removeEventListener('popstate',back)},[]);
   const enrichedPopulation=useMemo(()=>population.map(enrich),[population]);
   const notify=message=>{setToast(message);setTimeout(()=>setToast(''),2200)};
   const switchSeason=async next=>{if(next===seasonType||seasonChanging)return;const transition=++seasonTransitionRef.current;setSeasonChanging(true);try{const[bundle]=await Promise.all([loadSeasonBundle(next),new Promise(resolve=>window.setTimeout(resolve,180))]);if(transition!==seasonTransitionRef.current)return;setCatalog({players:bundle.players.players,teams:bundle.teams.players});setSplits(bundle.splits);setData(entityType==='team'?bundle.teams:bundle.players);setSeasonType(next);window.requestAnimationFrame(()=>window.requestAnimationFrame(()=>setSeasonChanging(false)))}catch{setSeasonChanging(false)}};
-  const share=async()=>{const params=new URLSearchParams({players:enriched.map(p=>p.playerName).join('|'),type:seasonType,mode:entityType}),url=`${location.origin}${location.pathname}?${params}`;await navigator.clipboard.writeText(url);notify('Comparison link copied')};
+  const share=async()=>{const url=`${location.origin}${compareUrl(enriched.map(p=>p.playerName),entityType,seasonType)}`;await navigator.clipboard.writeText(url);notify('Comparison link copied')};
   const copyTake=async()=>{const leaders=TABLE_STATS.slice(0,5).map(([key,label,inverse])=>{const ordered=[...enriched].sort((a,b)=>(valueOf(b,key)-valueOf(a,key))*(inverse?-1:1));return `${label}: ${ordered[0]?.playerName} (${format(valueOf(ordered[0],key),key)})`});await navigator.clipboard.writeText(`${enriched.map(p=>p.playerName).join(' vs ')} — 2025-26 ${data.seasonType}\n\n${leaders.join('\n')}\n\nMade with StatsPad`);notify('Debate-ready take copied')};
   const download=()=>{if(chartRef.current)downloadCard(chartRef.current,`${enriched.map(p=>p.playerName).join('-vs-')}-comparison`)};
   if(!data){
@@ -283,12 +298,12 @@ export default function Home(){
     const skeleton=page==='home'?<HomeSkeleton/>:page==='compare'?<CompareSkeleton/>:page==='team'?<TeamLoading teamCode={teamCode} color={TEAMS[teamCode].color} onPick={idle}/>:<PageSkeleton/>;
     return <main><SiteHeader page={page} onHome={idle} onCompare={idle} onTeams={idle} onLeaders={idle} theme={theme} onToggleTheme={toggleTheme}/>{skeleton}</main>;
   }
-  const goHome=()=>{setPage('home');setProfile(null);history.replaceState({},'',location.pathname)};
-  const openProfile=(item,from=null)=>{setProfileFrom(from);setProfile(item);setPage('profile');history.pushState({},'',`?profile=${encodeURIComponent(item.playerName)}`);scrollTo({top:0,behavior:'smooth'})};
-  const openLeaders=()=>{setPage('leaders');setProfile(null);history.pushState({},'','?view=leaders');scrollTo({top:0,behavior:'smooth'})};
-  const openTeams=()=>{setPage('teams');setProfile(null);history.pushState({},'','?view=teams');scrollTo({top:0,behavior:'smooth'})};
-  const openTeam=(code=teamCode)=>{setTeamCode(code);setPage('team');setProfile(null);history.pushState({},'',`?team=${code}`);scrollTo({top:0,behavior:'smooth'})};
-  const openCompare=item=>{if(item){const items=Array.isArray(item)?item:[item],isTeam=items[0]?.entityType==='team';setEntityType(isTeam?'team':'player');setSelected(items.slice(0,2))}setPage('compare');setProfile(null);if(new URLSearchParams(location.search).has('team'))history.replaceState({},'',location.pathname);scrollTo({top:0,behavior:'smooth'})};
+  const goHome=()=>{setPage('home');setProfile(null);history.pushState({},'','/');scrollTo({top:0,behavior:'smooth'})};
+  const openProfile=(item,from=null)=>{setProfileFrom(from);setProfile(item);setPage('profile');history.pushState({},'',item.entityType==='team'?`/?profile=${encodeURIComponent(item.playerName)}`:playerUrl(item.playerName));scrollTo({top:0,behavior:'smooth'})};
+  const openLeaders=()=>{setPage('leaders');setProfile(null);history.pushState({},'','/leaders');scrollTo({top:0,behavior:'smooth'})};
+  const openTeams=()=>{setPage('teams');setProfile(null);history.pushState({},'','/teams');scrollTo({top:0,behavior:'smooth'})};
+  const openTeam=(code=teamCode)=>{setTeamCode(code);setPage('team');setProfile(null);history.pushState({},'',teamUrl(code));scrollTo({top:0,behavior:'smooth'})};
+  const openCompare=item=>{if(item){const items=Array.isArray(item)?item:[item],isTeam=items[0]?.entityType==='team';setEntityType(isTeam?'team':'player');setSelected(items.slice(0,2))}setPage('compare');setProfile(null);history.pushState({},'',item?compareUrl((Array.isArray(item)?item:[item]).map(entry=>entry.playerName),entityType,seasonType):'/compare');scrollTo({top:0,behavior:'smooth'})};
   if(page==='leaders')return <main><SiteHeader page={page} onHome={goHome} onCompare={()=>openCompare()} onTeams={openTeams} onLeaders={openLeaders} theme={theme} onToggleTheme={toggleTheme}/><Discovery players={catalog.players} teams={catalog.teams} playerIds={playerIds} onOpen={openProfile} onCompare={()=>openCompare()} seasonType={seasonType} onSeasonTypeChange={switchSeason} seasonChanging={seasonChanging} splits={splits}/><footer><span>StatsPad · NBA numbers, visualized</span><span>2025–26 data from <a href={data.source.url} target="_blank" rel="noreferrer">Basketball Reference</a></span></footer></main>;
   if(page==='home')return <main><SiteHeader page={page} onHome={goHome} onCompare={()=>openCompare()} onTeams={openTeams} onLeaders={openLeaders} theme={theme} onToggleTheme={toggleTheme}/><FrontPage players={regularPlayers||catalog.players} teams={catalog.teams} playerIds={playerIds} Art={EntityArt} onOpen={openProfile} onCompare={pair=>openCompare(Array.isArray(pair)?pair:undefined)} onTeam={openTeam} onLeaders={openLeaders}/><footer><span>StatsPad · NBA numbers, visualized</span><span>Stats from <a href={data.source.url} target="_blank" rel="noreferrer">Basketball Reference</a> · games and news from <a href="https://www.espn.com/nba/" target="_blank" rel="noreferrer">ESPN</a></span></footer></main>;
   if(page==='teams')return <main><SiteHeader page={page} onHome={goHome} onCompare={()=>openCompare()} onTeams={openTeams} onLeaders={openLeaders} theme={theme} onToggleTheme={toggleTheme}/><TeamsIndex onOpen={openTeam}/><footer><span>StatsPad · NBA numbers, visualized</span></footer></main>;
