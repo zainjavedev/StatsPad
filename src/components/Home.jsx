@@ -205,9 +205,13 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
   const ready=enriched.length>=2,noun=entityType==='team'?'teams':'players';
   const colors=[0,1].map(index=>sideColor(enriched[index]));
   const sections=entityType==='team'?TEAM_SECTIONS:VS_SECTIONS;
-  const radar=ready?RADAR_AXES.map(([key,label,inverse])=>({label,sides:[0,1].map(side=>{const value=statValue(enriched[side],key),pct=percentile(enrichedPopulation,key,value,inverse);return{pct,rank:`${ordinal(pct)} percentile`,text:statText(value,key)}})})):[];
+  /* Each axis runs from the league's lowest rotation player at the centre to its highest at the edge, so the gap between two stars shows (a percentile would put the top two scorers on the same dot). */
+  const radar=ready?RADAR_AXES.map(([key,label,inverse])=>{
+    const values=enrichedPopulation.map(entity=>valueOf(entity,key)).filter(Number.isFinite),low=Math.min(...values),high=Math.max(...values);
+    return{label,sides:[0,1].map(side=>{const value=statValue(enriched[side],key),share=high>low?Math.max(0,Math.min(1,(value-low)/(high-low))):.5,pct=Math.round((inverse?1-share:share)*100);return{pct,rank:`${pct}% of the league range, ${ordinal(percentile(enrichedPopulation,key,value,inverse))} percentile`,text:statText(value,key)}})};
+  }):[];
   const smallSample=entityType==='team'?[]:enriched.slice(0,2).filter(entity=>!(entity.gamesPlayed>=(seasonType==='playoffs'?3:15)&&entity.minutesPerGame>=10));
-  const radarNotes=['Further out is better on every axis; for TOV% that means fewer turnovers.',...smallSample.map(entity=>`Small sample: ${entity.playerName} played ${entity.gamesPlayed} game${entity.gamesPlayed===1?'':'s'} at ${entity.minutesPerGame} MPG, so these rankings can swing a lot.`)];
+  const radarNotes=['The centre is the lowest rotation player in the league and the edge is the highest, so distance shows how far apart two players really are. Further out is better on every axis; for TOV% that means fewer turnovers.',...smallSample.map(entity=>`Small sample: ${entity.playerName} played ${entity.gamesPlayed} game${entity.gamesPlayed===1?'':'s'} at ${entity.minutesPerGame} MPG, so these rankings can swing a lot.`)];
   const radarScope=entityType==='team'?'all 30 teams':`${enrichedPopulation.length} ${seasonType==='playoffs'?'playoff':'regular-season'} rotation players`;
   const tally=ready?sections.filter(([title])=>title!=='Season').flatMap(([,metrics])=>metrics).reduce((total,metric)=>{const lead=leadOf(enriched,metric);if(lead>=0)total[lead]+=1;return total},[0,0]):[0,0];
   return <main className="h2h-main"><SiteHeader page="compare" onHome={onHome} onCompare={()=>{}} onTeams={onTeams} onLeaders={onLeaders} theme={theme} onToggleTheme={onToggleTheme}/><section className="h2h-page">

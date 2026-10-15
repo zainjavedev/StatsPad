@@ -19,7 +19,7 @@ export default function Radar({axes, names, colors, scope, notes = []}) {
   const count = axes.length;
   return <section className="vs-radar">
     <div className="vs-radar-head">
-      <small>Shape of their game · league percentile{scope ? ` vs ${scope}` : ''}</small>
+      <small>Shape of their game · vs the league{scope ? `: ${scope}` : ''}</small>
       <span className="vs-radar-key">{names.map((name, side) => <span key={name}><i style={{background: colors[side]}}/>{name}</span>)}</span>
     </div>
     <svg viewBox={`0 0 ${SIZE.width} ${SIZE.height}`} role="img" aria-label={`Radar chart comparing ${names.join(' and ')} across ${axes.map(axis => axis.label).join(', ')}`}>
