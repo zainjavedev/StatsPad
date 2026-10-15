@@ -15,13 +15,17 @@ const point = (index, count, fraction, push = 0) => {
 const path = (count, fractionOf) => Array.from({length: count}, (_, index) => point(index, count, fractionOf(index)).map(value => value.toFixed(1)).join(',')).join(' ');
 const anchorFor = x => x < SIZE.cx - 8 ? 'end' : x > SIZE.cx + 8 ? 'start' : 'middle';
 
-export default function Radar({axes, names, colors, scope, notes = []}) {
+export default function Radar({axes, names, colors, scope, notes = [], views = [], view, onView, blurb}) {
   const count = axes.length;
   return <section className="vs-radar">
     <div className="vs-radar-head">
       <small>Shape of their game · vs the league{scope ? `: ${scope}` : ''}</small>
       <span className="vs-radar-key">{names.map((name, side) => <span key={name}><i style={{background: colors[side]}}/>{name}</span>)}</span>
     </div>
+    {views.length > 1 && <div className="vs-radar-tabs">
+      <div className="radar-tabs" role="group" aria-label="Radar view">{views.map(item => <button key={item.key} className={item.key === view ? 'active' : ''} onClick={() => onView(item.key)}>{item.label}</button>)}</div>
+      {blurb && <span>{blurb}</span>}
+    </div>}
     <svg viewBox={`0 0 ${SIZE.width} ${SIZE.height}`} role="img" aria-label={`Radar chart comparing ${names.join(' and ')} across ${axes.map(axis => axis.label).join(', ')}`}>
       {RINGS.map(ring => <polygon key={ring} className="radar-ring" points={path(count, () => ring / 100)}/>)}
       {axes.map((axis, index) => {

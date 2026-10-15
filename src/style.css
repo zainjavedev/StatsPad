@@ -1033,3 +1033,10 @@ header .brand small{margin-top:3px}
 .vs-cell.thin{opacity:.55}
 .vs-radar-notes{margin:6px 0 10px;padding:0;list-style:none;color:var(--text-3);font-size:11.5px;line-height:1.5}
 .vs-radar-notes li+li{margin-top:2px}
+
+.vs-radar-tabs{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-top:12px}
+.radar-tabs{display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:var(--ink-2)}
+.radar-tabs button{padding:7px 16px;border:0;border-radius:999px;background:transparent;color:var(--text-3);font:inherit;font-size:13px;font-weight:800;cursor:pointer}
+.radar-tabs button.active{background:var(--text-1);color:var(--ink-1)}
+.radar-tabs button:focus-visible{outline:2px solid var(--text-1);outline-offset:2px}
+.vs-radar-tabs>span{color:var(--text-3);font-size:12.5px;font-weight:600}
