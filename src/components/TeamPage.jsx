@@ -5,6 +5,7 @@ import { useFeed } from '../lib/useFeed';
 import { teamResults, teamSchedule } from '../lib/espn';
 import { TEAMS, logoUrl } from '../lib/teams';
 import TeamRail from './TeamRail';
+import { TeamSkeletonBody } from './Skeletons';
 
 /* Team roster page: who is on the team this season, how the rotation is
    expected to stack up, and each player's previous-season numbers. */
@@ -161,7 +162,7 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, onOpen, onSwi
     {content}
   </div>;
   if (error) return shell(<section className="team-page"><p className="vs-empty">Couldn&apos;t load the roster. Try a refresh.</p></section>);
-  if (!roster) return shell(<section className="team-page"><p className="vs-empty">Loading the roster…</p></section>);
+  if (!roster) return shell(<TeamSkeletonBody/>);
   const unit = key => players.filter(player => player.unit === key);
   const open = player => player.profile && onOpen(player.profile);
 
