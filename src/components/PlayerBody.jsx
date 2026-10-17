@@ -111,7 +111,7 @@ export default function PlayerBody({ entity, season, population, bars, showCaree
 
   const shareLabels = ['PPG', 'RPG', 'APG', 'SPG', 'BPG', 'FG%', '3P%', 'FT%', 'TS%'];
   const shareSpec = {
-    kind: 'tiles', eyebrow: `${season ? pretty(season) : ''} season`, title: entity.playerName,
+    kind: 'tiles', eyebrow: `${season ? pretty(season) : ''} season`, title: entity.playerName, person: { name: entity.playerName, playerId: entity.playerId },
     sub: `${/^\dTM$/.test(entity.team) ? `${entity.team[0]} teams` : entity.team} · ${entity.position} · ${entity.gamesPlayed} games · ${f1(entity.minutesPerGame)} MPG`,
     color: TEAMS[teamCodeOf(entity.team)]?.color,
     tiles: shareLabels.map(label => {

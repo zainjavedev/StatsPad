@@ -27,7 +27,7 @@ export function onDark(color = '#3b3b45') {
 
 export async function cardFile(node, filename) {
   if (document.fonts?.ready) await document.fonts.ready;
-  const blob = await toBlob(node, {pixelRatio: 1, width: CARD_SIZE, height: CARD_SIZE, cacheBust: true, backgroundColor: '#0c0d10'});
+  const blob = await toBlob(node, {pixelRatio: 1, width: CARD_SIZE, height: CARD_SIZE, backgroundColor: '#0c0d10'});
   if (!blob) throw new Error('Could not render the card');
   return new File([blob], `${filename}.png`, {type: 'image/png'});
 }
