@@ -6,6 +6,8 @@ import { teamResults, teamSchedule } from '../lib/espn';
 import { TEAMS, logoUrl } from '../lib/teams';
 import { indexPlayers, isCurrent, pretty, statsFor } from '../lib/season';
 import TeamRail from './TeamRail';
+import ShareButton from './ShareButton';
+import { teamUrl } from '../lib/routes';
 import { TeamSkeletonBody } from './Skeletons';
 
 /* Team roster page: who is on the team this season, how the rotation is
@@ -166,6 +168,13 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, season, onOpe
   if (!roster) return shell(<TeamSkeletonBody/>);
   const unit = key => players.filter(player => player.unit === key);
   const open = player => player.profile && onOpen(player.profile);
+  const starters = unit('starters');
+  const shareSpec = {
+    kind: 'list', eyebrow: `${roster.season.replace('-', '–')} roster`, title: roster.teamName, color: TEAMS[teamCode].color,
+    sub: 'Expected starting five · PTS / REB / AST per game',
+    rows: starters.map(player => ({lead: player.slot, name: player.name, sub: '', value: player.stats ? `${player.stats.points.toFixed(1)} / ${player.stats.totalRebounds.toFixed(1)} / ${player.stats.assists.toFixed(1)}` : '—'})),
+    foot: 'Lineups are projections from ESPN depth charts', path: teamUrl(teamCode),
+  };
 
   return shell(<section className="team-page">
     <div className="team-hero">
@@ -174,6 +183,7 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, season, onOpe
         <h1>{roster.teamName}</h1>
         <p>{roster.season.replace('-', '–')} roster</p>
       </div>
+      <ShareButton spec={shareSpec} filename={`${teamUrl(teamCode).split('/').pop()}-starting-five`} title={`${roster.teamName} starting five`} text={`${roster.teamName}: expected starting five`} path={teamUrl(teamCode)} className="team-hero-share"/>
     </div>
 
     <section className="team-block">
