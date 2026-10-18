@@ -2,7 +2,7 @@
   "season": "2026-27",
   "seasonType": "Regular Season",
   "description": "NBA player per-game statistics for the 2026-27 regular season",
-  "lastUpdated": "2026-10-17",
+  "lastUpdated": "2026-10-18",
   "source": {
     "name": "ESPN",
     "url": "https://www.espn.com/nba/stats/_/season/2027"
@@ -10702,7 +10702,7 @@
       "playerName": "Robert Williams III",
       "team": "POR",
       "position": "C",
-      "age": 28,
+      "age": 29,
       "gamesPlayed": 59,
       "gamesStarted": 0,
       "minutesPerGame": 17.1,
@@ -11534,7 +11534,7 @@
       "playerName": "Anthony Gill",
       "team": "WAS",
       "position": "PF",
-      "age": 33,
+      "age": 34,
       "gamesPlayed": 55,
       "gamesStarted": 0,
       "minutesPerGame": 17.3,
