@@ -3,7 +3,6 @@ import '../style.css';
 export const metadata = {
   metadataBase: new URL(process.env.SITE_URL || 'https://stats-pad.vercel.app'),
   title: 'NBA Player Comparison',
-  icons: {icon: '/LOGO.png'},
   verification: {google: '5SfkNSf_uDFKP2wkBmwRzGWWYBhXAlEsb9AKDLzHVQc'},
 };
 
