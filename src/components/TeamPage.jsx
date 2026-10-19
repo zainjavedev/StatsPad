@@ -8,6 +8,8 @@ import { indexPlayers, isCurrent, pretty, statsFor } from '../lib/season';
 import TeamRail from './TeamRail';
 import FavoriteStar from './FavoriteStar';
 import { useFavorites } from '../lib/favorites';
+import ShareButton from './ShareButton';
+import { teamUrl } from '../lib/routes';
 import { TeamSkeletonBody } from './Skeletons';
 
 /* Team roster page: who is on the team this season, how the rotation is
@@ -169,6 +171,15 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, season, onOpe
   if (!roster) return shell(<TeamSkeletonBody/>);
   const unit = key => players.filter(player => player.unit === key);
   const open = player => player.profile && onOpen(player.profile);
+  const starters = unit('starters');
+  const shareSpec = {
+    kind: 'grid', eyebrow: `${roster.season.replace('-', '–')} roster`, title: roster.teamName, color: TEAMS[teamCode].color,
+    sub: `Expected starting five · per game, ${isCurrent(season) ? 'this season' : `last season (${pretty(season || roster.statsSeason || '2025-26')})`}`,
+    rows: starters.map(player => ({lead: player.slot, name: player.name, person: {name: player.name, playerId: player.profile?.playerId, espnId: player.espnId},
+      lines: player.stats ? [['PTS', player.stats.points.toFixed(1)], ['REB', player.stats.totalRebounds.toFixed(1)], ['AST', player.stats.assists.toFixed(1)]] : [['', 'Rookie']]})),
+    summary: [`${starters.reduce((sum, player) => sum + (player.stats?.points ?? 0), 0).toFixed(1)} PPG`, 'combined from the starting five'],
+    foot: 'Lineups are projections from ESPN depth charts', path: teamUrl(teamCode),
+  };
 
   return shell(<section className="team-page">
     <div className="team-hero">
@@ -177,6 +188,7 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, season, onOpe
         <h1>{roster.teamName}</h1>
         <p>{roster.season.replace('-', '–')} roster</p>
       </div>
+      <ShareButton spec={shareSpec} filename={`${teamUrl(teamCode).split('/').pop()}-starting-five`} title={`${roster.teamName} starting five`} text={`${roster.teamName}: expected starting five`} path={teamUrl(teamCode)} className="team-hero-share"/>
       <FavoriteStar code={teamCode} active={favorites.includes(teamCode)} className="on-hero"/>
     </div>
 

@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { BarChart3 } from 'lucide-react';
-import { slugify } from '../lib/routes';
+import ShareButton from './ShareButton';
+import { TEAMS, teamCodeOf } from '../lib/teams';
+import { playerUrl, slugify } from '../lib/routes';
 import { bestSeason, careerOf, liveRow, seasonsOf, tsOf } from '../lib/career';
 import { pretty } from '../lib/season';
 
@@ -107,7 +109,20 @@ export default function PlayerBody({ entity, season, population, bars, showCaree
   const mates = useMemo(() => pool.filter(player => player.team === entity.team && player.playerId !== entity.playerId && !/^\d+TM$/.test(entity.team)).slice(0, 3), [pool, entity]);
   const suggestions = [...mates, ...neighbours.filter(player => !mates.includes(player))].slice(0, 5);
 
+  const shareLabels = ['PPG', 'RPG', 'APG', 'SPG', 'BPG', 'FG%', '3P%', 'FT%', 'TS%'];
+  const shareSpec = {
+    kind: 'tiles', eyebrow: `${season ? pretty(season) : ''} season`, title: entity.playerName, person: { name: entity.playerName, playerId: entity.playerId },
+    sub: `${/^\dTM$/.test(entity.team) ? `${entity.team[0]} teams` : entity.team} · ${entity.position} · ${entity.gamesPlayed} games · ${f1(entity.minutesPerGame)} MPG`,
+    color: TEAMS[teamCodeOf(entity.team)]?.color,
+    tiles: shareLabels.map(label => {
+      const tile = TILES.find(item => item[0] === label), ranking = rankOf(pool, enriched, tile);
+      return { label, value: `${f1(tile[1](enriched))}${label.endsWith('%') ? '%' : ''}`, note: ranking ? `${ord(ranking.rank)} of ${ranking.total}` : 'too few attempts' };
+    }),
+    foot: `${season ? pretty(season) : ''} per game, ranked among regulars`, path: playerUrl(entity.playerName),
+  };
+
   return <>
+    <div className="pp-share"><ShareButton spec={shareSpec} filename={`${slugify(entity.playerName)}-stats`} title={entity.playerName} text={`${entity.playerName}: ${f1(entity.stats.points)} PPG, ${f1(entity.stats.totalRebounds)} RPG, ${f1(entity.stats.assists)} APG`} path={playerUrl(entity.playerName)}/></div>
     <section className="pp-tiles" aria-label="Season per-game stats">
       {TILES.map(tile => {
         const ranking = rankOf(pool, enriched, tile);
