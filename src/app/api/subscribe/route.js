@@ -10,8 +10,8 @@ const cleanTeams = teams => [...new Set(Array.isArray(teams) ? teams.filter(code
 const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,255}\.[^\s@]{2,}$/;
 const bad = (error, status = 400) => NextResponse.json({error}, {status});
 
-/* POST {channel: 'email', email, teams} or {channel: 'push', subscription, teams}
-   starts alerts and returns the token the browser keeps to manage them. */
+/* POST {channel: 'email', email, teams} or, once an email is registered,
+   {channel: 'push', subscription, teams, emailToken} starts alerts and returns the token the browser keeps to manage them. */
 export async function POST(request) {
   const body = await request.json().catch(() => null);
   if (!body) return bad('Invalid request');
@@ -22,8 +22,10 @@ export async function POST(request) {
   if (body.channel === 'push') {
     const endpoint = body.subscription?.endpoint;
     if (!endpoint || !body.subscription.keys) return bad('Invalid push subscription');
-    const [row] = await sql`insert into subscribers (token, channel, push, push_endpoint, teams) values (${token}, 'push', ${JSON.stringify(body.subscription)}::jsonb, ${endpoint}, ${teams})
-      on conflict (push_endpoint) where push_endpoint is not null do update set teams = excluded.teams, push = excluded.push returning token`;
+    const [owner] = await sql`select email from subscribers where token = ${String(body.emailToken || '')} and channel = 'email'`;
+    if (!owner) return bad('Add your email first');
+    const [row] = await sql`insert into subscribers (token, channel, push, push_endpoint, owner_email, teams) values (${token}, 'push', ${JSON.stringify(body.subscription)}::jsonb, ${endpoint}, ${owner.email}, ${teams})
+      on conflict (push_endpoint) where push_endpoint is not null do update set teams = excluded.teams, push = excluded.push, owner_email = excluded.owner_email returning token`;
     return NextResponse.json({token: row.token});
   }
 

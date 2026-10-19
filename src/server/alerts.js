@@ -61,7 +61,8 @@ export async function runAlerts() {
     if (!kind) continue;
     const claimed = await sql`insert into alerts_sent (game_id, kind) values (${game.id}, ${kind}) on conflict do nothing returning game_id`;
     if (!claimed.length) continue;
-    const audience = await sql`select * from subscribers where teams && ${game.sides.map(side => side.code)}::text[] and (channel = 'push' or email_confirmed_at is not null)`;
+    const audience = await sql`select s.* from subscribers s where s.teams && ${game.sides.map(side => side.code)}::text[]
+      and (s.email_confirmed_at is not null or (s.channel = 'push' and exists (select 1 from subscribers e where e.channel = 'email' and lower(e.email) = lower(s.owner_email) and e.email_confirmed_at is not null)))`;
     const text = message(game, kind);
     for (const subscriber of audience) {
       try { await deliver(subscriber, text); sent[kind] += 1; } catch (error) { sent.failed += 1; console.error('alert failed', subscriber.channel, error.message); }

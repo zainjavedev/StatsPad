@@ -16,7 +16,7 @@ export function TeamLogo({code, className}) {
 export default function TeamRail({current, onPick}) {
   const favorites = useFavorites();
   return <nav className="team-rail" aria-label="All teams">
-    <h3>{favorites.length ? 'Favorites & all teams' : 'All teams'}</h3>
+    <h3>{favorites.length ? 'Following & all teams' : 'All teams'}</h3>
     <ul>{favoritesFirst(favorites).map(code => <li key={code} className={favorites.includes(code) ? 'fav' : ''}>
       <button className={code === current ? 'active' : ''} onClick={() => onPick(code)} aria-current={code === current ? 'page' : undefined} title={TEAMS[code].name}>
         <TeamLogo code={code} className="team-rail-logo"/>

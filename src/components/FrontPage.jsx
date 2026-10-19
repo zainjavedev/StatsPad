@@ -24,7 +24,7 @@ const DEBATES = [
   ['Victor Wembanyama', 'Chet Holmgren'],
   ['Nikola Jokić', 'Shai Gilgeous-Alexander'],
 ];
-/* Shown (after any starred teams) until someone has picked their own. */
+/* Shown (after any followed teams) until someone has picked their own. */
 const HOT_TEAMS = ['LAL', 'PHI', 'BOS', 'NYK', 'GSW', 'OKC'];
 const TEAM_ROW = 6;
 const colorOf = player => TEAMS[teamCodeOf(player.team)]?.color || '#3b3b45';
@@ -130,23 +130,7 @@ export default function FrontPage({players, teams, playerIds, season, Art, onOpe
         </button>
         <FavoriteStar code={code} active={favorites.includes(code)} className="on-chip"/>
       </div>)}</div>
-      {!favorites.length && <p className="front-footnote">Tap the star on a team to keep it here and get its game alerts.</p>}
-    </section>
-
-    {debates.length > 0 && <section className="front-block">
-      <div className="front-block-head"><h2>Hot debates</h2><button onClick={() => onCompare()}>Make your own <ArrowRight size={14}/></button></div>
-      <div className="debates">{debates.map(pair => <Debate key={`${pair[0].playerId}-${pair[1].playerId}`} pair={pair} Art={Art} playerIds={playerIds} onCompare={onCompare}/>)}</div>
-    </section>}
-
-    <section className="front-block">
-      <div className="front-block-head"><h2>League leaders</h2><button onClick={onLeaders}>All leaders <ArrowRight size={14}/></button></div>
-      <div className="leader-grid">{leaders.map(entry => <button key={entry.key} className="leader-card" style={{'--team': colorOf(entry.player)}} onClick={() => onOpen(entry.player)}>
-        <small>{entry.label}</small>
-        <strong>{entry.player.stats[entry.key].toFixed(1)}{entry.pct ? '%' : ''}<em>{entry.unit}</em></strong>
-        <b>{entry.player.playerName}</b>
-        <Art entity={entry.player} playerIds={playerIds} className="leader-art"/>
-      </button>)}</div>
-      <p className="front-footnote">{season ? pretty(season) : ''} regular season per-game leaders.</p>
+      {!favorites.length && <p className="front-footnote">Tap the bell on a team to follow it: it stays here and you can get its game alerts.</p>}
     </section>
 
     <div className="front-feeds">
@@ -165,5 +149,22 @@ export default function FrontPage({players, teams, playerIds, season, Art, onOpe
         <NewsList articles={news}/>
       </section>
     </div>
+
+    {debates.length > 0 && <section className="front-block">
+      <div className="front-block-head"><h2>Hot debates</h2><button onClick={() => onCompare()}>Make your own <ArrowRight size={14}/></button></div>
+      <div className="debates">{debates.map(pair => <Debate key={`${pair[0].playerId}-${pair[1].playerId}`} pair={pair} Art={Art} playerIds={playerIds} onCompare={onCompare}/>)}</div>
+    </section>}
+
+    <section className="front-block">
+      <div className="front-block-head"><h2>League leaders</h2><button onClick={onLeaders}>All leaders <ArrowRight size={14}/></button></div>
+      <div className="leader-grid">{leaders.map(entry => <button key={entry.key} className="leader-card" style={{'--team': colorOf(entry.player)}} onClick={() => onOpen(entry.player)}>
+        <small>{entry.label}</small>
+        <strong>{entry.player.stats[entry.key].toFixed(1)}{entry.pct ? '%' : ''}<em>{entry.unit}</em></strong>
+        <b>{entry.player.playerName}</b>
+        <Art entity={entry.player} playerIds={playerIds} className="leader-art"/>
+      </button>)}</div>
+      <p className="front-footnote">{season ? pretty(season) : ''} regular season per-game leaders.</p>
+    </section>
+
   </section>;
 }

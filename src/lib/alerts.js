@@ -20,12 +20,19 @@ const keyBytes = base64 => {
   return Uint8Array.from(atob(padded), char => char.charCodeAt(0));
 };
 
+export const hasEmail = () => Boolean(readAlerts().email);
+
+/* Alerts need an email: the bell asks for one (see EmailGate) before it follows a team. */
+export const askForEmail = code => window.dispatchEvent(new CustomEvent('statspad:need-email', {detail: {code}}));
+
 export async function enableBrowserAlerts(teams) {
+  const emailToken = readAlerts().email;
+  if (!emailToken) throw new Error('Add your email first.');
   if (await Notification.requestPermission() !== 'granted') throw new Error('Notifications are blocked for this site in your browser settings.');
   const registration = await navigator.serviceWorker.register('/sw.js');
   await navigator.serviceWorker.ready;
   const subscription = await registration.pushManager.subscribe({userVisibleOnly: true, applicationServerKey: keyBytes(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY)});
-  const {token} = await post('/api/subscribe', {channel: 'push', subscription: subscription.toJSON(), teams});
+  const {token} = await post('/api/subscribe', {channel: 'push', subscription: subscription.toJSON(), teams, emailToken});
   writeAlerts({...readAlerts(), push: token});
 }
 
@@ -36,6 +43,7 @@ export async function enableEmailAlerts(email, teams) {
 }
 
 export async function disableAlerts(channel) {
+  if (channel === 'email') await disableAlerts('push');
   const saved = readAlerts();
   if (saved[channel]) await post('/api/unsubscribe', {token: saved[channel]}).catch(() => {});
   if (channel === 'push' && pushSupported()) {
