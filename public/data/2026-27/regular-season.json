@@ -2,7 +2,7 @@
   "season": "2026-27",
   "seasonType": "Regular Season",
   "description": "NBA player per-game statistics for the 2026-27 regular season",
-  "lastUpdated": "2026-10-18",
+  "lastUpdated": "2026-10-19",
   "source": {
     "name": "ESPN",
     "url": "https://www.espn.com/nba/stats/_/season/2027"
@@ -10190,7 +10190,7 @@
       "playerName": "Terance Mann",
       "team": "BKN",
       "position": "SG",
-      "age": 29,
+      "age": 30,
       "gamesPlayed": 63,
       "gamesStarted": 0,
       "minutesPerGame": 24.3,
