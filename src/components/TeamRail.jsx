@@ -1,9 +1,13 @@
-import React from 'react';
-import { TEAMS, logoUrl, nickname } from '../lib/teams';
+import React, { useEffect, useState } from 'react';
+import { TEAMS, espnLogoUrl, logoUrl, nickname } from '../lib/teams';
 import { favoritesFirst, useFavorites } from '../lib/favorites';
 
 export function TeamLogo({code, className}) {
-  return <img className={className} src={logoUrl(code)} alt="" loading="lazy" onError={event => { event.currentTarget.style.visibility = 'hidden'; }}/>;
+  const sources = [logoUrl(code), espnLogoUrl(code)];
+  const [step, setStep] = useState(0);
+  useEffect(() => setStep(0), [code]);
+  if (step >= sources.length) return <i className={className} aria-hidden="true"/>;
+  return <img className={className} src={sources[step]} alt="" loading="lazy" onError={() => setStep(current => current + 1)}/>;
 }
 
 /* Every club in one column beside a roster, so you can hop between teams

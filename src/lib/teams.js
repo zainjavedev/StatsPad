@@ -38,6 +38,7 @@ export const TEAMS = {
 const BBREF_CODES = {BRK: 'BKN', CHO: 'CHA', PHO: 'PHX'};
 export const teamCodeOf = code => BBREF_CODES[code] || code;
 
+export const espnLogoUrl = code => `https://a.espncdn.com/i/teamlogos/nba/500/${TEAMS[code].espn}.png`;
 export const logoUrl = code => `https://cdn.nba.com/logos/nba/${TEAMS[code].id}/global/L/logo.svg`;
 
 /* "Oklahoma City Thunder" -> "Thunder". */

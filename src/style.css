@@ -1234,3 +1234,6 @@ header .brand small{margin-top:3px}
 .sc-summary strong{font:800 72px/1 'Bricolage Grotesque','DM Sans',sans-serif;letter-spacing:-.04em;color:var(--accent)}
 .sc-summary span{color:#a6a8af;font-size:26px;font-weight:600}
 .team-hero-share+.fav-star.on-hero{margin-left:10px}
+.team-chip-wrap{position:relative;display:flex}
+.team-chip-wrap .team-chip{flex:1;min-width:0;padding-right:34px}
+.fav-star.on-chip{position:absolute;top:50%;right:4px;width:30px;height:30px;transform:translateY(-50%)}

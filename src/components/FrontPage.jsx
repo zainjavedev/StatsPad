@@ -5,6 +5,8 @@ import { useFeed } from '../lib/useFeed';
 import { latestNews, recentResults, upcomingGames } from '../lib/espn';
 import { TEAMS, nickname, teamCodeOf } from '../lib/teams';
 import { pretty, qualified } from '../lib/season';
+import { favoritesFirst, useFavorites } from '../lib/favorites';
+import FavoriteStar from './FavoriteStar';
 
 /* The front door: settle a debate, find a player, see the league's top
    performers and what's on. Deep leaderboards live on the Leaders page. */
@@ -20,7 +22,11 @@ const DEBATES = [
   ['Luka Dončić', 'Nikola Jokić'],
   ['Shai Gilgeous-Alexander', 'Anthony Edwards'],
   ['Victor Wembanyama', 'Chet Holmgren'],
+  ['Nikola Jokić', 'Shai Gilgeous-Alexander'],
 ];
+/* Shown (after any starred teams) until someone has picked their own. */
+const HOT_TEAMS = ['LAL', 'PHI', 'BOS', 'NYK', 'GSW', 'OKC'];
+const TEAM_ROW = 6;
 const colorOf = player => TEAMS[teamCodeOf(player.team)]?.color || '#3b3b45';
 const loadGames = () => upcomingGames(7, 8);
 const loadResults = () => recentResults(7, 8);
@@ -79,7 +85,13 @@ function Debate({pair, Art, playerIds, onCompare}) {
 
 export default function FrontPage({players, teams, playerIds, season, Art, onOpen, onCompare, onTeam, onLeaders}) {
   const games = useFeed(loadGames), results = useFeed(loadResults), news = useFeed(loadNews);
-  const [tab, setTab] = useState(null);
+  const [tab, setTab] = useState(null), [allTeams, setAllTeams] = useState(false);
+  const favorites = useFavorites();
+  const teamByCode = useMemo(() => new Map(teams.map(team => [teamCodeOf(team.team), team]).filter(([code]) => TEAMS[code])), [teams]);
+  const teamCodes = useMemo(() => {
+    const order = allTeams ? favoritesFirst(favorites) : [...favorites, ...HOT_TEAMS.filter(code => !favorites.includes(code))].slice(0, Math.max(TEAM_ROW, favorites.length));
+    return order.filter(code => teamByCode.has(code));
+  }, [allTeams, favorites, teamByCode]);
   const view = tab ?? (games?.length ? 'upcoming' : 'results');
   const pool = useMemo(() => qualified(players), [players]);
   const stars = useMemo(() => [...pool].sort((a, b) => b.stats.points - a.stats.points).slice(0, 3), [pool]);
@@ -90,7 +102,7 @@ export default function FrontPage({players, teams, playerIds, season, Art, onOpe
       return {...entry, player: [...eligible].sort((a, b) => b.stats[entry.key] - a.stats[entry.key])[0]};
     }).filter(entry => entry.player);
   }, [pool, players]);
-  const debates = useMemo(() => DEBATES.map(names => names.map(name => players.find(player => player.playerName === name))).filter(pair => pair.every(Boolean)), [players]);
+  const debates = useMemo(() => DEBATES.map(names => names.map(name => players.find(player => fold(player.playerName) === fold(name)))).filter(pair => pair.every(Boolean)), [players]);
 
   return <section className="front-page">
     <div className="front-hero">
@@ -106,9 +118,24 @@ export default function FrontPage({players, teams, playerIds, season, Art, onOpe
       <div className="front-cast" aria-hidden="true">{stars.map(player => <Art key={player.playerId} entity={player} playerIds={playerIds} className="cast-art"/>)}</div>
     </div>
 
+    <section className="front-block">
+      <div className="front-block-head">
+        <h2>{favorites.length ? 'Your teams' : 'Hot teams'}</h2>
+        <button onClick={() => setAllTeams(open => !open)}>{allTeams ? 'Show fewer' : 'All 30 teams'} <ArrowRight size={14}/></button>
+      </div>
+      <div className="team-grid">{teamCodes.map(code => <div key={code} className="team-chip-wrap">
+        <button className="team-chip" style={{'--team': TEAMS[code].color}} onClick={() => onTeam(code)} title={TEAMS[code].name}>
+          <Art entity={teamByCode.get(code)} playerIds={playerIds} className="team-chip-logo"/>
+          <span>{nickname(code)}</span>
+        </button>
+        <FavoriteStar code={code} active={favorites.includes(code)} className="on-chip"/>
+      </div>)}</div>
+      {!favorites.length && <p className="front-footnote">Tap the star on a team to keep it here and get its game alerts.</p>}
+    </section>
+
     {debates.length > 0 && <section className="front-block">
       <div className="front-block-head"><h2>Hot debates</h2><button onClick={() => onCompare()}>Make your own <ArrowRight size={14}/></button></div>
-      <div className="debates">{debates.map(pair => <Debate key={pair[0].playerId} pair={pair} Art={Art} playerIds={playerIds} onCompare={onCompare}/>)}</div>
+      <div className="debates">{debates.map(pair => <Debate key={`${pair[0].playerId}-${pair[1].playerId}`} pair={pair} Art={Art} playerIds={playerIds} onCompare={onCompare}/>)}</div>
     </section>}
 
     <section className="front-block">
@@ -138,16 +165,5 @@ export default function FrontPage({players, teams, playerIds, season, Art, onOpe
         <NewsList articles={news}/>
       </section>
     </div>
-
-    <section className="front-block">
-      <div className="front-block-head"><h2>Every team</h2></div>
-      <div className="team-grid">{[...teams].sort((a, b) => a.playerName.localeCompare(b.playerName)).map(team => {
-        const code = teamCodeOf(team.team);
-        return <button key={team.teamId} className="team-chip" style={{'--team': TEAMS[code]?.color}} onClick={() => onTeam(code)} title={team.playerName}>
-          <Art entity={team} playerIds={playerIds} className="team-chip-logo"/>
-          <span>{TEAMS[code] ? nickname(code) : team.team}</span>
-        </button>;
-      })}</div>
-    </section>
   </section>;
 }

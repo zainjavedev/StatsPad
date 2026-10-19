@@ -6,7 +6,7 @@ import TeamsIndex from './TeamsIndex';
 import Radar from './Radar';
 import TeamLineups from './TeamLineups';
 import { CompareSkeleton, HomeSkeleton, PageSkeleton, TeamLoading } from './Skeletons';
-import { TEAMS, nickname, teamCodeOf } from '../lib/teams';
+import { TEAMS, espnLogoUrl, nickname, teamCodeOf } from '../lib/teams';
 import { loadLatest, minGames, pretty, qualified } from '../lib/season';
 import { compareUrl, matchesName, playerUrl, routeParams, teamUrl } from '../lib/routes';
 import FrontPage from './FrontPage';
@@ -42,7 +42,7 @@ const ordinal = value => { const tens = value % 100, ones = value % 10; return `
 function EntityArt({entity,playerIds,className=''}){
   const[step,setStep]=useState(0);
   const sources=useMemo(()=>{
-    if(entity.entityType==='team')return [`https://cdn.nba.com/logos/nba/${entity.teamId}/global/L/logo.svg`];
+    if(entity.entityType==='team'){const code=teamCodeOf(entity.team);return [`https://cdn.nba.com/logos/nba/${entity.teamId}/global/L/logo.svg`,TEAMS[code]&&espnLogoUrl(code)].filter(Boolean)}
     return [
       PLAYER_AVATARS[entity.playerName],
       ...headshotSources(entity,playerIds,EXTRA_PLAYER_IDS),
