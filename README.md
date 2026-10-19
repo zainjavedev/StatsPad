@@ -30,9 +30,11 @@ npm ci
 npm run dev
 ```
 
+The site is a Next.js app. `scripts/prerender.mjs` runs before `dev` and `build`: it writes `src/seo/pages.json` (the readable page for every player, team and popular comparison), the share cards under `public/og` and the sitemap. All three are generated and git-ignored. Secrets (`DATABASE_URL`, `RESEND_API_KEY`) live in `.env.local`.
+
 Checks:
 
 ```bash
 npm run lint
-npm run build
+npm run build   # prerender, then next build
 ```

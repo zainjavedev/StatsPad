@@ -11,6 +11,7 @@ import { loadLatest, minGames, pretty, qualified } from '../lib/season';
 import { compareUrl, matchesName, playerUrl, routeParams, teamUrl } from '../lib/routes';
 import FrontPage from './FrontPage';
 import PlayerBody from './PlayerBody';
+import { headshotSources, loadHeadshotIds } from '../lib/headshots';
 
 const COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)'];
 const TEAM_COLORS = {ATL:'#e03a3e',BOS:'#007a33',BKN:'#777',BRK:'#777',CHA:'#1d1160',CHO:'#1d1160',CHI:'#ce1141',CLE:'#860038',DAL:'#00538c',DEN:'#0e2240',DET:'#c8102e',GSW:'#1d428a',HOU:'#ce1141',IND:'#002d62',LAC:'#c8102e',LAL:'#552583',MEM:'#5d76a9',MIA:'#98002e',MIL:'#00471b',MIN:'#0c2340',NOP:'#0c2340',NYK:'#f58426',OKC:'#007ac1',ORL:'#0077c0',PHI:'#006bb6',PHO:'#1d1160',PHX:'#1d1160',POR:'#e03a3e',SAC:'#5a2d81',SAS:'#8a8d8f',TOR:'#ce1141',UTA:'#6cace4',WAS:'#002b5c'};
@@ -37,15 +38,13 @@ const metricValue = (player,key) => key==='trueShootingPercentage' ? (player?.st
 const format = (value,key) => `${Number(value).toFixed(1)}${pctKeys.has(key)?'%':''}`;
 const initials = name => name.split(' ').map(part=>part[0]).slice(-2).join('');
 const ordinal = value => { const tens = value % 100, ones = value % 10; return `${value}${tens > 10 && tens < 14 ? 'th' : ones === 1 ? 'st' : ones === 2 ? 'nd' : ones === 3 ? 'rd' : 'th'}`; };
-const normalizedName = name => name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace('ć','c');
 function EntityArt({entity,playerIds,className=''}){
   const[step,setStep]=useState(0);
   const sources=useMemo(()=>{
     if(entity.entityType==='team')return [`https://cdn.nba.com/logos/nba/${entity.teamId}/global/L/logo.svg`];
-    const nbaId=playerIds[normalizedName(entity.playerName)]||playerIds[entity.playerName]||EXTRA_PLAYER_IDS[entity.playerName];
     return [
       PLAYER_AVATARS[entity.playerName],
-      nbaId&&`https://cdn.nba.com/headshots/nba/latest/1040x760/${nbaId}.png`,
+      ...headshotSources(entity,playerIds,EXTRA_PLAYER_IDS),
     ].filter(Boolean);
   },[entity,playerIds]);
   useEffect(()=>{setStep(0)},[sources]);
@@ -267,7 +266,7 @@ export default function Home(){
   const[theme,setTheme]=useState(()=>{try{return localStorage.getItem('statspad-theme')||'light'}catch{return 'light'}});
   useEffect(()=>{document.documentElement.dataset.theme=theme;try{localStorage.setItem('statspad-theme',theme)}catch{/* private mode */}},[theme]);
   const toggleTheme=()=>setTheme(current=>current==='dark'?'light':'dark');
-  useEffect(()=>{fetch('/data/player-ids.json').then(r=>r.json()).then(ids=>setPlayerIds(Object.fromEntries(Object.entries(ids).map(([name,id])=>[normalizedName(name),id]))))},[]);
+  useEffect(()=>{loadHeadshotIds().then(setPlayerIds)},[]);
   useEffect(()=>{loadSeasonBundle('regular-season').then(bundle=>{setRegularPlayers(bundle.players.players);setRegularSeason(bundle.season)});loadSeasonBundle('playoffs')},[]);
   useEffect(()=>{let active=true;loadSeasonBundle(seasonType).then(bundle=>{if(!active)return;setCatalog({players:bundle.players.players,teams:bundle.teams.players});setSplits(bundle.splits);setData(entityType==='team'?bundle.teams:bundle.players)});return()=>{active=false}},[seasonType,entityType]);
   useEffect(()=>{const name=paramsOnLoad.get('profile');if(!name||profile)return;const match=[...catalog.players,...catalog.teams].find(item=>matchesName(item.playerName,name));if(match)setProfile(match)},[catalog,paramsOnLoad,profile]);

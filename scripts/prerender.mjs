@@ -9,15 +9,17 @@ import { makeCopy } from './seo-copy.mjs';
 import { bestSeason, careerOf, liveRow, seasonsOf, tsOf } from '../src/lib/career.js';
 import { SITE, compareUrl, playerUrl, slugify, teamUrl } from '../src/lib/routes.js';
 
-/* Runs after `vite build`. Writes a real HTML page (title, description, social
-   tags and readable stats) for every player, team and popular comparison, a
-   share-card image for each, and a sitemap. React replaces the static text as
-   soon as the app loads; search engines and link previews read it as is.
+/* Runs before `next build`. Writes src/seo/pages.json (title, description and a
+   readable stats body for every player, team and popular comparison, which the
+   Next.js routes render), a share-card image for each under public/og, and the
+   sitemap. React replaces the static text as soon as the app loads; search
+   engines and link previews read it as is.
 
    SEO_LIMIT=n builds only n pages of each kind; SKIP_OG=1 skips the images. */
 
 const root = path.resolve(import.meta.dirname, '..');
-const dist = path.join(root, 'dist');
+const publicDir = path.join(root, 'public');
+const manifestFile = path.join(root, 'src/seo/pages.json');
 const cacheDir = path.join(root, '.cache', 'og');
 const LIMIT = Number(process.env.SEO_LIMIT) || Infinity;
 const SKIP_OG = process.env.SKIP_OG === '1';
@@ -64,27 +66,10 @@ const teams = Object.entries(TEAMS).map(([code, info]) => {
 const colorOf = p => TEAMS[p.code]?.color || '#3b3b45';
 
 /* ---------- html ---------- */
-const template = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
-if (template.includes('rel="canonical"')) throw new Error('dist/index.html was already prerendered. Run `vite build` first.');
+const pages = {};
 const written = [];
 function writePage({route, title, description, body, ogName}) {
-  const url = `${SITE}${route}`;
-  const image = ogName ? `${SITE}/og/${ogName}.jpg` : `${SITE}/statspad.png`;
-  const tags = [
-    `<meta name="description" content="${esc(description)}" />`,
-    `<link rel="canonical" href="${url}" />`,
-    `<meta property="og:type" content="website" />`, `<meta property="og:site_name" content="StatsPad" />`,
-    `<meta property="og:title" content="${esc(title)}" />`, `<meta property="og:description" content="${esc(description)}" />`,
-    `<meta property="og:url" content="${url}" />`, `<meta property="og:image" content="${image}" />`,
-    ...(ogName ? [`<meta property="og:image:width" content="1200" />`, `<meta property="og:image:height" content="630" />`] : []),
-    `<meta name="twitter:card" content="summary_large_image" />`, `<meta name="twitter:title" content="${esc(title)}" />`,
-    `<meta name="twitter:description" content="${esc(description)}" />`, `<meta name="twitter:image" content="${image}" />`,
-    `<style>.seo{max-width:820px;margin:0 auto;padding:32px 20px;font:16px/1.5 system-ui,sans-serif;color:#14140f}.seo table{border-collapse:collapse;width:100%}.seo th,.seo td{padding:6px 10px;border-bottom:1px solid #ddd;text-align:left}.seo a{color:inherit}</style>`,
-  ].join('\n');
-  let html = template.replace(/<title>[^<]*<\/title>/, `<title>${esc(title)}</title>`).replace('</head>', `${tags}\n</head>`).replace('<div id="root"></div>', `<div id="root">${body}</div>`);
-  const file = route === '/' ? path.join(dist, 'index.html') : path.join(dist, route.replace(/^\//, ''), 'index.html');
-  fs.mkdirSync(path.dirname(file), {recursive: true});
-  fs.writeFileSync(file, html);
+  pages[route] = {title, description, body, ogName: ogName ?? null};
   if (route !== '/') written.push(route);
 }
 const table = (heads, rows) => `<table><thead><tr>${heads.map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
@@ -127,7 +112,7 @@ async function render(name, tree) {
     const svg = await satori(tree, {width: 1200, height: 630, fonts});
     const png = new Resvg(svg, {fitTo: {mode: 'width', value: 1200}}).render().asPng();
     const jpg = await sharp(png).jpeg({quality: 78, mozjpeg: true}).toBuffer();
-    const file = path.join(dist, 'og', `${name}.jpg`);
+    const file = path.join(publicDir, 'og', `${name}.jpg`);
     fs.mkdirSync(path.dirname(file), {recursive: true});
     fs.writeFileSync(file, jpg);
     return true;
@@ -246,6 +231,8 @@ await pool(jobs, 6);
 /* ---------- sitemap and robots ---------- */
 const today = new Date().toISOString().slice(0, 10);
 const urls = ['/', '/compare', '/leaders', '/teams', ...written.filter(route => !['/compare', '/leaders', '/teams'].includes(route))];
-fs.writeFileSync(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(route => `  <url><loc>${SITE}${route}</loc><lastmod>${today}</lastmod></url>`).join('\n')}\n</urlset>\n`);
-fs.writeFileSync(path.join(dist, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
+fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(route => `  <url><loc>${SITE}${route}</loc><lastmod>${today}</lastmod></url>`).join('\n')}\n</urlset>\n`);
+fs.writeFileSync(path.join(publicDir, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 console.log(`prerender: ${written.length} pages, ${cards} share cards in ${((Date.now() - started) / 1000).toFixed(1)}s, ${players.filter(p => !p.nbaId && !p.espnId).length} of ${players.length} players without a headshot`);
+fs.mkdirSync(path.dirname(manifestFile), {recursive: true});
+fs.writeFileSync(manifestFile, JSON.stringify(pages));

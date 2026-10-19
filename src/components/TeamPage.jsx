@@ -6,6 +6,8 @@ import { teamResults, teamSchedule } from '../lib/espn';
 import { TEAMS, logoUrl } from '../lib/teams';
 import { indexPlayers, isCurrent, pretty, statsFor } from '../lib/season';
 import TeamRail from './TeamRail';
+import FavoriteStar from './FavoriteStar';
+import { useFavorites } from '../lib/favorites';
 import { TeamSkeletonBody } from './Skeletons';
 
 /* Team roster page: who is on the team this season, how the rotation is
@@ -139,6 +141,7 @@ function StatTable({players, season, onOpen}) {
 
 export default function TeamPage({teamCode = 'PHI', leaguePlayers, season, onOpen, onSwitchTeam}) {
   const [roster, setRoster] = useState(null), [error, setError] = useState(false);
+  const favorites = useFavorites();
   const schedule = useCallback(() => teamSchedule(TEAMS[teamCode].espn, 5), [teamCode]);
   const games = useFeed(schedule);
   const finished = useFeed(useCallback(() => teamResults(TEAMS[teamCode].espn, 5), [teamCode]));
@@ -174,6 +177,7 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, season, onOpe
         <h1>{roster.teamName}</h1>
         <p>{roster.season.replace('-', '–')} roster</p>
       </div>
+      <FavoriteStar code={teamCode} active={favorites.includes(teamCode)} className="on-hero"/>
     </div>
 
     <section className="team-block">
