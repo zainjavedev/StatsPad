@@ -1,20 +1,15 @@
 import fs from 'node:fs';
 import { TEAMS } from '../src/lib/teams.js';
 
-/* Until the regular season starts, the site's stats are the 2026-27 preseason: per-game player and team
-   averages built from every finished preseason box score, written in the same shape fetch-espn-stats.mjs
-   writes (public/data/2026-27/regular-season.json and teams-regular-season.json), with seasonType
-   "Preseason". When ESPN starts serving real regular-season numbers, fetch-espn-stats.mjs replaces both
-   files, and this script then leaves them alone.
+/* The 2026-27 preseason as a season of its own: per-game player and team averages built from every finished
+   preseason box score, in the same shape fetch-espn-stats.mjs writes, as public/data/2026-27/preseason.json and
+   teams-preseason.json. The site offers it beside the regular season and playoffs, and uses it for the pages that
+   show "current" numbers until real 2026-27 regular-season stats exist.
 
    Usage: node scripts/build-preseason-stats.mjs */
 
 const dir = 'public/data/2026-27';
-const playersFile = `${dir}/regular-season.json`, teamsFile = `${dir}/teams-regular-season.json`;
-if (fs.existsSync(playersFile)) {
-  const current = JSON.parse(fs.readFileSync(playersFile, 'utf8'));
-  if (current.seasonType && current.seasonType !== 'Preseason') { console.log('Regular-season stats are in place; leaving them alone.'); process.exit(0); }
-}
+const playersFile = `${dir}/preseason.json`, teamsFile = `${dir}/teams-preseason.json`;
 
 const plain = name => name.normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[.']/g, '').replace(/ (jr|sr|ii|iii|iv)$/, '');
 const codeOf = abbr => Object.keys(TEAMS).find(code => TEAMS[code].espn === String(abbr).toLowerCase());
