@@ -1,3 +1,4 @@
+import AccountButton from './AccountButton';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, BarChart3, Check, Copy, Download, Home as HomeIcon, Link2, Moon, Search, Sun, Trophy, Users, X } from 'lucide-react';
 import { toPng } from 'html-to-image';
@@ -164,7 +165,7 @@ function SiteHeader({page,onHome,onLeaders,onCompare,onTeams,theme,onToggleTheme
     <div className="site-header" role="banner"><div className="site-header-inner">
       <button className="site-brand" onClick={()=>onHome()}>StatsPad</button>
       {tabs('site-nav')}
-      <div className="site-header-end"><button className="theme-toggle" onClick={onToggleTheme} aria-label={theme==='dark'?'Switch to light theme':'Switch to dark theme'} title={theme==='dark'?'Light theme':'Dark theme'}>{theme==='dark'?<Sun size={16}/>:<Moon size={16}/>}</button></div>
+      <div className="site-header-end"><AccountButton/><button className="theme-toggle" onClick={onToggleTheme} aria-label={theme==='dark'?'Switch to light theme':'Switch to dark theme'} title={theme==='dark'?'Light theme':'Dark theme'}>{theme==='dark'?<Sun size={16}/>:<Moon size={16}/>}</button></div>
     </div></div>
     {tabs('tabbar')}
   </>;

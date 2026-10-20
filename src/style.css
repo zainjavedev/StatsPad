@@ -964,7 +964,7 @@ header .brand small{margin-top:3px}
 .site-nav button.active{background:var(--text-1);color:var(--ink-1)}
 .site-nav .nav-icon{display:none}
 .site-nav button:focus-visible,.site-brand:focus-visible,.tabbar button:focus-visible{outline:2px solid var(--text-1);outline-offset:2px}
-.site-header-end{display:flex;justify-content:flex-end}
+.site-header-end{display:flex;justify-content:flex-end;align-items:center;gap:8px}
 .tabbar{display:none}
 @media(max-width:700px){
   .site-header-inner{grid-template-columns:1fr auto;height:56px;padding:0 16px}
@@ -1246,3 +1246,10 @@ header .brand small{margin-top:3px}
 .gate .alerts-btn{align-self:flex-start}
 .gate-error{color:#c0392b!important}
 .gate-close{position:absolute;top:12px;right:12px;display:grid;place-items:center;width:32px;height:32px;border:0;border-radius:50%;background:transparent;color:var(--text-2);cursor:pointer}
+
+.account-btn{display:inline-flex;align-items:center;gap:6px;max-width:150px;padding:7px 12px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--text-1);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.account-btn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.account-btn:hover{border-color:var(--text-2)}
+.account-dialog{width:min(560px,100%);max-height:90vh;overflow:auto}
+.account-dialog .alerts-panel{margin:0;border:0;padding:0}
+@media (max-width:640px){.account-btn span{display:none}.account-btn{padding:8px}}

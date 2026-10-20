@@ -6,7 +6,10 @@ import { getFavorites, setFavorites } from './favorites';
 const KEY = 'statspad-alerts';
 
 export const readAlerts = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } };
-const writeAlerts = value => { try { localStorage.setItem(KEY, JSON.stringify(value)); } catch { /* private mode */ } };
+const writeAlerts = value => {
+  try { localStorage.setItem(KEY, JSON.stringify(value)); } catch { /* private mode */ }
+  window.dispatchEvent(new Event('statspad:alerts'));
+};
 
 const post = async (url, body, method = 'POST') => {
   const response = await fetch(url, {method, headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
