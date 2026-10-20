@@ -1606,3 +1606,17 @@ header .brand small{margin-top:3px}
 .gp-leaders{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
 .gp-leader li.tied strong{color:var(--accent)}
 .gp-leader li.top{padding-bottom:6px}
+
+/* a calmer box score: one team at a time, the main stats first, photos only for starters */
+.gp-tabs{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:26px}
+.gp-tabs button{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--line-2);border-radius:999px;background:transparent;color:var(--text-2);font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.gp-tabs button.active{border-color:var(--text-1);background:var(--text-1);color:var(--ink-1)}
+.gp-tabs img{width:20px;height:20px;object-fit:contain}
+.gp-tabs .gp-more-btn{margin-left:auto;border-style:dashed;font-size:13px}
+.gp table.calm td{padding:12px 10px;font-size:14px}
+.gp table.calm th{padding:10px}
+.gp table.calm tr.bench td{padding:9px 10px;font-size:13px;color:var(--text-2)}
+.gp table.calm tr.bench td.who b{font-weight:600}
+.gp table.calm td.num{font-weight:600}
+.gp table.calm td.num.led{color:var(--text-1);font-weight:800;box-shadow:inset 0 -2px 0 var(--accent)}
+.gp table.calm .gd-total td{font-size:13px;color:var(--text-2)}

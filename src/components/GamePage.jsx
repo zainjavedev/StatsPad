@@ -7,7 +7,8 @@ import { TEAMS } from '../lib/teams';
 /* One game on its own page: the score, who led it in each category (with photos), and the full box
    score for both teams with each category's leader highlighted. Before tip-off, the expected fives. */
 
-const COLUMNS = ['MIN', 'PTS', 'REB', 'AST', 'STL', 'BLK', 'FG', '3PT', 'FT', 'TO', '+/-'];
+const BASIC = ['MIN', 'PTS', 'REB', 'AST', 'STL', 'BLK', 'FG'];
+const EXTRA = ['3PT', 'FT', 'TO', '+/-'];
 const LEADS = [['PTS', 'Points'], ['REB', 'Rebounds'], ['AST', 'Assists'], ['STL', 'Steals'], ['BLK', 'Blocks']];
 const codeOf = abbr => Object.keys(TEAMS).find(code => TEAMS[code].espn === String(abbr).toLowerCase());
 const num = value => Number(String(value ?? '').replace('+', '')) || 0;
@@ -50,7 +51,7 @@ function Expected({box}) {
 }
 
 export default function GamePage({id}) {
-  const [box, setBox] = useState(undefined);
+  const [box, setBox] = useState(undefined), [side, setSide] = useState(0), [more, setMore] = useState(false);
   useEffect(() => { loadBoxscore(id).then(setBox); }, [id]);
 
   /* Top five in each category across both teams; the leader (ties included) is what the box score highlights. */
@@ -65,7 +66,7 @@ export default function GamePage({id}) {
   }, [box]);
   const led = useMemo(() => {
     const map = new Map();
-    leaders.forEach(entry => entry.players.forEach(player => map.set(`${player.id}:${entry.key}`, true)));
+    leaders.filter(entry => ['PTS', 'REB', 'AST'].includes(entry.key) && entry.players.length === 1).forEach(entry => map.set(`${entry.players[0].id}:${entry.key}`, true));
     return map;
   }, [leaders]);
 
@@ -74,10 +75,6 @@ export default function GamePage({id}) {
 
   const scored = box.state !== 'pre';
   const ordered = [...box.teams].sort((a, b) => (a.abbr === box.away.abbr ? 0 : 1) - (b.abbr === box.away.abbr ? 0 : 1));
-  const row = player => <tr key={player.id}>
-    <td className="who"><span className="gp-name"><Face player={player}/><span><b>{player.name}</b><small>{player.pos}{player.jersey ? ` · #${player.jersey}` : ''}</small></span></span></td>
-    {COLUMNS.map(label => <td key={label} className={`num${led.has(`${player.id}:${label}`) ? ' led' : ''}`}>{player.stats[label] ?? '–'}</td>)}
-  </tr>;
 
   return <section className="gp">
     <a className="gp-back" href="/schedule"><ArrowLeft size={15}/> Schedule</a>
@@ -97,22 +94,30 @@ export default function GamePage({id}) {
         </li>)}</ol>
       </section>)}</div>}
       {ordered.length === 2 && <Radar axes={shapeAxes(ordered, ordered.map(team => team.abbr === box.away.abbr ? box.away.score : box.home.score))} names={ordered.map(team => team.abbr === box.away.abbr ? box.away.short : box.home.short)} colors={['var(--accent)', 'var(--text-1)']} scope="a typical NBA game" notes={['Each spoke runs from a low to a high night for that stat, so the shape shows how each team played, not season averages. Ball care rewards fewer turnovers.']}/>}
-      {ordered.map(team => {
+      <div className="gp-tabs" role="group" aria-label="Team">
+        {ordered.map((team, index) => <button key={team.abbr} className={side === index ? 'active' : ''} onClick={() => setSide(index)}>{team.logo && <img src={team.logo} alt=""/>}{team.name}</button>)}
+        <button className="gp-more-btn" onClick={() => setMore(open => !open)}>{more ? 'Fewer stats' : 'More stats'}</button>
+      </div>
+      {ordered[side] && (() => {
+        const team = ordered[side], columns = more ? [...BASIC, ...EXTRA] : BASIC;
         const starters = team.players.filter(player => player.starter), bench = team.players.filter(player => !player.starter && !player.out), out = team.players.filter(player => !player.starter && player.out);
-        return <section key={team.abbr} className="gd-team">
-          <h3>{team.logo && <img src={team.logo} alt=""/>}{team.name}</h3>
-          <div className="gd-scroll"><table>
-            <thead><tr><th className="who">Starters</th>{COLUMNS.map(label => <th key={label} className="num">{label}</th>)}</tr></thead>
+        const line = (player, face) => <tr key={player.id} className={face ? '' : 'bench'}>
+          <td className="who"><span className="gp-name">{face && <Face player={player}/>}<span><b>{player.name}</b><small>{player.pos}</small></span></span></td>
+          {columns.map(label => <td key={label} className={`num${led.has(`${player.id}:${label}`) ? ' led' : ''}`}>{player.stats[label] ?? '–'}</td>)}
+        </tr>;
+        return <section className="gd-team">
+          <div className="gd-scroll"><table className="calm">
+            <thead><tr><th className="who">Starters</th>{columns.map(label => <th key={label} className="num">{label}</th>)}</tr></thead>
             <tbody>
-              {starters.map(player => row(player))}
-              <tr className="gd-sub"><th className="who">Bench</th>{COLUMNS.map(label => <th key={label}/>)}</tr>
-              {bench.map(player => row(player))}
-              <tr className="gd-total"><td className="who"><b>Team</b></td>{COLUMNS.map(label => <td key={label} className="num">{['FG', '3PT', 'FT'].includes(label) ? team.totals[label] : ''}</td>)}</tr>
+              {starters.map(player => line(player, true))}
+              <tr className="gd-sub"><th className="who">Bench</th>{columns.map(label => <th key={label}/>)}</tr>
+              {bench.map(player => line(player, false))}
+              <tr className="gd-total"><td className="who"><b>Team</b></td>{columns.map(label => <td key={label} className="num">{['FG', '3PT', 'FT'].includes(label) ? team.totals[label] : ''}</td>)}</tr>
             </tbody>
           </table></div>
           {out.length > 0 && <p className="gd-out">Did not play: {out.map(player => player.name).join(', ')}</p>}
         </section>;
-      })}
+      })()}
     </>}
   </section>;
 }
