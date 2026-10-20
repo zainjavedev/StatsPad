@@ -1687,3 +1687,58 @@ header .brand small{margin-top:3px}
 .gp-side .starter-card{cursor:default}
 @media (max-width:900px){.gp-side .starter-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:560px){.gp-side .starter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* matchup context */
+.gp-form h3,.gp-past h3{display:flex;align-items:baseline;gap:12px;margin:26px 0 12px;font-family:'Bricolage Grotesque','DM Sans',sans-serif;font-size:22px;font-weight:800}
+.gp-form h3 small,.gp-past h3 small{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--text-3)}
+.gp-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.gp-form-grid>div,.gp-past{padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:var(--ink-1)}
+.gp-past{margin-top:22px;padding-top:6px}
+.gp-form-head{display:flex;align-items:center;gap:10px;margin:0 0 10px;font-size:16px}
+.gp-form-head img{width:28px;height:28px;object-fit:contain}
+.gp-form-head em{margin-left:auto;padding:3px 10px;border-radius:999px;font-size:12px;font-style:normal;font-weight:800}
+.gp-form-head em.win{background:var(--accent);color:var(--accent-ink)}
+.gp-form-head em.loss{background:rgb(255 107 107 / .18);color:#ff8f8f}
+.gp-form ul,.gp-past ul{margin:0;padding:0;list-style:none}
+.gp-form li{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:14px}
+.gp-form li span:nth-child(2){flex:1;color:var(--text-2)}
+.gp-form li strong{font-variant-numeric:tabular-nums}
+.gp-wl{display:grid;place-items:center;width:24px;height:24px;border-radius:7px;font-size:12px;font-weight:800}
+.gp-wl.win{background:var(--accent);color:var(--accent-ink)}
+.gp-wl.loss{background:rgb(255 107 107 / .18);color:#ff8f8f}
+.gp-past li{display:grid;grid-template-columns:120px 1fr auto 1fr;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);font-size:15px}
+.gp-past li:first-child{border-top:0}
+.gp-when{font-size:13px;color:var(--text-3)}
+.gp-past li span:nth-child(2){text-align:right}
+.gp-past li b{margin-left:6px;font-variant-numeric:tabular-nums}
+.gp-past .won{font-weight:800;color:var(--text-1)}
+.gp-past li span:not(.gp-when):not(.gp-at){color:var(--text-2)}
+.gp-at{font-size:12px;color:var(--text-3)}
+@media (max-width:760px){.gp-form-grid{grid-template-columns:1fr}.gp-past li{grid-template-columns:1fr auto 1fr;}.gp-when{grid-column:1/-1}}
+
+/* past matchups, richer */
+.gp-past{padding:20px 22px}
+.gp-past h3{margin-top:4px}
+.gp-series{display:flex;align-items:center;gap:16px}
+.gp-series-side{display:flex;align-items:center;gap:10px;min-width:0}
+.gp-series-side img{width:40px;height:40px;object-fit:contain}
+.gp-series-side strong{font-size:40px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.gp-series-side span{font-size:14px;font-weight:700;color:var(--text-2)}
+.gp-series-bar{display:flex;flex:1;gap:4px;height:10px}
+.gp-series-bar i{display:block;border-radius:5px;background:var(--accent)}
+.gp-series-bar i.b{background:var(--text-1)}
+.gp-series-note{margin:10px 0 16px}
+.gp-meet{display:flex;flex-direction:column;gap:8px}
+.gp-meet li{display:grid;grid-template-columns:minmax(150px,1fr) 110px 28px 110px;align-items:center;gap:10px;padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:var(--ink-2)}
+.gp-meet-date{display:flex;flex-direction:column;gap:2px}
+.gp-meet-date b{font-size:14px}
+.gp-meet-date small{font-size:12px;color:var(--text-3)}
+.gp-meet-team{display:flex;align-items:center;gap:10px;font-variant-numeric:tabular-nums;color:var(--text-3)}
+.gp-meet-team:first-of-type{justify-content:flex-end}
+.gp-meet-team img{width:30px;height:30px;object-fit:contain;opacity:.55}
+.gp-meet-team b{font-size:22px;font-weight:600}
+.gp-meet-team.won{color:var(--text-1)}
+.gp-meet-team.won b{font-weight:800;color:var(--accent)}
+.gp-meet-team.won img{opacity:1}
+.gp-meet .gp-at{text-align:center}
+@media (max-width:640px){.gp-meet li{grid-template-columns:1fr auto 20px auto}.gp-meet-date{grid-column:1/-1}.gp-series-side strong{font-size:30px}}
