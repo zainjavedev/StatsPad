@@ -1,18 +1,15 @@
 import { randomBytes } from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { sql } from '../../../server/db';
-import { confirmMail, sendMail } from '../../../server/mail';
-import { sendSignin } from '../../../server/session';
 import { TEAMS } from '../../../lib/teams';
 
 export const dynamic = 'force-dynamic';
 
 const cleanTeams = teams => [...new Set(Array.isArray(teams) ? teams.filter(code => TEAMS[code]) : [])];
-const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,255}\.[^\s@]{2,}$/;
 const bad = (error, status = 400) => NextResponse.json({error}, {status});
 
-/* POST {channel: 'email', email, teams} or, once an email is registered,
-   {channel: 'push', subscription, teams, emailToken} starts alerts and returns the token the browser keeps to manage them. */
+/* POST {channel: 'push', subscription, teams, emailToken} starts browser alerts for a signed-in account
+   and returns the token the browser keeps to manage them. */
 export async function POST(request) {
   const body = await request.json().catch(() => null);
   if (!body) return bad('Invalid request');
@@ -30,19 +27,6 @@ export async function POST(request) {
     return NextResponse.json({token: row.token});
   }
 
-  if (body.channel === 'email') {
-    const email = String(body.email || '').trim();
-    if (!EMAIL.test(email)) return bad('Enter a valid email address');
-    const [existing] = await sql`select token, email_confirmed_at from subscribers where lower(email) = lower(${email})`;
-    if (existing?.email_confirmed_at) {
-      /* A confirmed address belongs to someone's account: only a link sent to that inbox may open it. */
-      return sendSignin(existing.token, email);
-    }
-    const [row] = await sql`insert into subscribers (token, channel, email, teams) values (${token}, 'email', ${email}, ${teams})
-      on conflict (lower(email)) where email is not null do update set teams = excluded.teams returning token`;
-    try { await sendMail({to: email, ...confirmMail(row.token)}); } catch (error) { console.error('confirm mail failed', error.message); return bad('Could not send the confirmation email. Try again later.', 502); }
-    return NextResponse.json({token: row.token, confirmed: false});
-  }
   return bad('Unknown channel');
 }
 

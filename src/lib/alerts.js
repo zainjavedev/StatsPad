@@ -51,6 +51,17 @@ export async function signInWithGoogle(credential) {
 
 export const sendSignInLink = email => post('/api/restore', {email});
 
+export async function signUp(email, password) {
+  const data = await post('/api/auth/signup', {email, password, teams: getFavorites()});
+  adopt(data);
+}
+
+export async function logIn(email, password) {
+  adopt(await post('/api/auth/login', {email, password}));
+}
+
+export const setPassword = password => post('/api/auth/password', {token: readAlerts().email, password});
+
 export async function completeSignIn(code) {
   adopt(await post('/api/session', {code}));
 }
@@ -59,13 +70,6 @@ export function signOut() {
   const rest = {...readAlerts()};
   delete rest.email; delete rest.emailAddress; delete rest.push;
   writeAlerts(rest);
-}
-
-export async function enableEmailAlerts(email, teams) {
-  const {token, confirmed, linkSent} = await post('/api/subscribe', {channel: 'email', email, teams});
-  if (linkSent) return 'link';
-  writeAlerts({...readAlerts(), email: token, emailAddress: email});
-  return confirmed;
 }
 
 export async function disableAlerts(channel) {

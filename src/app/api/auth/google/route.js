@@ -17,6 +17,7 @@ export async function POST(request) {
   const local = (Array.isArray(body.teams) ? body.teams : []).filter(code => TEAMS[code]);
   const [row] = await sql`insert into subscribers (token, channel, email, email_confirmed_at, teams) values (${randomBytes(24).toString('hex')}, 'email', ${info.email}, now(), ${local})
     on conflict (lower(email)) where email is not null do update set email_confirmed_at = coalesce(subscribers.email_confirmed_at, now()),
+      password_hash = case when subscribers.email_confirmed_at is null then null else subscribers.password_hash end,
       teams = (select coalesce(array_agg(distinct t), '{}') from unnest(subscribers.teams || excluded.teams) t)
     returning token, email, teams`;
   return NextResponse.json({token: row.token, email: row.email, teams: row.teams});

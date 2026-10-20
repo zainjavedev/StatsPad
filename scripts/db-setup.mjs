@@ -17,6 +17,9 @@ await sql`create table if not exists subscribers (
   created_at timestamptz not null default now()
 )`;
 await sql`alter table subscribers add column if not exists owner_email text`;
+await sql`alter table subscribers add column if not exists password_hash text`;
+await sql`alter table subscribers add column if not exists failed_logins int not null default 0`;
+await sql`alter table subscribers add column if not exists locked_until timestamptz`;
 await sql`create unique index if not exists subscribers_email on subscribers (lower(email)) where email is not null`;
 await sql`create unique index if not exists subscribers_push on subscribers (push_endpoint) where push_endpoint is not null`;
 await sql`create table if not exists alerts_sent (
