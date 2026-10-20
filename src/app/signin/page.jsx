@@ -1,4 +1,4 @@
-import { SeoPage } from '../../lib/seo-page';
+import { redirect } from 'next/navigation';
 
-export const metadata = {title: 'Sign in | StatsPads', robots: {index: false}, alternates: {canonical: '/signin'}};
-export default function Page() { return <SeoPage route="/signin"/>; }
+/* No accounts: favorites live in this browser, so the old sign-in pages just go home. */
+export default function Page() { redirect('/teams'); }

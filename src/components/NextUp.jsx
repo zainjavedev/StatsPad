@@ -39,21 +39,27 @@ const Logo = ({team}) => team.logo ? <img src={team.logo} alt=""/> : <i/>;
 /* A scrolling strip of every upcoming game, ESPN and SofaScore style. The first chip is the one
    to watch for: live if a game is on, otherwise the next tip-off (favorite teams' games are only highlighted),
    with a ticking countdown. */
-export default function GameTicker({games, favorites}) {
+/* Only this text ticks each second, so the logos and the rest of the strip never re-render. */
+function Countdown({target}) {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { const tick = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(tick); }, []);
+  const remaining = target - now, left = parts(remaining);
+  if (remaining <= 0) return 'Starting…';
+  return `${left.days ? `${left.days}d ` : ''}${pad(left.hours)}:${pad(left.minutes)}:${pad(left.seconds)}`;
+}
+
+export default function GameTicker({games, favorites}) {
   if (games === null) return <div className="ticker loading" aria-busy="true"/>;
   const ordered = [...games].sort((a, b) => (b.state === 'in') - (a.state === 'in') || a.date - b.date);
   if (!ordered.length) return null;
   const [first, ...rest] = ordered;
-  const live = first.state === 'in', remaining = first.date - now, left = parts(remaining);
-  const clock = `${left.days ? `${left.days}d ` : ''}${pad(left.hours)}:${pad(left.minutes)}:${pad(left.seconds)}`;
+  const live = first.state === 'in';
 
   return <div className="ticker" role="region" aria-label="Games">
     <a href={`/games/${first.id}`} className={`ticker-first${live ? ' live' : ''}${followedGame(first, favorites) ? ' mine' : ''}`}>
       <span className="ticker-label">{live ? <><i/> Live</> : 'Next up'}</span>
       <span className="ticker-teams"><Logo team={first.away}/><b>{first.away.abbr}</b>{live ? <strong>{first.away.score}–{first.home.score}</strong> : <em>@</em>}<b>{first.home.abbr}</b><Logo team={first.home}/></span>
-      <span className="ticker-clock">{live ? first.detail : remaining > 0 ? clock : 'Starting…'}</span>
+      <span className="ticker-clock">{live ? first.detail : <Countdown target={first.date}/>}</span>
     </a>
     <ul className="ticker-list">{rest.map(game => <li key={game.id} className={followedGame(game, favorites) ? 'mine' : ''}><a href={`/games/${game.id}`}>
       <span className="ticker-when">{game.state === 'in' ? <b className="ticker-live">Live</b> : stamp(game.date)}</span>
