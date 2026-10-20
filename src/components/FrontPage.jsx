@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { ArrowRight, Search } from 'lucide-react';
-import { GameList, NewsList } from './Feeds';
+import { NewsList } from './Feeds';
 import { useFeed } from '../lib/useFeed';
 import { latestNews, recentResults, upcomingGames } from '../lib/espn';
 import { TEAMS, nickname, teamCodeOf } from '../lib/teams';
