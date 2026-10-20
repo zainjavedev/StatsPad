@@ -1926,3 +1926,27 @@ header .brand small{margin-top:3px}
 .leaders-page .story-feed{box-sizing:border-box;width:100%}
 @media(max-width:640px){.leaders-page{padding-left:12px!important;padding-right:12px!important;overflow-x:hidden}.season-toggle button{min-width:0;padding:8px 4px!important}.season-toggle{box-sizing:border-box}.award-winner b{font-size:14px}}
 .award-art{object-fit:cover!important;object-position:50% 12%!important}
+
+/* Account button on mobile: a clear "Sign in" pill, or an initial when signed in */
+.account-initial{display:none;width:22px;height:22px;border-radius:50%;background:var(--accent,#c6ff3d);color:#0b0c10;font-size:12px;align-items:center;justify-content:center}
+.account-btn.signed-in .account-initial{display:inline-flex}
+.account-btn.signed-in svg{display:none}
+@media (max-width:640px){
+  .account-btn.signed-out{padding:8px 14px;background:var(--accent,#c6ff3d);border-color:transparent;color:#0b0c10}
+  .account-btn.signed-out span{display:inline}
+  .account-btn.signed-out svg{display:none}
+  .account-btn.signed-in{padding:4px}
+}
+
+/* Compare toolbar on mobile: mode toggle and actions share a row, season tabs below */
+@media(max-width:640px){
+  .h2h-bar{display:flex!important;flex-wrap:wrap;margin-top:16px!important;gap:8px!important}
+  .h2h-bar .segmented.mode{width:auto!important;flex:1 1 150px}
+  .h2h-bar .segmented.mode button{flex:1;padding:9px 10px}
+  .h2h-bar-actions{width:auto!important;flex:1 1 150px;gap:6px}
+  .h2h-bar-actions .ghost-button{padding:9px 8px;font-size:12px}
+  .h2h-bar-actions .ghost-button svg{display:none}
+  .h2h-bar .segmented.season{order:3;width:100%!important}
+  /* schedule rows: team names sit beside their logos */
+  .schedule-row,.game-row{gap:6px}
+}

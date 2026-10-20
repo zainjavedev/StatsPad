@@ -12,7 +12,7 @@ export default function AccountButton() {
     window.addEventListener('storage', update);
     return () => { window.removeEventListener('statspad:alerts', update); window.removeEventListener('storage', update); };
   }, []);
-  return <a className="account-btn" href={email ? '/account' : '/signin'} aria-label={email ? `Account: ${email}` : 'Sign in'} title={email || 'Sign in'}>
-    <User size={16}/><span>{email ? email.split('@')[0] : 'Sign in'}</span>
+  return <a className={`account-btn ${email ? 'signed-in' : 'signed-out'}`} href={email ? '/account' : '/signin'} aria-label={email ? `Account: ${email}` : 'Sign in'} title={email || 'Sign in'}>
+    {email ? <b className="account-initial">{email[0].toUpperCase()}</b> : <User size={16}/>}<span>{email ? email.split('@')[0] : 'Sign in'}</span>
   </a>;
 }
