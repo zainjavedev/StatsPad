@@ -323,8 +323,8 @@ header{height:60px!important;min-height:60px!important;padding-top:0!important;p
   --lead-tint:#dfeee2;      /* winning cell */
   --lead-edge:#b9dcc0;
   --band:#e3e2da;           /* section rule */
-  --series-1:#2a78d6;
-  --series-2:#eb6834;
+  --series-1:#3f6600;
+  --series-2:#14140f;
   --series-3:#1baf7a;
   --radius:10px;
 }
@@ -343,8 +343,8 @@ header{height:60px!important;min-height:60px!important;padding-top:0!important;p
   --lead-tint:#12291d;
   --lead-edge:#1f4630;
   --band:#1c1c1c;
-  --series-1:#3987e5;
-  --series-2:#d95926;
+  --series-1:#c8ff3d;
+  --series-2:#f2f2f0;
   --series-3:#199e70;
 }
 
@@ -1494,3 +1494,17 @@ header .brand small{margin-top:3px}
 .stand .up{color:var(--accent)}
 .stand .down{color:#ff6b6b}
 .stand-cut td{padding:5px 10px;border-bottom:1px dashed var(--line-2);font-size:10px;font-weight:800;letter-spacing:.14em;text-align:center;text-transform:uppercase;color:var(--text-3)}
+
+/* the other pages share the home page's neutral look: surfaces and one accent, team colour only in logos and photos */
+.story-card{background:var(--ink-1)!important;color:var(--text-1);border:1px solid var(--line)}
+.story-card small,.story-card h2,.story-card p{color:inherit}
+.vs-person{color:var(--text-1);background:var(--ink-1);border-bottom:3px solid var(--line)}
+.vs-person:first-child{border-bottom-color:var(--series-1)}
+.vs-person:last-child{border-bottom-color:var(--series-2)}
+.visual-player-card,.leader-card,.debate-card{background:var(--ink-1)}
+
+.story-card,.story-card *{--story-text:var(--text-1)}
+.story-card h2,.story-card p,.story-card small,.story-card b,.story-card span{color:var(--text-1)}
+.story-card small{color:var(--text-3)}
+.story-card .story-bg-letter,.story-card [class*="initials"]{opacity:.06}
+
