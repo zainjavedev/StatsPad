@@ -12,4 +12,5 @@ jobs:
   alerts:
     runs-on: ubuntu-latest
     steps:
-      - run: curl --fail --silent --show-error -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" "https://statspads.com/api/cron/alerts"
+      - run: |
+          curl --fail --silent --show-error -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" "https://statspads.com/api/cron/alerts"
