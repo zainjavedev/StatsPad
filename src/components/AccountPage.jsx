@@ -6,7 +6,7 @@ import { TeamLogo } from './TeamRail';
 import { completeSignIn, disableAlerts, enableBrowserAlerts, logIn, pushSupported, readAlerts, sendSignInLink, setPassword, signInWithGoogle, signOut, signUp, syncAlertTeams } from '../lib/alerts';
 
 const GOOGLE_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-const PERKS = [[BellRing, 'Game alerts', 'Tip-off and final-score emails for every team you follow.'], [Bell, 'Browser notifications', 'Optional pings on this device, even when StatsPads is closed.'], [ShieldCheck, 'Your teams everywhere', 'Sign in on any browser and your followed teams are already there.']];
+const PERKS = [[BellRing, 'Game alerts', 'Tip-off and final-score emails for your favorite teams.'], [Bell, 'Browser notifications', 'Optional pings on this device, even when StatsPads is closed.'], [ShieldCheck, 'Your teams everywhere', 'Sign in on any browser and your followed teams are already there.']];
 
 /* Sign in, create an account, and manage it. Following a team never needs an account;
    alerts and syncing across devices do. */
@@ -93,11 +93,11 @@ export default function AccountPage({onTeams}) {
     {say('auth')}
     <div className="acct-grid">
       <div className="acct-card">
-        <h2>Teams you follow</h2>
+        <h2>Favorite teams</h2>
         {favorites.length
-          ? <ul className="acct-teams">{favorites.map(code => <li key={code}><TeamLogo code={code} className="acct-logo"/><span>{TEAMS[code].name}</span><button onClick={() => toggleFavorite(code)} aria-label={`Unfollow ${TEAMS[code].name}`}>Unfollow</button></li>)}</ul>
-          : <p className="acct-empty">You are not following any teams yet.</p>}
-        <button className="acct-secondary" onClick={onTeams}>{favorites.length ? 'Follow more teams' : 'Pick your teams'}</button>
+          ? <ul className="acct-teams">{favorites.map(code => <li key={code}><TeamLogo code={code} className="acct-logo"/><span>{TEAMS[code].name}</span><button onClick={() => toggleFavorite(code)} aria-label={`Remove ${TEAMS[code].name} from favorites`}>Remove</button></li>)}</ul>
+          : <p className="acct-empty">No favorite teams yet.</p>}
+        <button className="acct-secondary" onClick={onTeams}>{favorites.length ? 'Add more teams' : 'Pick your teams'}</button>
       </div>
       <div className="acct-card">
         <h2>Alerts</h2>

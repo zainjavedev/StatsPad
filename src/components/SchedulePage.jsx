@@ -52,7 +52,7 @@ export default function SchedulePage() {
       </div>
     </div>
     <div className="sched-chips">
-      <button className={mine ? 'on' : ''} onClick={() => setMine(!mine)} disabled={!favorites.length} title={favorites.length ? '' : 'Follow a team with the bell first'}>My teams</button>
+      <button className={mine ? 'on' : ''} onClick={() => setMine(!mine)} disabled={!favorites.length} title={favorites.length ? '' : 'Star a favorite team first'}>My teams</button>
       {RIVALRIES.map(pair => <button key={pair.join()} className={team === pair[0] && other === pair[1] ? 'on' : ''} onClick={() => preset(pair)}>{nick(pair[0])} vs {nick(pair[1])}</button>)}
       {filtered && <button className="clear" onClick={clear}>Clear</button>}
     </div>

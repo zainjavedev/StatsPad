@@ -133,7 +133,7 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
             </button>
             <FavoriteStar code={code} active={favorites.includes(code)} className="on-chip"/>
           </div>)}</div>
-          {!favorites.length && <p className="front-footnote">Tap the bell on a team to follow it and get its game alerts.</p>}
+          {!favorites.length && <p className="front-footnote">Tap the star on a team to add it to your favorites: they show up here first.</p>}
         </section>
       </div>
     </div>
