@@ -1,6 +1,8 @@
 /* Browser side of game alerts. The subscription tokens live in localStorage and
    are what lets the favorites keep the server's team list up to date. */
 
+import { getFavorites, setFavorites } from './favorites';
+
 const KEY = 'statspad-alerts';
 
 export const readAlerts = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } };
@@ -22,9 +24,6 @@ const keyBytes = base64 => {
 
 export const hasEmail = () => Boolean(readAlerts().email);
 
-/* Alerts need an email: the bell asks for one (see EmailGate) before it follows a team. */
-export const askForEmail = code => window.dispatchEvent(new CustomEvent('statspad:need-email', {detail: {code}}));
-
 export async function enableBrowserAlerts(teams) {
   const emailToken = readAlerts().email;
   if (!emailToken) throw new Error('Add your email first.');
@@ -36,8 +35,32 @@ export async function enableBrowserAlerts(teams) {
   writeAlerts({...readAlerts(), push: token});
 }
 
+/* An account is the email row: signing in (Google or an emailed link) stores its token here and
+   brings the account's teams into this browser's favorites. */
+const adopt = ({token, email, teams}) => {
+  writeAlerts({...readAlerts(), email: token, emailAddress: email});
+  setFavorites([...getFavorites(), ...teams]);
+};
+
+export async function signInWithGoogle(credential) {
+  adopt(await post('/api/auth/google', {credential, teams: getFavorites()}));
+}
+
+export const sendSignInLink = email => post('/api/restore', {email});
+
+export async function completeSignIn(code) {
+  adopt(await post('/api/session', {code}));
+}
+
+export function signOut() {
+  const rest = {...readAlerts()};
+  delete rest.email; delete rest.emailAddress; delete rest.push;
+  writeAlerts(rest);
+}
+
 export async function enableEmailAlerts(email, teams) {
-  const {token, confirmed} = await post('/api/subscribe', {channel: 'email', email, teams});
+  const {token, confirmed, linkSent} = await post('/api/subscribe', {channel: 'email', email, teams});
+  if (linkSent) return 'link';
   writeAlerts({...readAlerts(), email: token, emailAddress: email});
   return confirmed;
 }

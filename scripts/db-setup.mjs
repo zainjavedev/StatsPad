@@ -25,4 +25,9 @@ await sql`create table if not exists alerts_sent (
   sent_at timestamptz not null default now(),
   primary key (game_id, kind)
 )`;
+await sql`create table if not exists login_codes (
+  code text primary key,
+  subscriber_token text not null,
+  expires_at timestamptz not null
+)`;
 console.log('db: ready');

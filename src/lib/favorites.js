@@ -16,8 +16,16 @@ const read = () => {
 };
 let favorites = read();
 
+export const getFavorites = () => favorites;
+
 export function toggleFavorite(code) {
   favorites = favorites.includes(code) ? favorites.filter(item => item !== code) : [...favorites, code];
+  try { localStorage.setItem(KEY, JSON.stringify(favorites)); } catch { /* private mode */ }
+  listeners.forEach(listener => listener());
+}
+
+export function setFavorites(codes) {
+  favorites = [...new Set(codes)].filter(code => TEAMS[code]);
   try { localStorage.setItem(KEY, JSON.stringify(favorites)); } catch { /* private mode */ }
   listeners.forEach(listener => listener());
 }

@@ -20,6 +20,11 @@ export const confirmMail = token => ({
   html: wrap(`<h2>One click to turn on game alerts</h2><p>You asked StatsPad to email you when your favorite teams tip off and finish.</p><p><a href="${siteUrl()}/api/confirm?token=${token}" style="display:inline-block;padding:10px 18px;border-radius:8px;background:#14140f;color:#fff;text-decoration:none">Confirm email</a></p><p style="color:#666;font-size:13px">Didn't ask for this? Ignore this email and nothing will be sent.</p>`),
 });
 
+export const signinMail = code => ({
+  subject: 'Your StatsPad sign-in link',
+  html: wrap(`<h2>Sign in to StatsPad</h2><p>Open this link on the browser you want to use. It restores your followed teams and alerts and works once for the next 30 minutes.</p><p><a href="${siteUrl()}/api/session?code=${code}" style="display:inline-block;padding:10px 18px;border-radius:8px;background:#14140f;color:#fff;text-decoration:none">Sign in</a></p><p style="color:#666;font-size:13px">Didn't ask for this? Ignore this email.</p>`),
+});
+
 export const alertMail = ({title, body, token}) => ({
   subject: title,
   html: wrap(`<h2>${esc(title)}</h2><p>${esc(body)}</p><p style="color:#666;font-size:13px"><a href="${siteUrl()}/api/unsubscribe?token=${token}">Unsubscribe</a> from StatsPad alerts.</p>`),
