@@ -55,12 +55,12 @@ export const indexPlayers = list => ({
 });
 export const statsFor = (entry, {byId, byName}) => byId.get(`espn-${entry.espnId}`) || (entry.bbrefId && byId.get(entry.bbrefId)) || byName.get(plain(entry.name)) || null;
 
-/* "Qualified" players for rankings and the radar: 10 minutes a game and half of their own team's games, up to
-   15. Early in a season (and in the preseason, when starters sit out games) that keeps a player who has missed a
-   game or two, which a league-wide bar would drop. A team's games are the most any of its players has played. */
-const teamGamesOf = list => { const games = new Map(); for (const player of list) games.set(player.team, Math.max(games.get(player.team) ?? 0, player.gamesPlayed)); return games; };
+/* "Qualified" players for rankings and the radar. In the preseason it is raw stats: everyone who played, whoever is
+   ahead leads. Once the regular season starts it is 15 games and 10 minutes, but early in a season the games bar is
+   half of what the busiest team has played. */
 export const minGames = list => Math.min(15, Math.max(1, Math.floor(Math.max(0, ...list.map(player => player.gamesPlayed)) / 2)));
 export const qualified = list => {
-  const games = teamGamesOf(list);
-  return list.filter(player => player.minutesPerGame >= 10 && player.gamesPlayed >= Math.min(15, Math.max(1, Math.ceil((games.get(player.team) ?? 0) / 2))));
+  if (preseason) return list.filter(player => player.gamesPlayed > 0);
+  const games = minGames(list);
+  return list.filter(player => player.gamesPlayed >= games && player.minutesPerGame >= 10);
 };

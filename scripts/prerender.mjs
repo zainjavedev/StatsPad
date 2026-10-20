@@ -48,16 +48,13 @@ const preseasonStats = season.seasonType === 'Preseason';
 const statsWord = seasonKey === SEASONS[0] ? (preseasonStats ? 'preseason' : 'this season’s') : 'last season’s';
 /* Early in a season nobody has 15 games yet, so the cut-off grows with the schedule. */
 const mostGames = Math.max(...season.players.map(p => p.gamesPlayed));
-const teamGames = new Map();
-for (const p of season.players) teamGames.set(p.team, Math.max(teamGames.get(p.team) ?? 0, p.gamesPlayed));
-const minFor = p => Math.min(15, Math.max(1, Math.ceil((teamGames.get(p.team) ?? 0) / 2)));
 const minGames = Math.min(15, Math.max(1, Math.floor(mostGames / 2)));
 const playerIds = Object.fromEntries(Object.entries(read('public/data/player-ids.json')).map(([name, id]) => [plain(name), id]));
 const espnIds = {};
 for (const file of fs.readdirSync(path.join(root, 'public/data/2026-27/rosters'))) for (const entry of read(`public/data/2026-27/rosters/${file}`).players) if (entry.espnId) espnIds[plain(entry.name)] = entry.espnId;
 const fgaPlays = s => s.fieldGoalsAttempted + .44 * s.freeThrowsAttempted;
 const players = season.players
-  .filter(p => p.gamesPlayed >= minFor(p) && p.minutesPerGame >= 10)
+  .filter(p => preseasonStats ? p.gamesPlayed > 0 && p.minutesPerGame >= 10 : p.gamesPlayed >= minGames && p.minutesPerGame >= 10)
   .map(p => ({...p, slug: slugify(p.playerName), nbaId: playerIds[plain(p.playerName)] ?? null, espnId: espnIds[plain(p.playerName)] ?? null,
     code: TEAMS[teamCodeOf(p.team)] ? teamCodeOf(p.team) : null,
     ts: p.stats.points / (2 * fgaPlays(p.stats)) * 100, tov: p.stats.turnovers / (fgaPlays(p.stats) + p.stats.turnovers) * 100}))
