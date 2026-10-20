@@ -196,9 +196,9 @@ export default function GamePage({id}) {
   return <section className="gp">
     <a className="gp-back" href="/schedule"><ArrowLeft size={15}/> Schedule</a>
     <div className="gd-head gp-head">
-      <div><img src={box.away.logo} alt=""/><b>{box.away.short}</b>{scored && <strong>{box.away.score}</strong>}</div>
+      <div><img src={box.away.logo} alt=""/><b className="hd-name">{box.away.short}</b><b className="hd-abbr">{box.away.abbr}</b>{scored && <strong>{box.away.score}</strong>}</div>
       <span>{box.state === 'post' ? 'Final' : box.state === 'in' ? (box.detail || 'Live') : 'Upcoming'}</span>
-      <div><img src={box.home.logo} alt=""/><b>{box.home.short}</b>{scored && <strong>{box.home.score}</strong>}</div>
+      <div><img src={box.home.logo} alt=""/><b className="hd-name">{box.home.short}</b><b className="hd-abbr">{box.home.abbr}</b>{scored && <strong>{box.home.score}</strong>}</div>
     </div>
     <p className="gd-meta">{[box.date && dateFormat.format(new Date(box.date)), box.venue, box.tv, box.preseason ? 'Preseason' : ''].filter(Boolean).join(' · ')}</p>
 

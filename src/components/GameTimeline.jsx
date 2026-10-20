@@ -20,7 +20,7 @@ const until = ms => {
   return `in ${Math.floor(minutes / 1440)}d ${Math.floor(minutes % 1440 / 60)}h`;
 };
 
-const Team = ({team, won, side}) => <span className={`tl-team ${side}${won ? ' won' : ''}`}>{side === 'away' && <b>{team.name}</b>}{team.logo ? <img src={team.logo} alt=""/> : <i/>}{side === 'home' && <b>{team.name}</b>}</span>;
+const Team = ({team, won, side}) => <span className={`tl-team ${side}${won ? ' won' : ''}`}>{side === 'away' && <><b className="tl-name">{team.name}</b><b className="tl-abbr">{team.abbr}</b></>}{team.logo ? <img src={team.logo} alt=""/> : <i/>}{side === 'home' && <><b className="tl-name">{team.name}</b><b className="tl-abbr">{team.abbr}</b></>}</span>;
 
 export default function GameTimeline({games, favorites, results = false, all: showEverything = false, empty, onOpen}) {
   const [now, setNow] = useState(() => Date.now()), [all, setAll] = useState(showEverything);

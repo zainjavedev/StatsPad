@@ -35,7 +35,7 @@ function Table({group, favorites, ranked, numbered}) {
           {ranked && index === 10 && <tr className="stand-cut"><td colSpan={COLUMNS.length + 2}>Out of the picture</td></tr>}
           <tr className={favorites.includes(row.code) ? 'mine' : ''}>
             <td className="num rank">{numbered ? index + 1 : '–'}</td>
-            <td className="team"><a href={`/teams/${TEAMS[row.code].name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}><img src={espnLogoUrl(row.code)} alt=""/><b>{TEAMS[row.code].name}</b></a></td>
+            <td className="team"><a href={`/teams/${TEAMS[row.code].name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}><img src={espnLogoUrl(row.code)} alt=""/><b className="full">{TEAMS[row.code].name}</b><b className="nick">{TEAMS[row.code].name.split(' ').slice(-1)[0]}</b></a></td>
             {COLUMNS.map(([label, key]) => <td key={label} className={`num${label === 'Strk' && String(row.stat[key]).startsWith('W') ? ' up' : label === 'Strk' ? ' down' : ''}`}>{row.stat[key] ?? '–'}</td>)}
           </tr>
         </React.Fragment>)}</tbody>
