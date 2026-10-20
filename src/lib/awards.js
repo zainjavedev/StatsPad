@@ -21,7 +21,7 @@ export function buildAwards(pool, previous = []) {
     {key: 'sharp', title: 'Sharpshooter', blurb: 'Most threes a game', pool: regulars, score: p => s(p, 'threePointersMade'), note: p => `${one(s(p, 'threePointersMade'))} threes · ${one(s(p, 'threePointPercentage'))}%`},
     {key: 'triple', title: 'Triple-Double Watch', blurb: 'Points + rebounds + assists', pool: regulars, score: p => s(p, 'points') + s(p, 'totalRebounds') + s(p, 'assists'), note: p => `${one(s(p, 'points') + s(p, 'totalRebounds') + s(p, 'assists'))} PRA`},
     {key: 'iron', title: 'Iron Man', blurb: 'Most minutes a night', pool: regulars, score: p => p.minutesPerGame, note: p => `${one(p.minutesPerGame)} minutes a game`},
-    {key: 'thief', title: 'Pickpocket', blurb: 'Most steals a game', pool: regulars, score: p => s(p, 'steals'), note: p => `${one(s(p, 'steals'))} steals a game`},
+    {key: 'scoring', title: 'Scoring Champion', blurb: 'Highest scoring average', pool: regulars, score: p => s(p, 'points'), note: p => `${one(s(p, 'points'))} points a game`},
   ];
   return awards.map(award => ({...award, winners: [...award.pool].sort((a, b) => award.score(b) - award.score(a)).slice(0, 3)})).filter(award => award.winners.length);
 }
