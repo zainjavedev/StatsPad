@@ -6,6 +6,11 @@
 export const SEASONS = ['2026-27', '2025-26'];
 export const CURRENT = SEASONS[0];
 export const pretty = season => season.replace('-', '–');
+/* True while the newest file is the preseason stand-in (seasonType "Preseason", built from box scores); the
+   regular season replaces it automatically. Pages read this after their data has loaded. */
+let preseason = false;
+export const isPreseason = () => preseason;
+export const stage = () => preseason ? 'preseason' : 'regular season';
 export const isCurrent = season => season === CURRENT;
 
 /* Hosting rewrites unknown paths to index.html, so a missing file arrives as
@@ -32,7 +37,10 @@ export async function loadLatest(suffix) {
       readJson(`/data/${season}/teams-${suffix}.json`, hasPlayers),
       readJson(`/data/${season}/splits-${suffix}.json`, data => Boolean(data?.quarters)),
     ]);
-    if (players && teams && settled(season, suffix, players, teams)) return {season, players, teams, splits};
+    if (players && teams && settled(season, suffix, players, teams)) {
+      if (suffix === 'regular-season') preseason = players.seasonType === 'Preseason';
+      return {season, players, teams, splits};
+    }
   }
   throw new Error(`No ${suffix} data found`);
 }

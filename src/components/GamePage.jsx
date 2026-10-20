@@ -90,7 +90,7 @@ function Preview({box}) {
         const five = roster.players.filter(player => player.unit === 'starters').map(player => {
           const record = (pre[code] ?? []).find(item => item.espnId === player.espnId || plain(item.name) === plain(player.name));
           const regular = season.get(plain(player.name));
-          return {...player, line: regular ? {ppg: regular.points, rpg: regular.totalRebounds, apg: regular.assists, source: 'season'} : record ? {ppg: record.ppg, rpg: record.rpg, apg: record.apg, source: 'preseason'} : null};
+          return {...player, line: regular ? {ppg: regular.points, rpg: regular.totalRebounds, apg: regular.assists, source: live.seasonType === 'Preseason' ? 'preseason' : 'season'} : record ? {ppg: record.ppg, rpg: record.rpg, apg: record.apg, source: 'preseason'} : null};
         });
         return {roster, code, side: [box.away, box.home][index], five, source: five.some(player => player.line?.source === 'season') ? 'season' : 'preseason'};
       }));

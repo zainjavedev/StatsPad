@@ -4,7 +4,7 @@ import { GameList } from './Feeds';
 import { useFeed } from '../lib/useFeed';
 import { teamResults, teamSchedule } from '../lib/espn';
 import { TEAMS, logoUrl } from '../lib/teams';
-import { indexPlayers, isCurrent, pretty, statsFor } from '../lib/season';
+import { indexPlayers, isCurrent, isPreseason, pretty, stage, statsFor } from '../lib/season';
 import TeamRail from './TeamRail';
 import FavoriteStar from './FavoriteStar';
 import { useFavorites } from '../lib/favorites';
@@ -108,7 +108,7 @@ function StatTable({players, season, onOpen}) {
 
   return <section className="stat-board">
     <div className="board-head">
-      <h2>{isCurrent(season) ? 'This season' : 'Last season'}&apos;s stats</h2>
+      <h2>{isCurrent(season) ? (isPreseason() ? 'Preseason' : 'This season') : 'Last season'}{isCurrent(season) && isPreseason() ? ' stats' : '\u2019s stats'}</h2>
       <div className="sort-chips" role="group" aria-label="Sort by">
         {SORT_CHIPS.map(key => <button key={key} className={sort.key === key ? 'active' : ''} onClick={() => pick(key)}>
           {STAT_COLUMNS.find(column => column.key === key).label}{arrow(key)}
@@ -135,7 +135,7 @@ function StatTable({players, season, onOpen}) {
       </table>
     </div>
     <p className="board-note">
-      {season ? pretty(season) : ''} regular season, per game. Faded percentages come from too few attempts and sort last.
+      {season ? pretty(season) : ''} {stage()}, per game. Faded percentages come from too few attempts and sort last.
       {noStats.length > 0 && <> No NBA stats yet: {noStats.map(player => player.name).join(', ')}.</>}
     </p>
   </section>;
@@ -174,7 +174,7 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, season, onOpe
   const starters = unit('starters');
   const shareSpec = {
     kind: 'grid', eyebrow: `${roster.season.replace('-', '–')} roster`, title: roster.teamName, color: TEAMS[teamCode].color,
-    sub: `Expected starting five · per game, ${isCurrent(season) ? 'this season' : `last season (${pretty(season || roster.statsSeason || '2025-26')})`}`,
+    sub: `Expected starting five · per game, ${isCurrent(season) ? (isPreseason() ? 'preseason' : 'this season') : `last season (${pretty(season || roster.statsSeason || '2025-26')})`}`,
     rows: starters.map(player => ({lead: player.slot ?? player.pos, name: player.name, person: {name: player.name, playerId: player.profile?.playerId, espnId: player.espnId},
       lines: player.stats ? [['PTS', player.stats.points.toFixed(1)], ['REB', player.stats.totalRebounds.toFixed(1)], ['AST', player.stats.assists.toFixed(1)]] : [['', 'Rookie']]})),
     summary: [`${starters.reduce((sum, player) => sum + (player.stats?.points ?? 0), 0).toFixed(1)} PPG`, 'combined from the starting five'],
@@ -195,7 +195,7 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, season, onOpe
     <section className="team-block">
       <div className="block-head">
         <h2>Expected starting five</h2>
-        <span>Per game, {isCurrent(season) ? 'this season' : `last season (${pretty(season || roster.statsSeason || '2025-26')})`}</span>
+        <span>Per game, {isCurrent(season) ? (isPreseason() ? 'preseason' : 'this season') : `last season (${pretty(season || roster.statsSeason || '2025-26')})`}</span>
       </div>
       <div className="starter-grid">{unit('starters').map(player => <StarterCard key={player.name} player={player} onOpen={open}/>)}</div>
     </section>

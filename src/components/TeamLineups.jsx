@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { TEAMS, teamCodeOf } from '../lib/teams';
-import { indexPlayers, isCurrent, statsFor } from '../lib/season';
+import { indexPlayers, isCurrent, isPreseason, statsFor } from '../lib/season';
 import { Headshot } from './TeamPage';
 
 /* The two expected starting fives under a team-vs-team header, one row per
@@ -56,7 +56,7 @@ export default function TeamLineups({teams, leaguePlayers, season, colors}) {
   if (first === null || second === null) return <section className="lineup" aria-busy="true"><div className="sk" style={{height: 330, borderRadius: 12}}/></section>;
 
   return <section className="lineup">
-    <div className="lineup-head"><small>Expected starting five</small><span>Per game, {isCurrent(season) ? 'this season' : 'last season'}</span></div>
+    <div className="lineup-head"><small>Expected starting five</small><span>Per game, {isCurrent(season) ? (isPreseason() ? 'preseason' : 'this season') : 'last season'}</span></div>
     {[0, 1].map(side => <div className="lineup-side" key={codes[side]}>
       <div className="lineup-team"><i style={{background: colors[side]}}/>{TEAMS[codes[side]].name}</div>
       <div className="lineup-grid">{SLOTS.map(slot => <Card key={slot} slot={slot} player={fives[side][slot]} other={fives[1 - side][slot]} color={TEAMS[codes[side]].color}/>)}</div>

@@ -4,7 +4,7 @@ import ShareButton from './ShareButton';
 import { TEAMS, teamCodeOf } from '../lib/teams';
 import { playerUrl, slugify } from '../lib/routes';
 import { bestSeason, careerOf, liveRow, seasonsOf, tsOf } from '../lib/career';
-import { pretty } from '../lib/season';
+import { isPreseason, pretty } from '../lib/season';
 
 /* Everything under a player's hero: season tiles with league ranks, the
    career trend, the season-by-season table and who to compare with next. */
@@ -155,7 +155,7 @@ export default function PlayerBody({ entity, season, population, bars, showCaree
       {history === undefined
         ? <div className="sk" style={{ height: 180, borderRadius: 12 }}/>
         : <CareerTable seasons={seasons} career={seasons.length > 1 ? career : null} currentSeason={season}/>}
-      <p className="pp-note">Regular season, per game{history?.rows?.length ? '' : '. No earlier NBA seasons on record'}. TOT is a full season split across teams. Career is weighted by games played.</p>
+      <p className="pp-note">Regular season, per game{isPreseason() ? ' (the 2026–27 row is preseason so far)' : ''}{history?.rows?.length ? '' : '. No earlier NBA seasons on record'}. TOT is a full season split across teams. Career is weighted by games played.</p>
     </section>}
 
     {suggestions.length > 0 && <section className="pp-card">

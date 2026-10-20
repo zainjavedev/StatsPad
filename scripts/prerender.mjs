@@ -44,7 +44,8 @@ const seasonKey = SEASONS.find(settled);
 if (!seasonKey) throw new Error('No season data found under public/data');
 const season = read(`public/data/${seasonKey}/regular-season.json`);
 const teamData = read(`public/data/${seasonKey}/teams-regular-season.json`).players;
-const statsWord = seasonKey === SEASONS[0] ? 'this season’s' : 'last season’s';
+const preseasonStats = season.seasonType === 'Preseason';
+const statsWord = seasonKey === SEASONS[0] ? (preseasonStats ? 'preseason' : 'this season’s') : 'last season’s';
 /* Early in a season nobody has 15 games yet, so the cut-off grows with the schedule. */
 const mostGames = Math.max(...season.players.map(p => p.gamesPlayed));
 const minGames = Math.min(15, Math.max(1, Math.floor(mostGames / 2)));
@@ -74,7 +75,7 @@ function writePage({route, title, description, body, ogName, jsonLd}) {
 }
 const table = (heads, rows) => `<table><thead><tr>${heads.map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
 const link = (href, label) => `<a href="${href}">${esc(label)}</a>`;
-const yearLabel = pretty(seasonKey);
+const yearLabel = pretty(seasonKey) + (preseasonStats ? ' preseason' : '');
 
 const PLAYER_ROWS = [['GP', p => p.gamesPlayed, 0], ['MPG', p => p.minutesPerGame], ['PPG', p => p.stats.points], ['RPG', p => p.stats.totalRebounds], ['APG', p => p.stats.assists], ['SPG', p => p.stats.steals], ['BPG', p => p.stats.blocks], ['FG%', p => p.stats.fieldGoalPercentage], ['3P%', p => p.stats.threePointPercentage], ['FT%', p => p.stats.freeThrowPercentage], ['TS%', p => p.ts], ['TOV%', p => p.tov]];
 const TEAM_ROWS = [['PPG', t => t.stats.points], ['APG', t => t.stats.assists], ['RPG', t => t.stats.totalRebounds], ['SPG', t => t.stats.steals], ['BPG', t => t.stats.blocks], ['FG%', t => t.stats.fieldGoalPercentage], ['3P%', t => t.stats.threePointPercentage], ['3PM', t => t.stats.threePointersMade], ['FT%', t => t.stats.freeThrowPercentage], ['eFG%', t => t.stats.effectiveFieldGoalPercentage]];
