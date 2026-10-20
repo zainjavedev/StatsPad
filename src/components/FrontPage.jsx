@@ -9,6 +9,7 @@ import { favoritesFirst, useFavorites } from '../lib/favorites';
 import FavoriteStar from './FavoriteStar';
 import GameTicker, { useGames } from './NextUp';
 import GameTimeline from './GameTimeline';
+import HeadToHead from './HeadToHead';
 
 /* The front door: settle a debate, find a player, see the league's top
    performers and what's on. Deep leaderboards live on the Leaders page. */
@@ -29,7 +30,6 @@ const DEBATES = [
 /* Shown (after any followed teams) until someone has picked their own. */
 const HOT_TEAMS = ['LAL', 'PHI', 'BOS', 'NYK', 'GSW', 'OKC'];
 const TEAM_ROW = 6;
-const colorOf = player => TEAMS[teamCodeOf(player.team)]?.color || '#3b3b45';
 const loadGames = () => upcomingGames(7, 12);
 const loadResults = () => recentResults(7, 8);
 const loadNews = () => latestNews(4);
@@ -68,22 +68,6 @@ function PlayerSearch({players, Art, playerIds, onOpen}) {
   </div>;
 }
 
-function Debate({pair, Art, playerIds, onCompare}) {
-  const [a, b] = pair;
-  const line = player => `${player.stats.points.toFixed(1)} PPG · ${player.stats.assists.toFixed(1)} APG`;
-  return <button className="debate-card" onClick={() => onCompare(pair)} style={{'--a': colorOf(a), '--b': colorOf(b)}}>
-    <span className="debate-stage">
-      <Art entity={a} playerIds={playerIds} className="debate-art"/>
-      <i className="debate-vs">VS</i>
-      <Art entity={b} playerIds={playerIds} className="debate-art"/>
-    </span>
-    <span className="debate-names">
-      <span><b>{a.playerName}</b><small>{line(a)}</small></span>
-      <span><b>{b.playerName}</b><small>{line(b)}</small></span>
-    </span>
-    <span className="debate-cta">Compare them <ArrowRight size={14}/></span>
-  </button>;
-}
 
 export default function FrontPage({players, teams, playerIds, Art, onOpen, onCompare, onTeam, onLeaders}) {
   const loaded = useFeed(loadGames), results = useFeed(loadResults), news = useFeed(loadNews);
@@ -96,7 +80,7 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
   }, [allTeams, favorites, teamByCode]);
   const view = tab ?? (games?.length ? 'upcoming' : 'results');
   const pool = useMemo(() => qualified(players), [players]);
-  const stars = useMemo(() => [...pool].sort((a, b) => b.stats.points - a.stats.points).slice(0, 4), [pool]);
+  const stars = useMemo(() => [...pool].sort((a, b) => b.stats.points - a.stats.points).slice(0, 40), [pool]);
   const leaders = useMemo(() => {
     const base = pool.length ? pool : players;
     return LEADERS.map(entry => {
@@ -110,6 +94,8 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
     <div className="home-search"><PlayerSearch players={players} Art={Art} playerIds={playerIds} onOpen={onOpen}/></div>
 
     <GameTicker games={games} favorites={favorites}/>
+
+    <HeadToHead debates={debates} stars={stars} Art={Art} playerIds={playerIds} onCompare={onCompare}/>
 
     <div className="home-grid">
       <section className="front-panel">
@@ -135,40 +121,27 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
         </section>
 
         <section className="front-panel">
-          <div className="front-panel-head"><h2>Compare</h2></div>
-          <button className="compare-row" onClick={() => onCompare()}>
-            <span className="compare-faces">{stars.map(player => <Art key={player.playerId} entity={player} playerIds={playerIds} className="compare-face"/>)}</span>
-            <span>Compare players <ArrowRight size={15}/></span>
-          </button>
-          {debates.length > 0 && <div className="find-debates">{debates.slice(0, 3).map(pair => <button key={`${pair[0].playerId}-${pair[1].playerId}`} onClick={() => onCompare(pair)}>{pair[0].playerName} vs {pair[1].playerName}</button>)}</div>}
+          <div className="front-panel-head">
+            <h2>{favorites.length ? 'Your teams' : 'Hot teams'}</h2>
+            <button className="front-more" onClick={() => setAllTeams(open => !open)}>{allTeams ? 'Show fewer' : 'All 30 teams'} <ArrowRight size={14}/></button>
+          </div>
+          <div className="team-grid side-teams">{teamCodes.map(code => <div key={code} className="team-chip-wrap">
+            <button className="team-chip" onClick={() => onTeam(code)} title={TEAMS[code].name}>
+              <Art entity={teamByCode.get(code)} playerIds={playerIds} className="team-chip-logo"/>
+              <span>{nickname(code)}</span>
+            </button>
+            <FavoriteStar code={code} active={favorites.includes(code)} className="on-chip"/>
+          </div>)}</div>
+          {!favorites.length && <p className="front-footnote">Tap the bell on a team to follow it and get its game alerts.</p>}
         </section>
       </div>
     </div>
-
-    <section className="front-block">
-      <div className="front-block-head">
-        <h2>{favorites.length ? 'Your teams' : 'Hot teams'}</h2>
-        <button onClick={() => setAllTeams(open => !open)}>{allTeams ? 'Show fewer' : 'All 30 teams'} <ArrowRight size={14}/></button>
-      </div>
-      <div className="team-grid">{teamCodes.map(code => <div key={code} className="team-chip-wrap">
-        <button className="team-chip" style={{'--team': TEAMS[code].color}} onClick={() => onTeam(code)} title={TEAMS[code].name}>
-          <Art entity={teamByCode.get(code)} playerIds={playerIds} className="team-chip-logo"/>
-          <span>{nickname(code)}</span>
-        </button>
-        <FavoriteStar code={code} active={favorites.includes(code)} className="on-chip"/>
-      </div>)}</div>
-      {!favorites.length && <p className="front-footnote">Tap the bell on a team to follow it: it stays here and you can get its game alerts.</p>}
-    </section>
 
     <section className="front-panel front-news">
       <div className="front-panel-head"><h2>Latest news</h2></div>
       <NewsList articles={news}/>
     </section>
 
-    {debates.length > 0 && <section className="front-block">
-      <div className="front-block-head"><h2>Hot debates</h2><button onClick={() => onCompare()}>Make your own <ArrowRight size={14}/></button></div>
-      <div className="debates">{debates.map(pair => <Debate key={`${pair[0].playerId}-${pair[1].playerId}`} pair={pair} Art={Art} playerIds={playerIds} onCompare={onCompare}/>)}</div>
-    </section>}
 
   </section>;
 }
