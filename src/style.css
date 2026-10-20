@@ -337,8 +337,8 @@ header{height:60px!important;min-height:60px!important;padding-top:0!important;p
   --line-2:#343842;
   --text-1:#f2f2f0;
   --text-2:#a2a29d;
-  --text-3:#6d6d68;
-  --text-4:#575753;
+  --text-3:#8c8d88;
+  --text-4:#6d6e69;
   --lead-tint:#12291d;
   --lead-edge:#1f4630;
   --band:#1c1c1c;
@@ -1625,3 +1625,23 @@ header .brand small{margin-top:3px}
 .gp-leader{padding:16px 16px 12px}
 .gp-leader ol{gap:10px}
 .gp-leader li.top{padding-bottom:10px}
+
+/* box score: bigger, higher contrast, easier to track across a row */
+.gp table.calm{border-collapse:separate;border-spacing:0}
+.gp table.calm th{padding:12px 12px;font-size:12px;letter-spacing:.04em;color:var(--text-2);background:var(--ink-1);position:sticky;top:0;z-index:1}
+.gp table.calm td{padding:14px 12px;font-size:16px;color:var(--text-1);border-bottom:1px solid var(--line-2)}
+.gp table.calm td.num{font-size:16px;font-weight:700}
+.gp table.calm tbody tr:nth-child(even) td{background:color-mix(in srgb,var(--ink-1),var(--text-1) 4%)}
+.gp table.calm tr.bench td{padding:12px 12px;font-size:15px;color:var(--text-1)}
+.gp table.calm tr.bench td.who b{font-weight:600}
+.gp table.calm tr.bench td.num{font-size:15px;font-weight:600}
+.gp table.calm td.who b{font-size:16px}
+.gp table.calm td.who small{font-size:12px;color:var(--text-2)}
+.gp table.calm .gd-sub th{padding:14px 12px 6px;font-size:12px;color:var(--text-1);border-bottom:2px solid var(--line-2);background:transparent}
+.gp table.calm .gd-total td{font-size:15px;font-weight:800;color:var(--text-1);border-bottom:0}
+.gp table.calm td.who,.gp table.calm th.who{position:sticky;left:0;background:var(--ink-1);z-index:2}
+.gp table.calm tbody tr:nth-child(even) td.who{background:color-mix(in srgb,var(--ink-1),var(--text-1) 4%)}
+.gp table.calm td.num.led{box-shadow:inset 0 -3px 0 var(--accent)}
+.gp .gd-out{font-size:14px;color:var(--text-2)}
+
+.gp table.calm td{background:var(--ink-1)}

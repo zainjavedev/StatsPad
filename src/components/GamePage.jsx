@@ -114,7 +114,7 @@ export default function GamePage({id}) {
       {leaders.length > 0 && <div className="gp-leaders">{leaders.map(entry => <section key={entry.key} className="gp-leader">
         <small>{entry.label}</small>
         <ol>{entry.ranked.map((player, index) => <li key={player.id} className={index === 0 ? 'top' : num(player.stats[entry.key]) === entry.top ? 'tied' : ''}>
-          <span className="gp-rank">{index + 1}</span><Face player={player} size={index === 0 ? 40 : 30}/>
+          <Face player={player} size={index === 0 ? 40 : 30}/>
           <span className="gp-who"><b>{player.short ?? player.name}</b><i>{player.team}</i></span><strong>{player.stats[entry.key]}</strong>
         </li>)}</ol>
       </section>)}</div>}
