@@ -1876,3 +1876,16 @@ header .brand small{margin-top:3px}
 @media(max-width:640px){.leaders-page .story-feed{grid-template-columns:1fr!important}.leaders-page .feed-heading{flex-direction:column;align-items:stretch!important}.leaders-page .story-feed .story-card[class]{min-height:260px!important}}
 .leaders-page .story-card .story-stat{white-space:nowrap;font-size:32px!important}
 .leaders-page .story-card .story-team{display:block!important}
+
+/* Spacing under the header on Leaders, Compare and Profile */
+.leaders-page{padding-top:32px!important}
+.h2h-bar{margin-top:32px!important;margin-bottom:16px!important;align-items:center!important;gap:12px!important}
+.h2h-bar .segmented{border-color:var(--line)!important;padding:4px!important;border-radius:12px!important}
+.h2h-bar .segmented.mode button{padding:12px 16px}
+.profile-page{padding-top:28px!important}
+.profile-page .back-button{display:inline-flex;align-items:center;gap:6px;margin-bottom:14px}
+.leaders-page .story-feed{row-gap:20px!important}
+@media(max-width:640px){.leaders-page{padding-top:20px!important}.h2h-bar{margin-top:20px!important}}
+.leaders-page .story-copy{width:72%!important}
+.leaders-page .story-card .leader-list{width:100%}
+.leaders-page .story-card .leader-list b{font-size:12px}
