@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { ArrowRight, Search } from 'lucide-react';
 import { NewsList } from './Feeds';
 import { useFeed } from '../lib/useFeed';
-import { latestNews, recentResults } from '../lib/espn';
+import { latestNews } from '../lib/espn';
 import { finished, loadSchedule, upcoming } from '../lib/schedule';
 import { TEAMS, nickname, teamCodeOf } from '../lib/teams';
 import { qualified } from '../lib/season';
@@ -32,8 +32,7 @@ const DEBATES = [
 const HOT_TEAMS = ['LAL', 'PHI', 'BOS', 'NYK', 'GSW', 'OKC'];
 const TEAM_ROW = 6;
 const loadGames = () => loadSchedule().then(all => upcoming(all, 12));
-/* Regular-season finals once there are any; until the opener, the latest preseason games stand in (they carry a Preseason tag). */
-const loadResults = () => loadSchedule().then(all => { const done = finished(all, 8); return done.length ? done : recentResults(7, 8); });
+const loadResults = () => loadSchedule().then(all => finished(all, 8));
 const loadNews = () => latestNews(4);
 
 function PlayerSearch({players, Art, playerIds, onOpen}) {

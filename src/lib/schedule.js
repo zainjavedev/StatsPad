@@ -15,8 +15,8 @@ export async function loadSchedule() {
   rows ??= fetch('/data/2026-27/schedule.json').then(response => response.json());
   const [list, live] = await Promise.all([rows, gamesAround().catch(() => [])]);
   const updates = new Map(live.map(game => [game.id, game]));
-  return list.map(([id, date, away, home, venue, tv, state, awayScore, homeScore]) => {
-    const game = {id, date: new Date(date), away: side(away, awayScore), home: side(home, homeScore), venue, tv, state, detail: ''};
+  return list.map(([id, date, away, home, venue, tv, state, awayScore, homeScore, preseason]) => {
+    const game = {id, date: new Date(date), away: side(away, awayScore), home: side(home, homeScore), venue, tv, state, detail: '', preseason: preseason === 1};
     const update = updates.get(id);
     if (update) { game.state = update.state; game.detail = update.detail; game.away.score = update.away.score; game.home.score = update.home.score; }
     return game;
