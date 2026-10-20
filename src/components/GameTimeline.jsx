@@ -20,7 +20,7 @@ const until = ms => {
   return `in ${Math.floor(minutes / 1440)}d ${Math.floor(minutes % 1440 / 60)}h`;
 };
 
-const Team = ({team, won}) => <span className={won ? 'tl-team won' : 'tl-team'}>{team.logo ? <img src={team.logo} alt=""/> : <i/>}<b>{team.name}</b></span>;
+const Team = ({team, won, side}) => <span className={`tl-team ${side}${won ? ' won' : ''}`}>{side === 'away' && <b>{team.name}</b>}{team.logo ? <img src={team.logo} alt=""/> : <i/>}{side === 'home' && <b>{team.name}</b>}</span>;
 
 export default function GameTimeline({games, favorites, results = false, all: showEverything = false, empty, onOpen}) {
   const [now, setNow] = useState(() => Date.now()), [all, setAll] = useState(showEverything);
@@ -42,9 +42,9 @@ export default function GameTimeline({games, favorites, results = false, all: sh
       return <div key={game.id} className={`${followedGame(game, favorites) ? 'tl-row mine' : 'tl-row'}${onOpen ? ' open' : ''}`} onClick={onOpen ? () => onOpen(game) : undefined} role={onOpen ? 'button' : undefined} tabIndex={onOpen ? 0 : undefined} onKeyDown={onOpen ? event => { if (event.key === 'Enter') onOpen(game); } : undefined}>
         <div className="tl-when">{results || final ? <><b>Final</b><span className="tl-done">{timeFormat.format(game.date)}</span></> : <><b>{timeFormat.format(game.date)}</b><span className={game.state === 'in' ? 'tl-live' : ''}>{game.state === 'in' ? 'Live' : until(game.date - now)}</span></>}</div>
         <div className="tl-match">
-          <Team team={game.away} won={lead === 'away'}/>
+          <Team team={game.away} side="away" won={lead === 'away'}/>
           {scored ? <em className="tl-score"><b className={lead === 'away' ? 'won' : ''}>{game.away.score}</b>–<b className={lead === 'home' ? 'won' : ''}>{game.home.score}</b></em> : <em>at</em>}
-          <Team team={game.home} won={lead === 'home'}/>
+          <Team team={game.home} side="home" won={lead === 'home'}/>
         </div>
         <div className="tl-meta">{game.preseason && <span className="tl-pill">Preseason</span>}{game.tv && !results && <span className="tl-pill">{game.tv}</span>}{game.venue && <small>{game.venue}</small>}</div>
       </div>;

@@ -1658,3 +1658,21 @@ header .brand small{margin-top:3px}
 .gp-leader li strong{font-size:22px}
 .gp-leader li.top strong{font-size:36px}
 .gp-leader li.top .gp-who b{font-size:19px}
+
+/* game rows: the same columns on every row, so teams and scores line up down the list */
+.tl-row{grid-template-columns:96px minmax(0,1fr);align-items:center;gap:6px 18px;padding:16px 20px;margin-bottom:10px}
+.tl-when{grid-row:span 2;justify-content:center;gap:3px}
+.tl-match{display:grid;grid-template-columns:minmax(0,1fr) 92px minmax(0,1fr);align-items:center;gap:12px}
+.tl-team{display:inline-flex;align-items:center;gap:10px;min-width:0}
+.tl-team.away{justify-content:flex-end}
+.tl-team.home{justify-content:flex-start}
+.tl-match em{display:flex;justify-content:center;align-items:center;gap:6px;width:100%;font-style:normal;text-align:center}
+.tl-score{display:flex!important;gap:6px!important}
+.tl-score b{font-size:18px}
+.tl-meta{grid-column:2;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 10px;padding-top:2px}
+.tl-meta small{max-width:100%}
+.timeline h3{margin:6px 0 12px}
+.timeline{gap:18px}
+.tl-more{margin-top:6px}
+@media (max-width:640px){.tl-row{grid-template-columns:70px minmax(0,1fr);padding:14px}.tl-match{grid-template-columns:minmax(0,1fr) 68px minmax(0,1fr);gap:8px}}
+.timeline section .tl-row:last-child{margin-bottom:0}
