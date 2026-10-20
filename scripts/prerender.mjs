@@ -40,11 +40,14 @@ const settled = key => {
   const players = readRows(`public/data/${key}/regular-season.json`), teamRows = readRows(`public/data/${key}/teams-regular-season.json`);
   return Boolean(players && teamRows) && (key !== SEASONS[0] || (players.players.length >= 150 && teamRows.players.length >= 30));
 };
-const seasonKey = SEASONS.find(settled);
-if (!seasonKey) throw new Error('No season data found under public/data');
-const season = read(`public/data/${seasonKey}/regular-season.json`);
-const teamData = read(`public/data/${seasonKey}/teams-regular-season.json`).players;
-const preseasonStats = season.seasonType === 'Preseason';
+const regularKey = SEASONS.find(settled);
+if (!regularKey) throw new Error('No season data found under public/data');
+/* Until 2026-27 has real regular-season numbers, the pages show its preseason stats (preseason.json) when they exist. */
+const preseasonRows = readRows(`public/data/${SEASONS[0]}/preseason.json`), preseasonTeams = readRows(`public/data/${SEASONS[0]}/teams-preseason.json`);
+const preseasonStats = regularKey !== SEASONS[0] && Boolean(preseasonRows && preseasonTeams);
+const seasonKey = preseasonStats ? SEASONS[0] : regularKey;
+const season = preseasonStats ? preseasonRows : read(`public/data/${seasonKey}/regular-season.json`);
+const teamData = (preseasonStats ? preseasonTeams : read(`public/data/${seasonKey}/teams-regular-season.json`)).players;
 const statsWord = seasonKey === SEASONS[0] ? (preseasonStats ? 'preseason' : 'this season’s') : 'last season’s';
 /* Early in a season nobody has 15 games yet, so the cut-off grows with the schedule. */
 const mostGames = Math.max(...season.players.map(p => p.gamesPlayed));

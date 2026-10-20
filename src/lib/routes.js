@@ -16,10 +16,10 @@ export const teamUrl = code => `/teams/${slugify(TEAMS[code].name)}`;
 export const playerUrl = name => `/players/${slugify(name)}`;
 
 /* Alphabetical, so a pair always has exactly one address. */
-export function compareUrl(names, _mode, seasonType = 'regular-season') {
+export function compareUrl(names, _mode, seasonType = 'preseason') {
   const [a, b] = names.map(slugify).sort();
   const base = a && b ? `/compare/${a}-vs-${b}` : '/compare';
-  return seasonType === 'playoffs' ? `${base}?type=playoffs` : base;
+  return seasonType === 'preseason' ? base : `${base}?type=${seasonType}`;
 }
 
 export function routeParams(pathname = '/', search = '') {
