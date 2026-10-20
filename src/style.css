@@ -1439,7 +1439,8 @@ header .brand small{margin-top:3px}
 .h2h-head p{margin-top:2px;font-size:13px}
 .h2h-actions button{padding:6px 12px;font-size:12px}
 .h2h-actions button.primary{border-color:var(--accent);background:var(--accent);color:var(--accent-ink);font-weight:800}
-.h2h .vs-radar-head{display:none}
+.h2h .vs-radar-head small{display:none}
+.h2h .vs-radar-head{justify-content:center}
 .h2h-body{grid-template-columns:minmax(0,.7fr) minmax(0,1.6fr) minmax(0,.7fr);gap:8px}
 .h2h .vs-radar svg{display:block;width:100%;height:auto;max-height:310px}
 .h2h-art{height:120px}
@@ -1458,3 +1459,38 @@ header .brand small{margin-top:3px}
 .ticker-when{font-size:10px}
 .ticker.loading{height:58px}
 .h2h .vs-radar{margin:-14px 0 -22px}.h2h-player{margin-top:-10px}
+
+.h2h-dot{display:inline-block;width:10px;height:10px;margin-right:8px;border-radius:50%;vertical-align:1px}
+.h2h-player.left .h2h-dot{background:var(--accent)}
+.h2h-player.right .h2h-dot{background:var(--text-1)}
+.h2h-player.left .h2h-art{border-bottom:3px solid var(--accent)}
+.h2h-player.right .h2h-art{border-bottom:3px solid var(--text-1)}
+
+/* schedule and standings */
+.sched{display:flex;flex-direction:column;gap:14px;width:min(1100px,100%);margin:0 auto;padding:36px 28px 48px;color:var(--text-1)}
+.sched-head h1{margin:0;font-family:'Bricolage Grotesque','DM Sans',sans-serif;font-size:clamp(28px,4vw,38px);font-weight:800;letter-spacing:-.03em}
+.sched-head p{margin:6px 0 0;color:var(--text-2)}
+.sched-filters{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px}
+.sched-filters label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:700;color:var(--text-3)}
+.sched-filters select{min-width:190px;padding:10px 12px;border:1px solid var(--line-2);border-radius:12px;background:var(--ink-1);color:var(--text-1);font:inherit;font-size:14px}
+.sched-vs{padding-bottom:11px;font-size:13px;font-weight:700;color:var(--text-3)}
+.sched-chips{display:flex;flex-wrap:wrap;gap:8px}
+.sched-chips button{padding:7px 14px;border:1px solid var(--line-2);border-radius:999px;background:transparent;color:var(--text-1);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.sched-chips button.on{border-color:var(--accent);background:var(--accent);color:var(--accent-ink)}
+.sched-chips button:disabled{opacity:.45;cursor:default}
+.sched-chips .clear{border-style:dashed;color:var(--text-3)}
+.stand-grid{display:grid;grid-template-columns:1fr;gap:16px}
+.stand-scroll{overflow-x:auto}
+.stand table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.stand th{padding:8px 10px;border-bottom:1px solid var(--line);font-size:11px;font-weight:800;letter-spacing:.08em;text-align:left;text-transform:uppercase;color:var(--text-3);white-space:nowrap}
+.stand td{padding:9px 10px;border-bottom:1px solid var(--line);font-size:14px;white-space:nowrap}
+.stand .num{text-align:right}
+.stand .rank{width:34px;font-weight:800;color:var(--text-3)}
+.stand .team a{display:inline-flex;align-items:center;gap:10px;color:var(--text-1);text-decoration:none}
+.stand .team img{width:26px;height:26px;object-fit:contain}
+.stand .team b{font-weight:800}
+.stand tr.mine td{background:rgb(200 255 61 / .07)}
+.stand tr.mine .team b{color:var(--accent)}
+.stand .up{color:var(--accent)}
+.stand .down{color:#ff6b6b}
+.stand-cut td{padding:5px 10px;border-bottom:1px dashed var(--line-2);font-size:10px;font-weight:800;letter-spacing:.14em;text-align:center;text-transform:uppercase;color:var(--text-3)}

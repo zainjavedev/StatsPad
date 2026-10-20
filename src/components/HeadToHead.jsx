@@ -57,7 +57,7 @@ export default function HeadToHead({debates, stars, pool, Art, playerIds, onComp
   const leader = tally[0] === tally[1] ? null : tally[0] > tally[1] ? a : b;
   const Side = ({player, side}) => <div className={`h2h-player ${side}`}>
     <Art entity={player} playerIds={playerIds} className="h2h-art"/>
-    <b>{player.playerName}</b>
+    <b><i className="h2h-dot" aria-hidden="true"/>{player.playerName}</b>
     <small>{player.team}</small>
   </div>;
 
