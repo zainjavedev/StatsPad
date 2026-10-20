@@ -1527,12 +1527,3 @@ header .brand small{margin-top:3px}
 .boot-body{display:flex;flex-direction:column;gap:14px;width:min(1100px,100%);margin:0 auto;padding:36px 28px}
 .boot-body i{display:block;height:64px;border-radius:16px;background:var(--ink-1);border:1px solid var(--line);animation:skeleton-pulse 1.4s ease-in-out infinite}
 .boot-body i:nth-child(2){height:100px}.boot-body i:nth-child(3){height:300px}
-
-/* the next-game bar is one row */
-.ticker{margin-bottom:12px}
-.ticker-first{flex-direction:row;flex-wrap:wrap;align-items:center;gap:6px 22px;width:100%;min-width:0;padding:12px 18px}
-.ticker-clock{font-size:24px}
-.ticker-when{margin-left:auto;font-size:13px;font-weight:600;color:var(--text-3)}
-.ticker-teams{font-size:15px}
-.ticker.loading{height:64px}
-@media (max-width:640px){.ticker-when{margin-left:0;width:100%}}
