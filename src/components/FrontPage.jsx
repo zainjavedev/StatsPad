@@ -2,7 +2,8 @@ import React, { useMemo, useState } from 'react';
 import { ArrowRight, Search } from 'lucide-react';
 import { NewsList } from './Feeds';
 import { useFeed } from '../lib/useFeed';
-import { latestNews, recentResults, upcomingGames } from '../lib/espn';
+import { latestNews } from '../lib/espn';
+import { finished, loadSchedule, upcoming } from '../lib/schedule';
 import { TEAMS, nickname, teamCodeOf } from '../lib/teams';
 import { qualified } from '../lib/season';
 import { favoritesFirst, useFavorites } from '../lib/favorites';
@@ -30,8 +31,8 @@ const DEBATES = [
 /* Shown (after any followed teams) until someone has picked their own. */
 const HOT_TEAMS = ['LAL', 'PHI', 'BOS', 'NYK', 'GSW', 'OKC'];
 const TEAM_ROW = 6;
-const loadGames = () => upcomingGames(7, 12);
-const loadResults = () => recentResults(7, 8);
+const loadGames = () => loadSchedule().then(all => upcoming(all, 12));
+const loadResults = () => loadSchedule().then(all => finished(all, 8));
 const loadNews = () => latestNews(4);
 
 function PlayerSearch({players, Art, playerIds, onOpen}) {

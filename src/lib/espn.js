@@ -45,6 +45,13 @@ export async function upcomingGames(days = 7, limit = 6) {
     .slice(0, limit);
 }
 
+/* The games on a few specific days (offsets from today), for scores and results that change during the day. */
+export async function gamesAround(offsets = [-1, 0, 1]) {
+  const today = new Date();
+  const boards = await Promise.all(offsets.map(offset => getJson(`${BASE}/scoreboard?dates=${ymd(new Date(today.getFullYear(), today.getMonth(), today.getDate() + offset))}`).catch(() => null)));
+  return boards.flatMap(board => board?.events || []).map(toGame);
+}
+
 /* Finished games from the last few days, newest first. */
 export async function recentResults(days = 7, limit = 6) {
   const today = new Date();

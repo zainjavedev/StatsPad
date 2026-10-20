@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { upcomingGames } from '../lib/espn';
+import { loadSchedule, upcoming } from '../lib/schedule';
 import { TEAMS } from '../lib/teams';
 
 /* The home page's lead card: a live countdown to the next tip-off (or the score of a game in
@@ -20,7 +20,7 @@ export function useGames(initial) {
   useEffect(() => { setGames(initial); }, [initial]);
   /* Scores and the switch from "starting" to live come from ESPN, so check again every minute. */
   useEffect(() => {
-    const refresh = setInterval(() => upcomingGames(7, 12).then(setGames).catch(() => {}), 60000);
+    const refresh = setInterval(() => loadSchedule().then(all => setGames(upcoming(all, 12))).catch(() => {}), 60000);
     return () => clearInterval(refresh);
   }, []);
   return games;
