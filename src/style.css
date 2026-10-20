@@ -1960,3 +1960,15 @@ header .brand small{margin-top:3px}
   .ticker-list::-webkit-scrollbar{display:none}
   .ticker-list li{scroll-snap-align:start}
 }
+
+/* Mobile head-to-head: title, matchup, then two roomy buttons at the bottom */
+@media(max-width:640px){
+  .h2h{display:flex;flex-direction:column;padding:16px 14px 14px!important}
+  .h2h-head{display:contents}
+  .h2h-head h2{order:0;flex:none;margin:0}
+  .h2h-body{order:1;margin-top:8px!important}
+  .h2h-actions{order:2;display:grid!important;grid-template-columns:1fr 1.4fr;gap:10px!important;margin-top:6px;width:100%}
+  .h2h-actions button{justify-content:center;padding:13px 10px!important;font-size:14px!important;border-radius:12px;min-height:46px}
+  .h2h .vs-radar{margin:-8px 0 -10px!important}
+  .h2h .vs-radar svg{max-height:250px!important}
+}
