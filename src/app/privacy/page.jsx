@@ -1,25 +1,45 @@
-export const metadata = {title: 'Privacy Policy | StatsPads', description: 'What StatsPads stores about you and how to remove it.', alternates: {canonical: '/privacy'}};
+export const metadata = {title: 'Privacy Policy | StatsPads', description: 'What StatsPads collects, how it is used and how to remove it.', alternates: {canonical: '/privacy'}};
 
-const wrap = {maxWidth: 640, margin: '0 auto', padding: '48px 16px', font: '16px/1.6 system-ui, sans-serif'};
+const wrap = {maxWidth: 680, margin: '0 auto', padding: '48px 16px 80px', font: '16px/1.65 system-ui, sans-serif'};
 
 export default function Privacy() {
   return <main style={wrap}>
     <h1>Privacy Policy</h1>
-    <p>StatsPads (statspads.com) is an NBA stats site. You can use it without an account. This page covers what we keep if you choose to sign in for game alerts.</p>
-    <h2>What we store</h2>
+    <p><em>Last updated: October 20, 2026</em></p>
+    <p>StatsPads (&quot;we&quot;, &quot;us&quot;) runs statspads.com, a free NBA stats and player comparison site. You can browse, compare players and follow teams without an account. This policy explains what we collect if you do sign in, and what we collect from everyone.</p>
+
+    <h2>Information we collect</h2>
     <ul>
-      <li>Your email address, and your name only if you sign in with Google. From Google we receive just your email and whether it is verified.</li>
-      <li>The teams you follow, so we know which alerts to send and can restore them on another browser.</li>
-      <li>If you turn on browser notifications, the push subscription your browser gives us.</li>
-      <li>Teams you follow without signing in stay in your own browser and are not sent to us.</li>
+      <li><strong>Account information.</strong> Your email address, and your name only if you sign in with Google. From Google we receive your email address and whether it is verified. We do not receive your Google password or access any other Google data.</li>
+      <li><strong>Teams you follow.</strong> Stored with your account so we can send the right alerts and restore your teams on another browser. If you follow teams without signing in, they stay in your own browser and are not sent to us.</li>
+      <li><strong>Notification data.</strong> If you turn on browser notifications, the push subscription your browser gives us.</li>
+      <li><strong>Usage data.</strong> Standard web analytics (pages viewed, device type, approximate location) collected through Vercel Analytics and Google Tag Manager.</li>
     </ul>
+
     <h2>How we use it</h2>
-    <p>Only to email or notify you when a team you follow tips off or finishes, and to send sign-in links. We do not sell your data or show you ads based on it.</p>
-    <h2>Who handles it</h2>
-    <p>Neon (database), Resend (email), Vercel (hosting and analytics) and Google (sign-in) process data on our behalf.</p>
-    <h2>Removing your data</h2>
-    <p>Every alert email has an unsubscribe link. The Teams page also has a &quot;Delete my alerts&quot; button that removes your email and push subscriptions from our database.</p>
+    <ul>
+      <li>To email or notify you when a team you follow tips off or finishes.</li>
+      <li>To send sign-in and confirmation links.</li>
+      <li>To understand how the site is used and improve it.</li>
+    </ul>
+    <p>We do not sell or rent your personal information, and we do not use it for advertising.</p>
+
+    <h2>Cookies and local storage</h2>
+    <p>We store your theme, followed teams and sign-in token in your browser&apos;s local storage. Analytics providers may set cookies. You can clear or block these in your browser settings.</p>
+
+    <h2>Service providers</h2>
+    <p>We share data only with providers that run the service for us: Vercel (hosting and analytics), Neon (database), Resend (email delivery), Google (sign-in and analytics) and ESPN and NBA public data feeds for scores and stats, which receive no personal information from us.</p>
+
+    <h2>Retention and deletion</h2>
+    <p>We keep your account data until you delete it. Every alert email has an unsubscribe link, and the Teams page has a &quot;Delete my alerts&quot; button; either removes your email, followed teams and push subscriptions from our database. You can also email us and we will delete it.</p>
+
+    <h2>Children</h2>
+    <p>StatsPads is not directed to children under 13 and we do not knowingly collect their information.</p>
+
+    <h2>Changes</h2>
+    <p>If we change this policy we will update the date above.</p>
+
     <h2>Contact</h2>
-    <p>Questions: zain.javed.965@gmail.com</p>
+    <p>Questions or deletion requests: <a href="mailto:support@statspads.com">support@statspads.com</a></p>
   </main>;
 }
