@@ -873,6 +873,7 @@ header .brand small{margin-top:3px}
   .front-hero::before{border-radius:20px}
   .front-hero-copy{padding-bottom:26px}
   .front-cast{display:none}
+  .front-hero{padding-right:20px}
   .front-block{margin-top:34px}
   .team-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
   .leader-card{min-height:170px}
@@ -1313,3 +1314,30 @@ header .brand small{margin-top:3px}
 .acct-empty{padding:8px 0}
 @media (max-width:820px){.acct{grid-template-columns:1fr;gap:28px}.acct-grid{grid-template-columns:1fr}.alerts-banner{flex-wrap:wrap}}
 .acct-card p svg{display:inline;vertical-align:-3px;margin-right:6px}
+
+/* home: next-game countdown */
+.game-clock{align-self:center;display:flex;flex-direction:column;gap:12px;min-width:0;margin:0 32px 32px 0;padding:20px;border:1px solid rgb(255 255 255 / .16);border-radius:20px;background:rgb(255 255 255 / .08);backdrop-filter:blur(10px)}
+.clock-label{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgb(255 255 255 / .7)}
+.clock-label em{padding:3px 9px;border-radius:999px;background:#ffb347;color:#1a1208;font-size:11px;font-style:normal;letter-spacing:.04em}
+.clock-live{display:inline-flex;align-items:center;gap:8px;color:#ff6b6b}
+.clock-live i{width:8px;height:8px;border-radius:50%;background:#ff4d4d;animation:clock-pulse 1.2s ease-in-out infinite}
+@keyframes clock-pulse{50%{opacity:.35}}
+.clock-match{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.clock-side{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+.clock-side img,.clock-side i{width:56px;height:56px;object-fit:contain}
+.clock-side b{font-size:15px;font-weight:800;letter-spacing:.04em}
+.clock-score{font-size:30px;font-weight:800;line-height:1}
+.clock-at{font-size:13px;font-weight:700;color:rgb(255 255 255 / .6);text-align:center}
+.clock-count{display:flex;justify-content:center;gap:10px}
+.clock-count div{display:flex;flex-direction:column;align-items:center;min-width:58px;padding:8px 6px;border-radius:12px;background:rgb(0 0 0 / .28)}
+.clock-count b{font-size:28px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.clock-count span{margin-top:4px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgb(255 255 255 / .6)}
+.clock-sub{margin:0;text-align:center;font-size:13px;color:rgb(255 255 255 / .75)}
+.clock-next{display:flex;flex-direction:column;margin:2px 0 0;padding:8px 0 0;border-top:1px solid rgb(255 255 255 / .14);list-style:none}
+.clock-next li{display:flex;justify-content:space-between;gap:12px;padding:5px 0;font-size:13px;font-weight:700}
+.clock-next li.mine span::after{content:' ★';color:#ffb347}
+.clock-next small{color:rgb(255 255 255 / .6);font-size:12px;font-weight:600}
+.game-clock.loading{min-height:260px}
+.game-clock.loading span{display:block;height:44px;border-radius:12px;background:rgb(255 255 255 / .1)}
+.game-clock.empty{align-items:center;text-align:center;color:rgb(255 255 255 / .75)}
+@media (max-width:640px){.game-clock{margin:0 0 20px}}

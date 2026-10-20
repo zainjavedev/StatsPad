@@ -7,6 +7,7 @@ import { TEAMS, nickname, teamCodeOf } from '../lib/teams';
 import { pretty, qualified } from '../lib/season';
 import { favoritesFirst, useFavorites } from '../lib/favorites';
 import FavoriteStar from './FavoriteStar';
+import GameClock from './GameClock';
 
 /* The front door: settle a debate, find a player, see the league's top
    performers and what's on. Deep leaderboards live on the Leaders page. */
@@ -94,7 +95,6 @@ export default function FrontPage({players, teams, playerIds, season, Art, onOpe
   }, [allTeams, favorites, teamByCode]);
   const view = tab ?? (games?.length ? 'upcoming' : 'results');
   const pool = useMemo(() => qualified(players), [players]);
-  const stars = useMemo(() => [...pool].sort((a, b) => b.stats.points - a.stats.points).slice(0, 3), [pool]);
   const leaders = useMemo(() => {
     const base = pool.length ? pool : players;
     return LEADERS.map(entry => {
@@ -115,7 +115,7 @@ export default function FrontPage({players, teams, playerIds, season, Art, onOpe
           <button className="front-btn" onClick={() => onTeam('PHI')}>Browse rosters <ArrowRight size={16}/></button>
         </div>
       </div>
-      <div className="front-cast" aria-hidden="true">{stars.map(player => <Art key={player.playerId} entity={player} playerIds={playerIds} className="cast-art"/>)}</div>
+      <GameClock games={games} favorites={favorites}/>
     </div>
 
     <section className="front-block">
