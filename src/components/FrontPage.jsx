@@ -120,7 +120,7 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
             <button className={view === 'results' ? 'active' : ''} onClick={() => setTab('results')}>Results</button>
           </div>
         </div>
-        {view === 'upcoming' ? <GameTimeline games={games} favorites={favorites}/> : <GameList games={results} results empty="No finished games in the last week."/>}
+        {view === 'upcoming' ? <GameTimeline games={games} favorites={favorites}/> : <GameTimeline games={results} favorites={favorites} results/>}
       </section>
 
       <div className="home-side">

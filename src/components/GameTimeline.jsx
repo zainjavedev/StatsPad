@@ -4,6 +4,7 @@ import { followedGame } from './NextUp';
 /* Upcoming games grouped by day, one row per game: start time and how long to go, the matchup,
    and where it is played. */
 
+const LIMIT = 4;
 const timeFormat = new Intl.DateTimeFormat(undefined, {hour: 'numeric', minute: '2-digit'});
 const dayFormat = new Intl.DateTimeFormat(undefined, {weekday: 'long', month: 'short', day: 'numeric'});
 
@@ -19,25 +20,34 @@ const until = ms => {
   return `in ${Math.floor(minutes / 1440)}d ${Math.floor(minutes % 1440 / 60)}h`;
 };
 
-const Team = ({team}) => <span className="tl-team">{team.logo ? <img src={team.logo} alt=""/> : <i/>}<b>{team.name}</b></span>;
+const Team = ({team, won}) => <span className={won ? 'tl-team won' : 'tl-team'}>{team.logo ? <img src={team.logo} alt=""/> : <i/>}<b>{team.name}</b></span>;
 
-export default function GameTimeline({games, favorites}) {
-  const [now, setNow] = useState(() => Date.now());
+export default function GameTimeline({games, favorites, results = false}) {
+  const [now, setNow] = useState(() => Date.now()), [all, setAll] = useState(false);
   useEffect(() => { const tick = setInterval(() => setNow(Date.now()), 30000); return () => clearInterval(tick); }, []);
   if (games === null) return <ul className="game-list loading">{[0, 1, 2].map(index => <li key={index}/>)}</ul>;
-  if (!games.length) return <p className="feed-empty">No games scheduled this week.</p>;
+  if (!games.length) return <p className="feed-empty">{results ? 'No finished games in the last week.' : 'No games scheduled this week.'}</p>;
+  const shown = all ? games : games.slice(0, LIMIT);
   const days = [];
-  for (const game of games) {
+  for (const game of shown) {
     const key = game.date.toDateString();
     const day = days.find(entry => entry.key === key);
     if (day) day.games.push(game); else days.push({key, label: dayLabel(game.date), games: [game]});
   }
   return <div className="timeline">{days.map(day => <section key={day.key}>
     <h3>{day.label} <small>{day.games.length} game{day.games.length === 1 ? '' : 's'}</small></h3>
-    {day.games.map(game => <div key={game.id} className={followedGame(game, favorites) ? 'tl-row mine' : 'tl-row'}>
-      <div className="tl-when"><b>{timeFormat.format(game.date)}</b><span className={game.state === 'in' ? 'tl-live' : ''}>{game.state === 'in' ? 'Live' : until(game.date - now)}</span></div>
-      <div className="tl-match"><Team team={game.away}/><em>{game.state === 'in' ? `${game.away.score}–${game.home.score}` : 'at'}</em><Team team={game.home}/></div>
-      <div className="tl-meta">{game.preseason && <span className="tl-pill">Preseason</span>}{game.tv && <span className="tl-pill">{game.tv}</span>}{game.venue && <small>{game.venue}</small>}</div>
-    </div>)}
-  </section>)}</div>;
+    {day.games.map(game => {
+      const scored = results || game.state === 'in', away = Number(game.away.score), home = Number(game.home.score);
+      const lead = results && away !== home ? (away > home ? 'away' : 'home') : null;
+      return <div key={game.id} className={followedGame(game, favorites) ? 'tl-row mine' : 'tl-row'}>
+        <div className="tl-when">{results ? <><b>Final</b><span className="tl-done">{timeFormat.format(game.date)}</span></> : <><b>{timeFormat.format(game.date)}</b><span className={game.state === 'in' ? 'tl-live' : ''}>{game.state === 'in' ? 'Live' : until(game.date - now)}</span></>}</div>
+        <div className="tl-match">
+          <Team team={game.away} won={lead === 'away'}/>
+          {scored ? <em className="tl-score"><b className={lead === 'away' ? 'won' : ''}>{game.away.score}</b>–<b className={lead === 'home' ? 'won' : ''}>{game.home.score}</b></em> : <em>at</em>}
+          <Team team={game.home} won={lead === 'home'}/>
+        </div>
+        <div className="tl-meta">{game.preseason && <span className="tl-pill">Preseason</span>}{game.tv && !results && <span className="tl-pill">{game.tv}</span>}{game.venue && <small>{game.venue}</small>}</div>
+      </div>;
+    })}
+  </section>)}{games.length > LIMIT && <button className="tl-more" onClick={() => setAll(open => !open)}>{all ? 'Show fewer' : `Show all ${games.length} games`}</button>}</div>;
 }

@@ -1387,3 +1387,10 @@ header .brand small{margin-top:3px}
 .find-debates button{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;border:1px solid var(--line);border-radius:12px;background:transparent;color:var(--text-1);font:inherit;font-size:14px;font-weight:700;text-align:left}
 .find-debates button:hover{border-color:var(--accent)}
 .find-debates span{color:var(--text-3);font-size:12px;font-weight:600}
+.tl-team.won b{font-weight:800}
+.tl-score{display:inline-flex;gap:4px;font-style:normal;font-variant-numeric:tabular-nums}
+.tl-score b{font-size:16px;font-weight:600;color:var(--text-3)}
+.tl-score b.won{color:var(--text-1);font-weight:800}
+.tl-done{font-size:12px;color:var(--text-3)}
+.tl-more{width:100%;padding:11px;border:1px solid var(--line);border-radius:12px;background:none;color:var(--text-2);font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.tl-more:hover{color:var(--text-1);border-color:var(--line-2)}
