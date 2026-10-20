@@ -58,7 +58,7 @@ export default function HeadToHead({debates, stars, pool, Art, playerIds, onComp
   const Side = ({player, side}) => <div className={`h2h-player ${side}`}>
     <Art entity={player} playerIds={playerIds} className="h2h-art"/>
     <b>{player.playerName}</b>
-    <small>{player.team} · {player.position}</small>
+    <small>{player.team}</small>
   </div>;
 
   return <section className="h2h" aria-label="Head to head">
@@ -67,6 +67,7 @@ export default function HeadToHead({debates, stars, pool, Art, playerIds, onComp
       <div className="h2h-actions">
         <button onClick={next}>Next debate <ArrowRight size={14}/></button>
         <button onClick={shuffle}><Shuffle size={14}/> Surprise me</button>
+        <button className="primary" onClick={() => onCompare([a, b])}>Full comparison <ArrowRight size={14}/></button>
       </div>
     </div>
     <div className="h2h-body">
@@ -74,6 +75,5 @@ export default function HeadToHead({debates, stars, pool, Art, playerIds, onComp
       <Radar axes={axes} names={[a.playerName, b.playerName]} colors={['var(--accent)', 'var(--text-1)']} scope={`${pool.length} players`}/>
       <Side player={b} side="right"/>
     </div>
-    <button className="h2h-open" onClick={() => onCompare([a, b])}>Open the full comparison <ArrowRight size={15}/></button>
   </section>;
 }
