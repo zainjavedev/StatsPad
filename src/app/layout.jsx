@@ -3,7 +3,7 @@ import '../style.css';
 export const metadata = {
   metadataBase: new URL(process.env.SITE_URL || 'https://stats-pad.vercel.app'),
   title: 'NBA Player Comparison',
-  verification: {google: 'uAikNEtc4OO0e0Bg0WiwK_23KQh4t-MDsXrh49jbfw'},
+  verification: {google: 'uAikhNEtc4OO0e0Bg0WiwK_23KQh4t-MDsXrh49jbfw'},
 };
 
 export const viewport = {width: 'device-width', initialScale: 1};
