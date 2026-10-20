@@ -8,12 +8,12 @@ const removeSubscriber = async token => {
   if (row?.channel === 'email') await sql`delete from subscribers where lower(owner_email) = lower(${row.email})`;
 };
 
-const page = (title, text) => new Response(`<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title><body style="font:16px/1.5 system-ui,sans-serif;max-width:480px;margin:15vh auto;padding:0 20px;color:#14140f"><h2>${title}</h2><p>${text}</p><p><a href="/">Back to StatsPad</a></p>`, {headers: {"Content-Type": "text/html; charset=utf-8"}});
+const page = (title, text) => new Response(`<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title><body style="font:16px/1.5 system-ui,sans-serif;max-width:480px;margin:15vh auto;padding:0 20px;color:#14140f"><h2>${title}</h2><p>${text}</p><p><a href="/">Back to StatsPads</a></p>`, {headers: {"Content-Type": "text/html; charset=utf-8"}});
 
 export async function GET(request) {
   const token = new URL(request.url).searchParams.get('token') || '';
   await removeSubscriber(token);
-  return page('Unsubscribed', 'You will not get any more StatsPad alerts on this device or email.');
+  return page('Unsubscribed', 'You will not get any more StatsPads alerts on this device or email.');
 }
 
 /* The page's own "turn off" button. */

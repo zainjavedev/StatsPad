@@ -33,10 +33,10 @@ function message(game, kind) {
   const [away, home] = [game.sides.find(side => !side.home), game.sides.find(side => side.home)];
   if (kind === 'tipoff') {
     const minutes = Math.max(1, Math.round((game.start - Date.now()) / 6e4));
-    return {title: `${nick(away.code)} at ${nick(home.code)} tips off in ${minutes} min`, body: 'Follow the game and compare the players on StatsPad.'};
+    return {title: `${nick(away.code)} at ${nick(home.code)} tips off in ${minutes} min`, body: 'Follow the game and compare the players on StatsPads.'};
   }
   const winner = Number(home.score) > Number(away.score) ? home : away, loser = winner === home ? away : home;
-  return {title: `Final: ${nick(winner.code)} ${winner.score}, ${nick(loser.code)} ${loser.score}`, body: 'See how the players stacked up on StatsPad.'};
+  return {title: `Final: ${nick(winner.code)} ${winner.score}, ${nick(loser.code)} ${loser.score}`, body: 'See how the players stacked up on StatsPads.'};
 }
 
 async function deliver(subscriber, {title, body}) {

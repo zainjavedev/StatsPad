@@ -4,7 +4,7 @@ import { sql } from '../../../server/db';
 export const dynamic = 'force-dynamic';
 
 /* The emailed link lands on the app, which trades the one-time code for the account token. */
-export const GET = request => NextResponse.redirect(new URL(`/teams?signin=${encodeURIComponent(new URL(request.url).searchParams.get('code') || '')}`, request.url));
+export const GET = request => NextResponse.redirect(new URL(`/account?signin=${encodeURIComponent(new URL(request.url).searchParams.get('code') || '')}`, request.url));
 
 export async function POST(request) {
   const body = await request.json().catch(() => null);

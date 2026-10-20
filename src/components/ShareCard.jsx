@@ -23,7 +23,7 @@ function Photo({src, name, color, className}) {
 
 function Head({spec}) {
   return <div className="sc-head">
-    <span className="sc-brand">StatsPad</span>
+    <span className="sc-brand">StatsPads</span>
     <span className="sc-eyebrow">{spec.eyebrow}</span>
   </div>;
 }

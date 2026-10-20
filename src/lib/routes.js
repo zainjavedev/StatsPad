@@ -44,6 +44,8 @@ export function routeParams(pathname = '/', search = '') {
     params.set('view', 'teams');
   } else if (path === '/leaders') {
     params.set('view', 'leaders');
+  } else if (path === '/signin' || path === '/account') {
+    params.set('view', 'account');
   } else if (player) {
     params.set('profile', player[1]);
   }

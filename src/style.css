@@ -1259,3 +1259,56 @@ header .brand small{margin-top:3px}
 .alerts-or{margin:4px 0;font-size:13px;color:var(--text-2)}
 .alerts-links{display:flex;justify-content:space-between;gap:12px}
 .alerts-link{padding:0;border:0;background:none;color:var(--text-2);font:inherit;font-size:13px;text-decoration:underline;cursor:pointer}
+
+/* sign-in and account pages */
+.alerts-banner{display:flex;align-items:center;gap:12px;margin:0 0 20px;padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:var(--ink-1)}
+.alerts-banner p{flex:1;margin:0;font-size:14px;color:var(--text-2)}
+.acct{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:48px;align-items:center;max-width:1000px;min-height:70vh;margin:0 auto;padding:40px 16px 64px}
+.acct-side h1{margin:0 0 12px;font-size:clamp(28px,4vw,40px);font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.acct-side>p{margin:0 0 28px;font-size:17px;color:var(--text-2)}
+.acct-side ul{display:flex;flex-direction:column;gap:18px;margin:0;padding:0;list-style:none}
+.acct-side li{display:flex;gap:14px;align-items:flex-start}
+.acct-side li svg{flex:none;margin-top:2px;color:var(--text-2)}
+.acct-side li div{display:flex;flex-direction:column;gap:2px}
+.acct-side li span{font-size:14px;color:var(--text-2)}
+.acct-card{display:flex;flex-direction:column;gap:14px;padding:24px;border:1px solid var(--line);border-radius:18px;background:var(--ink-1);color:var(--text-1)}
+.acct-card h2{margin:0;font-size:17px;font-weight:800}
+.acct-card p{margin:0;font-size:14px;color:var(--text-2)}
+.acct-card form{display:flex;flex-direction:column;gap:12px}
+.acct-card label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:700}
+.acct-card input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--ink-0,transparent);color:inherit;font:inherit;font-size:15px}
+.acct-card input:focus{outline:2px solid var(--text-1);outline-offset:1px}
+.acct-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:12px;background:var(--ink-2,rgb(0 0 0 / .06))}
+.acct-tabs button{padding:9px;border:0;border-radius:9px;background:none;color:var(--text-2);font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.acct-tabs button.on{background:var(--ink-1);color:var(--text-1);box-shadow:0 1px 3px rgb(0 0 0 / .15)}
+.acct-google{display:flex;justify-content:center;min-height:44px}
+.acct-divider{display:flex;align-items:center;gap:12px;font-size:12px;color:var(--text-2)}
+.acct-divider::before,.acct-divider::after{content:"";flex:1;height:1px;background:var(--line)}
+.acct-pass{position:relative;display:block}
+.acct-pass input{padding-right:42px}
+.acct-pass button{position:absolute;top:50%;right:8px;transform:translateY(-50%);display:grid;place-items:center;width:30px;height:30px;border:0;background:none;color:var(--text-2);cursor:pointer}
+.acct-primary,.acct-secondary,.acct-danger{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 16px;border-radius:10px;border:1px solid transparent;font:inherit;font-size:14px;font-weight:800;text-decoration:none;cursor:pointer}
+.acct-primary{background:var(--text-1);color:var(--ink-1)}
+.acct-secondary{border-color:var(--line);background:transparent;color:var(--text-1)}
+.acct-danger{border-color:rgb(220 60 60 / .5);background:transparent;color:#d94747}
+.acct-primary:disabled,.acct-secondary:disabled,.acct-danger:disabled{opacity:.55;cursor:default}
+.acct-link{padding:0;border:0;background:none;color:var(--text-2);font:inherit;font-size:13px;text-align:left;text-decoration:underline;cursor:pointer}
+.acct-note{padding:10px 12px;border-radius:10px;font-size:13px}
+.acct-note.ok{background:rgb(40 160 90 / .12);color:inherit}
+.acct-note.bad{background:rgb(220 60 60 / .12);color:inherit}
+.acct-fine{font-size:12px;text-align:center}
+.acct-fine a{color:inherit}
+.acct-in{display:block;align-items:start;min-height:0}
+.acct-head{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.acct-head h1{margin:0;font-size:28px;font-weight:800;letter-spacing:-.02em}
+.acct-head p{margin:2px 0 0;color:var(--text-2)}
+.acct-avatar{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:var(--text-1);color:var(--ink-1);font-size:22px;font-weight:800}
+.acct-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.acct-teams{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.acct-teams li{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700}
+.acct-teams li span{flex:1}
+.acct-teams button{padding:4px 10px;border:1px solid var(--line);border-radius:8px;background:none;color:var(--text-2);font:inherit;font-size:12px;cursor:pointer}
+.acct-logo{width:28px;height:28px}
+.acct-empty{padding:8px 0}
+@media (max-width:820px){.acct{grid-template-columns:1fr;gap:28px}.acct-grid{grid-template-columns:1fr}.alerts-banner{flex-wrap:wrap}}
+.acct-card p svg{display:inline;vertical-align:-3px;margin-right:6px}
