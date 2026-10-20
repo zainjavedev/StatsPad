@@ -11,13 +11,13 @@ export const routesUnder = prefix => Object.keys(pages).filter(route => route.st
 export function seoMetadata(route) {
   const page = pages[route];
   if (!page) return {alternates: {canonical: route}};
-  const images = [page.ogName ? `/og/${page.ogName}.jpg` : '/statspad.png'];
+  const images = [page.ogName ? `/og/${page.ogName}.jpg` : '/og-default.jpg'];
   return {
     title: page.title,
     description: page.description,
     alternates: {canonical: route},
-    openGraph: {type: 'website', siteName: 'StatsPads', title: page.title, description: page.description, url: route, images: page.ogName ? images.map(url => ({url, width: 1200, height: 630})) : images},
-    twitter: {card: 'summary_large_image', title: page.title, description: page.description, images},
+    openGraph: {type: 'website', siteName: 'StatsPads', locale: 'en_US', title: page.title, description: page.description, url: route, images: images.map(url => ({url, width: 1200, height: 630, alt: page.title}))},
+    twitter: {card: 'summary_large_image', title: page.title, description: page.description, images: images.map(url => ({url, alt: page.title}))},
   };
 }
 
