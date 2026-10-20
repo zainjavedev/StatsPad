@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Chris Finch",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -80,7 +80,7 @@
       "pos": "F",
       "height": "6-7",
       "birthDate": "2002-10-06",
-      "exp": 5,
+      "exp": 6,
       "college": null,
       "jersey": "24",
       "unit": "starters",
@@ -179,19 +179,6 @@
       "unit": "second"
     },
     {
-      "name": "Enrique Freeman",
-      "bbrefId": "freemen01",
-      "nbaId": null,
-      "espnId": 4592699,
-      "pos": "F",
-      "height": "6-9",
-      "birthDate": "2000-07-29",
-      "exp": 3,
-      "college": "Akron",
-      "jersey": "25",
-      "unit": "third"
-    },
-    {
       "name": "Rocco Zikarsky",
       "bbrefId": "zikarro01",
       "nbaId": null,
@@ -218,6 +205,18 @@
       "unit": "third"
     },
     {
+      "name": "Trey Lyles",
+      "nbaId": 1626168,
+      "espnId": 3136196,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "1995-11-05",
+      "exp": 11,
+      "college": "Kentucky",
+      "jersey": "41",
+      "unit": "third"
+    },
+    {
       "name": "Cody Williams",
       "bbrefId": "willico04",
       "nbaId": null,
@@ -231,18 +230,6 @@
       "unit": "third"
     },
     {
-      "name": "Trey Lyles",
-      "nbaId": 1626168,
-      "espnId": 3136196,
-      "pos": "F",
-      "height": "6-9",
-      "birthDate": "1995-11-05",
-      "exp": 11,
-      "college": "Kentucky",
-      "jersey": "41",
-      "unit": "third"
-    },
-    {
       "name": "Zyon Pullin",
       "bbrefId": "pullizy01",
       "nbaId": null,
@@ -253,7 +240,7 @@
       "exp": 3,
       "college": "Florida",
       "jersey": "15",
-      "unit": "camp"
+      "unit": "third"
     },
     {
       "name": "Donte DiVincenzo",
@@ -266,57 +253,6 @@
       "exp": 9,
       "college": "Villanova",
       "jersey": "0",
-      "unit": "camp"
-    },
-    {
-      "name": "Drew Timme",
-      "bbrefId": "timmedr01",
-      "nbaId": null,
-      "espnId": 4431695,
-      "pos": "F",
-      "height": "6-10",
-      "birthDate": "2000-09-09",
-      "exp": 2,
-      "college": "Gonzaga",
-      "jersey": "17",
-      "unit": "camp"
-    },
-    {
-      "name": "Antonio Reeves",
-      "bbrefId": "reevean01",
-      "nbaId": null,
-      "espnId": 4592686,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "2000-11-20",
-      "exp": 3,
-      "college": "Kentucky",
-      "jersey": "12",
-      "unit": "camp"
-    },
-    {
-      "name": "KJ Martin",
-      "nbaId": null,
-      "espnId": 4431828,
-      "pos": "F",
-      "height": "6-6",
-      "birthDate": "2001-01-06",
-      "exp": 5,
-      "college": null,
-      "jersey": "99",
-      "unit": "camp"
-    },
-    {
-      "name": "Norchad Omier",
-      "bbrefId": "omierno01",
-      "nbaId": null,
-      "espnId": 4702134,
-      "pos": "F",
-      "height": "6-5",
-      "birthDate": "2001-08-28",
-      "exp": 2,
-      "college": "Baylor",
-      "jersey": "23",
       "unit": "camp"
     }
   ]

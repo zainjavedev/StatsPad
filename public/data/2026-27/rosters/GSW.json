@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Steve Kerr",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -256,18 +256,6 @@
       "unit": "camp"
     },
     {
-      "name": "Alex Toohey",
-      "nbaId": null,
-      "espnId": 5170949,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2004-05-05",
-      "exp": 2,
-      "college": null,
-      "jersey": "22",
-      "unit": "camp"
-    },
-    {
       "name": "Jimmy Butler III",
       "bbrefId": "butleji01",
       "nbaId": 202710,
@@ -278,32 +266,6 @@
       "exp": 16,
       "college": "Marquette",
       "jersey": "10",
-      "unit": "camp"
-    },
-    {
-      "name": "Tyler Burton",
-      "bbrefId": "burtoty01",
-      "nbaId": null,
-      "espnId": 4431914,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "2000-02-11",
-      "exp": 0,
-      "college": "Villanova",
-      "jersey": null,
-      "unit": "camp"
-    },
-    {
-      "name": "Dalen Terry",
-      "bbrefId": "terryda01",
-      "nbaId": null,
-      "espnId": 4433159,
-      "pos": "G",
-      "height": "6-6",
-      "birthDate": "2002-07-12",
-      "exp": 5,
-      "college": "Arizona",
-      "jersey": "21",
       "unit": "camp"
     },
     {

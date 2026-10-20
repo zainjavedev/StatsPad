@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Sean Sweeney",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -267,56 +267,6 @@
       "exp": 2,
       "college": "Wagner",
       "jersey": "30",
-      "unit": "camp"
-    },
-    {
-      "name": "Malaki Branham",
-      "bbrefId": "branhma01",
-      "nbaId": null,
-      "espnId": 4565201,
-      "pos": "F",
-      "height": "6-4",
-      "birthDate": "2003-05-12",
-      "exp": 5,
-      "college": "Ohio State",
-      "jersey": "12",
-      "unit": "camp"
-    },
-    {
-      "name": "JD Davison",
-      "bbrefId": "davisjd01",
-      "nbaId": null,
-      "espnId": 4576085,
-      "pos": "G",
-      "height": "6-1",
-      "birthDate": "2002-10-03",
-      "exp": 5,
-      "college": "Alabama",
-      "jersey": "20",
-      "unit": "camp"
-    },
-    {
-      "name": "Kevin Knox II",
-      "nbaId": 1628995,
-      "espnId": 4278075,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "1999-08-11",
-      "exp": 8,
-      "college": "Kentucky",
-      "jersey": "24",
-      "unit": "camp"
-    },
-    {
-      "name": "Mike Sharavjamts",
-      "nbaId": null,
-      "espnId": 5105875,
-      "pos": "G",
-      "height": "6-9",
-      "birthDate": "2002-01-01",
-      "exp": 0,
-      "college": "South Carolina",
-      "jersey": null,
       "unit": "camp"
     }
   ]

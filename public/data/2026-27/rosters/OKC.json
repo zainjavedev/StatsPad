@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Mark Daigneault",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -263,66 +263,6 @@
       "exp": 0,
       "college": "Kentucky",
       "jersey": "13",
-      "unit": "camp"
-    },
-    {
-      "name": "Andrew Holifield",
-      "nbaId": null,
-      "espnId": 5116468,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2004-02-02",
-      "exp": 0,
-      "college": "Lamar",
-      "jersey": "17",
-      "unit": "camp"
-    },
-    {
-      "name": "Robert McCray V",
-      "nbaId": null,
-      "espnId": 4685802,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "2002-09-26",
-      "exp": 0,
-      "college": "Florida State",
-      "jersey": "16",
-      "unit": "camp"
-    },
-    {
-      "name": "Anthony Pritchard",
-      "nbaId": null,
-      "espnId": 4897155,
-      "pos": "G",
-      "height": "6-1",
-      "birthDate": "2003-05-06",
-      "exp": 0,
-      "college": "Central Michigan",
-      "jersey": "5",
-      "unit": "camp"
-    },
-    {
-      "name": "Zhaire Smith",
-      "nbaId": null,
-      "espnId": 4277923,
-      "pos": "G",
-      "height": "6-3",
-      "birthDate": "1999-06-04",
-      "exp": 3,
-      "college": "Texas Tech",
-      "jersey": "40",
-      "unit": "camp"
-    },
-    {
-      "name": "Christoph Tilly",
-      "nbaId": null,
-      "espnId": 5109790,
-      "pos": "C",
-      "height": "7-0",
-      "birthDate": "2003-01-28",
-      "exp": 0,
-      "college": "Ohio State",
-      "jersey": "33",
       "unit": "camp"
     }
   ]

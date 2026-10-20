@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Tiago Splitter",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -198,7 +198,7 @@
       "pos": "G",
       "height": "6-4",
       "birthDate": "1992-12-17",
-      "exp": 12,
+      "exp": 11,
       "college": "Oklahoma",
       "jersey": "7",
       "unit": "third"
@@ -264,69 +264,6 @@
       "exp": 2,
       "college": null,
       "jersey": "2",
-      "unit": "camp"
-    },
-    {
-      "name": "Brandon Boston Jr.",
-      "nbaId": null,
-      "espnId": 4432162,
-      "pos": "G",
-      "height": "6-6",
-      "birthDate": "2001-11-28",
-      "exp": 4,
-      "college": "Kentucky",
-      "jersey": "13",
-      "unit": "camp"
-    },
-    {
-      "name": "Jalen Bridges",
-      "nbaId": null,
-      "espnId": 4432946,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "2001-05-14",
-      "exp": 2,
-      "college": "Baylor",
-      "jersey": "20",
-      "unit": "camp"
-    },
-    {
-      "name": "Drew Peterson",
-      "bbrefId": "peterdr01",
-      "nbaId": null,
-      "espnId": 4397689,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "1999-11-09",
-      "exp": 2,
-      "college": "USC",
-      "jersey": "21",
-      "unit": "camp"
-    },
-    {
-      "name": "Orlando Robinson",
-      "bbrefId": "robinor01",
-      "nbaId": null,
-      "espnId": 4593049,
-      "pos": "C",
-      "height": "6-10",
-      "birthDate": "2000-07-10",
-      "exp": 3,
-      "college": "Fresno State",
-      "jersey": "00",
-      "unit": "camp"
-    },
-    {
-      "name": "Isaiah Stevens",
-      "bbrefId": "steveis01",
-      "nbaId": null,
-      "espnId": 4432117,
-      "pos": "G",
-      "height": "5-11",
-      "birthDate": "2000-11-01",
-      "exp": 3,
-      "college": "Colorado State",
-      "jersey": "99",
       "unit": "camp"
     }
   ]

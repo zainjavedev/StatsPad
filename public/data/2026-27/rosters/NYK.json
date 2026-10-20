@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Mike Brown",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -253,58 +253,6 @@
       "exp": 0,
       "college": "Michigan State",
       "jersey": "14",
-      "unit": "camp"
-    },
-    {
-      "name": "Bruce Brown",
-      "bbrefId": "brownbr01",
-      "nbaId": 1628971,
-      "espnId": 4065670,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "1996-08-15",
-      "exp": 9,
-      "college": "Miami",
-      "jersey": "1",
-      "unit": "camp"
-    },
-    {
-      "name": "Ochai Agbaji",
-      "bbrefId": "agbajoc01",
-      "nbaId": null,
-      "espnId": 4397018,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "2000-04-20",
-      "exp": 5,
-      "college": "Kansas",
-      "jersey": "30",
-      "unit": "camp"
-    },
-    {
-      "name": "Drew Eubanks",
-      "bbrefId": "eubandr01",
-      "nbaId": 1629234,
-      "espnId": 3914285,
-      "pos": "F",
-      "height": "6-10",
-      "birthDate": "1997-02-01",
-      "exp": 9,
-      "college": "Oregon State",
-      "jersey": "19",
-      "unit": "camp"
-    },
-    {
-      "name": "Tony Bradley",
-      "bbrefId": "bradlto01",
-      "nbaId": 1628396,
-      "espnId": 4065673,
-      "pos": "C",
-      "height": "6-10",
-      "birthDate": "1998-01-08",
-      "exp": 9,
-      "college": "North Carolina",
-      "jersey": "18",
       "unit": "camp"
     },
     {

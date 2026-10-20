@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Dusty May",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -229,16 +229,16 @@
       "unit": "third"
     },
     {
-      "name": "John Poulakidas",
-      "bbrefId": "poulajo01",
+      "name": "Jett Howard",
+      "bbrefId": "howarje01",
       "nbaId": null,
-      "espnId": 4898238,
+      "espnId": 5105806,
       "pos": "G",
-      "height": "6-6",
-      "birthDate": "2003-04-04",
-      "exp": 2,
-      "college": "Yale",
-      "jersey": "1",
+      "height": "6-8",
+      "birthDate": "2003-09-14",
+      "exp": 4,
+      "college": "Michigan",
+      "jersey": "9",
       "unit": "third"
     },
     {
@@ -254,19 +254,6 @@
       "unit": "camp"
     },
     {
-      "name": "Jett Howard",
-      "bbrefId": "howarje01",
-      "nbaId": null,
-      "espnId": 5105806,
-      "pos": "G",
-      "height": "6-8",
-      "birthDate": "2003-09-14",
-      "exp": 4,
-      "college": "Michigan",
-      "jersey": "9",
-      "unit": "camp"
-    },
-    {
       "name": "Tarik Biberovic",
       "nbaId": null,
       "espnId": 5148538,
@@ -276,43 +263,6 @@
       "exp": 0,
       "college": null,
       "jersey": "13",
-      "unit": "camp"
-    },
-    {
-      "name": "Dwight Powell",
-      "bbrefId": "poweldw01",
-      "nbaId": 203939,
-      "espnId": 2531367,
-      "pos": "F",
-      "height": "6-10",
-      "birthDate": "1991-07-20",
-      "exp": 13,
-      "college": "Stanford",
-      "jersey": "7",
-      "unit": "camp"
-    },
-    {
-      "name": "Jorge Diaz Graham",
-      "nbaId": null,
-      "espnId": 5105411,
-      "pos": "F",
-      "height": "6-11",
-      "birthDate": "2003-06-29",
-      "exp": 0,
-      "college": "Oregon State",
-      "jersey": null,
-      "unit": "camp"
-    },
-    {
-      "name": "Seth Lundy",
-      "nbaId": null,
-      "espnId": 4431775,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "2000-04-02",
-      "exp": 2,
-      "college": "Penn State",
-      "jersey": "5",
       "unit": "camp"
     }
   ]

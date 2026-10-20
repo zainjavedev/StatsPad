@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Tyronn Lue",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -59,16 +59,15 @@
       "slot": "PG"
     },
     {
-      "name": "Bradley Beal",
-      "bbrefId": "bealbr01",
-      "nbaId": 203078,
-      "espnId": 6580,
+      "name": "Keaton Wagler",
+      "nbaId": null,
+      "espnId": 5254165,
       "pos": "G",
-      "height": "6-4",
-      "birthDate": "1993-06-28",
-      "exp": 15,
-      "college": "Florida",
-      "jersey": "3",
+      "height": "6-5",
+      "birthDate": "2007-02-03",
+      "exp": 0,
+      "college": "Illinois",
+      "jersey": "1",
       "unit": "starters",
       "slot": "SG"
     },
@@ -154,15 +153,16 @@
       "unit": "second"
     },
     {
-      "name": "Keaton Wagler",
-      "nbaId": null,
-      "espnId": 5254165,
+      "name": "Bradley Beal",
+      "bbrefId": "bealbr01",
+      "nbaId": 203078,
+      "espnId": 6580,
       "pos": "G",
-      "height": "6-5",
-      "birthDate": "2007-02-03",
-      "exp": 0,
-      "college": "Illinois",
-      "jersey": "1",
+      "height": "6-4",
+      "birthDate": "1993-06-28",
+      "exp": 15,
+      "college": "Florida",
+      "jersey": "3",
       "unit": "second"
     },
     {
@@ -217,16 +217,16 @@
       "unit": "third"
     },
     {
-      "name": "Blake Wesley",
-      "bbrefId": "weslebl01",
+      "name": "Jalen Pickett",
+      "bbrefId": "pickeja02",
       "nbaId": null,
-      "espnId": 4683935,
+      "espnId": 4398390,
       "pos": "G",
-      "height": "6-4",
-      "birthDate": "2003-03-16",
-      "exp": 5,
-      "college": "Notre Dame",
-      "jersey": "20",
+      "height": "6-2",
+      "birthDate": "1999-10-22",
+      "exp": 4,
+      "college": "Penn State",
+      "jersey": "21",
       "unit": "third"
     },
     {
@@ -242,16 +242,16 @@
       "unit": "third"
     },
     {
-      "name": "Jalen Pickett",
-      "bbrefId": "pickeja02",
+      "name": "Jordan Miller",
+      "bbrefId": "millejo02",
       "nbaId": null,
-      "espnId": 4398390,
+      "espnId": 4396818,
       "pos": "G",
-      "height": "6-2",
-      "birthDate": "1999-10-22",
+      "height": "6-5",
+      "birthDate": "2000-01-23",
       "exp": 4,
-      "college": "Penn State",
-      "jersey": "21",
+      "college": "Miami",
+      "jersey": "22",
       "unit": "camp"
     },
     {
@@ -268,32 +268,6 @@
       "unit": "camp"
     },
     {
-      "name": "Jordan Miller",
-      "bbrefId": "millejo02",
-      "nbaId": null,
-      "espnId": 4396818,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "2000-01-23",
-      "exp": 4,
-      "college": "Miami",
-      "jersey": "22",
-      "unit": "camp"
-    },
-    {
-      "name": "Yuki Kawamura",
-      "bbrefId": "kawamyu01",
-      "nbaId": null,
-      "espnId": 5159895,
-      "pos": "G",
-      "height": "5-7",
-      "birthDate": "2001-05-02",
-      "exp": 3,
-      "college": null,
-      "jersey": "17",
-      "unit": "camp"
-    },
-    {
       "name": "Cam Christie",
       "bbrefId": "chrisca02",
       "nbaId": null,
@@ -304,43 +278,6 @@
       "exp": 3,
       "college": "Minnesota",
       "jersey": "24",
-      "unit": "camp"
-    },
-    {
-      "name": "Fletcher Loyer",
-      "nbaId": null,
-      "espnId": 5105853,
-      "pos": "G",
-      "height": "6-3",
-      "birthDate": "2003-09-01",
-      "exp": 0,
-      "college": "Purdue",
-      "jersey": "26",
-      "unit": "camp"
-    },
-    {
-      "name": "Jahmyl Telfort",
-      "bbrefId": "telfoja01",
-      "nbaId": null,
-      "espnId": 4702785,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "2001-04-30",
-      "exp": 0,
-      "college": "Butler",
-      "jersey": "19",
-      "unit": "camp"
-    },
-    {
-      "name": "DeAndre Williams",
-      "nbaId": null,
-      "espnId": 4397355,
-      "pos": "F",
-      "height": "6-9",
-      "birthDate": "1996-10-04",
-      "exp": 0,
-      "college": "Memphis",
-      "jersey": null,
       "unit": "camp"
     }
   ]

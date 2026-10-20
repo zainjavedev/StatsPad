@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Ime Udoka",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -51,7 +51,7 @@
       "pos": "G",
       "height": "6-0",
       "birthDate": "1994-02-25",
-      "exp": 9,
+      "exp": 11,
       "college": "Wichita State",
       "jersey": "5",
       "unit": "starters",
@@ -243,6 +243,19 @@
       "unit": "third"
     },
     {
+      "name": "Julian Phillips",
+      "bbrefId": "phillju01",
+      "nbaId": null,
+      "espnId": 5105553,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "2003-11-05",
+      "exp": 4,
+      "college": "Tennessee",
+      "jersey": "3",
+      "unit": "camp"
+    },
+    {
       "name": "Quadir Copeland",
       "nbaId": null,
       "espnId": 4683860,
@@ -252,32 +265,6 @@
       "exp": 0,
       "college": "NC State",
       "jersey": "25",
-      "unit": "camp"
-    },
-    {
-      "name": "Sean Pedulla",
-      "bbrefId": "pedulse01",
-      "nbaId": null,
-      "espnId": 4709131,
-      "pos": "G",
-      "height": "6-1",
-      "birthDate": "2002-10-10",
-      "exp": 2,
-      "college": "Ole Miss",
-      "jersey": "0",
-      "unit": "camp"
-    },
-    {
-      "name": "Julian Phillips",
-      "bbrefId": "phillju01",
-      "nbaId": null,
-      "espnId": 5105553,
-      "pos": "F",
-      "height": "6-6",
-      "birthDate": "2003-11-05",
-      "exp": 6,
-      "college": "Tennessee",
-      "jersey": "3",
       "unit": "camp"
     }
   ]

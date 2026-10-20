@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "JJ Redick",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -205,19 +205,6 @@
       "unit": "third"
     },
     {
-      "name": "Dalton Knecht",
-      "bbrefId": "knechda01",
-      "nbaId": null,
-      "espnId": 4897943,
-      "pos": "F",
-      "height": "6-6",
-      "birthDate": "2001-04-19",
-      "exp": 3,
-      "college": "Tennessee",
-      "jersey": "4",
-      "unit": "third"
-    },
-    {
       "name": "Bronny James",
       "bbrefId": "jamesbr02",
       "nbaId": null,
@@ -244,18 +231,6 @@
       "unit": "third"
     },
     {
-      "name": "Arthur Kaluma",
-      "nbaId": null,
-      "espnId": 4433599,
-      "pos": "F",
-      "height": "6-6",
-      "birthDate": "2002-03-01",
-      "exp": 2,
-      "college": "Texas",
-      "jersey": "47",
-      "unit": "camp"
-    },
-    {
       "name": "Jaden Hardy",
       "bbrefId": "hardyja02",
       "nbaId": null,
@@ -266,18 +241,18 @@
       "exp": 5,
       "college": null,
       "jersey": "7",
-      "unit": "camp"
+      "unit": "third"
     },
     {
-      "name": "AK Okereke",
+      "name": "Arthur Kaluma",
       "nbaId": null,
-      "espnId": 5114350,
+      "espnId": 4433599,
       "pos": "F",
-      "height": "6-7",
-      "birthDate": "2003-07-02",
-      "exp": 0,
-      "college": "Vanderbilt",
-      "jersey": "31",
+      "height": "6-6",
+      "birthDate": "2002-03-01",
+      "exp": 2,
+      "college": "Texas",
+      "jersey": "47",
       "unit": "camp"
     },
     {
@@ -294,27 +269,15 @@
       "unit": "camp"
     },
     {
-      "name": "Rafael Castro",
+      "name": "AK Okereke",
       "nbaId": null,
-      "espnId": 4684443,
+      "espnId": 5114350,
       "pos": "F",
-      "height": "6-9",
-      "birthDate": "2003-03-30",
+      "height": "6-7",
+      "birthDate": "2003-07-02",
       "exp": 0,
-      "college": "George Washington",
-      "jersey": null,
-      "unit": "camp"
-    },
-    {
-      "name": "William Kyle III",
-      "nbaId": null,
-      "espnId": 5107258,
-      "pos": "F",
-      "height": "6-9",
-      "birthDate": "2004-03-01",
-      "exp": 0,
-      "college": "Syracuse",
-      "jersey": "45",
+      "college": "Vanderbilt",
+      "jersey": "31",
       "unit": "camp"
     }
   ]

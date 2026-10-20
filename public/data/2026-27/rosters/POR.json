@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Micah Nori",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -192,19 +192,6 @@
       "unit": "third"
     },
     {
-      "name": "Jeremy Sochan",
-      "bbrefId": "sochaje01",
-      "nbaId": null,
-      "espnId": 4610139,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2003-05-20",
-      "exp": 5,
-      "college": "Baylor",
-      "jersey": "4",
-      "unit": "third"
-    },
-    {
       "name": "Yang Hansen",
       "bbrefId": "yangha01",
       "nbaId": null,
@@ -215,19 +202,6 @@
       "exp": 2,
       "college": null,
       "jersey": "16",
-      "unit": "third"
-    },
-    {
-      "name": "Branden Carlson",
-      "bbrefId": "carlsbr01",
-      "nbaId": null,
-      "espnId": 4592435,
-      "pos": "C",
-      "height": "7-0",
-      "birthDate": "1999-06-14",
-      "exp": 3,
-      "college": "Utah",
-      "jersey": "10",
       "unit": "third"
     },
     {
@@ -254,7 +228,20 @@
       "exp": 5,
       "college": "Kentucky",
       "jersey": "17",
-      "unit": "camp"
+      "unit": "third"
+    },
+    {
+      "name": "Branden Carlson",
+      "bbrefId": "carlsbr01",
+      "nbaId": null,
+      "espnId": 4592435,
+      "pos": "C",
+      "height": "7-0",
+      "birthDate": "1999-06-14",
+      "exp": 3,
+      "college": "Utah",
+      "jersey": "10",
+      "unit": "third"
     },
     {
       "name": "Chris Youngblood",
@@ -280,18 +267,6 @@
       "exp": 2,
       "college": "Wisconsin",
       "jersey": "2",
-      "unit": "camp"
-    },
-    {
-      "name": "Jaylen Martin",
-      "nbaId": null,
-      "espnId": 4684737,
-      "pos": "G",
-      "height": "6-6",
-      "birthDate": "2004-01-28",
-      "exp": 3,
-      "college": null,
-      "jersey": null,
       "unit": "camp"
     }
   ]

@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "David Adelman",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -265,67 +265,6 @@
       "exp": 4,
       "college": "Villanova",
       "jersey": "00",
-      "unit": "camp"
-    },
-    {
-      "name": "Steven Crowl",
-      "nbaId": null,
-      "espnId": 4588201,
-      "pos": "C",
-      "height": "7-0",
-      "birthDate": "2001-07-01",
-      "exp": 0,
-      "college": "Wisconsin",
-      "jersey": null,
-      "unit": "camp"
-    },
-    {
-      "name": "Dane Goodwin",
-      "nbaId": null,
-      "espnId": 4395667,
-      "pos": "G",
-      "height": "6-6",
-      "birthDate": "1999-12-28",
-      "exp": 0,
-      "college": "Notre Dame",
-      "jersey": "20",
-      "unit": "camp"
-    },
-    {
-      "name": "Coleman Hawkins",
-      "nbaId": null,
-      "espnId": 4432976,
-      "pos": "F",
-      "height": "6-10",
-      "birthDate": "2001-12-10",
-      "exp": 0,
-      "college": "Kansas State",
-      "jersey": "43",
-      "unit": "camp"
-    },
-    {
-      "name": "Emanuel Miller",
-      "bbrefId": "milleem01",
-      "nbaId": null,
-      "espnId": 4432872,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "2000-06-19",
-      "exp": 3,
-      "college": "TCU",
-      "jersey": "8",
-      "unit": "camp"
-    },
-    {
-      "name": "Lonnie Walker IV",
-      "nbaId": 1629022,
-      "espnId": 4277890,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "1998-12-14",
-      "exp": 8,
-      "college": "Miami",
-      "jersey": "4",
       "unit": "camp"
     }
   ]

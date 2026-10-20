@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Brian Keefe",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -136,7 +136,7 @@
       "birthDate": "1998-07-23",
       "exp": 9,
       "college": "Arizona",
-      "jersey": "6",
+      "jersey": "8",
       "unit": "second"
     },
     {
@@ -244,6 +244,18 @@
       "unit": "third"
     },
     {
+      "name": "Reece Beekman",
+      "nbaId": null,
+      "espnId": 4432187,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2001-10-08",
+      "exp": 2,
+      "college": "Virginia",
+      "jersey": "26",
+      "unit": "camp"
+    },
+    {
       "name": "Jamir Watkins",
       "bbrefId": "watkija01",
       "nbaId": null,
@@ -266,94 +278,6 @@
       "exp": 0,
       "college": "Tennessee",
       "jersey": "34",
-      "unit": "camp"
-    },
-    {
-      "name": "Reece Beekman",
-      "nbaId": null,
-      "espnId": 4432187,
-      "pos": "G",
-      "height": "6-3",
-      "birthDate": "2001-10-08",
-      "exp": 2,
-      "college": "Virginia",
-      "jersey": "26",
-      "unit": "camp"
-    },
-    {
-      "name": "Jazian Gortman",
-      "nbaId": null,
-      "espnId": 4708972,
-      "pos": "G",
-      "height": "6-1",
-      "birthDate": "2003-03-14",
-      "exp": 2,
-      "college": null,
-      "jersey": null,
-      "unit": "camp"
-    },
-    {
-      "name": "Trevor Keels",
-      "bbrefId": "keelstr01",
-      "nbaId": null,
-      "espnId": 4432645,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "2003-08-26",
-      "exp": 3,
-      "college": "Duke",
-      "jersey": "13",
-      "unit": "camp"
-    },
-    {
-      "name": "Skal Labissiere",
-      "bbrefId": "labissk01",
-      "nbaId": null,
-      "espnId": 3936296,
-      "pos": "C",
-      "height": "6-10",
-      "birthDate": "1996-03-18",
-      "exp": 5,
-      "college": "Kentucky",
-      "jersey": "17",
-      "unit": "camp"
-    },
-    {
-      "name": "Chris Livingston",
-      "bbrefId": "livinch01",
-      "nbaId": null,
-      "espnId": 4433622,
-      "pos": "F",
-      "height": "6-6",
-      "birthDate": "2003-10-15",
-      "exp": 4,
-      "college": "Kentucky",
-      "jersey": "24",
-      "unit": "camp"
-    },
-    {
-      "name": "Steve Settle III",
-      "nbaId": null,
-      "espnId": 4704043,
-      "pos": "F",
-      "height": "6-10",
-      "birthDate": "2001-02-20",
-      "exp": 0,
-      "college": "Temple",
-      "jersey": "14",
-      "unit": "camp"
-    },
-    {
-      "name": "Alondes Williams",
-      "bbrefId": "willial06",
-      "nbaId": null,
-      "espnId": 4592216,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "1999-06-19",
-      "exp": 5,
-      "college": "Wake Forest",
-      "jersey": "31",
       "unit": "camp"
     }
   ]

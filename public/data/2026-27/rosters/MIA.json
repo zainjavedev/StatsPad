@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Erik Spoelstra",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -52,7 +52,7 @@
       "pos": "G",
       "height": "6-0",
       "birthDate": "1998-09-05",
-      "exp": 5,
+      "exp": 6,
       "college": "Baylor",
       "jersey": "2",
       "unit": "starters",
@@ -66,7 +66,7 @@
       "pos": "G",
       "height": "6-5",
       "birthDate": "1990-02-08",
-      "exp": 15,
+      "exp": 16,
       "college": "Washington State",
       "jersey": "11",
       "unit": "starters",
@@ -80,7 +80,7 @@
       "pos": "F",
       "height": "6-7",
       "birthDate": "1995-02-23",
-      "exp": 12,
+      "exp": 13,
       "college": "Kansas",
       "jersey": "22",
       "unit": "starters",
@@ -94,7 +94,7 @@
       "pos": "F",
       "height": "6-11",
       "birthDate": "1994-12-06",
-      "exp": 13,
+      "exp": 14,
       "college": null,
       "jersey": "7",
       "unit": "starters",
@@ -108,7 +108,7 @@
       "pos": "C",
       "height": "6-9",
       "birthDate": "1997-07-18",
-      "exp": 9,
+      "exp": 10,
       "college": "Kentucky",
       "jersey": "13",
       "unit": "starters",
@@ -122,7 +122,7 @@
       "pos": "G",
       "height": "6-5",
       "birthDate": "1992-03-16",
-      "exp": 13,
+      "exp": 14,
       "college": "Michigan",
       "jersey": "10",
       "unit": "second"
@@ -135,7 +135,7 @@
       "pos": "G",
       "height": "6-5",
       "birthDate": "2001-02-23",
-      "exp": 2,
+      "exp": 3,
       "college": "Arizona",
       "jersey": "9",
       "unit": "second"
@@ -148,7 +148,7 @@
       "pos": "F",
       "height": "6-9",
       "birthDate": "1995-02-10",
-      "exp": 11,
+      "exp": 12,
       "college": "Arkansas",
       "jersey": "95",
       "unit": "second"
@@ -161,7 +161,7 @@
       "pos": "G",
       "height": "6-2",
       "birthDate": "1997-12-30",
-      "exp": 4,
+      "exp": 5,
       "college": "Missouri",
       "jersey": "12",
       "unit": "second"
@@ -174,7 +174,7 @@
       "pos": "C",
       "height": "6-11",
       "birthDate": "1997-11-29",
-      "exp": 6,
+      "exp": 7,
       "college": "Kentucky",
       "jersey": "8",
       "unit": "second"
@@ -199,7 +199,7 @@
       "pos": "F",
       "height": "6-10",
       "birthDate": "2003-06-09",
-      "exp": 4,
+      "exp": 5,
       "college": null,
       "jersey": "5",
       "unit": "third"
@@ -217,19 +217,6 @@
       "unit": "third"
     },
     {
-      "name": "Bez Mbeng",
-      "bbrefId": "mbengbe01",
-      "nbaId": null,
-      "espnId": 4898237,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "2003-05-02",
-      "exp": 0,
-      "college": "Yale",
-      "jersey": "19",
-      "unit": "third"
-    },
-    {
       "name": "Simone Fontecchio",
       "bbrefId": "fontesi01",
       "nbaId": null,
@@ -237,7 +224,7 @@
       "pos": "F",
       "height": "6-7",
       "birthDate": "1995-12-09",
-      "exp": 4,
+      "exp": 5,
       "college": null,
       "jersey": "0",
       "unit": "third"
@@ -250,10 +237,10 @@
       "pos": "F",
       "height": "6-5",
       "birthDate": "2001-05-21",
-      "exp": 1,
+      "exp": 2,
       "college": "Little Rock",
       "jersey": "15",
-      "unit": "camp"
+      "unit": "third"
     },
     {
       "name": "Vladislav Goldin",
@@ -263,7 +250,7 @@
       "pos": "C",
       "height": "7-0",
       "birthDate": "2001-05-12",
-      "exp": 1,
+      "exp": 2,
       "college": "Michigan",
       "jersey": "50",
       "unit": "camp"
@@ -276,81 +263,9 @@
       "pos": "F",
       "height": "6-6",
       "birthDate": "2001-06-23",
-      "exp": 2,
+      "exp": 3,
       "college": "Arizona",
       "jersey": "16",
-      "unit": "camp"
-    },
-    {
-      "name": "J'Vonne Hadley",
-      "nbaId": null,
-      "espnId": 4702784,
-      "pos": "F",
-      "height": "6-5",
-      "birthDate": "2002-04-03",
-      "exp": 0,
-      "college": "Louisville",
-      "jersey": "14",
-      "unit": "camp"
-    },
-    {
-      "name": "Kylor Kelley",
-      "nbaId": null,
-      "espnId": 3950760,
-      "pos": "C",
-      "height": "7-0",
-      "birthDate": "1997-08-26",
-      "exp": 1,
-      "college": "Oregon State",
-      "jersey": null,
-      "unit": "camp"
-    },
-    {
-      "name": "Gabe Madsen",
-      "nbaId": null,
-      "espnId": 4432753,
-      "pos": "G",
-      "height": "6-6",
-      "birthDate": "2001-05-01",
-      "exp": 0,
-      "college": "Utah",
-      "jersey": null,
-      "unit": "camp"
-    },
-    {
-      "name": "Lester Quinones",
-      "nbaId": null,
-      "espnId": 4431720,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "2000-11-16",
-      "exp": 3,
-      "college": "Memphis",
-      "jersey": "25",
-      "unit": "camp"
-    },
-    {
-      "name": "Ian Schieffelin",
-      "nbaId": null,
-      "espnId": 4693954,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2003-03-01",
-      "exp": 0,
-      "college": "Clemson",
-      "jersey": "20",
-      "unit": "camp"
-    },
-    {
-      "name": "Dennis Smith Jr.",
-      "nbaId": 1628372,
-      "espnId": 4065697,
-      "pos": "G",
-      "height": "6-2",
-      "birthDate": "1997-11-25",
-      "exp": 7,
-      "college": "NC State",
-      "jersey": null,
       "unit": "camp"
     }
   ]

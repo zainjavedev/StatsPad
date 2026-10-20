@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Jamahl Mosley",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -279,57 +279,6 @@
       "exp": 3,
       "college": null,
       "jersey": "14",
-      "unit": "camp"
-    },
-    {
-      "name": "Christian Koloko",
-      "bbrefId": "kolokch01",
-      "nbaId": null,
-      "espnId": 4431778,
-      "pos": "C",
-      "height": "6-11",
-      "birthDate": "2000-06-20",
-      "exp": 4,
-      "college": "Arizona",
-      "jersey": "35",
-      "unit": "camp"
-    },
-    {
-      "name": "Kobe Bufkin",
-      "bbrefId": "bufkiko01",
-      "nbaId": null,
-      "espnId": 4683736,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "2003-09-21",
-      "exp": 4,
-      "college": "Michigan",
-      "jersey": "4",
-      "unit": "camp"
-    },
-    {
-      "name": "Caleb Houstan",
-      "bbrefId": "houstca01",
-      "nbaId": null,
-      "espnId": 4433623,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2003-01-09",
-      "exp": 5,
-      "college": "Michigan",
-      "jersey": "33",
-      "unit": "camp"
-    },
-    {
-      "name": "Jalon Moore",
-      "nbaId": null,
-      "espnId": 4701819,
-      "pos": "F",
-      "height": "6-6",
-      "birthDate": "2003-04-10",
-      "exp": 0,
-      "college": "Oklahoma",
-      "jersey": null,
       "unit": "camp"
     }
   ]

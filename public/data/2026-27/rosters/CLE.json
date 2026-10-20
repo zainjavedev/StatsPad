@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Kenny Atkinson",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -264,68 +264,6 @@
       "exp": 3,
       "college": "Morehead State",
       "jersey": "12",
-      "unit": "camp"
-    },
-    {
-      "name": "Curtis Jones",
-      "bbrefId": "jonescu01",
-      "nbaId": null,
-      "espnId": 4898369,
-      "pos": "G",
-      "height": "6-3",
-      "birthDate": "2001-10-04",
-      "exp": 2,
-      "college": "Iowa State",
-      "jersey": "14",
-      "unit": "camp"
-    },
-    {
-      "name": "Rashaun Agee",
-      "nbaId": null,
-      "espnId": 4593815,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2000-11-02",
-      "exp": 0,
-      "college": "Texas A&M",
-      "jersey": "19",
-      "unit": "camp"
-    },
-    {
-      "name": "Zack Austin",
-      "nbaId": null,
-      "espnId": 4702099,
-      "pos": "F",
-      "height": "6-5",
-      "birthDate": "2001-08-11",
-      "exp": 0,
-      "college": "Pittsburgh",
-      "jersey": "55",
-      "unit": "camp"
-    },
-    {
-      "name": "Kadary Richmond",
-      "bbrefId": "richmka01",
-      "nbaId": null,
-      "espnId": 4701845,
-      "pos": "G",
-      "height": "6-6",
-      "birthDate": "2001-08-25",
-      "exp": 2,
-      "college": "St. John's",
-      "jersey": "16",
-      "unit": "camp"
-    },
-    {
-      "name": "Noam Yaacov",
-      "nbaId": null,
-      "espnId": 5457832,
-      "pos": "G",
-      "height": "6-1",
-      "birthDate": "2004-10-20",
-      "exp": 0,
-      "college": null,
-      "jersey": "30",
       "unit": "camp"
     }
   ]

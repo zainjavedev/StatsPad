@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Tuomas Iisalo",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -205,16 +205,16 @@
       "unit": "third"
     },
     {
-      "name": "Walter Clayton Jr.",
-      "bbrefId": "claytwa01",
+      "name": "Jahmai Mashack",
+      "bbrefId": "mashaja01",
       "nbaId": null,
-      "espnId": 4896372,
+      "espnId": 4683934,
       "pos": "G",
-      "height": "6-4",
-      "birthDate": "2003-03-06",
+      "height": "6-3",
+      "birthDate": "2002-11-10",
       "exp": 2,
-      "college": "Florida",
-      "jersey": "4",
+      "college": "Tennessee",
+      "jersey": "21",
       "unit": "third"
     },
     {
@@ -241,19 +241,6 @@
       "college": null,
       "jersey": "35",
       "unit": "third"
-    },
-    {
-      "name": "Jahmai Mashack",
-      "bbrefId": "mashaja01",
-      "nbaId": null,
-      "espnId": 4683934,
-      "pos": "G",
-      "height": "6-3",
-      "birthDate": "2002-11-10",
-      "exp": 2,
-      "college": "Tennessee",
-      "jersey": "21",
-      "unit": "camp"
     },
     {
       "name": "Olivier-Maxence Prosper",
@@ -291,19 +278,6 @@
       "exp": 0,
       "college": "Michigan State",
       "jersey": "20",
-      "unit": "camp"
-    },
-    {
-      "name": "Micah Peavy",
-      "bbrefId": "peavymi01",
-      "nbaId": null,
-      "espnId": 4432185,
-      "pos": "G",
-      "height": "6-7",
-      "birthDate": "2001-07-16",
-      "exp": 2,
-      "college": "Georgetown",
-      "jersey": "7",
       "unit": "camp"
     }
   ]

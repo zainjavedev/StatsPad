@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "J.B. Bickerstaff",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -173,7 +173,7 @@
       "pos": "F",
       "height": "6-6",
       "birthDate": "1994-03-22",
-      "exp": 10,
+      "exp": 11,
       "college": "Baylor",
       "jersey": "12",
       "unit": "second"
@@ -211,7 +211,7 @@
       "pos": "G",
       "height": "6-3",
       "birthDate": "2000-02-03",
-      "exp": 2,
+      "exp": 3,
       "college": "UNLV",
       "jersey": "94",
       "unit": "third"
@@ -250,7 +250,7 @@
       "pos": "G",
       "height": "6-5",
       "birthDate": "1993-07-23",
-      "exp": 7,
+      "exp": 8,
       "college": "Radford",
       "jersey": "31",
       "unit": "camp"
@@ -278,18 +278,6 @@
       "exp": 2,
       "college": "Tennessee",
       "jersey": "8",
-      "unit": "camp"
-    },
-    {
-      "name": "Brice Williams",
-      "nbaId": null,
-      "espnId": 4592843,
-      "pos": "F",
-      "height": "6-5",
-      "birthDate": "2001-07-05",
-      "exp": 2,
-      "college": "Nebraska",
-      "jersey": "25",
       "unit": "camp"
     }
   ]

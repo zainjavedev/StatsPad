@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Rick Carlisle",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -140,6 +140,19 @@
       "unit": "second"
     },
     {
+      "name": "Jay Huff",
+      "bbrefId": "huffja01",
+      "nbaId": null,
+      "espnId": 4065731,
+      "pos": "C",
+      "height": "7-1",
+      "birthDate": "1997-08-25",
+      "exp": 6,
+      "college": "Virginia",
+      "jersey": "32",
+      "unit": "second"
+    },
+    {
       "name": "Obi Toppin",
       "bbrefId": "toppiob01",
       "nbaId": 1630167,
@@ -166,19 +179,6 @@
       "unit": "second"
     },
     {
-      "name": "Larry Nance Jr.",
-      "bbrefId": "nancela02",
-      "nbaId": 1626204,
-      "espnId": 2580365,
-      "pos": "F",
-      "height": "6-6",
-      "birthDate": "1993-01-01",
-      "exp": 12,
-      "college": "Wyoming",
-      "jersey": "22",
-      "unit": "second"
-    },
-    {
       "name": "Ben Sheppard",
       "bbrefId": "sheppbe01",
       "nbaId": null,
@@ -192,16 +192,16 @@
       "unit": "third"
     },
     {
-      "name": "Jay Huff",
-      "bbrefId": "huffja01",
-      "nbaId": null,
-      "espnId": 4065731,
-      "pos": "C",
-      "height": "7-1",
-      "birthDate": "1997-08-25",
-      "exp": 5,
-      "college": "Virginia",
-      "jersey": "32",
+      "name": "Larry Nance Jr.",
+      "bbrefId": "nancela02",
+      "nbaId": 1626204,
+      "espnId": 2580365,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "1993-01-01",
+      "exp": 12,
+      "college": "Wyoming",
+      "jersey": "22",
       "unit": "third"
     },
     {
@@ -252,7 +252,7 @@
       "birthDate": "2003-07-25",
       "exp": 0,
       "college": "Purdue",
-      "jersey": "18",
+      "jersey": "3",
       "unit": "camp"
     },
     {
@@ -266,18 +266,6 @@
       "exp": 3,
       "college": "Furman",
       "jersey": "18",
-      "unit": "camp"
-    },
-    {
-      "name": "James Johnson",
-      "nbaId": 201949,
-      "espnId": 3999,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "1987-02-20",
-      "exp": 17,
-      "college": "Wake Forest",
-      "jersey": "16",
       "unit": "camp"
     }
   ]

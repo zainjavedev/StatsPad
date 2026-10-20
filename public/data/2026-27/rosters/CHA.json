@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Charles Lee",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -265,43 +265,6 @@
       "exp": 3,
       "college": "Clemson",
       "jersey": "16",
-      "unit": "camp"
-    },
-    {
-      "name": "Pat Connaughton",
-      "bbrefId": "connapa01",
-      "nbaId": 1626192,
-      "espnId": 2578239,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "1993-01-06",
-      "exp": 12,
-      "college": "Notre Dame",
-      "jersey": "21",
-      "unit": "camp"
-    },
-    {
-      "name": "Wyatt Fricks",
-      "nbaId": null,
-      "espnId": 4897504,
-      "pos": "F",
-      "height": "6-9",
-      "birthDate": "2002-11-17",
-      "exp": 0,
-      "college": "Marshall",
-      "jersey": "23",
-      "unit": "camp"
-    },
-    {
-      "name": "Jarkel Joiner",
-      "nbaId": null,
-      "espnId": 4278729,
-      "pos": "G",
-      "height": "6-1",
-      "birthDate": "1999-05-20",
-      "exp": 4,
-      "college": "NC State",
-      "jersey": "20",
       "unit": "camp"
     }
   ]

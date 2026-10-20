@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Mitch Johnson",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -172,7 +172,7 @@
       "nbaId": 1629640,
       "espnId": 4395723,
       "pos": "F",
-      "height": "6-5",
+      "height": "6-6",
       "birthDate": "1999-10-11",
       "exp": 8,
       "college": "Kentucky",
@@ -210,7 +210,7 @@
       "nbaId": 203084,
       "espnId": 6578,
       "pos": "F",
-      "height": "6-7",
+      "height": "6-8",
       "birthDate": "1992-05-30",
       "exp": 15,
       "college": "North Carolina",
@@ -264,42 +264,6 @@
       "exp": 0,
       "college": "Duke",
       "jersey": "15",
-      "unit": "camp"
-    },
-    {
-      "name": "RJ Davis",
-      "nbaId": null,
-      "espnId": 4433176,
-      "pos": "G",
-      "height": "6-0",
-      "birthDate": "2001-10-21",
-      "exp": 2,
-      "college": "North Carolina",
-      "jersey": "14",
-      "unit": "camp"
-    },
-    {
-      "name": "Jon Elmore",
-      "nbaId": null,
-      "espnId": 3155937,
-      "pos": "G",
-      "height": "6-3",
-      "birthDate": "1995-12-20",
-      "exp": 0,
-      "college": "Marshall",
-      "jersey": "33",
-      "unit": "camp"
-    },
-    {
-      "name": "Terry Taylor",
-      "nbaId": null,
-      "espnId": 4279815,
-      "pos": "F",
-      "height": "6-5",
-      "birthDate": "1999-09-23",
-      "exp": 0,
-      "college": "Austin Peay",
-      "jersey": null,
       "unit": "camp"
     }
   ]

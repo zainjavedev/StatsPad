@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Doug Christie",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -45,19 +45,6 @@
   ],
   "players": [
     {
-      "name": "Ben Simmons",
-      "nbaId": 1627732,
-      "espnId": 3907387,
-      "pos": "G",
-      "height": "6-10",
-      "birthDate": "1996-07-20",
-      "exp": 10,
-      "college": "LSU",
-      "jersey": "25",
-      "unit": "starters",
-      "slot": "PG"
-    },
-    {
       "name": "Darius Acuff Jr.",
       "nbaId": null,
       "espnId": 5142620,
@@ -68,7 +55,7 @@
       "college": "Arkansas",
       "jersey": "5",
       "unit": "starters",
-      "slot": "SG"
+      "slot": "PG"
     },
     {
       "name": "Zach LaVine",
@@ -81,6 +68,20 @@
       "exp": 13,
       "college": "UCLA",
       "jersey": "8",
+      "unit": "starters",
+      "slot": "SG"
+    },
+    {
+      "name": "De'Andre Hunter",
+      "bbrefId": "huntede01",
+      "nbaId": 1629631,
+      "espnId": 4065732,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "1997-12-02",
+      "exp": 8,
+      "college": "Virginia",
+      "jersey": "15",
       "unit": "starters",
       "slot": "SF"
     },
@@ -123,19 +124,6 @@
       "exp": 2,
       "college": "Stanford",
       "jersey": "42",
-      "unit": "second"
-    },
-    {
-      "name": "De'Andre Hunter",
-      "bbrefId": "huntede01",
-      "nbaId": 1629631,
-      "espnId": 4065732,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "1997-12-02",
-      "exp": 8,
-      "college": "Virginia",
-      "jersey": "15",
       "unit": "second"
     },
     {
@@ -188,18 +176,30 @@
       "exp": 2,
       "college": "Auburn",
       "jersey": "32",
+      "unit": "second"
+    },
+    {
+      "name": "Ben Simmons",
+      "nbaId": 1627732,
+      "espnId": 3907387,
+      "pos": "G",
+      "height": "6-10",
+      "birthDate": "1996-07-20",
+      "exp": 10,
+      "college": "LSU",
+      "jersey": "25",
       "unit": "third"
     },
     {
-      "name": "Adam Flagler",
+      "name": "Alex Karaban",
       "nbaId": null,
-      "espnId": 4397654,
-      "pos": "G",
-      "height": "6-1",
-      "birthDate": "1999-12-01",
-      "exp": 3,
-      "college": "Baylor",
-      "jersey": "20",
+      "espnId": 4917149,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2002-11-11",
+      "exp": 0,
+      "college": "UConn",
+      "jersey": "33",
       "unit": "third"
     },
     {
@@ -213,18 +213,6 @@
       "exp": 3,
       "college": "San Francisco",
       "jersey": "22",
-      "unit": "third"
-    },
-    {
-      "name": "Alex Karaban",
-      "nbaId": null,
-      "espnId": 4917149,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "2002-11-11",
-      "exp": 0,
-      "college": "UConn",
-      "jersey": "33",
       "unit": "third"
     },
     {
@@ -250,7 +238,7 @@
       "exp": 3,
       "college": "Bowling Green",
       "jersey": "29",
-      "unit": "camp"
+      "unit": "third"
     },
     {
       "name": "Leaky Black",
@@ -263,43 +251,6 @@
       "exp": 3,
       "college": "North Carolina",
       "jersey": "19",
-      "unit": "camp"
-    },
-    {
-      "name": "Viktor Lakhin",
-      "nbaId": null,
-      "espnId": 4701192,
-      "pos": "F",
-      "height": "6-11",
-      "birthDate": "2001-07-30",
-      "exp": 0,
-      "college": "Clemson",
-      "jersey": null,
-      "unit": "camp"
-    },
-    {
-      "name": "Tristen Newton",
-      "bbrefId": "newtotr01",
-      "nbaId": null,
-      "espnId": 4592965,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "2001-04-26",
-      "exp": 3,
-      "college": "UConn",
-      "jersey": "00",
-      "unit": "camp"
-    },
-    {
-      "name": "Elfrid Payton",
-      "nbaId": 203901,
-      "espnId": 2583639,
-      "pos": "G",
-      "height": "6-3",
-      "birthDate": "1994-02-22",
-      "exp": 10,
-      "college": "Louisiana",
-      "jersey": "3",
       "unit": "camp"
     }
   ]

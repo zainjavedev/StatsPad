@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Quin Snyder",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -252,7 +252,7 @@
       "birthDate": "2003-06-30",
       "exp": 2,
       "college": "Iowa State",
-      "jersey": "51",
+      "jersey": "00",
       "unit": "camp"
     },
     {
@@ -278,42 +278,6 @@
       "exp": 0,
       "college": "North Carolina",
       "jersey": "13",
-      "unit": "camp"
-    },
-    {
-      "name": "Giorgi Bezhanishvili",
-      "nbaId": null,
-      "espnId": 4397003,
-      "pos": "F",
-      "height": "6-9",
-      "birthDate": "1998-11-16",
-      "exp": 0,
-      "college": "Illinois",
-      "jersey": null,
-      "unit": "camp"
-    },
-    {
-      "name": "Cameron Corhen",
-      "nbaId": null,
-      "espnId": 4712902,
-      "pos": "F",
-      "height": "6-10",
-      "birthDate": "2004-05-01",
-      "exp": 0,
-      "college": "Pittsburgh",
-      "jersey": null,
-      "unit": "camp"
-    },
-    {
-      "name": "Kobe Johnson",
-      "nbaId": null,
-      "espnId": 4683857,
-      "pos": "G",
-      "height": "6-6",
-      "birthDate": "2003-01-15",
-      "exp": 0,
-      "college": "UCLA",
-      "jersey": "12",
       "unit": "camp"
     }
   ]

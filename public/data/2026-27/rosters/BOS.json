@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Joe Mazzulla",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
   "sources": [
     {
@@ -59,20 +59,6 @@
       "slot": "PG"
     },
     {
-      "name": "Baylor Scheierman",
-      "bbrefId": "scheiba01",
-      "nbaId": null,
-      "espnId": 4593841,
-      "pos": "G",
-      "height": "6-6",
-      "birthDate": "2000-09-26",
-      "exp": 3,
-      "college": "Creighton",
-      "jersey": "55",
-      "unit": "starters",
-      "slot": "SG"
-    },
-    {
       "name": "Paul George",
       "bbrefId": "georgpa01",
       "nbaId": 202331,
@@ -84,7 +70,7 @@
       "college": "Fresno State",
       "jersey": "13",
       "unit": "starters",
-      "slot": "SF"
+      "slot": "SG"
     },
     {
       "name": "Jayson Tatum",
@@ -98,19 +84,33 @@
       "college": "Duke",
       "jersey": "0",
       "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Jordan Walsh",
+      "bbrefId": "walshjo01",
+      "nbaId": null,
+      "espnId": 4683689,
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "2004-03-03",
+      "exp": 4,
+      "college": "Arkansas",
+      "jersey": "27",
+      "unit": "starters",
       "slot": "PF"
     },
     {
-      "name": "Neemias Queta",
-      "bbrefId": "quetane01",
-      "nbaId": null,
-      "espnId": 4397424,
+      "name": "Mitchell Robinson",
+      "bbrefId": "robinmi01",
+      "nbaId": 1629011,
+      "espnId": 4351852,
       "pos": "C",
       "height": "7-0",
-      "birthDate": "1999-07-13",
-      "exp": 6,
-      "college": "Utah State",
-      "jersey": "88",
+      "birthDate": "1998-04-01",
+      "exp": 9,
+      "college": null,
+      "jersey": "4",
       "unit": "starters",
       "slot": "C"
     },
@@ -128,6 +128,19 @@
       "unit": "second"
     },
     {
+      "name": "Neemias Queta",
+      "bbrefId": "quetane01",
+      "nbaId": null,
+      "espnId": 4397424,
+      "pos": "C",
+      "height": "7-0",
+      "birthDate": "1999-07-13",
+      "exp": 6,
+      "college": "Utah State",
+      "jersey": "88",
+      "unit": "second"
+    },
+    {
       "name": "Sam Hauser",
       "bbrefId": "hausesa01",
       "nbaId": null,
@@ -141,29 +154,16 @@
       "unit": "second"
     },
     {
-      "name": "Mitchell Robinson",
-      "bbrefId": "robinmi01",
-      "nbaId": 1629011,
-      "espnId": 4351852,
-      "pos": "C",
-      "height": "7-0",
-      "birthDate": "1998-04-01",
-      "exp": 9,
-      "college": null,
-      "jersey": "4",
-      "unit": "second"
-    },
-    {
-      "name": "Jordan Walsh",
-      "bbrefId": "walshjo01",
+      "name": "Baylor Scheierman",
+      "bbrefId": "scheiba01",
       "nbaId": null,
-      "espnId": 4683689,
+      "espnId": 4593841,
       "pos": "G",
-      "height": "6-7",
-      "birthDate": "2004-03-03",
-      "exp": 4,
-      "college": "Arkansas",
-      "jersey": "27",
+      "height": "6-6",
+      "birthDate": "2000-09-26",
+      "exp": 3,
+      "college": "Creighton",
+      "jersey": "55",
       "unit": "second"
     },
     {
@@ -193,6 +193,19 @@
       "unit": "third"
     },
     {
+      "name": "Devin Carter",
+      "bbrefId": "cartede02",
+      "nbaId": null,
+      "espnId": 4433188,
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "2002-03-18",
+      "exp": 3,
+      "college": "Providence",
+      "jersey": "99",
+      "unit": "third"
+    },
+    {
       "name": "Hugo Gonzalez",
       "bbrefId": "gonzahu01",
       "nbaId": null,
@@ -218,19 +231,6 @@
       "unit": "third"
     },
     {
-      "name": "Ron Harper Jr.",
-      "bbrefId": "harpero02",
-      "nbaId": null,
-      "espnId": 4397251,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "2000-04-12",
-      "exp": 5,
-      "college": "Rutgers",
-      "jersey": "8",
-      "unit": "third"
-    },
-    {
       "name": "Amari Williams",
       "bbrefId": "william01",
       "nbaId": null,
@@ -244,6 +244,19 @@
       "unit": "third"
     },
     {
+      "name": "Ron Harper Jr.",
+      "bbrefId": "harpero02",
+      "nbaId": null,
+      "espnId": 4397251,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2000-04-12",
+      "exp": 5,
+      "college": "Rutgers",
+      "jersey": "8",
+      "unit": "camp"
+    },
+    {
       "name": "Dillon Mitchell",
       "nbaId": null,
       "espnId": 5106283,
@@ -253,68 +266,6 @@
       "exp": 0,
       "college": "St. John's",
       "jersey": "20",
-      "unit": "camp"
-    },
-    {
-      "name": "Devin Carter",
-      "bbrefId": "cartede02",
-      "nbaId": null,
-      "espnId": 4433188,
-      "pos": "G",
-      "height": "6-2",
-      "birthDate": "2002-03-18",
-      "exp": 3,
-      "college": "Providence",
-      "jersey": "99",
-      "unit": "camp"
-    },
-    {
-      "name": "Tucker DeVries",
-      "nbaId": null,
-      "espnId": 4837238,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "2002-12-07",
-      "exp": 0,
-      "college": "Indiana",
-      "jersey": "26",
-      "unit": "camp"
-    },
-    {
-      "name": "Hayden Gray",
-      "bbrefId": "grayha01",
-      "nbaId": null,
-      "espnId": 5176420,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "2003-05-11",
-      "exp": 2,
-      "college": "UC San Diego",
-      "jersey": "44",
-      "unit": "camp"
-    },
-    {
-      "name": "Gabe McGlothan",
-      "nbaId": null,
-      "espnId": 4398356,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "1999-03-03",
-      "exp": 0,
-      "college": "Grand Canyon",
-      "jersey": "41",
-      "unit": "camp"
-    },
-    {
-      "name": "Milos Uzan",
-      "nbaId": null,
-      "espnId": 5106272,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "2002-12-26",
-      "exp": 0,
-      "college": "Houston",
-      "jersey": "29",
       "unit": "camp"
     }
   ]
