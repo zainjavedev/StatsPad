@@ -27,6 +27,7 @@ function toGame(event) {
     state: status.state, // pre | in | post
     detail: status.shortDetail,
     preseason: event.season?.type === 1 || event.seasonType?.type === 1,
+    venue: [competition.venue?.fullName, competition.venue?.address?.city].filter(Boolean).join(', '),
     tv: competition.broadcasts?.map(broadcast => broadcast.media?.shortName || broadcast.names?.[0]).filter(Boolean)[0],
   };
 }

@@ -7,7 +7,8 @@ import { TEAMS, nickname, teamCodeOf } from '../lib/teams';
 import { pretty, qualified } from '../lib/season';
 import { favoritesFirst, useFavorites } from '../lib/favorites';
 import FavoriteStar from './FavoriteStar';
-import GameClock from './GameClock';
+import NextUp, { useGames } from './NextUp';
+import GameTimeline from './GameTimeline';
 
 /* The front door: settle a debate, find a player, see the league's top
    performers and what's on. Deep leaderboards live on the Leaders page. */
@@ -29,7 +30,7 @@ const DEBATES = [
 const HOT_TEAMS = ['LAL', 'PHI', 'BOS', 'NYK', 'GSW', 'OKC'];
 const TEAM_ROW = 6;
 const colorOf = player => TEAMS[teamCodeOf(player.team)]?.color || '#3b3b45';
-const loadGames = () => upcomingGames(7, 8);
+const loadGames = () => upcomingGames(7, 12);
 const loadResults = () => recentResults(7, 8);
 const loadNews = () => latestNews(4);
 
@@ -85,9 +86,9 @@ function Debate({pair, Art, playerIds, onCompare}) {
 }
 
 export default function FrontPage({players, teams, playerIds, season, Art, onOpen, onCompare, onTeam, onLeaders}) {
-  const games = useFeed(loadGames), results = useFeed(loadResults), news = useFeed(loadNews);
+  const loaded = useFeed(loadGames), results = useFeed(loadResults), news = useFeed(loadNews);
   const [tab, setTab] = useState(null), [allTeams, setAllTeams] = useState(false);
-  const favorites = useFavorites();
+  const favorites = useFavorites(), games = useGames(loaded);
   const teamByCode = useMemo(() => new Map(teams.map(team => [teamCodeOf(team.team), team]).filter(([code]) => TEAMS[code])), [teams]);
   const teamCodes = useMemo(() => {
     const order = allTeams ? favoritesFirst(favorites) : [...favorites, ...HOT_TEAMS.filter(code => !favorites.includes(code))].slice(0, Math.max(TEAM_ROW, favorites.length));
@@ -95,7 +96,6 @@ export default function FrontPage({players, teams, playerIds, season, Art, onOpe
   }, [allTeams, favorites, teamByCode]);
   const view = tab ?? (games?.length ? 'upcoming' : 'results');
   const pool = useMemo(() => qualified(players), [players]);
-  const stars = useMemo(() => [...pool].sort((a, b) => b.stats.points - a.stats.points).slice(0, 3), [pool]);
   const leaders = useMemo(() => {
     const base = pool.length ? pool : players;
     return LEADERS.map(entry => {
@@ -106,18 +106,19 @@ export default function FrontPage({players, teams, playerIds, season, Art, onOpe
   const debates = useMemo(() => DEBATES.map(names => names.map(name => players.find(player => fold(player.playerName) === fold(name)))).filter(pair => pair.every(Boolean)), [players]);
 
   return <section className="front-page">
-    <GameClock games={games} favorites={favorites}/>
-    <div className="front-hero">
-      <div className="front-hero-copy">
-        <h1>Settle every hoops <em>debate.</em></h1>
-        <p>Put any two players or teams head to head, browse every roster, and see who is really leading the league.</p>
-        <PlayerSearch players={players} Art={Art} playerIds={playerIds} onOpen={onOpen}/>
-        <div className="front-hero-actions">
-          <button className="front-btn primary" onClick={() => onCompare()}><BarChart3 size={16}/> Start a comparison</button>
-          <button className="front-btn" onClick={() => onTeam('PHI')}>Browse rosters <ArrowRight size={16}/></button>
+    <div className="front-top">
+      <NextUp games={games} favorites={favorites}/>
+      <div className="front-hero">
+        <div className="front-hero-copy">
+          <h1>Settle every hoops <em>debate.</em></h1>
+          <p>Put any two players or teams head to head, browse every roster, and see who is really leading the league.</p>
+          <PlayerSearch players={players} Art={Art} playerIds={playerIds} onOpen={onOpen}/>
+          <div className="front-hero-actions">
+            <button className="front-btn primary" onClick={() => onCompare()}><BarChart3 size={16}/> Start a comparison</button>
+            <button className="front-btn" onClick={() => onTeam('PHI')}>Browse rosters <ArrowRight size={16}/></button>
+          </div>
         </div>
       </div>
-      <div className="front-cast" aria-hidden="true">{stars.map(player => <Art key={player.playerId} entity={player} playerIds={playerIds} className="cast-art"/>)}</div>
     </div>
 
     <section className="front-block">
@@ -144,7 +145,7 @@ export default function FrontPage({players, teams, playerIds, season, Art, onOpe
             <button className={view === 'results' ? 'active' : ''} onClick={() => setTab('results')}>Results</button>
           </div>
         </div>
-        {view === 'upcoming' ? <GameList games={games}/> : <GameList games={results} results empty="No finished games in the last week."/>}
+        {view === 'upcoming' ? <GameTimeline games={games} favorites={favorites}/> : <GameList games={results} results empty="No finished games in the last week."/>}
       </section>
       <section className="front-panel">
         <div className="front-panel-head"><h2>Latest news</h2></div>
