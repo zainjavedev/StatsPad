@@ -95,7 +95,7 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
 
     <GameTicker games={games} favorites={favorites}/>
 
-    <HeadToHead debates={debates} stars={stars} Art={Art} playerIds={playerIds} onCompare={onCompare}/>
+    <HeadToHead debates={debates} stars={stars} pool={pool} Art={Art} playerIds={playerIds} onCompare={onCompare}/>
 
     <div className="home-grid">
       <section className="front-panel">
