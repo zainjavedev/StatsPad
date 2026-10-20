@@ -1510,3 +1510,14 @@ header .brand small{margin-top:3px}
 
 
 .stand-note{margin:0;padding:12px 16px;border:1px solid var(--line);border-radius:12px;background:var(--ink-1);font-size:13px;color:var(--text-2)}
+
+/* loading states that match the real sizes, so nothing jumps when the data arrives */
+.ticker.loading{height:88px}
+.tl-row.skeleton{min-height:98px}
+.tl-row.skeleton b,.tl-row.skeleton span,.tl-row.skeleton i{display:block;border-radius:8px;background:var(--ink-2);animation:skeleton-pulse 1.4s ease-in-out infinite}
+.tl-row.skeleton b{width:62px;height:18px}
+.tl-row.skeleton span{width:44px;height:12px;margin-top:6px}
+.tl-row.skeleton .tl-match{gap:14px}
+.tl-row.skeleton i{width:36%;height:24px}
+@keyframes skeleton-pulse{50%{opacity:.45}}
+@media (prefers-reduced-motion:reduce){.tl-row.skeleton b,.tl-row.skeleton span,.tl-row.skeleton i{animation:none}}

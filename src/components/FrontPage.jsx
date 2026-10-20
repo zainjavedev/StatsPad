@@ -78,7 +78,8 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
     const order = allTeams ? favoritesFirst(favorites) : [...favorites, ...HOT_TEAMS.filter(code => !favorites.includes(code))].slice(0, Math.max(TEAM_ROW, favorites.length));
     return order.filter(code => teamByCode.has(code));
   }, [allTeams, favorites, teamByCode]);
-  const view = tab ?? (games?.length ? 'upcoming' : 'results');
+  /* Open on Upcoming and stay there while the schedule loads: only an empty week switches to Results. */
+  const view = tab ?? (games !== null && !games.length ? 'results' : 'upcoming');
   const pool = useMemo(() => qualified(players), [players]);
   const stars = useMemo(() => [...pool].sort((a, b) => b.stats.points - a.stats.points).slice(0, 40), [pool]);
   const leaders = useMemo(() => {

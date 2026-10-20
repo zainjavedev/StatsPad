@@ -25,7 +25,7 @@ const Team = ({team, won}) => <span className={won ? 'tl-team won' : 'tl-team'}>
 export default function GameTimeline({games, favorites, results = false, all: showEverything = false}) {
   const [now, setNow] = useState(() => Date.now()), [all, setAll] = useState(showEverything);
   useEffect(() => { const tick = setInterval(() => setNow(Date.now()), 30000); return () => clearInterval(tick); }, []);
-  if (games === null) return <ul className="game-list loading">{[0, 1, 2].map(index => <li key={index}/>)}</ul>;
+  if (games === null) return <div className="timeline" aria-busy="true">{[0, 1, 2].map(index => <div key={index} className="tl-row skeleton"><div className="tl-when"><b/><span/></div><div className="tl-match"><i/><i/></div></div>)}</div>;
   if (!games.length) return <p className="feed-empty">{results ? 'No finished games in the last week.' : 'No games scheduled this week.'}</p>;
   const shown = all ? games : games.slice(0, LIMIT);
   const days = [];
