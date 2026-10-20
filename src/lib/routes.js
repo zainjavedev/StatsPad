@@ -6,7 +6,7 @@ import { TEAMS } from './teams.js';
    links keep working. */
 
 const env = typeof process !== 'undefined' ? process.env : {};
-export const SITE = env.SITE_URL || 'https://stats-pad.vercel.app';
+export const SITE = env.SITE_URL || 'https://statspads.com';
 
 export const slugify = name => name.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/['’.]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 

@@ -68,8 +68,8 @@ const colorOf = p => TEAMS[p.code]?.color || '#3b3b45';
 /* ---------- html ---------- */
 const pages = {};
 const written = [];
-function writePage({route, title, description, body, ogName}) {
-  pages[route] = {title, description, body, ogName: ogName ?? null};
+function writePage({route, title, description, body, ogName, jsonLd}) {
+  pages[route] = {title, description, body, ogName: ogName ?? null, jsonLd: jsonLd ?? null};
   if (route !== '/') written.push(route);
 }
 const table = (heads, rows) => `<table><thead><tr>${heads.map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
@@ -102,7 +102,7 @@ const h = (style, ...children) => ({type: 'div', props: {style: {display: 'flex'
 const t = (style, text) => h({...style}, String(text));
 const img = (src, style) => ({type: 'img', props: {src, style}});
 const shade = color => `linear-gradient(160deg, ${color}, #0b0b0c)`;
-const brand = h({position: 'absolute', top: 26, left: 34, fontSize: 30, fontWeight: 800, color: '#fff', letterSpacing: -1}, 'StatsPad');
+const brand = h({position: 'absolute', top: 26, left: 34, fontSize: 30, fontWeight: 800, color: '#fff', letterSpacing: -1}, 'StatsPads');
 const footAt = side => h({position: 'absolute', bottom: 18, [side]: 40, fontSize: 20, fontWeight: 700, color: 'rgba(255,255,255,.7)'}, SITE.replace('https://', ''));
 const foot = footAt('left');
 
@@ -185,15 +185,28 @@ function careerHtml(p) {
 }
 const starterNames = team => ['PG', 'SG', 'SF', 'PF', 'C'].map(slot => team.roster?.players.find(entry => entry.slot === slot)?.name).filter(Boolean).map(name => (bySlug.get(slugify(name)) ? link(playerUrl(name), name) : esc(name)));
 
-writePage({route: '/', title: 'StatsPad: NBA player and team comparisons, rosters and stats', description: 'Compare any two NBA players or teams side by side with a skill radar, see every roster with its expected starting five, and browse the league leaders.', body: '<main class="seo"><h1>StatsPad: NBA player and team comparisons</h1><p>Compare any two NBA players or teams, browse every roster and see the league leaders.</p></main>'});
-writePage({route: '/compare', title: 'Compare NBA players and teams | StatsPad', description: 'Pick any two NBA players or teams and compare their stats side by side with a skill radar.', body: '<main class="seo"><h1>Compare NBA players and teams</h1></main>'});
-writePage({route: '/leaders', title: 'NBA stat leaders | StatsPad', description: 'Points, rebounds, assists, steals, blocks and shooting leaders across the NBA, with the full top five for each.', body: '<main class="seo"><h1>NBA stat leaders</h1></main>'});
-writePage({route: '/teams', title: 'NBA teams and rosters | StatsPad', description: 'Every NBA team with its 2026–27 roster, expected starting five and ' + statsWord + ' stats.', body: `<main class="seo"><h1>NBA teams and rosters</h1><ul>${teams.map(team => `<li>${link(teamUrl(team.code), team.name)}</li>`).join('')}</ul></main>`});
+const LEADER_STATS = [['Points', 'PPG', p => p.stats.points], ['Rebounds', 'RPG', p => p.stats.totalRebounds], ['Assists', 'APG', p => p.stats.assists], ['Steals', 'SPG', p => p.stats.steals], ['Blocks', 'BPG', p => p.stats.blocks]];
+const leadersOf = get => [...players].sort((x, y) => get(y) - get(x)).slice(0, 5);
+const leaderList = ([name, abbr, get]) => `<h3>${esc(name)} per game</h3><ol>${leadersOf(get).map(p => `<li>${link(playerUrl(p.playerName), p.playerName)}${p.code ? ` (${esc(TEAMS[p.code].name)})` : ''}: ${fixed(get(p))} ${abbr}</li>`).join('')}</ol>`;
+const popular = pairs.slice(0, 8).map(([x, y]) => `<li>${link(compareUrl([x.playerName, y.playerName]), `${x.playerName} vs ${y.playerName}`)}</li>`).join('');
+const teamList = `<ul>${teams.map(team => `<li>${link(teamUrl(team.code), `${team.name} roster`)}</li>`).join('')}</ul>`;
+const crumbs = (...items) => ({'@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items.map(([name, route], index) => ({'@type': 'ListItem', position: index + 1, name, item: SITE + route}))});
+const website = {'@context': 'https://schema.org', '@type': 'WebSite', name: 'StatsPads', alternateName: 'Stats Pads', url: SITE, description: 'NBA player and team comparisons, rosters and stats.'};
+
+writePage({route: '/', title: 'StatsPads: NBA player and team comparisons, rosters and stats', description: 'Compare any two NBA players or teams side by side with a skill radar, see every roster with its expected starting five, and browse the league leaders.', jsonLd: [website],
+  body: `<main class="seo"><h1>StatsPads: NBA player and team comparisons</h1><p>StatsPads is a free NBA stats site. Compare any two players or teams side by side with a skill radar, browse every roster with its expected starting five, and see who leads the league in ${statsWord} points, rebounds, assists, steals and blocks. Pick a team, follow it, and get its game alerts.</p><h2>${yearLabel} scoring leaders</h2>${leaderList(LEADER_STATS[0])}<p>${link('/leaders', 'See all stat leaders')}</p><h2>Popular player comparisons</h2><ul>${popular}</ul><p>${link('/compare', 'Compare any two players or teams')}</p><h2>All 30 NBA teams</h2>${teamList}</main>`});
+writePage({route: '/compare', title: 'Compare NBA players and teams | StatsPads', description: 'Pick any two NBA players or teams and compare their stats side by side with a skill radar.', jsonLd: [crumbs(['Home', '/'], ['Compare', '/compare'])],
+  body: `<main class="seo"><h1>Compare NBA players and teams</h1><p>Choose any two NBA players or any two teams and see their ${statsWord} per-game numbers, shooting efficiency and a skill radar side by side. The comparison covers points, rebounds, assists, steals, blocks, field goal, three-point and free throw percentages, true shooting and turnover rate. Team comparisons also show the expected starting fives.</p><h2>Popular player comparisons</h2><ul>${popular}</ul><h2>Compare teams</h2><ul>${teamPairs.slice(0, 8).map(([x, y]) => `<li>${link(compareUrl([x.name, y.name]), `${x.name} vs ${y.name}`)}</li>`).join('')}</ul></main>`});
+writePage({route: '/leaders', title: 'NBA stat leaders | StatsPads', description: 'Points, rebounds, assists, steals, blocks and shooting leaders across the NBA, with the full top five for each.', jsonLd: [crumbs(['Home', '/'], ['Leaders', '/leaders'])],
+  body: `<main class="seo"><h1>NBA stat leaders, ${yearLabel}</h1><p>The top five NBA players in each major per-game category for ${yearLabel}, among players with at least ${minGames} games played and ten minutes a game.</p>${LEADER_STATS.map(leaderList).join('')}</main>`});
+writePage({route: '/teams', title: 'NBA teams and rosters | StatsPads', description: 'Every NBA team with its 2026–27 roster, expected starting five and ' + statsWord + ' stats.', jsonLd: [crumbs(['Home', '/'], ['Teams', '/teams'])],
+  body: `<main class="seo"><h1>NBA teams and rosters</h1><p>All 30 NBA teams with their 2026–27 roster, the expected starting five and ${statsWord} per-game team stats. Open a team to see its lineup, recent results and to follow it for game alerts.</p>${table(['Team', 'PPG', 'APG', 'RPG'], [...teams].sort((x, y) => x.name.localeCompare(y.name)).map(team => [link(teamUrl(team.code), team.name), fixed(team.stats.points), fixed(team.stats.assists), fixed(team.stats.totalRebounds)]))}</main>`});
 
 for (const p of cap(players)) {
   const related = pairs.filter(pair => pair.includes(p)).slice(0, 4).map(([x, y]) => `<li>${link(compareUrl([x.playerName, y.playerName]), `${x.playerName} vs ${y.playerName}`)}</li>`).join('');
   writePage({route: playerUrl(p.playerName), ogName: `players/${p.slug}`,
-    title: `${p.playerName} stats ${yearLabel}: ${fixed(p.stats.points)} PPG, ${fixed(p.stats.totalRebounds)} RPG, ${fixed(p.stats.assists)} APG | StatsPad`,
+    jsonLd: [crumbs(['Home', '/'], ['Players', '/leaders'], [p.playerName, playerUrl(p.playerName)]), {'@context': 'https://schema.org', '@type': 'Person', name: p.playerName, jobTitle: 'Basketball player', url: SITE + playerUrl(p.playerName), ...(p.code ? {affiliation: {'@type': 'SportsTeam', name: TEAMS[p.code].name, sport: 'Basketball'}} : {})}],
+    title: `${p.playerName} stats ${yearLabel}: ${fixed(p.stats.points)} PPG, ${fixed(p.stats.totalRebounds)} RPG, ${fixed(p.stats.assists)} APG | StatsPads`,
     description: `${p.playerName} ${yearLabel} NBA stats: ${statLine(p)}, ${fixed(p.stats.fieldGoalPercentage)}% FG, ${fixed(p.stats.threePointPercentage)}% 3P, ${fixed(p.ts)}% TS in ${p.gamesPlayed} games. Compare ${p.playerName} with any player.`,
     body: `<main class="seo"><h1>${esc(p.playerName)} stats, ${yearLabel}</h1>${copy.playerProfile(p)}${table(['Stat', 'Per game'], PLAYER_ROWS.map(([label, get, places]) => [esc(label), fixed(get(p), places ?? 1)]))}${p.code ? `<p>${link(teamUrl(p.code), `${TEAMS[p.code].name} roster`)}</p>` : ''}${careerHtml(p)}${copy.teammates(p)}${copy.neighbours(p)}${related ? `<h2>Compare</h2><ul>${related}</ul>` : ''}</main>`});
   card(`players/${p.slug}`, () => playerCard(p));
@@ -204,7 +217,8 @@ for (const team of cap(teams)) {
   const line = player => slug(player.name) ? link(playerUrl(player.name), player.name) : esc(player.name);
   const starters = ['PG', 'SG', 'SF', 'PF', 'C'].map(slot => roster.find(p => p.slot === slot)).filter(Boolean);
   writePage({route: teamUrl(team.code), ogName: `teams/${team.slug}`,
-    title: `${team.name} roster 2026–27: expected starting five and stats | StatsPad`,
+    jsonLd: [crumbs(['Home', '/'], ['Teams', '/teams'], [team.name, teamUrl(team.code)]), {'@context': 'https://schema.org', '@type': 'SportsTeam', name: team.name, sport: 'Basketball', url: SITE + teamUrl(team.code), memberOf: {'@type': 'SportsOrganization', name: 'NBA'}}],
+    title: `${team.name} roster 2026–27: expected starting five and stats | StatsPads`,
     description: `${team.name} 2026–27 roster with the expected starting five${starters.length ? ` (${starters.map(p => p.name).join(', ')})` : ''}, ${statsWord} per-game stats and recent results.`,
     body: `<main class="seo"><h1>${esc(team.name)} roster, 2026–27</h1>${copy.teamProfile(team)}${starters.length ? `<h2>Expected starting five</h2><ol>${starters.map(p => `<li>${esc(p.slot)} ${line(p)}</li>`).join('')}</ol>` : ''}${roster.length ? `<h2>Full roster</h2><ul>${roster.map(p => `<li>${line(p)}</li>`).join('')}</ul>` : ''}<h2>${yearLabel} team stats</h2>${table(['Stat', 'Per game'], TEAM_ROWS.map(([label, get]) => [esc(label), fixed(get(team))]))}</main>`});
   card(`teams/${team.slug}`, () => teamCard(team));
@@ -212,14 +226,14 @@ for (const team of cap(teams)) {
 for (const [a, b] of cap(pairs)) {
   const route = compareUrl([a.playerName, b.playerName]);
   writePage({route, ogName: `compare/${a.slug}-vs-${b.slug}`,
-    title: `${a.playerName} vs ${b.playerName}: ${yearLabel} stats comparison | StatsPad`,
+    title: `${a.playerName} vs ${b.playerName}: ${yearLabel} stats comparison | StatsPads`,
     description: `${a.playerName} vs ${b.playerName} ${yearLabel} stats side by side: ${fixed(a.stats.points)} vs ${fixed(b.stats.points)} PPG, ${fixed(a.stats.totalRebounds)} vs ${fixed(b.stats.totalRebounds)} RPG, ${fixed(a.stats.assists)} vs ${fixed(b.stats.assists)} APG, with a skill radar.`,
     body: `<main class="seo"><h1>${esc(a.playerName)} vs ${esc(b.playerName)}: ${yearLabel} stats</h1><p>${esc(a.playerName)} averaged ${esc(statLine(a))}. ${esc(b.playerName)} averaged ${esc(statLine(b))}.</p>${copy.playerComparison(a, b)}${table(['Stat', a.playerName, b.playerName], cell(PLAYER_ROWS, a, b))}<p>${link(playerUrl(a.playerName), `${a.playerName} stats`)} · ${link(playerUrl(b.playerName), `${b.playerName} stats`)}${a.code ? ` · ${link(teamUrl(a.code), `${TEAMS[a.code].name} roster`)}` : ''}${b.code && b.code !== a.code ? ` · ${link(teamUrl(b.code), `${TEAMS[b.code].name} roster`)}` : ''}</p>${copy.moreComparisons(a, b)}</main>`});
   card(`compare/${a.slug}-vs-${b.slug}`, () => compareCard(a, b));
 }
 for (const [a, b] of cap(teamPairs)) {
   writePage({route: compareUrl([a.name, b.name]), ogName: `compare/${a.slug}-vs-${b.slug}`,
-    title: `${a.name} vs ${b.name}: ${yearLabel} team stats comparison | StatsPad`,
+    title: `${a.name} vs ${b.name}: ${yearLabel} team stats comparison | StatsPads`,
     description: `${a.name} vs ${b.name} ${yearLabel} team stats side by side: ${fixed(a.stats.points)} vs ${fixed(b.stats.points)} PPG, ${fixed(a.stats.assists)} vs ${fixed(b.stats.assists)} APG, ${fixed(a.stats.totalRebounds)} vs ${fixed(b.stats.totalRebounds)} RPG, with a skill radar and the expected starting fives.`,
     body: `<main class="seo"><h1>${esc(a.name)} vs ${esc(b.name)}: ${yearLabel} team stats</h1>${copy.teamComparison(a, b, starterNames)}${table(['Stat', a.name, b.name], cell(TEAM_ROWS, a, b))}<p>${link(teamUrl(a.code), `${a.name} roster`)} · ${link(teamUrl(b.code), `${b.name} roster`)}</p></main>`});
   card(`compare/${a.slug}-vs-${b.slug}`, () => teamCompareCard(a, b));
@@ -230,7 +244,7 @@ await pool(jobs, 6);
 
 /* ---------- sitemap and robots ---------- */
 const today = new Date().toISOString().slice(0, 10);
-const urls = ['/', '/compare', '/leaders', '/teams', ...written.filter(route => !['/compare', '/leaders', '/teams'].includes(route))];
+const urls = ['/', '/compare', '/leaders', '/teams', '/privacy', ...written.filter(route => !['/compare', '/leaders', '/teams'].includes(route))];
 fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(route => `  <url><loc>${SITE}${route}</loc><lastmod>${today}</lastmod></url>`).join('\n')}\n</urlset>\n`);
 fs.writeFileSync(path.join(publicDir, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 console.log(`prerender: ${written.length} pages, ${cards} share cards in ${((Date.now() - started) / 1000).toFixed(1)}s, ${players.filter(p => !p.nbaId && !p.espnId).length} of ${players.length} players without a headshot`);

@@ -1,7 +1,7 @@
 import '../style.css';
 
 export const metadata = {
-  metadataBase: new URL(process.env.SITE_URL || 'https://stats-pad.vercel.app'),
+  metadataBase: new URL(process.env.SITE_URL || 'https://statspads.com'),
   title: 'NBA Player Comparison',
   verification: {google: 'uAikhNEtc4OO0e0Bg0WiwK_23KQh4t-MDsXrh49jbfw'},
 };
