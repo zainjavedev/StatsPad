@@ -1846,3 +1846,11 @@ header .brand small{margin-top:3px}
   .acct-google{max-width:100%;overflow:hidden}
   .acct-grid{grid-template-columns:1fr}
 }
+
+@media (max-width:760px){
+  .gp-side .starter-grid{grid-template-columns:1fr!important}
+  .team-chip-wrap,.team-chip{min-width:0}
+  .team-chip{padding-left:10px;gap:8px;font-size:13px}
+  .team-chip-wrap .team-chip{padding-right:30px}
+  .gp-side>h3{font-size:20px}
+}
