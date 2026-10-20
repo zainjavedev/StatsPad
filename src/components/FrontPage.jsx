@@ -95,6 +95,7 @@ export default function FrontPage({players, teams, playerIds, season, Art, onOpe
   }, [allTeams, favorites, teamByCode]);
   const view = tab ?? (games?.length ? 'upcoming' : 'results');
   const pool = useMemo(() => qualified(players), [players]);
+  const stars = useMemo(() => [...pool].sort((a, b) => b.stats.points - a.stats.points).slice(0, 3), [pool]);
   const leaders = useMemo(() => {
     const base = pool.length ? pool : players;
     return LEADERS.map(entry => {
@@ -105,6 +106,7 @@ export default function FrontPage({players, teams, playerIds, season, Art, onOpe
   const debates = useMemo(() => DEBATES.map(names => names.map(name => players.find(player => fold(player.playerName) === fold(name)))).filter(pair => pair.every(Boolean)), [players]);
 
   return <section className="front-page">
+    <GameClock games={games} favorites={favorites}/>
     <div className="front-hero">
       <div className="front-hero-copy">
         <h1>Settle every hoops <em>debate.</em></h1>
@@ -115,7 +117,7 @@ export default function FrontPage({players, teams, playerIds, season, Art, onOpe
           <button className="front-btn" onClick={() => onTeam('PHI')}>Browse rosters <ArrowRight size={16}/></button>
         </div>
       </div>
-      <GameClock games={games} favorites={favorites}/>
+      <div className="front-cast" aria-hidden="true">{stars.map(player => <Art key={player.playerId} entity={player} playerIds={playerIds} className="cast-art"/>)}</div>
     </div>
 
     <section className="front-block">
