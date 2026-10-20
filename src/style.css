@@ -1950,3 +1950,13 @@ header .brand small{margin-top:3px}
   /* schedule rows: team names sit beside their logos */
   .schedule-row,.game-row{gap:6px}
 }
+
+/* Mobile home polish */
+@media(max-width:640px){
+  .h2h .vs-radar svg{max-height:230px!important}
+  .ticker-first{border-color:var(--line)!important}
+  .ticker-first.mine{border-color:var(--accent)!important}
+  .ticker-list{scroll-snap-type:x mandatory;scrollbar-width:none}
+  .ticker-list::-webkit-scrollbar{display:none}
+  .ticker-list li{scroll-snap-align:start}
+}
