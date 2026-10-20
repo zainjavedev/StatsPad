@@ -10,6 +10,7 @@ import { favoritesFirst, useFavorites } from '../lib/favorites';
 import FavoriteStar from './FavoriteStar';
 import GameTicker, { useGames } from './NextUp';
 import GameTimeline from './GameTimeline';
+import GameDetail from './GameDetail';
 import HeadToHead from './HeadToHead';
 
 /* The front door: settle a debate, find a player, see the league's top
@@ -73,7 +74,7 @@ function PlayerSearch({players, Art, playerIds, onOpen}) {
 
 export default function FrontPage({players, teams, playerIds, Art, onOpen, onCompare, onTeam, onLeaders}) {
   const loaded = useFeed(loadGames), results = useFeed(loadResults), news = useFeed(loadNews);
-  const [allTeams, setAllTeams] = useState(false);
+  const [allTeams, setAllTeams] = useState(false), [openGame, setOpenGame] = useState(null);
   const favorites = useFavorites(), games = useGames(loaded);
   const teamByCode = useMemo(() => new Map(teams.map(team => [teamCodeOf(team.team), team]).filter(([code]) => TEAMS[code])), [teams]);
   const teamCodes = useMemo(() => {
@@ -101,7 +102,7 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
     <div className="home-grid">
       <section className="front-panel">
         <div className="front-panel-head"><h2>Results</h2><a className="front-more" href="/schedule">Full schedule <ArrowRight size={14}/></a></div>
-        <GameTimeline games={results} favorites={favorites} results empty="No games played yet. Results show up here after the season opener."/>
+        <GameTimeline games={results} favorites={favorites} results onOpen={setOpenGame} empty="No games played yet. Results show up here after the season opener."/>
       </section>
 
       <div className="home-side">
@@ -131,6 +132,8 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
         </section>
       </div>
     </div>
+
+    {openGame && <GameDetail game={openGame} onClose={() => setOpenGame(null)}/>}
 
     <section className="front-panel front-news">
       <div className="front-panel-head"><h2>Latest news</h2></div>

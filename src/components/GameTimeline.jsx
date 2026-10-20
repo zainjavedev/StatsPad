@@ -22,7 +22,7 @@ const until = ms => {
 
 const Team = ({team, won}) => <span className={won ? 'tl-team won' : 'tl-team'}>{team.logo ? <img src={team.logo} alt=""/> : <i/>}<b>{team.name}</b></span>;
 
-export default function GameTimeline({games, favorites, results = false, all: showEverything = false, empty}) {
+export default function GameTimeline({games, favorites, results = false, all: showEverything = false, empty, onOpen}) {
   const [now, setNow] = useState(() => Date.now()), [all, setAll] = useState(showEverything);
   useEffect(() => { const tick = setInterval(() => setNow(Date.now()), 30000); return () => clearInterval(tick); }, []);
   if (games === null) return <div className="timeline" aria-busy="true">{[0, 1, 2].map(index => <div key={index} className="tl-row skeleton"><div className="tl-when"><b/><span/></div><div className="tl-match"><i/><i/></div></div>)}</div>;
@@ -39,7 +39,7 @@ export default function GameTimeline({games, favorites, results = false, all: sh
     {day.games.map(game => {
       const final = game.state === 'post', scored = results || final || game.state === 'in', away = Number(game.away.score), home = Number(game.home.score);
       const lead = (results || final) && away !== home ? (away > home ? 'away' : 'home') : null;
-      return <div key={game.id} className={followedGame(game, favorites) ? 'tl-row mine' : 'tl-row'}>
+      return <div key={game.id} className={`${followedGame(game, favorites) ? 'tl-row mine' : 'tl-row'}${onOpen ? ' open' : ''}`} onClick={onOpen ? () => onOpen(game) : undefined} role={onOpen ? 'button' : undefined} tabIndex={onOpen ? 0 : undefined} onKeyDown={onOpen ? event => { if (event.key === 'Enter') onOpen(game); } : undefined}>
         <div className="tl-when">{results || final ? <><b>Final</b><span className="tl-done">{timeFormat.format(game.date)}</span></> : <><b>{timeFormat.format(game.date)}</b><span className={game.state === 'in' ? 'tl-live' : ''}>{game.state === 'in' ? 'Live' : until(game.date - now)}</span></>}</div>
         <div className="tl-match">
           <Team team={game.away} won={lead === 'away'}/>
