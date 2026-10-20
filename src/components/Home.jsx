@@ -12,7 +12,7 @@ import Radar from './Radar';
 import TeamLineups from './TeamLineups';
 import { CompareSkeleton, HomeSkeleton, PageSkeleton, TeamLoading } from './Skeletons';
 import { TEAMS, espnLogoUrl, nickname, teamCodeOf } from '../lib/teams';
-import { loadLatest, minGames, pretty, qualified, stage } from '../lib/season';
+import { loadLatest, pretty, qualified, stage } from '../lib/season';
 import { compareUrl, matchesName, playerUrl, routeParams, teamUrl } from '../lib/routes';
 import FrontPage from './FrontPage';
 import PlayerBody from './PlayerBody';
@@ -234,7 +234,7 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
     const text=parts.map(([key,short])=>`${statText(statValue(entity,key),key)} ${short}`).join(' · ');
     return{pct,text,rank:thin?'too few attempts to rank':`${pct}% of the league range`};
   })})):[];
-  const smallSample=entityType==='team'?[]:enriched.slice(0,2).filter(entity=>!(entity.gamesPlayed>=(seasonType==='playoffs'?3:minGames(data?.players||[]))&&entity.minutesPerGame>=10));
+  const smallSample=entityType==='team'?[]:enriched.slice(0,2).filter(entity=>!(seasonType==='playoffs'?entity.gamesPlayed>=3&&entity.minutesPerGame>=10:qualified(data?.players||[]).some(other=>other.playerId===entity.playerId)));
   const radarNotes=['The centre is the lowest rotation player in the league and the edge is the highest, so distance shows how far apart two players really are. 3P% needs at least one attempt a game to count. Defense averages steals and blocks, a box-score stand-in for defending. Turnovers and fouls are in the stat rows below.',...smallSample.map(entity=>`Small sample: ${entity.playerName} played ${entity.gamesPlayed} game${entity.gamesPlayed===1?'':'s'} at ${entity.minutesPerGame} MPG, so these rankings can swing a lot.`)];
   const radarScope=entityType==='team'?'all 30 teams':`${enrichedPopulation.length} ${seasonType==='playoffs'?'playoff':stage().replace(' ','-')} rotation players`;
   const SHARE_KEYS=['points','totalRebounds','assists','steals','blocks','fieldGoalPercentage','threePointPercentage','trueShootingPercentage'];
