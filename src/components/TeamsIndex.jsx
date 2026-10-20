@@ -4,6 +4,7 @@ import { TEAMS } from '../lib/teams';
 import { favoritesFirst, useFavorites } from '../lib/favorites';
 import { TeamLogo } from './TeamRail';
 import FavoriteStar from './FavoriteStar';
+import AlertsBanner from './AlertsBanner';
 
 export default function TeamsIndex({onOpen}) {
   const favorites = useFavorites();
@@ -12,6 +13,7 @@ export default function TeamsIndex({onOpen}) {
       <h1>Teams</h1>
       <p>All 30 clubs. Pick one to see its 2026–27 roster, expected rotation, last season&apos;s numbers and recent games. Tap the star on a team to make it a favorite.</p>
     </div>
+    <AlertsBanner/>
     <div className="teams-index-grid">{favoritesFirst(favorites).map(code => <div key={code} className="team-tile-wrap">
       <button className="team-tile" style={{'--team': TEAMS[code].color}} onClick={() => onOpen(code)}>
         <TeamLogo code={code} className="team-tile-logo"/>

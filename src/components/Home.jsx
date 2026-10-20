@@ -1,3 +1,4 @@
+import AccountButton from './AccountButton';
 import AccountPage from './AccountPage';
 import SchedulePage from './SchedulePage';
 import StandingsPage from './StandingsPage';
@@ -171,7 +172,7 @@ function SiteHeader({page,onHome,onLeaders,onCompare,onTeams,theme,onToggleTheme
     <div className="site-header" role="banner"><div className="site-header-inner">
       <button className="site-brand" onClick={()=>onHome()}>StatsPads</button>
       {tabs('site-nav')}
-      <div className="site-header-end"><button className="theme-toggle" onClick={onToggleTheme} aria-label={theme==='dark'?'Switch to light theme':'Switch to dark theme'} title={theme==='dark'?'Light theme':'Dark theme'}>{theme==='dark'?<Sun size={16}/>:<Moon size={16}/>}</button></div>
+      <div className="site-header-end"><AccountButton/><button className="theme-toggle" onClick={onToggleTheme} aria-label={theme==='dark'?'Switch to light theme':'Switch to dark theme'} title={theme==='dark'?'Light theme':'Dark theme'}>{theme==='dark'?<Sun size={16}/>:<Moon size={16}/>}</button></div>
     </div></div>
     {tabs('tabbar')}
   </>;
