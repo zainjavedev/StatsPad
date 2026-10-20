@@ -1112,6 +1112,7 @@ header .brand small{margin-top:3px}
 @media(max-width:520px){.pp-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.pp-tile strong{font-size:26px}.pp-card{padding:16px}}
 
 .seo{max-width:820px;margin:0 auto;padding:32px 20px;font:16px/1.5 system-ui,sans-serif;color:#14140f}.seo table{border-collapse:collapse;width:100%}.seo th,.seo td{padding:6px 10px;border-bottom:1px solid #ddd;text-align:left}.seo a{color:inherit}
+.seo-static{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
 .app-ready .seo-static{display:none}
 
 .alerts-panel{margin:0 0 24px;padding:16px 18px;border:1px solid var(--line);border-radius:var(--radius);background:var(--ink-1);color:var(--text-1)}
