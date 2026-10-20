@@ -59,6 +59,13 @@ async function fetchPlayers() {
   const rows = [];
   for (let page = 1; ; page++) {
     const data = await getJson(`${BASE}/statistics/byathlete?region=us&lang=en&isqualified=false&page=${page}&limit=50&season=${endYear}&seasontype=${seasonType}&sort=offensive.avgPoints%3Adesc`);
+    /* Before a season's first game ESPN answers a request for it with the PREVIOUS season's numbers
+       (requestedSeason is then last year's), which would be saved here as this season. Stop unless
+       the season that came back is the one asked for. */
+    if (page === 1 && !force && data.requestedSeason?.year !== Number(endYear)) {
+      console.log(`ESPN is still serving ${data.requestedSeason?.displayName ?? 'another season'} for ${season}; leaving data untouched.`);
+      process.exit(0);
+    }
     if (!data.athletes?.length) break; // a season with no games yet comes back empty
     rows.push(...data.athletes);
     statNames = Object.fromEntries(data.categories.map(category => [category.name, category.names]));

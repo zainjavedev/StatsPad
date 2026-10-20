@@ -1,5 +1,5 @@
 import React, { forwardRef, useState } from 'react';
-import { SITE_HOST, onDark } from '../lib/share';
+import { onDark, siteHost } from '../lib/share';
 
 /* The 1080x1080 picture people post. Layouts, picked by spec.kind:
      versus  {eyebrow, names, subs, colors, score, rows: [{label, values, lead}], photos?}
@@ -116,7 +116,7 @@ function Grid({spec}) {
 
 /* The address printed on the card: the page itself when it is short enough to
    read, otherwise just the site. The share caption always has the full link. */
-const shownLink = path => (path && `${SITE_HOST}${path}`.length <= 32 && !path.includes('?') ? `${SITE_HOST}${path}` : SITE_HOST);
+const shownLink = path => { const host = siteHost(); return path && `${host}${path}`.length <= 32 && !path.includes('?') ? `${host}${path}` : host; };
 
 const ShareCard = forwardRef(function ShareCard({spec}, ref) {
   const accent = onDark(spec.colors?.[0] || spec.color);

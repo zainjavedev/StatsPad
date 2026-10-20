@@ -2,9 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Check, Share2 } from 'lucide-react';
 import ShareCard from './ShareCard';
-import { shareCard } from '../lib/share';
+import { shareCard, siteOrigin } from '../lib/share';
 import { withPhotos } from '../lib/photos';
-import { SITE } from '../lib/routes';
 
 /* One button for every stat view. `spec` describes the card (see ShareCard);
    null disables the button. The card only exists in the page while it is
@@ -34,7 +33,7 @@ export default function ShareButton({spec, filename, title, text, path, classNam
         setStaged(await withPhotos(latest.current));
         await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
         await settled(card.current);
-        outcome = await shareCard(card.current, {filename, title, text, url: `${SITE}${path || ''}`});
+        outcome = await shareCard(card.current, {filename, title, text, url: `${siteOrigin()}${path || ''}`});
       } catch { outcome = 'failed'; }
       if (!live) return;
       setBusy(false); setStaged(null);

@@ -1,6 +1,8 @@
-/* Which season the site shows. Newest first: as soon as the stats feed has a
-   2026-27 file with at least one player (after opening night) every page
-   switches to it; until then the previous season stays up. */
+/* Which season the site shows. Newest first: once the stats feed has a 2026-27
+   file with enough players and teams (the first few nights; the same bar the
+   search pages use) every page switches to it; until then the previous season
+   stays up, labelled as last season. Switching on the first game's handful of
+   players would leave search and team pages nearly empty on opening night. */
 export const SEASONS = ['2026-27', '2025-26'];
 export const CURRENT = SEASONS[0];
 export const pretty = season => season.replace('-', '–');
@@ -19,6 +21,9 @@ const readJson = async (url, hasRows) => {
   }
 };
 const hasPlayers = data => Array.isArray(data?.players) && data.players.length > 0;
+const NEW_SEASON_PLAYERS = 150, NEW_SEASON_TEAMS = 30;
+/* Only the regular season needs the full bar: the playoffs never involve all 30 teams. */
+const settled = (season, suffix, players, teams) => season !== CURRENT || suffix !== 'regular-season' || (players.players.length >= NEW_SEASON_PLAYERS && teams.players.length >= NEW_SEASON_TEAMS);
 
 export async function loadLatest(suffix) {
   for (const season of SEASONS) {
@@ -27,7 +32,7 @@ export async function loadLatest(suffix) {
       readJson(`/data/${season}/teams-${suffix}.json`, hasPlayers),
       readJson(`/data/${season}/splits-${suffix}.json`, data => Boolean(data?.quarters)),
     ]);
-    if (players && teams) return {season, players, teams, splits};
+    if (players && teams && settled(season, suffix, players, teams)) return {season, players, teams, splits};
   }
   throw new Error(`No ${suffix} data found`);
 }

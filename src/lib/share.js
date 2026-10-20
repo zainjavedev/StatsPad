@@ -5,7 +5,11 @@ import { SITE } from './routes';
    share sheet when it can take files (Instagram, Messages, X, WhatsApp...), a
    download otherwise. The caption always carries the page link. */
 
-export const SITE_HOST = SITE.replace(/^https?:\/\//, '');
+/* The address on cards and in share captions is the one the person is on. The
+   build-time SITE_URL is not visible to browser code, so it would otherwise
+   fall back to a placeholder domain. */
+export const siteOrigin = () => (typeof window !== 'undefined' ? window.location.origin : SITE);
+export const siteHost = () => siteOrigin().replace(/^https?:\/\//, '');
 export const CARD_SIZE = 1080;
 
 const mix = (hex, other, amount) => {
