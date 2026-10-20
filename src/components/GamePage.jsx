@@ -53,13 +53,15 @@ export default function GamePage({id}) {
   const [box, setBox] = useState(undefined);
   useEffect(() => { loadBoxscore(id).then(setBox); }, [id]);
 
+  /* Top five in each category across both teams; the leader (ties included) is what the box score highlights. */
   const leaders = useMemo(() => {
     if (!box?.teams?.length) return [];
-    const everyone = box.teams.flatMap(team => team.players.filter(player => !player.out).map(player => ({...player, team: team.abbr, teamLogo: team.logo})));
+    const everyone = box.teams.flatMap(team => team.players.filter(player => !player.out).map(player => ({...player, team: team.abbr})));
     return LEADS.map(([key, label]) => {
-      const top = Math.max(0, ...everyone.map(player => num(player.stats[key])));
-      return {key, label, top, players: top > 0 ? everyone.filter(player => num(player.stats[key]) === top) : []};
-    }).filter(entry => entry.players.length);
+      const ranked = everyone.filter(player => num(player.stats[key]) > 0).sort((a, b) => num(b.stats[key]) - num(a.stats[key]) || num(b.stats.PTS) - num(a.stats.PTS));
+      const top = ranked.length ? num(ranked[0].stats[key]) : 0;
+      return {key, label, top, ranked: ranked.slice(0, 5), players: ranked.filter(player => num(player.stats[key]) === top)};
+    }).filter(entry => entry.ranked.length);
   }, [box]);
   const led = useMemo(() => {
     const map = new Map();
@@ -73,8 +75,7 @@ export default function GamePage({id}) {
   const scored = box.state !== 'pre';
   const ordered = [...box.teams].sort((a, b) => (a.abbr === box.away.abbr ? 0 : 1) - (b.abbr === box.away.abbr ? 0 : 1));
   const row = player => <tr key={player.id}>
-    <td className="who"><span className="gp-name"><Face player={player}/><span><b>{player.name}</b><small>{player.pos}{player.jersey ? ` · #${player.jersey}` : ''}</small></span></span>
-      <span className="gp-badges">{LEADS.filter(([key]) => led.has(`${player.id}:${key}`)).map(([key]) => <em key={key}>{key} leader</em>)}</span></td>
+    <td className="who"><span className="gp-name"><Face player={player}/><span><b>{player.name}</b><small>{player.pos}{player.jersey ? ` · #${player.jersey}` : ''}</small></span></span></td>
     {COLUMNS.map(label => <td key={label} className={`num${led.has(`${player.id}:${label}`) ? ' led' : ''}`}>{player.stats[label] ?? '–'}</td>)}
   </tr>;
 
@@ -90,8 +91,10 @@ export default function GamePage({id}) {
     {box.state === 'pre' ? <Expected box={box}/> : <>
       {leaders.length > 0 && <div className="gp-leaders">{leaders.map(entry => <section key={entry.key} className="gp-leader">
         <small>{entry.label}</small>
-        {entry.players.slice(0, 3).map(player => <div key={player.id}><Face player={player} size={54}/><span><b>{player.short ?? player.name}</b><i>{player.team}</i></span><strong>{entry.top}</strong></div>)}
-        {entry.players.length > 3 && <i className="gp-more">+{entry.players.length - 3} more tied</i>}
+        <ol>{entry.ranked.map((player, index) => <li key={player.id} className={index === 0 ? 'top' : num(player.stats[entry.key]) === entry.top ? 'tied' : ''}>
+          <span className="gp-rank">{index + 1}</span><Face player={player} size={index === 0 ? 40 : 30}/>
+          <span className="gp-who"><b>{player.short ?? player.name}</b><i>{player.team}</i></span><strong>{player.stats[entry.key]}</strong>
+        </li>)}</ol>
       </section>)}</div>}
       {ordered.length === 2 && <Radar axes={shapeAxes(ordered, ordered.map(team => team.abbr === box.away.abbr ? box.away.score : box.home.score))} names={ordered.map(team => team.abbr === box.away.abbr ? box.away.short : box.home.short)} colors={['var(--accent)', 'var(--text-1)']} scope="a typical NBA game" notes={['Each spoke runs from a low to a high night for that stat, so the shape shows how each team played, not season averages. Ball care rewards fewer turnovers.']}/>}
       {ordered.map(team => {

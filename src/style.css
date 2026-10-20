@@ -1591,3 +1591,18 @@ header .brand small{margin-top:3px}
 .gp .vs-radar{margin-top:20px;border:1px solid var(--line);border-radius:16px;background:var(--ink-1)}
 
 .gp-leader .gp-more{font-size:12px;font-style:normal;color:var(--text-3)}
+
+.gp-leaders{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.gp-leader ol{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none}
+.gp-leader li{display:flex;align-items:center;gap:8px;font-size:13px}
+.gp-leader li.top{padding-bottom:8px;border-bottom:1px solid var(--line)}
+.gp-rank{width:12px;font-size:11px;font-weight:800;color:var(--text-3)}
+.gp-who{display:flex;flex:1;flex-direction:column;min-width:0}
+.gp-who b{overflow:hidden;font-size:13px;text-overflow:ellipsis;white-space:nowrap}
+.gp-who i{font-size:11px;font-style:normal;color:var(--text-3)}
+.gp-leader li strong{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
+.gp-leader li.top strong{font-size:24px;font-weight:800;color:var(--accent)}
+
+.gp-leaders{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.gp-leader li.tied strong{color:var(--accent)}
+.gp-leader li.top{padding-bottom:6px}
