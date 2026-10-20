@@ -190,8 +190,8 @@ function careerHtml(p) {
 const starterNames = team => (team.roster?.players ?? []).filter(entry => entry.unit === 'starters').map(entry => entry.name).map(name => (bySlug.get(slugify(name)) ? link(playerUrl(name), name) : esc(name)));
 
 const LEADER_STATS = [['Points', 'PPG', p => p.stats.points], ['Rebounds', 'RPG', p => p.stats.totalRebounds], ['Assists', 'APG', p => p.stats.assists], ['Steals', 'SPG', p => p.stats.steals], ['Blocks', 'BPG', p => p.stats.blocks]];
-const leadersOf = get => [...players].sort((x, y) => get(y) - get(x)).slice(0, 5);
-const leaderList = ([name, abbr, get]) => `<h3>${esc(name)} per game</h3><ol>${leadersOf(get).map(p => `<li>${link(playerUrl(p.playerName), p.playerName)}${p.code ? ` (${esc(TEAMS[p.code].name)})` : ''}: ${fixed(get(p))} ${abbr}</li>`).join('')}</ol>`;
+const leadersOf = (get, pool = players) => [...pool].sort((x, y) => get(y) - get(x)).slice(0, 5);
+const leaderList = ([name, abbr, get], pool = players) => `<h3>${esc(name)} per game</h3><ol>${leadersOf(get, pool).map(p => `<li>${link(playerUrl(p.playerName), p.playerName)}${p.code ? ` (${esc(TEAMS[p.code].name)})` : ''}: ${fixed(get(p))} ${abbr}</li>`).join('')}</ol>`;
 const popular = pairs.slice(0, 8).map(([x, y]) => `<li>${link(compareUrl([x.playerName, y.playerName]), `${x.playerName} vs ${y.playerName}`)}</li>`).join('');
 const teamList = `<ul>${teams.map(team => `<li>${link(teamUrl(team.code), `${team.name} roster`)}</li>`).join('')}</ul>`;
 const crumbs = (...items) => ({'@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items.map(([name, route], index) => ({'@type': 'ListItem', position: index + 1, name, item: SITE + route}))});
@@ -202,7 +202,20 @@ writePage({route: '/', title: 'StatsPads: NBA player and team comparisons, roste
 writePage({route: '/compare', title: 'Compare NBA players and teams | StatsPads', description: 'Pick any two NBA players or teams and compare their stats side by side with a skill radar.', jsonLd: [crumbs(['Home', '/'], ['Compare', '/compare'])],
   body: `<main class="seo"><h1>Compare NBA players and teams</h1><p>Choose any two NBA players or any two teams and see their ${statsWord} per-game numbers, shooting efficiency and a skill radar side by side. The comparison covers points, rebounds, assists, steals, blocks, field goal, three-point and free throw percentages, true shooting and turnover rate. Team comparisons also show the expected starting fives.</p><h2>Popular player comparisons</h2><ul>${popular}</ul><h2>Compare teams</h2><ul>${teamPairs.slice(0, 8).map(([x, y]) => `<li>${link(compareUrl([x.name, y.name]), `${x.name} vs ${y.name}`)}</li>`).join('')}</ul></main>`});
 writePage({route: '/leaders', title: 'NBA stat leaders | StatsPads', description: 'Points, rebounds, assists, steals, blocks and shooting leaders across the NBA, with the full top five for each.', jsonLd: [crumbs(['Home', '/'], ['Leaders', '/leaders'])],
-  body: `<main class="seo"><h1>NBA stat leaders, ${yearLabel}</h1><p>The top five NBA players in each major per-game category for ${yearLabel}, among players with at least ${minGames} games played and ten minutes a game.</p>${LEADER_STATS.map(leaderList).join('')}</main>`});
+  body: `<main class="seo"><h1>NBA stat leaders, ${yearLabel}</h1><p>The top five NBA players in each major per-game category for ${yearLabel}, among players with at least ${minGames} games played and ten minutes a game.</p>${LEADER_STATS.map(stat => leaderList(stat)).join('')}</main>`});
+const LEADER_SETS = [
+  ['preseason', 'Preseason', `${SEASONS[0]}/preseason.json`, p => p.gamesPlayed > 0 && p.minutesPerGame >= 10],
+  ['regular-season', 'Regular season', `${SEASONS[1]}/regular-season.json`, p => p.gamesPlayed >= 15 && p.minutesPerGame >= 10],
+  ['playoffs', 'Playoffs', `${SEASONS[1]}/playoffs.json`, p => p.gamesPlayed >= 3 && p.minutesPerGame >= 10],
+];
+for (const [slug, name, file, keep] of LEADER_SETS) {
+  const rows = readRows(`public/data/${file}`);
+  if (!rows) continue;
+  const label = `${pretty(file.split('/')[0])} ${name.toLowerCase()}`;
+  const pool = rows.players.filter(keep).map(p => ({...p, code: TEAMS[teamCodeOf(p.team)] ? teamCodeOf(p.team) : null}));
+  writePage({route: `/leaders/${slug}`, title: `NBA ${name.toLowerCase()} stat leaders ${pretty(file.split('/')[0])} | StatsPads`, description: `Points, rebounds, assists, steals and blocks leaders for the ${label}, with the top five in each category.`, jsonLd: [crumbs(['Home', '/'], ['Leaders', '/leaders'], [name, `/leaders/${slug}`])],
+    body: `<main class="seo"><h1>NBA stat leaders, ${label}</h1><p>The top five NBA players in each major per-game category for the ${label}.</p>${LEADER_STATS.map(stat => leaderList(stat, pool)).join('')}<p>${LEADER_SETS.map(([other, otherName]) => link(`/leaders/${other}`, `${otherName} leaders`)).join(' · ')}</p></main>`});
+}
 writePage({route: '/schedule', title: 'NBA schedule 2026–27 | StatsPads', description: 'Every NBA game of the 2026–27 season with times in your timezone. Filter by team or find when two teams meet.', jsonLd: [crumbs(['Home', '/'], ['Schedule', '/schedule'])],
   body: `<main class="seo"><h1>NBA schedule 2026–27</h1><p>Every regular-season game with start times in your timezone, TV and arena. Pick a team, or two, to see when they play each other, like Lakers vs Celtics or 76ers vs Knicks.</p><h2>Teams</h2>${teamList}</main>`});
 writePage({route: '/standings', title: 'NBA standings 2026–27 | StatsPads', description: 'Eastern and Western conference standings with seeds, records, games behind, home and road records, last ten and streaks.', jsonLd: [crumbs(['Home', '/'], ['Standings', '/standings'])],

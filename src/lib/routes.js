@@ -13,6 +13,8 @@ export const slugify = name => name.normalize('NFD').replace(/[̀-ͯ]/g, '').toL
 export const TEAM_SLUGS = Object.fromEntries(Object.entries(TEAMS).map(([code, team]) => [slugify(team.name), code]));
 
 export const teamUrl = code => `/teams/${slugify(TEAMS[code].name)}`;
+export const LEADER_TYPES = ['preseason', 'regular-season', 'playoffs'];
+export const leadersUrl = seasonType => `/leaders/${seasonType}`;
 export const playerUrl = name => `/players/${slugify(name)}`;
 
 /* Alphabetical, so a pair always has exactly one address. */
@@ -42,8 +44,9 @@ export function routeParams(pathname = '/', search = '') {
     params.set('team', TEAM_SLUGS[team[1]]);
   } else if (path === '/teams') {
     params.set('view', 'teams');
-  } else if (path === '/leaders') {
+  } else if (path === '/leaders' || LEADER_TYPES.some(type => path === leadersUrl(type))) {
     params.set('view', 'leaders');
+    if (path !== '/leaders') params.set('type', path.split('/')[2]);
   } else if (path === '/signin' || path === '/account') {
     params.set('view', 'account');
   } else if (/^\/games\/\d+$/.test(path)) {

@@ -1859,3 +1859,20 @@ header .brand small{margin-top:3px}
 .season-toggle button b,.segmented.season button b{font-size:12px;font-weight:800}
 .season-toggle button small,.segmented.season button small{font-size:10px;font-weight:600;opacity:.65}
 @media(max-width:520px){.season-toggle button,.segmented.season button{padding:8px 6px;flex:1}.season-toggle button b,.segmented.season button b{font-size:11px}}
+
+/* Leaders page: one clean grid, uniform cards */
+.leaders-page .muse-home-grid{display:block!important;padding:8px 0 60px!important}
+.leaders-page .story-feed{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-auto-rows:auto!important;gap:16px!important;max-width:1180px!important;margin:0 auto!important}
+.leaders-page .feed-heading{grid-column:1/-1!important;display:flex!important;align-items:flex-end!important;justify-content:space-between!important;gap:16px;height:auto!important;margin-bottom:4px}
+.leaders-page .feed-heading h2{font-size:28px;margin:0}
+.leaders-page .feed-heading p{margin:4px 0 0;color:var(--text-3);font-size:13px}
+.leaders-page .story-feed .story-card[class]{grid-column:span 1!important;grid-row:span 1!important;min-height:300px!important;border-radius:20px;overflow:hidden;transition:transform .15s}
+.leaders-page .story-feed .story-card:hover{transform:translateY(-3px)}
+.leaders-page .story-card h2{font-size:26px!important;line-height:1.05;margin:6px 0 2px}
+.leaders-page .story-card .story-team{display:block;font-style:normal;font-size:12px;font-weight:800;letter-spacing:.08em;opacity:.7;margin-bottom:6px}
+.leaders-page .story-card .story-stat{font-size:34px!important;display:block;margin-bottom:12px}
+.leaders-page .story-card .leader-list span{padding:5px 0}
+@media(max-width:1000px){.leaders-page .story-feed{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:640px){.leaders-page .story-feed{grid-template-columns:1fr!important}.leaders-page .feed-heading{flex-direction:column;align-items:stretch!important}.leaders-page .story-feed .story-card[class]{min-height:260px!important}}
+.leaders-page .story-card .story-stat{white-space:nowrap;font-size:32px!important}
+.leaders-page .story-card .story-team{display:block!important}
