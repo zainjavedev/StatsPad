@@ -1645,3 +1645,16 @@ header .brand small{margin-top:3px}
 .gp .gd-out{font-size:14px;color:var(--text-2)}
 
 .gp table.calm td{background:var(--ink-1)}
+
+/* bigger leader cards */
+.gp-leaders{grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+.gp-leader{padding:22px 22px 18px;border-radius:18px}
+.gp-leader>small{font-size:13px}
+.gp-leader ol{gap:14px}
+.gp-leader li{gap:14px}
+.gp-leader li.top{padding-bottom:16px}
+.gp-who b{font-size:16px}
+.gp-who i{font-size:13px}
+.gp-leader li strong{font-size:22px}
+.gp-leader li.top strong{font-size:36px}
+.gp-leader li.top .gp-who b{font-size:19px}
