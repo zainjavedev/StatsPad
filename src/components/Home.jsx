@@ -3,6 +3,7 @@ import AccountPage from './AccountPage';
 import SchedulePage from './SchedulePage';
 import StandingsPage from './StandingsPage';
 import GamePage from './GamePage';
+import { isAppPath, navigate } from '../lib/nav';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, BarChart3, CalendarDays, Check, Copy, Download, Home as HomeIcon, Link2, ListOrdered, Moon, Search, Sun, Trophy, Users, X } from 'lucide-react';
 import { toPng } from 'html-to-image';
@@ -163,7 +164,7 @@ const NAV_ITEMS = [['home','Home',HomeIcon],['schedule','Schedule',CalendarDays]
 /* A banner div, not <header>, so none of the old header rules apply. The tab
    bar is a sibling because a blurred parent would trap a fixed child. */
 function SiteHeader({page,onHome,onLeaders,onCompare,onTeams,theme,onToggleTheme}){
-  const current=page==='team'?'teams':page,go={home:onHome,leaders:onLeaders,compare:onCompare,teams:onTeams,schedule:()=>location.assign('/schedule'),standings:()=>location.assign('/standings')};
+  const current=page==='team'?'teams':page,go={home:onHome,leaders:onLeaders,compare:onCompare,teams:onTeams,schedule:()=>navigate('/schedule'),standings:()=>navigate('/standings')};
   const tabs=className=><nav className={className} aria-label="Main">{NAV_ITEMS.map(([key,label,Icon])=><button key={key} className={current===key?'active':''} aria-current={current===key?'page':undefined} onClick={()=>go[key]()}><Icon size={19} className="nav-icon"/><span>{label}</span></button>)}</nav>;
   return <>
     <div className="site-header" role="banner"><div className="site-header-inner">
@@ -280,7 +281,7 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
 
 export default function Home(){
   const paramsOnLoad=useMemo(()=>routeParams(location.pathname,location.search),[]);
-  const[seasonType,setSeasonType]=useState(()=>paramsOnLoad.get('type')||'regular-season'),[seasonChanging,setSeasonChanging]=useState(false),[entityType,setEntityType]=useState(()=>paramsOnLoad.get('mode')||'player'),[data,setData]=useState(null),[splits,setSplits]=useState(null),[selected,setSelected]=useState([]),[toast,setToast]=useState(''),[playerIds,setPlayerIds]=useState({}),[catalog,setCatalog]=useState({players:[],teams:[]}),[page,setPage]=useState(['account','schedule','standings','game'].includes(paramsOnLoad.get('view'))?paramsOnLoad.get('view'):paramsOnLoad.get('view')==='leaders'?'leaders':paramsOnLoad.get('view')==='teams'?'teams':paramsOnLoad.has('team')?'team':paramsOnLoad.has('players')?'compare':paramsOnLoad.has('profile')?'profile':'home'),[regularPlayers,setRegularPlayers]=useState(null),[regularSeason,setRegularSeason]=useState(null),[profileFrom,setProfileFrom]=useState(null),[profile,setProfile]=useState(null),[teamCode,setTeamCode]=useState(()=>TEAMS[paramsOnLoad.get('team')]?paramsOnLoad.get('team'):'PHI');
+  const[seasonType,setSeasonType]=useState(()=>paramsOnLoad.get('type')||'regular-season'),[seasonChanging,setSeasonChanging]=useState(false),[entityType,setEntityType]=useState(()=>paramsOnLoad.get('mode')||'player'),[data,setData]=useState(null),[splits,setSplits]=useState(null),[selected,setSelected]=useState([]),[toast,setToast]=useState(''),[playerIds,setPlayerIds]=useState({}),[catalog,setCatalog]=useState({players:[],teams:[]}),[gameId,setGameId]=useState(()=>paramsOnLoad.get('game')),[page,setPage]=useState(['account','schedule','standings','game'].includes(paramsOnLoad.get('view'))?paramsOnLoad.get('view'):paramsOnLoad.get('view')==='leaders'?'leaders':paramsOnLoad.get('view')==='teams'?'teams':paramsOnLoad.has('team')?'team':paramsOnLoad.has('players')?'compare':paramsOnLoad.has('profile')?'profile':'home'),[regularPlayers,setRegularPlayers]=useState(null),[regularSeason,setRegularSeason]=useState(null),[profileFrom,setProfileFrom]=useState(null),[profile,setProfile]=useState(null),[teamCode,setTeamCode]=useState(()=>TEAMS[paramsOnLoad.get('team')]?paramsOnLoad.get('team'):'PHI');
   const chartRef=useRef(null),seasonTransitionRef=useRef(0);
   const[theme,setTheme]=useState(()=>{try{return localStorage.getItem('statspad-theme')||'dark'}catch{return 'dark'}});
   useEffect(()=>{document.documentElement.dataset.theme=theme;try{localStorage.setItem('statspad-theme',theme)}catch{/* private mode */}},[theme]);
@@ -306,16 +307,45 @@ export default function Home(){
     let canonical=document.querySelector('link[rel="canonical"]');if(!canonical){canonical=document.createElement('link');canonical.rel='canonical';document.head.appendChild(canonical)}
     canonical.href=`${location.origin}${location.pathname}`;
   },[page,enriched,teamCode,profile]);
-  useEffect(()=>{const back=()=>location.reload();window.addEventListener('popstate',back);return()=>window.removeEventListener('popstate',back)},[]);
+  /* Client-side navigation for the pages that need no extra state: no reload, so the header and panels stay put. */
+  const routeTo=(path,push=true)=>{
+    const url=new URL(path,location.origin),params=routeParams(url.pathname,url.search),view=params.get('view');
+    const plainCompare=url.pathname.replace(/\/+$/,'')==='/compare'&&!url.search;
+    const simple=plainCompare||['account','schedule','standings','game','leaders','teams'].includes(view)||params.has('team')||(!view&&!params.has('players')&&!params.has('profile'));
+    if(!simple){location.assign(url.pathname+url.search);return}
+    if(push&&url.pathname+url.search!==location.pathname+location.search)history.pushState({},'',url.pathname+url.search);
+    setProfile(null);
+    if(plainCompare)setPage('compare');
+    else if(view==='game'){setGameId(params.get('game'));setPage('game')}
+    else if(['account','schedule','standings','leaders','teams'].includes(view))setPage(view);
+    else if(params.has('team')){setTeamCode(params.get('team'));setPage('team')}
+    else setPage('home');
+    scrollTo({top:0});
+  };
+  const routeRef=useRef(routeTo);routeRef.current=routeTo;
+  useEffect(()=>{
+    const back=()=>routeRef.current(location.pathname+location.search,false);
+    const go=event=>routeRef.current(event.detail);
+    const click=event=>{
+      if(event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+      const link=event.target.closest?.('a[href]');
+      if(!link||link.target||link.hasAttribute('download'))return;
+      const url=new URL(link.href,location.origin);
+      if(url.origin!==location.origin||!isAppPath(url.pathname))return;
+      event.preventDefault();routeRef.current(url.pathname+url.search);
+    };
+    window.addEventListener('popstate',back);window.addEventListener('statspad:navigate',go);document.addEventListener('click',click);
+    return()=>{window.removeEventListener('popstate',back);window.removeEventListener('statspad:navigate',go);document.removeEventListener('click',click)};
+  },[]);
   const enrichedPopulation=useMemo(()=>population.map(enrich),[population]);
   const notify=message=>{setToast(message);setTimeout(()=>setToast(''),2200)};
   const switchSeason=async next=>{if(next===seasonType||seasonChanging)return;const transition=++seasonTransitionRef.current;setSeasonChanging(true);try{const[bundle]=await Promise.all([loadSeasonBundle(next),new Promise(resolve=>window.setTimeout(resolve,180))]);if(transition!==seasonTransitionRef.current)return;setCatalog({players:bundle.players.players,teams:bundle.teams.players});setSplits(bundle.splits);setData(entityType==='team'?bundle.teams:bundle.players);setSeasonType(next);window.requestAnimationFrame(()=>window.requestAnimationFrame(()=>setSeasonChanging(false)))}catch{setSeasonChanging(false)}};
   const share=async()=>{const url=`${location.origin}${compareUrl(enriched.map(p=>p.playerName),entityType,seasonType)}`;await navigator.clipboard.writeText(url);notify('Comparison link copied')};
   const copyTake=async()=>{const leaders=TABLE_STATS.slice(0,5).map(([key,label,inverse])=>{const ordered=[...enriched].sort((a,b)=>(valueOf(b,key)-valueOf(a,key))*(inverse?-1:1));return `${label}: ${ordered[0]?.playerName} (${format(valueOf(ordered[0],key),key)})`});await navigator.clipboard.writeText(`${enriched.map(p=>p.playerName).join(' vs ')} — 2025-26 ${data.seasonType}\n\n${leaders.join('\n')}\n\nMade with StatsPads`);notify('Debate-ready take copied')};
-  const goHomeEarly=()=>{location.href='/'};
-  if(page==='game')return <main><SiteHeader page='schedule' onHome={goHomeEarly} onCompare={()=>{location.href='/compare'}} onTeams={()=>{location.href='/teams'}} onLeaders={()=>{location.href='/leaders'}} theme={theme} onToggleTheme={toggleTheme}/><GamePage id={paramsOnLoad.get('game')}/><footer><span>StatsPads · NBA numbers, visualized</span></footer></main>;
-  if(page==='schedule'||page==='standings')return <main><SiteHeader page={page} onHome={goHomeEarly} onCompare={()=>{location.href='/compare'}} onTeams={()=>{location.href='/teams'}} onLeaders={()=>{location.href='/leaders'}} theme={theme} onToggleTheme={toggleTheme}/>{page==='schedule'?<SchedulePage/>:<StandingsPage/>}<footer><span>StatsPads · NBA numbers, visualized</span></footer></main>;
-  if(page==='account')return <main><SiteHeader page={page} onHome={goHomeEarly} onCompare={()=>{location.href='/compare'}} onTeams={()=>{location.href='/teams'}} onLeaders={()=>{location.href='/leaders'}} theme={theme} onToggleTheme={toggleTheme}/><AccountPage onTeams={()=>{location.href='/teams'}}/><footer><span>StatsPads · NBA numbers, visualized</span></footer></main>;
+  const goHomeEarly=()=>navigate('/');
+  if(page==='game')return <main><SiteHeader page='schedule' onHome={goHomeEarly} onCompare={()=>navigate('/compare')} onTeams={()=>navigate('/teams')} onLeaders={()=>navigate('/leaders')} theme={theme} onToggleTheme={toggleTheme}/><GamePage key={gameId} id={gameId}/><footer><span>StatsPads · NBA numbers, visualized</span></footer></main>;
+  if(page==='schedule'||page==='standings')return <main><SiteHeader page={page} onHome={goHomeEarly} onCompare={()=>navigate('/compare')} onTeams={()=>navigate('/teams')} onLeaders={()=>navigate('/leaders')} theme={theme} onToggleTheme={toggleTheme}/>{page==='schedule'?<SchedulePage/>:<StandingsPage/>}<footer><span>StatsPads · NBA numbers, visualized</span></footer></main>;
+  if(page==='account')return <main><SiteHeader page={page} onHome={goHomeEarly} onCompare={()=>navigate('/compare')} onTeams={()=>navigate('/teams')} onLeaders={()=>navigate('/leaders')} theme={theme} onToggleTheme={toggleTheme}/><AccountPage onTeams={()=>navigate('/teams')}/><footer><span>StatsPads · NBA numbers, visualized</span></footer></main>;
   if(!data){
     const idle=()=>{};
     const skeleton=page==='home'?<HomeSkeleton/>:page==='compare'?<CompareSkeleton/>:page==='team'?<TeamLoading teamCode={teamCode} color={TEAMS[teamCode].color} onPick={idle}/>:<PageSkeleton/>;

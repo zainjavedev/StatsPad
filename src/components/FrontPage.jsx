@@ -10,6 +10,7 @@ import { favoritesFirst, useFavorites } from '../lib/favorites';
 import FavoriteStar from './FavoriteStar';
 import GameTicker, { useGames } from './NextUp';
 import GameTimeline from './GameTimeline';
+import { navigate } from '../lib/nav';
 import HeadToHead from './HeadToHead';
 
 /* The front door: settle a debate, find a player, see the league's top
@@ -100,7 +101,7 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
     <div className="home-grid">
       <section className="front-panel">
         <div className="front-panel-head"><h2>Results</h2><a className="front-more" href="/schedule">Full schedule <ArrowRight size={14}/></a></div>
-        <GameTimeline games={results} favorites={favorites} results onOpen={game => { window.location.href = `/games/${game.id}`; }} empty="No games played yet. Results show up here after the season opener."/>
+        <GameTimeline games={results} favorites={favorites} results onOpen={game => navigate(`/games/${game.id}`)} empty="No games played yet. Results show up here after the season opener."/>
       </section>
 
       <div className="home-side">

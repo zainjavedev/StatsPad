@@ -3,6 +3,7 @@ import { loadSchedule } from '../lib/schedule';
 import { TEAMS } from '../lib/teams';
 import { useFavorites } from '../lib/favorites';
 import GameTimeline from './GameTimeline';
+import { navigate } from '../lib/nav';
 
 /* Every game of the season, filterable down to a team or a single matchup. */
 
@@ -58,7 +59,7 @@ export default function SchedulePage() {
     </div>
     <div className="front-panel">
       <div className="front-panel-head"><h2>{shown ? `${shown.length} game${shown.length === 1 ? '' : 's'}` : 'Loading…'}</h2></div>
-      <GameTimeline games={shown} favorites={favorites} results={when === 'past'} all onOpen={game => { window.location.href = `/games/${game.id}`; }}/>
+      <GameTimeline games={shown} favorites={favorites} results={when === 'past'} all onOpen={game => navigate(`/games/${game.id}`)}/>
     </div>
   </section>;
 }
