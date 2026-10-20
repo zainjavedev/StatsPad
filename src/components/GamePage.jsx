@@ -4,7 +4,7 @@ import { loadBoxscore } from '../lib/boxscore';
 import Radar from './Radar';
 import { Headshot } from './TeamPage';
 import { loadSchedule } from '../lib/schedule';
-import { TEAMS } from '../lib/teams';
+import { TEAMS, teamCodeOf } from '../lib/teams';
 
 /* One game on its own page: the score, who led it in each category (with photos), and the full box
    score for both teams with each category's leader highlighted. Before tip-off, the expected fives. */
@@ -68,7 +68,7 @@ function Preview({box}) {
       fetch('/data/2025-26/teams-regular-season.json').then(response => response.json()).catch(() => ({players: []})),
       ...[2026, 2025, 2024].map(year => SEASON_FETCH(year)(awayCode)),
     ]).then(([games, teams, ...seasons]) => {
-      const byCode = new Map(teams.players.map(team => [codeOf(team.team), team.stats]));
+      const byCode = new Map(teams.players.map(team => [teamCodeOf(team.team), team.stats]));
       const meetings = seasons.flatMap(season => season.events ?? []).map(event => {
         const competition = event.competitions?.[0];
         const sides = Object.fromEntries((competition?.competitors ?? []).map(entry => [entry.homeAway, {code: codeOf(entry.team.abbreviation), score: Number(typeof entry.score === 'object' ? entry.score?.displayValue : entry.score)}]));
