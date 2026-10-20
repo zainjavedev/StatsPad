@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Darko Rajakovic",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -59,6 +59,20 @@
       "slot": "PG"
     },
     {
+      "name": "Ja'Kobe Walter",
+      "bbrefId": "walteja01",
+      "nbaId": null,
+      "espnId": 4684272,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2004-09-04",
+      "exp": 3,
+      "college": "Baylor",
+      "jersey": "14",
+      "unit": "starters",
+      "slot": "SG"
+    },
+    {
       "name": "RJ Barrett",
       "bbrefId": "barrerj01",
       "nbaId": 1629628,
@@ -69,20 +83,6 @@
       "exp": 8,
       "college": "Duke",
       "jersey": "9",
-      "unit": "starters",
-      "slot": "SG"
-    },
-    {
-      "name": "Kawhi Leonard",
-      "bbrefId": "leonaka01",
-      "nbaId": 202695,
-      "espnId": 6450,
-      "pos": "F",
-      "height": "6-6",
-      "birthDate": "1991-06-29",
-      "exp": 16,
-      "college": "San Diego State",
-      "jersey": "2",
       "unit": "starters",
       "slot": "SF"
     },
@@ -115,6 +115,19 @@
       "slot": "C"
     },
     {
+      "name": "Kawhi Leonard",
+      "bbrefId": "leonaka01",
+      "nbaId": 202695,
+      "espnId": 6450,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "1991-06-29",
+      "exp": 16,
+      "college": "San Diego State",
+      "jersey": "2",
+      "unit": "second"
+    },
+    {
       "name": "Jamal Shead",
       "bbrefId": "sheadja01",
       "nbaId": null,
@@ -138,19 +151,6 @@
       "exp": 2,
       "college": "South Carolina",
       "jersey": "30",
-      "unit": "second"
-    },
-    {
-      "name": "Ja'Kobe Walter",
-      "bbrefId": "walteja01",
-      "nbaId": null,
-      "espnId": 4684272,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "2004-09-04",
-      "exp": 3,
-      "college": "Baylor",
-      "jersey": "14",
       "unit": "second"
     },
     {

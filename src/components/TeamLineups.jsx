@@ -23,8 +23,9 @@ function useRoster(code) {
 /* Last season's numbers, joined on the Basketball Reference id. */
 function starters(roster, index) {
   if (!roster) return {};
-  return Object.fromEntries(SLOTS.map(slot => {
-    const entry = roster.players.find(player => player.slot === slot);
+  const five = roster.players.filter(player => player.unit === 'starters');
+  return Object.fromEntries(SLOTS.map((slot, position) => {
+    const entry = five[position];
     return [slot, entry && {...entry, stats: statsFor(entry, index)?.stats || null}];
   }));
 }
@@ -33,7 +34,7 @@ function Card({slot, player, other, color}) {
   if (!player) return <div className="lc lc-empty"><span className="lc-badge-plain">{slot}</span>—</div>;
   return <div className="lc" style={{'--team': color}}>
     <span className="lc-stage">
-      <span className="lc-badge">{slot}</span>
+      <span className="lc-badge">{player.slot ?? player.pos ?? slot}</span>
       <Headshot player={player} className="lc-art"/>
     </span>
     <b className="lc-name" title={player.name}>{player.name}</b>

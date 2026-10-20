@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Chris Finch",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,20 +45,6 @@
   ],
   "players": [
     {
-      "name": "LaMelo Ball",
-      "bbrefId": "ballla01",
-      "nbaId": 1630163,
-      "espnId": 4432816,
-      "pos": "G",
-      "height": "6-7",
-      "birthDate": "2001-08-22",
-      "exp": 7,
-      "college": null,
-      "jersey": "1",
-      "unit": "starters",
-      "slot": "PG"
-    },
-    {
       "name": "Anthony Edwards",
       "bbrefId": "edwaran01",
       "nbaId": 1630162,
@@ -70,21 +56,21 @@
       "college": "Georgia",
       "jersey": "5",
       "unit": "starters",
-      "slot": "SG"
+      "slot": "PG"
     },
     {
-      "name": "Jonathan Kuminga",
-      "bbrefId": "kuminjo01",
-      "nbaId": null,
-      "espnId": 4433247,
-      "pos": "F",
+      "name": "LaMelo Ball",
+      "bbrefId": "ballla01",
+      "nbaId": 1630163,
+      "espnId": 4432816,
+      "pos": "G",
       "height": "6-7",
-      "birthDate": "2002-10-06",
-      "exp": 6,
+      "birthDate": "2001-08-22",
+      "exp": 7,
       "college": null,
-      "jersey": "24",
+      "jersey": "1",
       "unit": "starters",
-      "slot": "SF"
+      "slot": "SG"
     },
     {
       "name": "Jaden McDaniels",
@@ -97,6 +83,20 @@
       "exp": 7,
       "college": "Washington",
       "jersey": "3",
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Jonathan Kuminga",
+      "bbrefId": "kuminjo01",
+      "nbaId": null,
+      "espnId": 4433247,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2002-10-06",
+      "exp": 6,
+      "college": null,
+      "jersey": "24",
       "unit": "starters",
       "slot": "PF"
     },

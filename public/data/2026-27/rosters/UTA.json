@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Will Hardy",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,6 +45,19 @@
   ],
   "players": [
     {
+      "name": "Darryn Peterson",
+      "nbaId": null,
+      "espnId": 5041955,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2007-01-17",
+      "exp": 0,
+      "college": "Kansas",
+      "jersey": "22",
+      "unit": "starters",
+      "slot": "PG"
+    },
+    {
       "name": "Keyonte George",
       "bbrefId": "georgke01",
       "nbaId": null,
@@ -56,34 +69,7 @@
       "college": "Baylor",
       "jersey": "3",
       "unit": "starters",
-      "slot": "PG"
-    },
-    {
-      "name": "Darryn Peterson",
-      "nbaId": null,
-      "espnId": 5041955,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "2007-01-17",
-      "exp": 0,
-      "college": "Kansas",
-      "jersey": "22",
-      "unit": "starters",
       "slot": "SG"
-    },
-    {
-      "name": "Lauri Markkanen",
-      "bbrefId": "markkla01",
-      "nbaId": 1628374,
-      "espnId": 4066336,
-      "pos": "F",
-      "height": "7-1",
-      "birthDate": "1997-05-22",
-      "exp": 10,
-      "college": "Arizona",
-      "jersey": "23",
-      "unit": "starters",
-      "slot": "SF"
     },
     {
       "name": "Jaren Jackson Jr.",
@@ -96,6 +82,20 @@
       "exp": 9,
       "college": "Michigan State",
       "jersey": "20",
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Lauri Markkanen",
+      "bbrefId": "markkla01",
+      "nbaId": 1628374,
+      "espnId": 4066336,
+      "pos": "F",
+      "height": "7-1",
+      "birthDate": "1997-05-22",
+      "exp": 10,
+      "college": "Arizona",
+      "jersey": "23",
       "unit": "starters",
       "slot": "PF"
     },

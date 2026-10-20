@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "JJ Redick",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,18 +45,32 @@
   ],
   "players": [
     {
-      "name": "Luka Doncic",
-      "bbrefId": "doncilu01",
-      "nbaId": 1629029,
-      "espnId": 3945274,
+      "name": "Quentin Grimes",
+      "bbrefId": "grimequ01",
+      "nbaId": null,
+      "espnId": 4397014,
       "pos": "G",
-      "height": "6-8",
-      "birthDate": "1999-02-28",
-      "exp": 9,
-      "college": null,
-      "jersey": "77",
+      "height": "6-4",
+      "birthDate": "2000-05-08",
+      "exp": 6,
+      "college": "Houston",
+      "jersey": "5",
       "unit": "starters",
       "slot": "PG"
+    },
+    {
+      "name": "Matisse Thybulle",
+      "bbrefId": "thybuma01",
+      "nbaId": 1629680,
+      "espnId": 3907498,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "1997-03-04",
+      "exp": 8,
+      "college": "Washington",
+      "jersey": "26",
+      "unit": "starters",
+      "slot": "SG"
     },
     {
       "name": "Austin Reaves",
@@ -69,22 +83,20 @@
       "exp": 6,
       "college": "Oklahoma",
       "jersey": "15",
-      "unit": "starters",
-      "slot": "SG"
+      "unit": "starters"
     },
     {
-      "name": "Quentin Grimes",
-      "bbrefId": "grimequ01",
-      "nbaId": null,
-      "espnId": 4397014,
+      "name": "Luka Doncic",
+      "bbrefId": "doncilu01",
+      "nbaId": 1629029,
+      "espnId": 3945274,
       "pos": "G",
-      "height": "6-4",
-      "birthDate": "2000-05-08",
-      "exp": 6,
-      "college": "Houston",
-      "jersey": "5",
-      "unit": "starters",
-      "slot": "SF"
+      "height": "6-8",
+      "birthDate": "1999-02-28",
+      "exp": 9,
+      "college": null,
+      "jersey": "77",
+      "unit": "starters"
     },
     {
       "name": "Jake LaRavia",
@@ -97,8 +109,7 @@
       "exp": 5,
       "college": "Wake Forest",
       "jersey": "12",
-      "unit": "starters",
-      "slot": "PF"
+      "unit": "starters"
     },
     {
       "name": "Walker Kessler",
@@ -111,8 +122,7 @@
       "exp": 5,
       "college": "Auburn",
       "jersey": "14",
-      "unit": "starters",
-      "slot": "C"
+      "unit": "second"
     },
     {
       "name": "Collin Sexton",
@@ -176,19 +186,6 @@
       "exp": 6,
       "college": "Stanford",
       "jersey": "11",
-      "unit": "second"
-    },
-    {
-      "name": "Matisse Thybulle",
-      "bbrefId": "thybuma01",
-      "nbaId": 1629680,
-      "espnId": 3907498,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "1997-03-04",
-      "exp": 8,
-      "college": "Washington",
-      "jersey": "26",
       "unit": "third"
     },
     {

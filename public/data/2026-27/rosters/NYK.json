@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Mike Brown",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,6 +45,20 @@
   ],
   "players": [
     {
+      "name": "Mikal Bridges",
+      "bbrefId": "bridgmi01",
+      "nbaId": 1628969,
+      "espnId": 3147657,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "1996-08-30",
+      "exp": 9,
+      "college": "Villanova",
+      "jersey": "25",
+      "unit": "starters",
+      "slot": "PG"
+    },
+    {
       "name": "Jalen Brunson",
       "bbrefId": "brunsja01",
       "nbaId": 1628973,
@@ -56,7 +70,7 @@
       "college": "Villanova",
       "jersey": "11",
       "unit": "starters",
-      "slot": "PG"
+      "slot": "SG"
     },
     {
       "name": "Josh Hart",
@@ -69,22 +83,7 @@
       "exp": 10,
       "college": "Villanova",
       "jersey": "3",
-      "unit": "starters",
-      "slot": "SG"
-    },
-    {
-      "name": "Mikal Bridges",
-      "bbrefId": "bridgmi01",
-      "nbaId": 1628969,
-      "espnId": 3147657,
-      "pos": "G",
-      "height": "6-6",
-      "birthDate": "1996-08-30",
-      "exp": 9,
-      "college": "Villanova",
-      "jersey": "25",
-      "unit": "starters",
-      "slot": "SF"
+      "unit": "starters"
     },
     {
       "name": "OG Anunoby",

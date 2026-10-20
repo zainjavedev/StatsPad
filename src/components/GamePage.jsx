@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { loadBoxscore } from '../lib/boxscore';
 import Radar from './Radar';
+import { Headshot } from './TeamPage';
 import { TEAMS } from '../lib/teams';
 
 /* One game on its own page: the score, who led it in each category (with photos), and the full box
@@ -32,22 +33,46 @@ const shapeAxes = (teams, scores) => SHAPE.map(([label, get, low, high, text]) =
 
 const Face = ({player, size = 40}) => player.photo ? <img className="gp-face" style={{width: size, height: size}} src={player.photo} alt="" loading="lazy" onError={event => { event.currentTarget.style.visibility = 'hidden'; }}/> : <i className="gp-face" style={{width: size, height: size}}/>;
 
-function Expected({box}) {
-  const [rosters, setRosters] = useState(null);
+const plain = name => String(name).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[.']/g, '').replace(/\s+/g, ' ').trim();
+
+/* Before tip-off: each side's expected starting five on the team page's cards, with last season's per-game
+   numbers and how often the player started in the preseason. */
+function Preview({box}) {
+  const [data, setData] = useState(null);
   useEffect(() => {
-    Promise.all([box.away, box.home].map(side => fetch(`/data/2026-27/rosters/${codeOf(side.abbr)}.json`).then(response => response.json()))).then(setRosters).catch(() => setRosters([]));
+    const codes = [box.away, box.home].map(side => codeOf(side.abbr));
+    Promise.all(codes.map(code => fetch(`/data/2026-27/rosters/${code}.json`).then(response => response.json()))).then(async rosters => {
+      const [season, pre] = await Promise.all([
+        fetch(`/data/${rosters[0].statsSeason}/regular-season.json`).then(response => response.json()).catch(() => ({players: []})),
+        fetch('/data/2026-27/preseason-starters.json').then(response => response.json()).catch(() => ({})),
+      ]);
+      const stats = new Map(season.players.map(player => [plain(player.playerName), player.stats]));
+      setData(rosters.map((roster, index) => ({
+        roster, code: codes[index], side: [box.away, box.home][index],
+        five: roster.players.filter(player => player.unit === 'starters').map(player => ({...player, stats: stats.get(plain(player.name)) ?? null, pre: (pre[codes[index]] ?? []).find(item => item.espnId === player.espnId || plain(item.name) === plain(player.name))})),
+        games: Math.max(0, ...(pre[codes[index]] ?? []).map(item => item.games)),
+      })));
+    }).catch(() => setData([]));
   }, [box]);
-  if (!rosters) return <p className="gd-note">Loading the starting fives…</p>;
-  return <>
-    <p className="gd-note">No box score yet. These are the expected starting fives, from ESPN&apos;s depth chart.</p>
-    <div className="gd-fives">{rosters.map((roster, index) => <section key={index} className="gd-team">
-      <h3><img src={[box.away, box.home][index].logo} alt=""/>{roster.teamName}</h3>
-      <ul>{roster.players.filter(player => player.unit === 'starters').map(player => <li key={player.name}>
-        <img className="gp-face" style={{width: 44, height: 44}} src={`https://a.espncdn.com/i/headshots/nba/players/full/${player.espnId}.png`} alt="" loading="lazy" onError={event => { event.currentTarget.style.visibility = 'hidden'; }}/>
-        <span>{player.slot ?? player.pos}</span><b>{player.name}</b>
-      </li>)}</ul>
-    </section>)}</div>
-  </>;
+  if (!data) return <p className="gd-note">Loading the starting fives…</p>;
+  const per = (player, key) => player.stats ? player.stats[key].toFixed(1) : '—';
+  return <div className="gp-preview">
+    <p className="gd-note">No box score yet. Starters are the five who started the most preseason games for each team.</p>
+    {data.map(({roster, code, side, five, games}) => <section key={code} className="gp-side" style={{'--team': TEAMS[code].color}}>
+      <h3>{side.logo && <img src={side.logo} alt=""/>}<span>{roster.teamName}<small>Expected starting five{games ? ` · ${games} preseason game${games === 1 ? '' : 's'}` : ''}</small></span></h3>
+      <div className="starter-grid">{five.map(player => <div key={player.name} className="starter-card">
+        <span className="starter-stage"><span className="slot-badge">{player.slot ?? player.pos}</span><Headshot player={player} className="starter-art"/></span>
+        <h3>{player.name}</h3>
+        <dl className="starter-line">
+          <div><dt>PPG</dt><dd>{per(player, 'points')}</dd></div>
+          <div><dt>RPG</dt><dd>{per(player, 'totalRebounds')}</dd></div>
+          <div><dt>APG</dt><dd>{per(player, 'assists')}</dd></div>
+        </dl>
+        {player.pre && <small className="gp-started">Started {player.pre.starts} of {player.pre.games} preseason</small>}
+      </div>)}</div>
+      <p className="gd-meta">Per game, last season. {roster.coach ? `Coach: ${roster.coach}.` : ''}</p>
+    </section>)}
+  </div>;
 }
 
 export default function GamePage({id}) {
@@ -85,7 +110,7 @@ export default function GamePage({id}) {
     </div>
     <p className="gd-meta">{[box.date && dateFormat.format(new Date(box.date)), box.venue, box.tv, box.preseason ? 'Preseason' : ''].filter(Boolean).join(' · ')}</p>
 
-    {box.state === 'pre' ? <Expected box={box}/> : <>
+    {box.state === 'pre' ? <Preview box={box}/> : <>
       <div className="gp-tabs" role="group" aria-label="Team">
         {ordered.map((team, index) => <button key={team.abbr} className={side === index ? 'active' : ''} onClick={() => setSide(index)}>{team.logo && <img src={team.logo} alt=""/>}{team.name}</button>)}
         <button className="gp-more-btn" onClick={() => setMore(open => !open)}>{more ? 'Fewer stats' : 'More stats'}</button>

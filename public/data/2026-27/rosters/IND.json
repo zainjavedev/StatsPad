@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Rick Carlisle",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,15 +45,16 @@
   ],
   "players": [
     {
-      "name": "Tyrese Haliburton",
-      "nbaId": 1630169,
-      "espnId": 4396993,
+      "name": "Kelly Oubre Jr.",
+      "bbrefId": "oubreke01",
+      "nbaId": 1626162,
+      "espnId": 3133603,
       "pos": "G",
-      "height": "6-5",
-      "birthDate": "2000-02-29",
-      "exp": 7,
-      "college": "Iowa State",
-      "jersey": "0",
+      "height": "6-8",
+      "birthDate": "1995-12-09",
+      "exp": 12,
+      "college": "Kansas",
+      "jersey": "10",
       "unit": "starters",
       "slot": "PG"
     },
@@ -72,18 +73,16 @@
       "slot": "SG"
     },
     {
-      "name": "Aaron Nesmith",
-      "bbrefId": "nesmiaa01",
-      "nbaId": 1630174,
-      "espnId": 4396909,
+      "name": "Tyrese Haliburton",
+      "nbaId": 1630169,
+      "espnId": 4396993,
       "pos": "G",
       "height": "6-5",
-      "birthDate": "1999-10-16",
+      "birthDate": "2000-02-29",
       "exp": 7,
-      "college": "Vanderbilt",
-      "jersey": "23",
-      "unit": "starters",
-      "slot": "SF"
+      "college": "Iowa State",
+      "jersey": "0",
+      "unit": "starters"
     },
     {
       "name": "Pascal Siakam",
@@ -114,16 +113,16 @@
       "slot": "C"
     },
     {
-      "name": "Kelly Oubre Jr.",
-      "bbrefId": "oubreke01",
-      "nbaId": 1626162,
-      "espnId": 3133603,
+      "name": "Aaron Nesmith",
+      "bbrefId": "nesmiaa01",
+      "nbaId": 1630174,
+      "espnId": 4396909,
       "pos": "G",
-      "height": "6-8",
-      "birthDate": "1995-12-09",
-      "exp": 12,
-      "college": "Kansas",
-      "jersey": "10",
+      "height": "6-5",
+      "birthDate": "1999-10-16",
+      "exp": 7,
+      "college": "Vanderbilt",
+      "jersey": "23",
       "unit": "second"
     },
     {

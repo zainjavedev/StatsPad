@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Doug Christie",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -72,16 +72,16 @@
       "slot": "SG"
     },
     {
-      "name": "De'Andre Hunter",
-      "bbrefId": "huntede01",
-      "nbaId": 1629631,
-      "espnId": 4065732,
+      "name": "Precious Achiuwa",
+      "bbrefId": "achiupr01",
+      "nbaId": 1630173,
+      "espnId": 4431679,
       "pos": "F",
-      "height": "6-7",
-      "birthDate": "1997-12-02",
-      "exp": 8,
-      "college": "Virginia",
-      "jersey": "15",
+      "height": "6-8",
+      "birthDate": "1999-09-19",
+      "exp": 7,
+      "college": "Memphis",
+      "jersey": "9",
       "unit": "starters",
       "slot": "SF"
     },
@@ -100,6 +100,19 @@
       "slot": "PF"
     },
     {
+      "name": "De'Andre Hunter",
+      "bbrefId": "huntede01",
+      "nbaId": 1629631,
+      "espnId": 4065732,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "1997-12-02",
+      "exp": 8,
+      "college": "Virginia",
+      "jersey": "15",
+      "unit": "starters"
+    },
+    {
       "name": "Domantas Sabonis",
       "bbrefId": "sabondo01",
       "nbaId": 1627734,
@@ -110,8 +123,7 @@
       "exp": 11,
       "college": "Gonzaga",
       "jersey": "11",
-      "unit": "starters",
-      "slot": "C"
+      "unit": "second"
     },
     {
       "name": "Maxime Raynaud",
@@ -137,19 +149,6 @@
       "exp": 2,
       "college": "Colorado State",
       "jersey": "10",
-      "unit": "second"
-    },
-    {
-      "name": "Precious Achiuwa",
-      "bbrefId": "achiupr01",
-      "nbaId": 1630173,
-      "espnId": 4431679,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "1999-09-19",
-      "exp": 7,
-      "college": "Memphis",
-      "jersey": "9",
       "unit": "second"
     },
     {

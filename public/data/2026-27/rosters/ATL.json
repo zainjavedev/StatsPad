@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Quin Snyder",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,20 +45,6 @@
   ],
   "players": [
     {
-      "name": "CJ McCollum",
-      "bbrefId": "mccolcj01",
-      "nbaId": 203468,
-      "espnId": 2490149,
-      "pos": "G",
-      "height": "6-3",
-      "birthDate": "1991-09-19",
-      "exp": 14,
-      "college": "Lehigh",
-      "jersey": "3",
-      "unit": "starters",
-      "slot": "PG"
-    },
-    {
       "name": "Nickeil Alexander-Walker",
       "bbrefId": "alexani01",
       "nbaId": 1629638,
@@ -70,7 +56,7 @@
       "college": "Virginia Tech",
       "jersey": "7",
       "unit": "starters",
-      "slot": "SG"
+      "slot": "PG"
     },
     {
       "name": "Dyson Daniels",
@@ -84,21 +70,20 @@
       "college": null,
       "jersey": "5",
       "unit": "starters",
-      "slot": "SF"
+      "slot": "SG"
     },
     {
-      "name": "Jalen Johnson",
-      "bbrefId": "johnsja05",
-      "nbaId": null,
-      "espnId": 4701230,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2001-12-18",
-      "exp": 6,
-      "college": "Duke",
-      "jersey": "1",
-      "unit": "starters",
-      "slot": "PF"
+      "name": "CJ McCollum",
+      "bbrefId": "mccolcj01",
+      "nbaId": 203468,
+      "espnId": 2490149,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "1991-09-19",
+      "exp": 14,
+      "college": "Lehigh",
+      "jersey": "3",
+      "unit": "starters"
     },
     {
       "name": "Onyeka Okongwu",
@@ -112,7 +97,20 @@
       "college": "USC",
       "jersey": "17",
       "unit": "starters",
-      "slot": "C"
+      "slot": "PF"
+    },
+    {
+      "name": "Jalen Johnson",
+      "bbrefId": "johnsja05",
+      "nbaId": null,
+      "espnId": 4701230,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2001-12-18",
+      "exp": 6,
+      "college": "Duke",
+      "jersey": "1",
+      "unit": "starters"
     },
     {
       "name": "Luguentz Dort",

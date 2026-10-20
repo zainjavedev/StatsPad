@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Charles Lee",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,30 +45,30 @@
   ],
   "players": [
     {
-      "name": "Coby White",
-      "bbrefId": "whiteco01",
-      "nbaId": 1629632,
-      "espnId": 4395651,
+      "name": "Dennis Schroder",
+      "bbrefId": "schrode01",
+      "nbaId": 203471,
+      "espnId": 3032979,
       "pos": "G",
-      "height": "6-4",
-      "birthDate": "2000-02-16",
-      "exp": 8,
-      "college": "North Carolina",
-      "jersey": "3",
+      "height": "6-1",
+      "birthDate": "1993-09-15",
+      "exp": 14,
+      "college": null,
+      "jersey": "17",
       "unit": "starters",
       "slot": "PG"
     },
     {
-      "name": "Kon Knueppel",
-      "bbrefId": "knuepko01",
+      "name": "Liam McNeeley",
+      "bbrefId": "mcneeli01",
       "nbaId": null,
-      "espnId": 5061575,
+      "espnId": 5239590,
       "pos": "G",
-      "height": "6-6",
-      "birthDate": "2005-08-03",
+      "height": "6-7",
+      "birthDate": "2005-10-10",
       "exp": 2,
-      "college": "Duke",
-      "jersey": "7",
+      "college": "UConn",
+      "jersey": "33",
       "unit": "starters",
       "slot": "SG"
     },
@@ -87,20 +87,6 @@
       "slot": "SF"
     },
     {
-      "name": "Naz Reid",
-      "bbrefId": "reidna01",
-      "nbaId": 1629675,
-      "espnId": 4396971,
-      "pos": "C",
-      "height": "6-9",
-      "birthDate": "1999-08-26",
-      "exp": 8,
-      "college": "LSU",
-      "jersey": "0",
-      "unit": "starters",
-      "slot": "PF"
-    },
-    {
       "name": "Moussa Diabate",
       "bbrefId": "diabamo01",
       "nbaId": null,
@@ -112,7 +98,47 @@
       "college": "Michigan",
       "jersey": "14",
       "unit": "starters",
+      "slot": "PF"
+    },
+    {
+      "name": "Naz Reid",
+      "bbrefId": "reidna01",
+      "nbaId": 1629675,
+      "espnId": 4396971,
+      "pos": "C",
+      "height": "6-9",
+      "birthDate": "1999-08-26",
+      "exp": 8,
+      "college": "LSU",
+      "jersey": "0",
+      "unit": "starters",
       "slot": "C"
+    },
+    {
+      "name": "Coby White",
+      "bbrefId": "whiteco01",
+      "nbaId": 1629632,
+      "espnId": 4395651,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2000-02-16",
+      "exp": 8,
+      "college": "North Carolina",
+      "jersey": "3",
+      "unit": "second"
+    },
+    {
+      "name": "Kon Knueppel",
+      "bbrefId": "knuepko01",
+      "nbaId": null,
+      "espnId": 5061575,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2005-08-03",
+      "exp": 2,
+      "college": "Duke",
+      "jersey": "7",
+      "unit": "second"
     },
     {
       "name": "Grayson Allen",
@@ -141,19 +167,6 @@
       "unit": "second"
     },
     {
-      "name": "Dennis Schroder",
-      "bbrefId": "schrode01",
-      "nbaId": 203471,
-      "espnId": 3032979,
-      "pos": "G",
-      "height": "6-1",
-      "birthDate": "1993-09-15",
-      "exp": 14,
-      "college": null,
-      "jersey": "17",
-      "unit": "second"
-    },
-    {
       "name": "Sion James",
       "bbrefId": "jamessi01",
       "nbaId": null,
@@ -176,7 +189,7 @@
       "exp": 0,
       "college": "Washington",
       "jersey": "22",
-      "unit": "second"
+      "unit": "third"
     },
     {
       "name": "Ryan Kalkbrenner",
@@ -239,19 +252,6 @@
       "exp": 0,
       "college": "Illinois",
       "jersey": "18",
-      "unit": "third"
-    },
-    {
-      "name": "Liam McNeeley",
-      "bbrefId": "mcneeli01",
-      "nbaId": null,
-      "espnId": 5239590,
-      "pos": "G",
-      "height": "6-7",
-      "birthDate": "2005-10-10",
-      "exp": 2,
-      "college": "UConn",
-      "jersey": "33",
       "unit": "camp"
     },
     {

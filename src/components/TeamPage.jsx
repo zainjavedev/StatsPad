@@ -175,7 +175,7 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, season, onOpe
   const shareSpec = {
     kind: 'grid', eyebrow: `${roster.season.replace('-', '–')} roster`, title: roster.teamName, color: TEAMS[teamCode].color,
     sub: `Expected starting five · per game, ${isCurrent(season) ? 'this season' : `last season (${pretty(season || roster.statsSeason || '2025-26')})`}`,
-    rows: starters.map(player => ({lead: player.slot, name: player.name, person: {name: player.name, playerId: player.profile?.playerId, espnId: player.espnId},
+    rows: starters.map(player => ({lead: player.slot ?? player.pos, name: player.name, person: {name: player.name, playerId: player.profile?.playerId, espnId: player.espnId},
       lines: player.stats ? [['PTS', player.stats.points.toFixed(1)], ['REB', player.stats.totalRebounds.toFixed(1)], ['AST', player.stats.assists.toFixed(1)]] : [['', 'Rookie']]})),
     summary: [`${starters.reduce((sum, player) => sum + (player.stats?.points ?? 0), 0).toFixed(1)} PPG`, 'combined from the starting five'],
     foot: 'Lineups are projections from ESPN depth charts', path: teamUrl(teamCode),

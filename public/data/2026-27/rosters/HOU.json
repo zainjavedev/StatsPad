@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Ime Udoka",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,19 +45,6 @@
   ],
   "players": [
     {
-      "name": "Fred VanVleet",
-      "nbaId": 1627832,
-      "espnId": 2991230,
-      "pos": "G",
-      "height": "6-0",
-      "birthDate": "1994-02-25",
-      "exp": 11,
-      "college": "Wichita State",
-      "jersey": "5",
-      "unit": "starters",
-      "slot": "PG"
-    },
-    {
       "name": "Amen Thompson",
       "bbrefId": "thompam01",
       "nbaId": null,
@@ -69,21 +56,20 @@
       "college": null,
       "jersey": "1",
       "unit": "starters",
-      "slot": "SG"
+      "slot": "PG"
     },
     {
-      "name": "Kevin Durant",
-      "bbrefId": "duranke01",
-      "nbaId": 201142,
-      "espnId": 3202,
-      "pos": "F",
-      "height": "6-11",
-      "birthDate": "1988-09-29",
-      "exp": 20,
-      "college": "Texas",
-      "jersey": "7",
+      "name": "Fred VanVleet",
+      "nbaId": 1627832,
+      "espnId": 2991230,
+      "pos": "G",
+      "height": "6-0",
+      "birthDate": "1994-02-25",
+      "exp": 11,
+      "college": "Wichita State",
+      "jersey": "5",
       "unit": "starters",
-      "slot": "SF"
+      "slot": "SG"
     },
     {
       "name": "Jabari Smith Jr.",
@@ -96,6 +82,20 @@
       "exp": 5,
       "college": "Auburn",
       "jersey": "10",
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Kevin Durant",
+      "bbrefId": "duranke01",
+      "nbaId": 201142,
+      "espnId": 3202,
+      "pos": "F",
+      "height": "6-11",
+      "birthDate": "1988-09-29",
+      "exp": 20,
+      "college": "Texas",
+      "jersey": "7",
       "unit": "starters",
       "slot": "PF"
     },

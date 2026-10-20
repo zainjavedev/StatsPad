@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Erik Spoelstra",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -101,6 +101,19 @@
       "slot": "PF"
     },
     {
+      "name": "Nikola Jovic",
+      "bbrefId": "jovicni01",
+      "nbaId": null,
+      "espnId": 4997528,
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2003-06-09",
+      "exp": 5,
+      "college": null,
+      "jersey": "5",
+      "unit": "starters"
+    },
+    {
       "name": "Bam Adebayo",
       "bbrefId": "adebaba01",
       "nbaId": 1628389,
@@ -111,8 +124,7 @@
       "exp": 10,
       "college": "Kentucky",
       "jersey": "13",
-      "unit": "starters",
-      "slot": "C"
+      "unit": "second"
     },
     {
       "name": "Tim Hardaway Jr.",
@@ -177,7 +189,7 @@
       "exp": 7,
       "college": "Kentucky",
       "jersey": "8",
-      "unit": "second"
+      "unit": "third"
     },
     {
       "name": "Ryan Conwell",
@@ -189,19 +201,6 @@
       "exp": 0,
       "college": "Louisville",
       "jersey": "4",
-      "unit": "third"
-    },
-    {
-      "name": "Nikola Jovic",
-      "bbrefId": "jovicni01",
-      "nbaId": null,
-      "espnId": 4997528,
-      "pos": "F",
-      "height": "6-10",
-      "birthDate": "2003-06-09",
-      "exp": 5,
-      "college": null,
-      "jersey": "5",
       "unit": "third"
     },
     {

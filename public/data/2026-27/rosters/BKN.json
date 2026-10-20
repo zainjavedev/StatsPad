@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Jordi Fernandez",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,19 +45,6 @@
   ],
   "players": [
     {
-      "name": "Mikel Brown Jr.",
-      "nbaId": null,
-      "espnId": 5101761,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "2006-04-03",
-      "exp": 0,
-      "college": "Louisville",
-      "jersey": "0",
-      "unit": "starters",
-      "slot": "PG"
-    },
-    {
       "name": "Egor Demin",
       "bbrefId": "demineg01",
       "nbaId": null,
@@ -69,21 +56,21 @@
       "college": "BYU",
       "jersey": "8",
       "unit": "starters",
-      "slot": "SG"
+      "slot": "PG"
     },
     {
-      "name": "Michael Porter Jr.",
-      "bbrefId": "portemi01",
-      "nbaId": 1629008,
-      "espnId": 4278104,
-      "pos": "F",
-      "height": "6-10",
-      "birthDate": "1998-06-29",
-      "exp": 8,
-      "college": "Missouri",
-      "jersey": "17",
+      "name": "Keon Ellis",
+      "bbrefId": "elliske01",
+      "nbaId": null,
+      "espnId": 4702177,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2000-01-08",
+      "exp": 5,
+      "college": "Alabama",
+      "jersey": "1",
       "unit": "starters",
-      "slot": "SF"
+      "slot": "SG"
     },
     {
       "name": "Julius Randle",
@@ -96,6 +83,20 @@
       "exp": 13,
       "college": "Kentucky",
       "jersey": "30",
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Michael Porter Jr.",
+      "bbrefId": "portemi01",
+      "nbaId": 1629008,
+      "espnId": 4278104,
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "1998-06-29",
+      "exp": 8,
+      "college": "Missouri",
+      "jersey": "17",
       "unit": "starters",
       "slot": "PF"
     },
@@ -112,6 +113,18 @@
       "jersey": "20",
       "unit": "starters",
       "slot": "C"
+    },
+    {
+      "name": "Mikel Brown Jr.",
+      "nbaId": null,
+      "espnId": 5101761,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2006-04-03",
+      "exp": 0,
+      "college": "Louisville",
+      "jersey": "0",
+      "unit": "second"
     },
     {
       "name": "Noah Clowney",
@@ -150,19 +163,6 @@
       "exp": 2,
       "college": null,
       "jersey": "77",
-      "unit": "second"
-    },
-    {
-      "name": "Keon Ellis",
-      "bbrefId": "elliske01",
-      "nbaId": null,
-      "espnId": 4702177,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "2000-01-08",
-      "exp": 5,
-      "college": "Alabama",
-      "jersey": "1",
       "unit": "second"
     },
     {

@@ -1676,3 +1676,14 @@ header .brand small{margin-top:3px}
 .tl-more{margin-top:6px}
 @media (max-width:640px){.tl-row{grid-template-columns:70px minmax(0,1fr);padding:14px}.tl-match{grid-template-columns:minmax(0,1fr) 68px minmax(0,1fr);gap:8px}}
 .timeline section .tl-row:last-child{margin-bottom:0}
+
+/* matchup preview */
+.gp-preview{display:flex;flex-direction:column;gap:28px;margin-top:18px}
+.gp-side>h3{display:flex;align-items:center;gap:14px;margin:0 0 14px;font-family:'Bricolage Grotesque','DM Sans',sans-serif;font-size:24px;font-weight:800}
+.gp-side>h3 img{width:44px;height:44px;object-fit:contain}
+.gp-side>h3 span{display:flex;flex-direction:column}
+.gp-side>h3 small{margin-top:2px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--text-3)}
+.gp-started{display:block;margin:10px 12px 0;font-size:11px;font-weight:700;color:var(--text-3)}
+.gp-side .starter-card{cursor:default}
+@media (max-width:900px){.gp-side .starter-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:560px){.gp-side .starter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}

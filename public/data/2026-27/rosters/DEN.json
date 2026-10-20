@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "David Adelman",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,20 +45,6 @@
   ],
   "players": [
     {
-      "name": "Jamal Murray",
-      "bbrefId": "murraja01",
-      "nbaId": 1627750,
-      "espnId": 3936299,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "1997-02-23",
-      "exp": 10,
-      "college": "Kentucky",
-      "jersey": "27",
-      "unit": "starters",
-      "slot": "PG"
-    },
-    {
       "name": "Christian Braun",
       "bbrefId": "braunch01",
       "nbaId": null,
@@ -69,6 +55,20 @@
       "exp": 5,
       "college": "Kansas",
       "jersey": "0",
+      "unit": "starters",
+      "slot": "PG"
+    },
+    {
+      "name": "Jamal Murray",
+      "bbrefId": "murraja01",
+      "nbaId": 1627750,
+      "espnId": 3936299,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "1997-02-23",
+      "exp": 10,
+      "college": "Kentucky",
+      "jersey": "27",
       "unit": "starters",
       "slot": "SG"
     },

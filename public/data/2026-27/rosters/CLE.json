@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Kenny Atkinson",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,20 +45,6 @@
   ],
   "players": [
     {
-      "name": "James Harden",
-      "bbrefId": "hardeja01",
-      "nbaId": 201935,
-      "espnId": 3992,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "1989-08-26",
-      "exp": 18,
-      "college": "Arizona State",
-      "jersey": "1",
-      "unit": "starters",
-      "slot": "PG"
-    },
-    {
       "name": "Donovan Mitchell",
       "bbrefId": "mitchdo01",
       "nbaId": 1628378,
@@ -70,7 +56,7 @@
       "college": "Louisville",
       "jersey": "45",
       "unit": "starters",
-      "slot": "SG"
+      "slot": "PG"
     },
     {
       "name": "Peyton Watson",
@@ -84,7 +70,20 @@
       "college": "UCLA",
       "jersey": "8",
       "unit": "starters",
-      "slot": "SF"
+      "slot": "SG"
+    },
+    {
+      "name": "James Harden",
+      "bbrefId": "hardeja01",
+      "nbaId": 201935,
+      "espnId": 3992,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "1989-08-26",
+      "exp": 18,
+      "college": "Arizona State",
+      "jersey": "1",
+      "unit": "starters"
     },
     {
       "name": "Evan Mobley",

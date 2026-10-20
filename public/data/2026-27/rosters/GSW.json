@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Steve Kerr",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,20 +45,6 @@
   ],
   "players": [
     {
-      "name": "Stephen Curry",
-      "bbrefId": "curryst01",
-      "nbaId": 201939,
-      "espnId": 3975,
-      "pos": "G",
-      "height": "6-2",
-      "birthDate": "1988-03-14",
-      "exp": 18,
-      "college": "Davidson",
-      "jersey": "30",
-      "unit": "starters",
-      "slot": "PG"
-    },
-    {
       "name": "Brandin Podziemski",
       "bbrefId": "podzibr01",
       "nbaId": null,
@@ -69,6 +55,20 @@
       "exp": 4,
       "college": "Santa Clara",
       "jersey": "2",
+      "unit": "starters",
+      "slot": "PG"
+    },
+    {
+      "name": "Stephen Curry",
+      "bbrefId": "curryst01",
+      "nbaId": 201939,
+      "espnId": 3975,
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "1988-03-14",
+      "exp": 18,
+      "college": "Davidson",
+      "jersey": "30",
       "unit": "starters",
       "slot": "SG"
     },
@@ -86,20 +86,6 @@
       "slot": "SF"
     },
     {
-      "name": "Gui Santos",
-      "bbrefId": "santogu01",
-      "nbaId": null,
-      "espnId": 4997536,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "2002-06-22",
-      "exp": 4,
-      "college": null,
-      "jersey": "15",
-      "unit": "starters",
-      "slot": "PF"
-    },
-    {
       "name": "Draymond Green",
       "bbrefId": "greendr01",
       "nbaId": 203110,
@@ -111,7 +97,20 @@
       "college": "Michigan State",
       "jersey": "23",
       "unit": "starters",
-      "slot": "C"
+      "slot": "PF"
+    },
+    {
+      "name": "Gui Santos",
+      "bbrefId": "santogu01",
+      "nbaId": null,
+      "espnId": 4997536,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2002-06-22",
+      "exp": 4,
+      "college": null,
+      "jersey": "15",
+      "unit": "starters"
     },
     {
       "name": "De'Anthony Melton",

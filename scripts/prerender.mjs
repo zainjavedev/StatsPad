@@ -141,7 +141,7 @@ async function playerCard(p) {
 const disc = (uri, size) => h({width: size, height: size, borderRadius: size / 2, background: '#fff', alignItems: 'center', justifyContent: 'center'}, uri ? img(uri, {width: size * .72, height: size * .72}) : null);
 async function teamCard(team) {
   const uri = await logo(team);
-  const five = team.roster ? ['PG', 'SG', 'SF', 'PF', 'C'].map(slot => team.roster.players.find(p => p.slot === slot)).filter(Boolean).map(p => plain(p.name).split(' ').slice(-1)[0]).join('  ·  ') : '';
+  const five = team.roster ? team.roster.players.filter(p => p.unit === 'starters').map(p => plain(p.name).split(' ').slice(-1)[0]).join('  ·  ') : '';
   return h({width: 1200, height: 630, position: 'relative', background: shade(team.color)}, brand,
     h({position: 'absolute', left: 60, top: 150, alignItems: 'center', gap: 44}, disc(uri, 250),
       h({flexDirection: 'column', width: 760}, t({fontSize: 68, fontWeight: 800, color: '#fff', lineHeight: 1.02, letterSpacing: -2}, team.name), t({fontSize: 28, fontWeight: 700, color: 'rgba(255,255,255,.8)', marginTop: 16}, '2026–27 roster and expected starting five'), five ? t({fontSize: 26, fontWeight: 700, color: '#fff', marginTop: 28}, five) : null)), foot);
@@ -183,7 +183,7 @@ function careerHtml(p) {
   body.push(['Career', '', career.gp, ...[career.mpg, career.pts, career.reb, career.ast, career.fgp, career.tpp, tsOf(career)].map(value => fixed(value))]);
   return `<h2>${esc(p.playerName)} career stats by season</h2><p>Across ${seasons.length} seasons and ${career.gp} games, ${esc(p.playerName)} has averaged ${fixed(career.pts)} points, ${fixed(career.reb)} rebounds and ${fixed(career.ast)} assists per game${high ? `, with a best scoring season of ${fixed(high.main.pts)} PPG in ${esc(pretty(high.s))}` : ''}.</p>${table(['Season', 'Team', 'GP', 'MPG', 'PPG', 'RPG', 'APG', 'FG%', '3P%', 'TS%'], body)}`;
 }
-const starterNames = team => ['PG', 'SG', 'SF', 'PF', 'C'].map(slot => team.roster?.players.find(entry => entry.slot === slot)?.name).filter(Boolean).map(name => (bySlug.get(slugify(name)) ? link(playerUrl(name), name) : esc(name)));
+const starterNames = team => (team.roster?.players ?? []).filter(entry => entry.unit === 'starters').map(entry => entry.name).map(name => (bySlug.get(slugify(name)) ? link(playerUrl(name), name) : esc(name)));
 
 const LEADER_STATS = [['Points', 'PPG', p => p.stats.points], ['Rebounds', 'RPG', p => p.stats.totalRebounds], ['Assists', 'APG', p => p.stats.assists], ['Steals', 'SPG', p => p.stats.steals], ['Blocks', 'BPG', p => p.stats.blocks]];
 const leadersOf = get => [...players].sort((x, y) => get(y) - get(x)).slice(0, 5);
@@ -219,7 +219,7 @@ for (const team of cap(teams)) {
   const roster = team.roster?.players ?? [];
   const slug = name => bySlug.get(slugify(name));
   const line = player => slug(player.name) ? link(playerUrl(player.name), player.name) : esc(player.name);
-  const starters = ['PG', 'SG', 'SF', 'PF', 'C'].map(slot => roster.find(p => p.slot === slot)).filter(Boolean);
+  const starters = roster.filter(p => p.unit === 'starters');
   writePage({route: teamUrl(team.code), ogName: `teams/${team.slug}`,
     jsonLd: [crumbs(['Home', '/'], ['Teams', '/teams'], [team.name, teamUrl(team.code)]), {'@context': 'https://schema.org', '@type': 'SportsTeam', name: team.name, sport: 'Basketball', url: SITE + teamUrl(team.code), memberOf: {'@type': 'SportsOrganization', name: 'NBA'}}],
     title: `${team.name} roster 2026–27: expected starting five and stats | StatsPads`,

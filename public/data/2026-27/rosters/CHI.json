@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Tiago Splitter",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -73,6 +73,19 @@
       "slot": "SG"
     },
     {
+      "name": "Caleb Wilson",
+      "nbaId": null,
+      "espnId": 5095151,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2006-07-18",
+      "exp": 0,
+      "college": "North Carolina",
+      "jersey": "8",
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
       "name": "Matas Buzelis",
       "bbrefId": "buzelma01",
       "nbaId": null,
@@ -84,20 +97,20 @@
       "college": null,
       "jersey": "14",
       "unit": "starters",
-      "slot": "SF"
+      "slot": "PF"
     },
     {
-      "name": "Caleb Wilson",
-      "nbaId": null,
-      "espnId": 5095151,
+      "name": "Jalen Smith",
+      "bbrefId": "smithja04",
+      "nbaId": 1630188,
+      "espnId": 4397189,
       "pos": "F",
-      "height": "6-9",
-      "birthDate": "2006-07-18",
-      "exp": 0,
-      "college": "North Carolina",
-      "jersey": "8",
-      "unit": "starters",
-      "slot": "PF"
+      "height": "6-8",
+      "birthDate": "2000-03-16",
+      "exp": 7,
+      "college": "Maryland",
+      "jersey": "25",
+      "unit": "starters"
     },
     {
       "name": "Nic Claxton",
@@ -110,8 +123,7 @@
       "exp": 8,
       "college": "Georgia",
       "jersey": "9",
-      "unit": "starters",
-      "slot": "C"
+      "unit": "second"
     },
     {
       "name": "Tre Jones",
@@ -137,19 +149,6 @@
       "exp": 7,
       "college": "Auburn",
       "jersey": "35",
-      "unit": "second"
-    },
-    {
-      "name": "Jalen Smith",
-      "bbrefId": "smithja04",
-      "nbaId": 1630188,
-      "espnId": 4397189,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2000-03-16",
-      "exp": 7,
-      "college": "Maryland",
-      "jersey": "25",
       "unit": "second"
     },
     {

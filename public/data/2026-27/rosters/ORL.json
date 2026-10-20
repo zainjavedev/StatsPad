@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Sean Sweeney",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,20 +45,6 @@
   ],
   "players": [
     {
-      "name": "Jalen Suggs",
-      "bbrefId": "suggsja01",
-      "nbaId": null,
-      "espnId": 4432165,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "2001-06-03",
-      "exp": 6,
-      "college": "Gonzaga",
-      "jersey": "4",
-      "unit": "starters",
-      "slot": "PG"
-    },
-    {
       "name": "Desmond Bane",
       "bbrefId": "banede01",
       "nbaId": 1630217,
@@ -70,21 +56,21 @@
       "college": "TCU",
       "jersey": "3",
       "unit": "starters",
-      "slot": "SG"
+      "slot": "PG"
     },
     {
-      "name": "Franz Wagner",
-      "bbrefId": "wagnefr01",
+      "name": "Jase Richardson",
+      "bbrefId": "richaja02",
       "nbaId": null,
-      "espnId": 4566434,
-      "pos": "F",
-      "height": "6-10",
-      "birthDate": "2001-08-27",
-      "exp": 6,
-      "college": "Michigan",
-      "jersey": "22",
+      "espnId": 5239561,
+      "pos": "G",
+      "height": "6-1",
+      "birthDate": "2005-10-16",
+      "exp": 2,
+      "college": "Michigan State",
+      "jersey": "11",
       "unit": "starters",
-      "slot": "SF"
+      "slot": "SG"
     },
     {
       "name": "Paolo Banchero",
@@ -97,6 +83,20 @@
       "exp": 5,
       "college": "Duke",
       "jersey": "5",
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Franz Wagner",
+      "bbrefId": "wagnefr01",
+      "nbaId": null,
+      "espnId": 4566434,
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2001-08-27",
+      "exp": 6,
+      "college": "Michigan",
+      "jersey": "22",
       "unit": "starters",
       "slot": "PF"
     },
@@ -113,6 +113,19 @@
       "jersey": "34",
       "unit": "starters",
       "slot": "C"
+    },
+    {
+      "name": "Jalen Suggs",
+      "bbrefId": "suggsja01",
+      "nbaId": null,
+      "espnId": 4432165,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2001-06-03",
+      "exp": 6,
+      "college": "Gonzaga",
+      "jersey": "4",
+      "unit": "second"
     },
     {
       "name": "Anthony Black",
@@ -177,7 +190,7 @@
       "exp": 9,
       "college": "West Virginia",
       "jersey": "2",
-      "unit": "second"
+      "unit": "third"
     },
     {
       "name": "Goga Bitadze",
@@ -203,19 +216,6 @@
       "exp": 2,
       "college": null,
       "jersey": "93",
-      "unit": "third"
-    },
-    {
-      "name": "Jase Richardson",
-      "bbrefId": "richaja02",
-      "nbaId": null,
-      "espnId": 5239561,
-      "pos": "G",
-      "height": "6-1",
-      "birthDate": "2005-10-16",
-      "exp": 2,
-      "college": "Michigan State",
-      "jersey": "11",
       "unit": "third"
     },
     {

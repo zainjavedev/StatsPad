@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Brian Keefe",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -69,8 +69,7 @@
       "exp": 3,
       "college": "Miami",
       "jersey": "18",
-      "unit": "starters",
-      "slot": "SG"
+      "unit": "starters"
     },
     {
       "name": "AJ Dybantsa",

@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Dusty May",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,15 +45,16 @@
   ],
   "players": [
     {
-      "name": "Kyrie Irving",
-      "nbaId": 202681,
-      "espnId": 6442,
+      "name": "Max Christie",
+      "bbrefId": "chrisma02",
+      "nbaId": null,
+      "espnId": 4432582,
       "pos": "G",
-      "height": "6-2",
-      "birthDate": "1992-03-23",
-      "exp": 15,
-      "college": "Duke",
-      "jersey": "11",
+      "height": "6-5",
+      "birthDate": "2003-02-10",
+      "exp": 5,
+      "college": "Michigan State",
+      "jersey": "0",
       "unit": "starters",
       "slot": "PG"
     },
@@ -68,8 +69,7 @@
       "exp": 3,
       "college": null,
       "jersey": "10",
-      "unit": "starters",
-      "slot": "SG"
+      "unit": "starters"
     },
     {
       "name": "Cooper Flagg",
@@ -100,20 +100,6 @@
       "slot": "PF"
     },
     {
-      "name": "Dereck Lively II",
-      "bbrefId": "livelde01",
-      "nbaId": null,
-      "espnId": 4683688,
-      "pos": "C",
-      "height": "7-1",
-      "birthDate": "2004-02-12",
-      "exp": 4,
-      "college": "Duke",
-      "jersey": "2",
-      "unit": "starters",
-      "slot": "C"
-    },
-    {
       "name": "Naji Marshall",
       "bbrefId": "marshna01",
       "nbaId": 1630230,
@@ -124,19 +110,31 @@
       "exp": 7,
       "college": "Xavier",
       "jersey": "3",
+      "unit": "starters"
+    },
+    {
+      "name": "Kyrie Irving",
+      "nbaId": 202681,
+      "espnId": 6442,
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "1992-03-23",
+      "exp": 15,
+      "college": "Duke",
+      "jersey": "11",
       "unit": "second"
     },
     {
-      "name": "Max Christie",
-      "bbrefId": "chrisma02",
+      "name": "Dereck Lively II",
+      "bbrefId": "livelde01",
       "nbaId": null,
-      "espnId": 4432582,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "2003-02-10",
-      "exp": 5,
-      "college": "Michigan State",
-      "jersey": "0",
+      "espnId": 4683688,
+      "pos": "C",
+      "height": "7-1",
+      "birthDate": "2004-02-12",
+      "exp": 4,
+      "college": "Duke",
+      "jersey": "2",
       "unit": "second"
     },
     {

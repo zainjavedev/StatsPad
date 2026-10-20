@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Tyronn Lue",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -72,20 +72,6 @@
       "slot": "SG"
     },
     {
-      "name": "Derrick Jones Jr.",
-      "bbrefId": "jonesde02",
-      "nbaId": 1627884,
-      "espnId": 3936099,
-      "pos": "F",
-      "height": "6-6",
-      "birthDate": "1997-02-15",
-      "exp": 11,
-      "college": "UNLV",
-      "jersey": "5",
-      "unit": "starters",
-      "slot": "SF"
-    },
-    {
       "name": "Rui Hachimura",
       "bbrefId": "hachiru01",
       "nbaId": 1629060,
@@ -96,6 +82,20 @@
       "exp": 8,
       "college": "Gonzaga",
       "jersey": "28",
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Derrick Jones Jr.",
+      "bbrefId": "jonesde02",
+      "nbaId": 1627884,
+      "espnId": 3936099,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "1997-02-15",
+      "exp": 11,
+      "college": "UNLV",
+      "jersey": "5",
       "unit": "starters",
       "slot": "PF"
     },
@@ -110,8 +110,7 @@
       "exp": 6,
       "college": "Kentucky",
       "jersey": "23",
-      "unit": "starters",
-      "slot": "C"
+      "unit": "starters"
     },
     {
       "name": "Kris Dunn",

@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Joe Mazzulla",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,6 +45,20 @@
   ],
   "players": [
     {
+      "name": "Jordan Walsh",
+      "bbrefId": "walshjo01",
+      "nbaId": null,
+      "espnId": 4683689,
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "2004-03-03",
+      "exp": 4,
+      "college": "Arkansas",
+      "jersey": "27",
+      "unit": "starters",
+      "slot": "PG"
+    },
+    {
       "name": "Derrick White",
       "bbrefId": "whitede01",
       "nbaId": 1628401,
@@ -55,20 +69,6 @@
       "exp": 10,
       "college": "Colorado",
       "jersey": "9",
-      "unit": "starters",
-      "slot": "PG"
-    },
-    {
-      "name": "Paul George",
-      "bbrefId": "georgpa01",
-      "nbaId": 202331,
-      "espnId": 4251,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "1990-05-02",
-      "exp": 17,
-      "college": "Fresno State",
-      "jersey": "13",
       "unit": "starters",
       "slot": "SG"
     },
@@ -87,16 +87,16 @@
       "slot": "SF"
     },
     {
-      "name": "Jordan Walsh",
-      "bbrefId": "walshjo01",
-      "nbaId": null,
-      "espnId": 4683689,
-      "pos": "G",
-      "height": "6-7",
-      "birthDate": "2004-03-03",
-      "exp": 4,
-      "college": "Arkansas",
-      "jersey": "27",
+      "name": "Paul George",
+      "bbrefId": "georgpa01",
+      "nbaId": 202331,
+      "espnId": 4251,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "1990-05-02",
+      "exp": 17,
+      "college": "Fresno State",
+      "jersey": "13",
       "unit": "starters",
       "slot": "PF"
     },

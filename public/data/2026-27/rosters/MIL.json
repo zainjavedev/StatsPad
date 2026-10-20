@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Taylor Jenkins",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,20 +45,6 @@
   ],
   "players": [
     {
-      "name": "Ryan Rollins",
-      "bbrefId": "rolliry01",
-      "nbaId": null,
-      "espnId": 4591725,
-      "pos": "G",
-      "height": "6-3",
-      "birthDate": "2002-07-03",
-      "exp": 5,
-      "college": "Toledo",
-      "jersey": "13",
-      "unit": "starters",
-      "slot": "PG"
-    },
-    {
       "name": "Tyler Herro",
       "bbrefId": "herroty01",
       "nbaId": 1629639,
@@ -69,6 +55,20 @@
       "exp": 8,
       "college": "Kentucky",
       "jersey": "11",
+      "unit": "starters",
+      "slot": "PG"
+    },
+    {
+      "name": "Ryan Rollins",
+      "bbrefId": "rolliry01",
+      "nbaId": null,
+      "espnId": 4591725,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "2002-07-03",
+      "exp": 5,
+      "college": "Toledo",
+      "jersey": "13",
       "unit": "starters",
       "slot": "SG"
     },

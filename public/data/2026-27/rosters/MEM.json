@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Tuomas Iisalo",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -59,6 +59,18 @@
       "slot": "PG"
     },
     {
+      "name": "Cameron Boozer",
+      "nbaId": null,
+      "espnId": 5041935,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2007-07-18",
+      "exp": 0,
+      "college": "Duke",
+      "jersey": "27",
+      "unit": "starters"
+    },
+    {
       "name": "Cedric Coward",
       "bbrefId": "cowarce01",
       "nbaId": null,
@@ -70,7 +82,7 @@
       "college": "Washington State",
       "jersey": "23",
       "unit": "starters",
-      "slot": "SG"
+      "slot": "SF"
     },
     {
       "name": "Jaylen Wells",
@@ -83,19 +95,6 @@
       "exp": 3,
       "college": "Washington State",
       "jersey": "0",
-      "unit": "starters",
-      "slot": "SF"
-    },
-    {
-      "name": "Cameron Boozer",
-      "nbaId": null,
-      "espnId": 5041935,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2007-07-18",
-      "exp": 0,
-      "college": "Duke",
-      "jersey": "27",
       "unit": "starters",
       "slot": "PF"
     },

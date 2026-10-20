@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "Micah Nori",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -72,20 +72,6 @@
       "slot": "SG"
     },
     {
-      "name": "Toumani Camara",
-      "bbrefId": "camarto01",
-      "nbaId": null,
-      "espnId": 4431736,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "2000-05-08",
-      "exp": 4,
-      "college": "Dayton",
-      "jersey": "33",
-      "unit": "starters",
-      "slot": "SF"
-    },
-    {
       "name": "Deni Avdija",
       "bbrefId": "avdijde01",
       "nbaId": 1630166,
@@ -96,6 +82,20 @@
       "exp": 7,
       "college": null,
       "jersey": "8",
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Toumani Camara",
+      "bbrefId": "camarto01",
+      "nbaId": null,
+      "espnId": 4431736,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "2000-05-08",
+      "exp": 4,
+      "college": "Dayton",
+      "jersey": "33",
       "unit": "starters",
       "slot": "PF"
     },

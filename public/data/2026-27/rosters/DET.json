@@ -6,7 +6,7 @@
   "statsSeason": "2025-26",
   "coach": "J.B. Bickerstaff",
   "lastUpdated": "2026-10-20",
-  "note": "Starters follow ESPN's depth chart and the rest of the rotation is estimated; coaches can change any of it.",
+  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,6 +45,20 @@
   ],
   "players": [
     {
+      "name": "Ausar Thompson",
+      "bbrefId": "thompau01",
+      "nbaId": null,
+      "espnId": 4684742,
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "2003-01-30",
+      "exp": 4,
+      "college": null,
+      "jersey": "9",
+      "unit": "starters",
+      "slot": "PG"
+    },
+    {
       "name": "Cade Cunningham",
       "bbrefId": "cunnica01",
       "nbaId": null,
@@ -56,7 +70,7 @@
       "college": "Oklahoma State",
       "jersey": "2",
       "unit": "starters",
-      "slot": "PG"
+      "slot": "SG"
     },
     {
       "name": "Duncan Robinson",
@@ -69,20 +83,6 @@
       "exp": 9,
       "college": "Michigan",
       "jersey": "55",
-      "unit": "starters",
-      "slot": "SG"
-    },
-    {
-      "name": "Ausar Thompson",
-      "bbrefId": "thompau01",
-      "nbaId": null,
-      "espnId": 4684742,
-      "pos": "G",
-      "height": "6-7",
-      "birthDate": "2003-01-30",
-      "exp": 4,
-      "college": null,
-      "jersey": "9",
       "unit": "starters",
       "slot": "SF"
     },
@@ -101,6 +101,19 @@
       "slot": "PF"
     },
     {
+      "name": "Paul Reed",
+      "bbrefId": "reedpa01",
+      "nbaId": 1630194,
+      "espnId": 4278562,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "1999-06-14",
+      "exp": 7,
+      "college": "DePaul",
+      "jersey": "7",
+      "unit": "starters"
+    },
+    {
       "name": "Jalen Duren",
       "bbrefId": "durenja01",
       "nbaId": null,
@@ -111,8 +124,7 @@
       "exp": 5,
       "college": "Memphis",
       "jersey": "0",
-      "unit": "starters",
-      "slot": "C"
+      "unit": "second"
     },
     {
       "name": "Isaiah Joe",
@@ -138,19 +150,6 @@
       "exp": 3,
       "college": "St. John's",
       "jersey": "24",
-      "unit": "second"
-    },
-    {
-      "name": "Paul Reed",
-      "bbrefId": "reedpa01",
-      "nbaId": 1630194,
-      "espnId": 4278562,
-      "pos": "F",
-      "height": "6-9",
-      "birthDate": "1999-06-14",
-      "exp": 7,
-      "college": "DePaul",
-      "jersey": "7",
       "unit": "second"
     },
     {
