@@ -42,7 +42,7 @@ export default function SchedulePage() {
   return <section className="sched">
     <div className="sched-head">
       <h1>Schedule</h1>
-      <p>Every 2026–27 regular-season game. Pick a team, or two, to see when they meet.</p>
+      <p>Every 2026–27 game, preseason and regular season. Pick a team, or two, to see when they meet.</p>
     </div>
     <div className="sched-filters">
       <label>Team<select value={team} onChange={event => setTeam(event.target.value)}><option value="">All teams</option>{codes.map(code => <option key={code} value={code}>{TEAMS[code].name}</option>)}</select></label>

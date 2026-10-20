@@ -41,7 +41,7 @@ export default function AccountPage({onTeams}) {
     if (saved === null || signedIn || !GOOGLE_ID) return;
     const render = () => {
       window.google.accounts.id.initialize({client_id: GOOGLE_ID, callback: ({credential}) => run('auth', async () => { await signInWithGoogle(credential); return 'Signed in with Google.'; })});
-      if (googleButton.current) window.google.accounts.id.renderButton(googleButton.current, {theme: 'outline', size: 'large', text: 'continue_with', shape: 'pill', width: 320});
+      if (googleButton.current) window.google.accounts.id.renderButton(googleButton.current, {theme: 'outline', size: 'large', text: 'continue_with', shape: 'pill', width: Math.min(320, Math.max(200, (googleButton.current.clientWidth || 320) - 4))});
     };
     if (window.google?.accounts?.id) return render();
     const script = document.createElement('script');
