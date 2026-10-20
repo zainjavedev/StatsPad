@@ -14,6 +14,7 @@ import TeamLineups from './TeamLineups';
 import { CompareSkeleton, HomeSkeleton, PageSkeleton, TeamLoading } from './Skeletons';
 import { TEAMS, espnLogoUrl, nickname, teamCodeOf } from '../lib/teams';
 import { CURRENT, loadLatest, pretty, qualified, setCurrentIsPreseason, stageOf } from '../lib/season';
+import { buildAwards } from '../lib/awards';
 import { compareUrl, leadersUrl, matchesName, playerUrl, routeParams, teamUrl } from '../lib/routes';
 import FrontPage from './FrontPage';
 import PlayerBody from './PlayerBody';
@@ -177,14 +178,21 @@ function SiteHeader({page,onHome,onLeaders,onCompare,onTeams,theme,onToggleTheme
   </>;
 }
 
+function Awards({pool,previous,seasonType,season,playerIds,onOpen}){
+  const awards=useMemo(()=>buildAwards(pool,previous),[pool,previous]);
+  if(!awards.length)return null;
+  const title=seasonType==='playoffs'?'Playoff awards':seasonType==='preseason'?'Preseason awards':'Regular-season awards';
+  return <section className="awards"><div className="awards-head"><h2>{title} <span aria-hidden="true">🏆</span></h2><p>{season?pretty(season):''} · just for fun, picked from the numbers</p></div><div className="awards-grid">{awards.map(award=>{const[winner,...rest]=award.winners;return <article className="award-card" key={award.key} onClick={()=>onOpen(winner)} role="button" tabIndex={0} onKeyDown={event=>event.key==='Enter'&&onOpen(winner)}><small>{award.title.toUpperCase()}</small><div className="award-winner"><EntityArt entity={winner} playerIds={playerIds} className="award-art"/><div><b>{winner.playerName}</b><span>{award.note(winner)}</span></div></div><p className="award-blurb">{award.blurb}</p>{rest.length>0&&<div className="award-runners">{rest.map(player=><span key={player.playerId}>{player.playerName}</span>)}</div>}</article>})}</div></section>
+}
 function Discovery({players,playerIds,onOpen,seasonType,onSeasonTypeChange,seasonChanging,season}){
-  const[listCard,setListCard]=useState(null);
+  const[listCard,setListCard]=useState(null),[previous,setPrevious]=useState([]);
+  useEffect(()=>{let active=true;if(seasonType==='preseason')loadSeasonBundle('regular-season').then(b=>{if(active)setPrevious(b.players.players)}).catch(()=>{});else setPrevious([]);return()=>{active=false}},[seasonType]);
   const leaderGroups=[['Scoring leader','points','PPG','scoring'],['Assist leader','assists','APG','playmaking'],['Rebound leader','totalRebounds','RPG','rebounding'],['Off. rebound leader','offensiveRebounds','ORB','rebounding'],['Def. rebound leader','defensiveRebounds','DRB','rebounding'],['Steal leader','steals','SPG','defense'],['Block leader','blocks','BPG','defense'],['Stocks leader','stocks','STK','defense'],['Field-goal leader','fieldGoalPercentage','FG%','shooting'],['Three-point leader','threePointPercentage','3P%','shooting'],['Free-throw leader','freeThrowPercentage','FT%','shooting'],['True-shooting leader','trueShootingPercentage','TS%','shooting'],['Turnover leader','turnovers','TOV','volume'],['Effective-FG leader','effectiveFieldGoalPercentage','eFG%','shooting'],['Field-goals-made leader','fieldGoalsMade','FGM','volume'],['Three-pointers-made leader','threePointersMade','3PM','volume'],['Free-throws-made leader','freeThrowsMade','FTM','volume'],['Minutes leader','minutesPerGame','MPG','volume'],['Field-goals-attempted leader','fieldGoalsAttempted','FGA','volume'],['Three-pointers-attempted leader','threePointersAttempted','3PA','volume'],['Free-throws-attempted leader','freeThrowsAttempted','FTA','volume'],['Foul leader','personalFouls','PF','defense']];
   const qualifiedPlayers=qualified(players);
   const leaderPool=qualifiedPlayers.length?qualifiedPlayers:players;
-  const leaderCards=leaderGroups.slice(0,12).map(([label,key,suffix,category])=>{const pool=key==='threePointPercentage'?leaderPool.filter(player=>player.stats.threePointersAttempted>=3):key==='freeThrowPercentage'?leaderPool.filter(player=>player.stats.freeThrowsAttempted>=2):leaderPool;const leaders=[...(pool.length?pool:leaderPool)].sort((a,b)=>metricValue(b,key)-metricValue(a,key)).slice(0,5);return {label,key,suffix,category,player:leaders[0],leaders}}).filter(card=>card.player);
+  const leaderCards=leaderGroups.map(([label,key,suffix,category])=>{const pool=key==='threePointPercentage'?leaderPool.filter(player=>player.stats.threePointersAttempted>=3):key==='freeThrowPercentage'?leaderPool.filter(player=>player.stats.freeThrowsAttempted>=2):leaderPool;const leaders=[...(pool.length?pool:leaderPool)].sort((a,b)=>metricValue(b,key)-metricValue(a,key)).slice(0,5);return {label,key,suffix,category,player:leaders[0],leaders}}).filter(card=>card.player);
   return <div className="muse-layout leaders-page"><div className={`muse-main ${seasonChanging?'season-changing':''}`}>
-    <section className="muse-home-grid"><div className="story-feed"><div className="feed-heading"><div><h2>League leaders</h2><p>{season?pretty(season):''} {stageOf(seasonType).toLowerCase()} · tap a card for the top 5</p></div><SeasonTabs className="season-toggle" seasonType={seasonType} onChange={onSeasonTypeChange}/></div>{leaderCards.map((card,index)=><StoryCard key={`${card.key}-${card.player.playerId}`} player={card.player} leaders={card.leaders} index={index} label={card.label} statKey={card.key} suffix={card.suffix} playerIds={playerIds} onOpen={onOpen} onOpenList={setListCard}/>)}</div></section>
+    <section className="muse-home-grid"><div className="story-feed"><div className="feed-heading"><div><h2>League leaders</h2><p>{season?pretty(season):''} {stageOf(seasonType).toLowerCase()} · tap a card for the top 5</p></div><SeasonTabs className="season-toggle" seasonType={seasonType} onChange={onSeasonTypeChange}/></div><Awards pool={leaderPool} previous={previous} seasonType={seasonType} season={season} playerIds={playerIds} onOpen={onOpen}/><h3 className="cards-title">Category leaders</h3>{leaderCards.map((card,index)=><StoryCard key={`${card.key}-${card.player.playerId}`} player={card.player} leaders={card.leaders} index={index} label={card.label} statKey={card.key} suffix={card.suffix} playerIds={playerIds} onOpen={onOpen} onOpenList={setListCard}/>)}</div></section>
     {listCard&&<StatListModal seasonType={seasonType} card={listCard} season={season} playerIds={playerIds} onOpen={onOpen} onClose={()=>setListCard(null)}/>}
   </div></div>
 }
