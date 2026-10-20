@@ -1745,3 +1745,9 @@ header .brand small{margin-top:3px}
 
 .ticker-first.mine{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--ink-1))}
 .ticker-first.mine .ticker-label{color:var(--accent)}
+
+.ticker-first,.ticker-list li a{color:inherit;text-decoration:none}
+.ticker-list li{padding:0}
+.ticker-list li a{display:flex;flex-direction:column;justify-content:center;gap:3px;height:100%;padding:7px 12px}
+.ticker-first:hover,.ticker-list li:hover{border-color:var(--line-2)}
+.ticker-first.mine:hover,.ticker-list li.mine:hover{border-color:var(--accent)}

@@ -50,14 +50,14 @@ export default function GameTicker({games, favorites}) {
   const clock = `${left.days ? `${left.days}d ` : ''}${pad(left.hours)}:${pad(left.minutes)}:${pad(left.seconds)}`;
 
   return <div className="ticker" role="region" aria-label="Games">
-    <div className={`ticker-first${live ? ' live' : ''}${followedGame(first, favorites) ? ' mine' : ''}`}>
+    <a href={`/games/${first.id}`} className={`ticker-first${live ? ' live' : ''}${followedGame(first, favorites) ? ' mine' : ''}`}>
       <span className="ticker-label">{live ? <><i/> Live</> : 'Next up'}</span>
       <span className="ticker-teams"><Logo team={first.away}/><b>{first.away.abbr}</b>{live ? <strong>{first.away.score}–{first.home.score}</strong> : <em>@</em>}<b>{first.home.abbr}</b><Logo team={first.home}/></span>
       <span className="ticker-clock">{live ? first.detail : remaining > 0 ? clock : 'Starting…'}</span>
-    </div>
-    <ul className="ticker-list">{rest.map(game => <li key={game.id} className={followedGame(game, favorites) ? 'mine' : ''}>
+    </a>
+    <ul className="ticker-list">{rest.map(game => <li key={game.id} className={followedGame(game, favorites) ? 'mine' : ''}><a href={`/games/${game.id}`}>
       <span className="ticker-when">{game.state === 'in' ? <b className="ticker-live">Live</b> : stamp(game.date)}</span>
       <span className="ticker-teams"><Logo team={game.away}/><b>{game.away.abbr}</b>{game.state === 'in' ? <strong>{game.away.score}–{game.home.score}</strong> : <em>@</em>}<b>{game.home.abbr}</b><Logo team={game.home}/></span>
-    </li>)}</ul>
+    </a></li>)}</ul>
   </div>;
 }
