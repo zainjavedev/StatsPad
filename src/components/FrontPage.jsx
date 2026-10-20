@@ -108,17 +108,18 @@ export default function FrontPage({players, teams, playerIds, season, Art, onOpe
   return <section className="front-page">
     <div className="front-top">
       <NextUp games={games} favorites={favorites}/>
-      <div className="front-hero">
-        <div className="front-hero-copy">
-          <h1>Settle every hoops <em>debate.</em></h1>
-          <p>Put any two players or teams head to head, browse every roster, and see who is really leading the league.</p>
-          <PlayerSearch players={players} Art={Art} playerIds={playerIds} onOpen={onOpen}/>
-          <div className="front-hero-actions">
-            <button className="front-btn primary" onClick={() => onCompare()}><BarChart3 size={16}/> Start a comparison</button>
-            <button className="front-btn" onClick={() => onTeam('PHI')}>Browse rosters <ArrowRight size={16}/></button>
-          </div>
+      <section className="find" aria-label="Search and compare">
+        <h2>Find a player or settle a debate</h2>
+        <PlayerSearch players={players} Art={Art} playerIds={playerIds} onOpen={onOpen}/>
+        <div className="front-hero-actions">
+          <button className="front-btn primary" onClick={() => onCompare()}><BarChart3 size={16}/> Compare any two</button>
+          <button className="front-btn" onClick={() => onTeam('PHI')}>Browse rosters <ArrowRight size={16}/></button>
         </div>
-      </div>
+        {debates.length > 0 && <>
+          <p className="find-label">Popular debates</p>
+          <div className="find-debates">{debates.slice(0, 3).map(pair => <button key={`${pair[0].playerId}-${pair[1].playerId}`} onClick={() => onCompare(pair)}>{pair[0].playerName} vs {pair[1].playerName}<span>Compare</span></button>)}</div>
+        </>}
+      </section>
     </div>
 
     <section className="front-block">
