@@ -279,7 +279,7 @@ export default function Home(){
   const paramsOnLoad=useMemo(()=>routeParams(location.pathname,location.search),[]);
   const[seasonType,setSeasonType]=useState(()=>paramsOnLoad.get('type')||'regular-season'),[seasonChanging,setSeasonChanging]=useState(false),[entityType,setEntityType]=useState(()=>paramsOnLoad.get('mode')||'player'),[data,setData]=useState(null),[splits,setSplits]=useState(null),[selected,setSelected]=useState([]),[toast,setToast]=useState(''),[playerIds,setPlayerIds]=useState({}),[catalog,setCatalog]=useState({players:[],teams:[]}),[page,setPage]=useState(paramsOnLoad.get('view')==='account'?'account':paramsOnLoad.get('view')==='leaders'?'leaders':paramsOnLoad.get('view')==='teams'?'teams':paramsOnLoad.has('team')?'team':paramsOnLoad.has('players')?'compare':paramsOnLoad.has('profile')?'profile':'home'),[regularPlayers,setRegularPlayers]=useState(null),[regularSeason,setRegularSeason]=useState(null),[profileFrom,setProfileFrom]=useState(null),[profile,setProfile]=useState(null),[teamCode,setTeamCode]=useState(()=>TEAMS[paramsOnLoad.get('team')]?paramsOnLoad.get('team'):'PHI');
   const chartRef=useRef(null),seasonTransitionRef=useRef(0);
-  const[theme,setTheme]=useState(()=>{try{return localStorage.getItem('statspad-theme')||'light'}catch{return 'light'}});
+  const[theme,setTheme]=useState(()=>{try{return localStorage.getItem('statspad-theme')||'dark'}catch{return 'dark'}});
   useEffect(()=>{document.documentElement.dataset.theme=theme;try{localStorage.setItem('statspad-theme',theme)}catch{/* private mode */}},[theme]);
   const toggleTheme=()=>setTheme(current=>current==='dark'?'light':'dark');
   useEffect(()=>{loadHeadshotIds().then(setPlayerIds)},[]);
