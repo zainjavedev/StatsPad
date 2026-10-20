@@ -1,13 +1,13 @@
 import React, { useMemo, useState } from 'react';
-import { ArrowRight, BarChart3, Search } from 'lucide-react';
+import { ArrowRight, Search } from 'lucide-react';
 import { GameList, NewsList } from './Feeds';
 import { useFeed } from '../lib/useFeed';
 import { latestNews, recentResults, upcomingGames } from '../lib/espn';
 import { TEAMS, nickname, teamCodeOf } from '../lib/teams';
-import { pretty, qualified } from '../lib/season';
+import { qualified } from '../lib/season';
 import { favoritesFirst, useFavorites } from '../lib/favorites';
 import FavoriteStar from './FavoriteStar';
-import NextUp, { useGames } from './NextUp';
+import GameTicker, { useGames } from './NextUp';
 import GameTimeline from './GameTimeline';
 
 /* The front door: settle a debate, find a player, see the league's top
@@ -85,7 +85,7 @@ function Debate({pair, Art, playerIds, onCompare}) {
   </button>;
 }
 
-export default function FrontPage({players, teams, playerIds, season, Art, onOpen, onCompare, onTeam, onLeaders}) {
+export default function FrontPage({players, teams, playerIds, Art, onOpen, onCompare, onTeam, onLeaders}) {
   const loaded = useFeed(loadGames), results = useFeed(loadResults), news = useFeed(loadNews);
   const [tab, setTab] = useState(null), [allTeams, setAllTeams] = useState(false);
   const favorites = useFavorites(), games = useGames(loaded);
@@ -96,6 +96,7 @@ export default function FrontPage({players, teams, playerIds, season, Art, onOpe
   }, [allTeams, favorites, teamByCode]);
   const view = tab ?? (games?.length ? 'upcoming' : 'results');
   const pool = useMemo(() => qualified(players), [players]);
+  const stars = useMemo(() => [...pool].sort((a, b) => b.stats.points - a.stats.points).slice(0, 4), [pool]);
   const leaders = useMemo(() => {
     const base = pool.length ? pool : players;
     return LEADERS.map(entry => {
@@ -106,20 +107,42 @@ export default function FrontPage({players, teams, playerIds, season, Art, onOpe
   const debates = useMemo(() => DEBATES.map(names => names.map(name => players.find(player => fold(player.playerName) === fold(name)))).filter(pair => pair.every(Boolean)), [players]);
 
   return <section className="front-page">
-    <div className="front-top">
-      <NextUp games={games} favorites={favorites}/>
-      <section className="find" aria-label="Search and compare">
-        <h2>Find a player or settle a debate</h2>
-        <PlayerSearch players={players} Art={Art} playerIds={playerIds} onOpen={onOpen}/>
-        <div className="front-hero-actions">
-          <button className="front-btn primary" onClick={() => onCompare()}><BarChart3 size={16}/> Compare any two</button>
-          <button className="front-btn" onClick={() => onTeam('PHI')}>Browse rosters <ArrowRight size={16}/></button>
+    <div className="home-search"><PlayerSearch players={players} Art={Art} playerIds={playerIds} onOpen={onOpen}/></div>
+
+    <GameTicker games={games} favorites={favorites}/>
+
+    <div className="home-grid">
+      <section className="front-panel">
+        <div className="front-panel-head">
+          <h2>Games</h2>
+          <div className="front-tabs" role="group" aria-label="Games">
+            <button className={view === 'upcoming' ? 'active' : ''} onClick={() => setTab('upcoming')}>Upcoming</button>
+            <button className={view === 'results' ? 'active' : ''} onClick={() => setTab('results')}>Results</button>
+          </div>
         </div>
-        {debates.length > 0 && <>
-          <p className="find-label">Popular debates</p>
-          <div className="find-debates">{debates.slice(0, 3).map(pair => <button key={`${pair[0].playerId}-${pair[1].playerId}`} onClick={() => onCompare(pair)}>{pair[0].playerName} vs {pair[1].playerName}<span>Compare</span></button>)}</div>
-        </>}
+        {view === 'upcoming' ? <GameTimeline games={games} favorites={favorites}/> : <GameList games={results} results empty="No finished games in the last week."/>}
       </section>
+
+      <div className="home-side">
+        <section className="front-panel">
+          <div className="front-panel-head"><h2>Top performers</h2><button className="front-more" onClick={onLeaders}>All leaders <ArrowRight size={14}/></button></div>
+          <ol className="performers">{leaders.map((entry, index) => <li key={entry.key}><button onClick={() => onOpen(entry.player)}>
+            <span className="perf-rank">{index + 1}</span>
+            <Art entity={entry.player} playerIds={playerIds} className="perf-art"/>
+            <span className="perf-name"><b>{entry.player.playerName}</b><small>{entry.label} · {entry.player.team}</small></span>
+            <strong>{entry.player.stats[entry.key].toFixed(1)}{entry.pct ? '%' : ''} <small>{entry.unit}</small></strong>
+          </button></li>)}</ol>
+        </section>
+
+        <section className="front-panel">
+          <div className="front-panel-head"><h2>Compare</h2></div>
+          <button className="compare-row" onClick={() => onCompare()}>
+            <span className="compare-faces">{stars.map(player => <Art key={player.playerId} entity={player} playerIds={playerIds} className="compare-face"/>)}</span>
+            <span>Compare players <ArrowRight size={15}/></span>
+          </button>
+          {debates.length > 0 && <div className="find-debates">{debates.slice(0, 3).map(pair => <button key={`${pair[0].playerId}-${pair[1].playerId}`} onClick={() => onCompare(pair)}>{pair[0].playerName} vs {pair[1].playerName}</button>)}</div>}
+        </section>
+      </div>
     </div>
 
     <section className="front-block">
@@ -137,38 +160,15 @@ export default function FrontPage({players, teams, playerIds, season, Art, onOpe
       {!favorites.length && <p className="front-footnote">Tap the bell on a team to follow it: it stays here and you can get its game alerts.</p>}
     </section>
 
-    <div className="front-feeds">
-      <section className="front-panel">
-        <div className="front-panel-head">
-          <h2>Games</h2>
-          <div className="front-tabs" role="group" aria-label="Games">
-            <button className={view === 'upcoming' ? 'active' : ''} onClick={() => setTab('upcoming')}>Upcoming</button>
-            <button className={view === 'results' ? 'active' : ''} onClick={() => setTab('results')}>Results</button>
-          </div>
-        </div>
-        {view === 'upcoming' ? <GameTimeline games={games} favorites={favorites}/> : <GameList games={results} results empty="No finished games in the last week."/>}
-      </section>
-      <section className="front-panel">
-        <div className="front-panel-head"><h2>Latest news</h2></div>
-        <NewsList articles={news}/>
-      </section>
-    </div>
+    <section className="front-panel front-news">
+      <div className="front-panel-head"><h2>Latest news</h2></div>
+      <NewsList articles={news}/>
+    </section>
 
     {debates.length > 0 && <section className="front-block">
       <div className="front-block-head"><h2>Hot debates</h2><button onClick={() => onCompare()}>Make your own <ArrowRight size={14}/></button></div>
       <div className="debates">{debates.map(pair => <Debate key={`${pair[0].playerId}-${pair[1].playerId}`} pair={pair} Art={Art} playerIds={playerIds} onCompare={onCompare}/>)}</div>
     </section>}
-
-    <section className="front-block">
-      <div className="front-block-head"><h2>League leaders</h2><button onClick={onLeaders}>All leaders <ArrowRight size={14}/></button></div>
-      <div className="leader-grid">{leaders.map(entry => <button key={entry.key} className="leader-card" style={{'--team': colorOf(entry.player)}} onClick={() => onOpen(entry.player)}>
-        <small>{entry.label}</small>
-        <strong>{entry.player.stats[entry.key].toFixed(1)}{entry.pct ? '%' : ''}<em>{entry.unit}</em></strong>
-        <b>{entry.player.playerName}</b>
-        <Art entity={entry.player} playerIds={playerIds} className="leader-art"/>
-      </button>)}</div>
-      <p className="front-footnote">{season ? pretty(season) : ''} regular season per-game leaders.</p>
-    </section>
 
   </section>;
 }
