@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { ArrowRight, Search } from 'lucide-react';
 import { NewsList } from './Feeds';
 import { useFeed } from '../lib/useFeed';
-import { latestNews } from '../lib/espn';
+import { latestNews, recentResults } from '../lib/espn';
 import { finished, loadSchedule, upcoming } from '../lib/schedule';
 import { TEAMS, nickname, teamCodeOf } from '../lib/teams';
 import { qualified } from '../lib/season';
@@ -32,7 +32,8 @@ const DEBATES = [
 const HOT_TEAMS = ['LAL', 'PHI', 'BOS', 'NYK', 'GSW', 'OKC'];
 const TEAM_ROW = 6;
 const loadGames = () => loadSchedule().then(all => upcoming(all, 12));
-const loadResults = () => loadSchedule().then(all => finished(all, 8));
+/* Regular-season finals once there are any; until the opener, the latest preseason games stand in (they carry a Preseason tag). */
+const loadResults = () => loadSchedule().then(all => { const done = finished(all, 8); return done.length ? done : recentResults(7, 8); });
 const loadNews = () => latestNews(4);
 
 function PlayerSearch({players, Art, playerIds, onOpen}) {
@@ -72,15 +73,13 @@ function PlayerSearch({players, Art, playerIds, onOpen}) {
 
 export default function FrontPage({players, teams, playerIds, Art, onOpen, onCompare, onTeam, onLeaders}) {
   const loaded = useFeed(loadGames), results = useFeed(loadResults), news = useFeed(loadNews);
-  const [tab, setTab] = useState(null), [allTeams, setAllTeams] = useState(false);
+  const [allTeams, setAllTeams] = useState(false);
   const favorites = useFavorites(), games = useGames(loaded);
   const teamByCode = useMemo(() => new Map(teams.map(team => [teamCodeOf(team.team), team]).filter(([code]) => TEAMS[code])), [teams]);
   const teamCodes = useMemo(() => {
     const order = allTeams ? favoritesFirst(favorites) : [...favorites, ...HOT_TEAMS.filter(code => !favorites.includes(code))].slice(0, Math.max(TEAM_ROW, favorites.length));
     return order.filter(code => teamByCode.has(code));
   }, [allTeams, favorites, teamByCode]);
-  /* Open on Upcoming and stay there while the schedule loads: only an empty week switches to Results. */
-  const view = tab ?? (games !== null && !games.length ? 'results' : 'upcoming');
   const pool = useMemo(() => qualified(players), [players]);
   const stars = useMemo(() => [...pool].sort((a, b) => b.stats.points - a.stats.points).slice(0, 40), [pool]);
   const leaders = useMemo(() => {
@@ -101,14 +100,8 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
 
     <div className="home-grid">
       <section className="front-panel">
-        <div className="front-panel-head">
-          <h2>Games</h2>
-          <div className="front-tabs" role="group" aria-label="Games">
-            <button className={view === 'upcoming' ? 'active' : ''} onClick={() => setTab('upcoming')}>Upcoming</button>
-            <button className={view === 'results' ? 'active' : ''} onClick={() => setTab('results')}>Results</button>
-          </div>
-        </div>
-        {view === 'upcoming' ? <GameTimeline games={games} favorites={favorites}/> : <GameTimeline games={results} favorites={favorites} results/>}
+        <div className="front-panel-head"><h2>Results</h2><a className="front-more" href="/schedule">Full schedule <ArrowRight size={14}/></a></div>
+        <GameTimeline games={results} favorites={favorites} results empty="No games played yet. Results show up here after the season opener."/>
       </section>
 
       <div className="home-side">
