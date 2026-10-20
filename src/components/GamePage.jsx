@@ -54,14 +54,14 @@ export default function GamePage({id}) {
   const [box, setBox] = useState(undefined), [side, setSide] = useState(0), [more, setMore] = useState(false);
   useEffect(() => { loadBoxscore(id).then(setBox); }, [id]);
 
-  /* Top five in each category across both teams; the leader (ties included) is what the box score highlights. */
+  /* Top three in each category across both teams; the leader (ties included) is what the box score highlights. */
   const leaders = useMemo(() => {
     if (!box?.teams?.length) return [];
     const everyone = box.teams.flatMap(team => team.players.filter(player => !player.out).map(player => ({...player, team: team.abbr})));
     return LEADS.map(([key, label]) => {
       const ranked = everyone.filter(player => num(player.stats[key]) > 0).sort((a, b) => num(b.stats[key]) - num(a.stats[key]) || num(b.stats.PTS) - num(a.stats.PTS));
       const top = ranked.length ? num(ranked[0].stats[key]) : 0;
-      return {key, label, top, ranked: ranked.slice(0, 5), players: ranked.filter(player => num(player.stats[key]) === top)};
+      return {key, label, top, ranked: ranked.slice(0, 3), players: ranked.filter(player => num(player.stats[key]) === top)};
     }).filter(entry => entry.ranked.length);
   }, [box]);
   const led = useMemo(() => {

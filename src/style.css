@@ -1620,3 +1620,8 @@ header .brand small{margin-top:3px}
 .gp table.calm td.num{font-weight:600}
 .gp table.calm td.num.led{color:var(--text-1);font-weight:800;box-shadow:inset 0 -2px 0 var(--accent)}
 .gp table.calm .gd-total td{font-size:13px;color:var(--text-2)}
+
+.gp-leaders{gap:14px}
+.gp-leader{padding:16px 16px 12px}
+.gp-leader ol{gap:10px}
+.gp-leader li.top{padding-bottom:10px}
