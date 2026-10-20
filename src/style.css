@@ -1742,3 +1742,6 @@ header .brand small{margin-top:3px}
 .gp-meet-team.won img{opacity:1}
 .gp-meet .gp-at{text-align:center}
 @media (max-width:640px){.gp-meet li{grid-template-columns:1fr auto 20px auto}.gp-meet-date{grid-column:1/-1}.gp-series-side strong{font-size:30px}}
+
+.ticker-first.mine{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--ink-1))}
+.ticker-first.mine .ticker-label{color:var(--accent)}
