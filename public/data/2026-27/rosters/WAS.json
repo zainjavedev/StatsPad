@@ -69,7 +69,8 @@
       "exp": 3,
       "college": "Miami",
       "jersey": "18",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SG"
     },
     {
       "name": "AJ Dybantsa",

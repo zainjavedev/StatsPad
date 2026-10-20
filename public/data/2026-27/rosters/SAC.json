@@ -110,7 +110,8 @@
       "exp": 8,
       "college": "Virginia",
       "jersey": "15",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "C"
     },
     {
       "name": "Domantas Sabonis",

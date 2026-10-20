@@ -83,7 +83,8 @@
       "exp": 10,
       "college": "Villanova",
       "jersey": "3",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SF"
     },
     {
       "name": "OG Anunoby",

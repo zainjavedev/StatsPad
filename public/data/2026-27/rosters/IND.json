@@ -82,7 +82,8 @@
       "exp": 7,
       "college": "Iowa State",
       "jersey": "0",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SF"
     },
     {
       "name": "Pascal Siakam",

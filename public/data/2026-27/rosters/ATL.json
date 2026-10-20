@@ -83,7 +83,8 @@
       "exp": 14,
       "college": "Lehigh",
       "jersey": "3",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SF"
     },
     {
       "name": "Onyeka Okongwu",
@@ -110,7 +111,8 @@
       "exp": 6,
       "college": "Duke",
       "jersey": "1",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "C"
     },
     {
       "name": "Luguentz Dort",

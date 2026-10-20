@@ -110,7 +110,8 @@
       "exp": 4,
       "college": null,
       "jersey": "15",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "C"
     },
     {
       "name": "De'Anthony Melton",

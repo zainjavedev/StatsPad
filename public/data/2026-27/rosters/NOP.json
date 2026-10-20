@@ -69,7 +69,8 @@
       "exp": 6,
       "college": "Virginia",
       "jersey": "25",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SG"
     },
     {
       "name": "Zion Williamson",

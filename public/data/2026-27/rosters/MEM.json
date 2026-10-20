@@ -68,7 +68,8 @@
       "exp": 0,
       "college": "Duke",
       "jersey": "27",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SG"
     },
     {
       "name": "Cedric Coward",

@@ -83,7 +83,8 @@
       "exp": 6,
       "college": "Oklahoma",
       "jersey": "15",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SF"
     },
     {
       "name": "Luka Doncic",
@@ -96,7 +97,8 @@
       "exp": 9,
       "college": null,
       "jersey": "77",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "PF"
     },
     {
       "name": "Jake LaRavia",
@@ -109,7 +111,8 @@
       "exp": 5,
       "college": "Wake Forest",
       "jersey": "12",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "C"
     },
     {
       "name": "Walker Kessler",

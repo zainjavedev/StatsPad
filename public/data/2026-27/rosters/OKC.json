@@ -83,7 +83,8 @@
       "exp": 10,
       "college": "Texas A&M",
       "jersey": "9",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SF"
     },
     {
       "name": "Bennett Stirtz",
@@ -95,7 +96,8 @@
       "exp": 0,
       "college": "Iowa",
       "jersey": "14",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "PF"
     },
     {
       "name": "Aday Mara",

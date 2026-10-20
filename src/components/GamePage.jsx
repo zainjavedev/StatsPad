@@ -78,35 +78,41 @@ function Preview({box}) {
     }).catch(() => setContext({awayCode, homeCode, form: [], meetings: [], byCode: new Map()}));
     const codes = [awayCode, homeCode];
     Promise.all(codes.map(code => fetch(`/data/2026-27/rosters/${code}.json`).then(response => response.json()))).then(async rosters => {
-      const [season, pre] = await Promise.all([
-        fetch(`/data/${rosters[0].statsSeason}/regular-season.json`).then(response => response.json()).catch(() => ({players: []})),
-        fetch('/data/2026-27/preseason-starters.json').then(response => response.json()).catch(() => ({})),
+      /* Numbers on the cards: this season's regular-season averages once a player has played one, otherwise his
+         preseason averages. Last season's numbers are not used here. */
+      const [live, pre] = await Promise.all([
+        fetch('/data/2026-27/regular-season.json', {cache: 'no-cache'}).then(response => response.ok ? response.json() : {players: []}).catch(() => ({players: []})),
+        fetch('/data/2026-27/preseason-starters.json', {cache: 'no-cache'}).then(response => response.json()).catch(() => ({})),
       ]);
-      const stats = new Map(season.players.map(player => [plain(player.playerName), player.stats]));
-      setData(rosters.map((roster, index) => ({
-        roster, code: codes[index], side: [box.away, box.home][index],
-        five: roster.players.filter(player => player.unit === 'starters').map(player => ({...player, stats: stats.get(plain(player.name)) ?? null, pre: (pre[codes[index]] ?? []).find(item => item.espnId === player.espnId || plain(item.name) === plain(player.name))})),
-        games: Math.max(0, ...(pre[codes[index]] ?? []).map(item => item.games)),
-      })));
+      const season = new Map((live.players ?? []).filter(player => player.gamesPlayed > 0).map(player => [plain(player.playerName), player.stats]));
+      setData(rosters.map((roster, index) => {
+        const code = codes[index];
+        const five = roster.players.filter(player => player.unit === 'starters').map(player => {
+          const record = (pre[code] ?? []).find(item => item.espnId === player.espnId || plain(item.name) === plain(player.name));
+          const regular = season.get(plain(player.name));
+          return {...player, line: regular ? {ppg: regular.points, rpg: regular.totalRebounds, apg: regular.assists, source: 'season'} : record ? {ppg: record.ppg, rpg: record.rpg, apg: record.apg, source: 'preseason'} : null};
+        });
+        return {roster, code, side: [box.away, box.home][index], five, source: five.some(player => player.line?.source === 'season') ? 'season' : 'preseason'};
+      }));
     }).catch(() => setData([]));
   }, [box]);
   if (!data) return <p className="gd-note">Loading the starting fives…</p>;
-  const per = (player, key) => player.stats ? player.stats[key].toFixed(1) : '—';
+  const per = (player, key) => Number.isFinite(player.line?.[key]) ? player.line[key].toFixed(1) : '—';
   return <div className="gp-preview">
-    <p className="gd-note">No box score yet. Starters are the five who started the most preseason games for each team.</p>
-    {data.map(({roster, code, side, five, games}) => <section key={code} className="gp-side" style={{'--team': TEAMS[code].color}}>
-      <h3>{side.logo && <img src={side.logo} alt=""/>}<span>{roster.teamName}<small>Expected starting five{games ? ` · ${games} preseason game${games === 1 ? '' : 's'}` : ''}</small></span></h3>
+    <p className="gd-note">No box score yet. Expected starters are who started the most preseason games, with this season&apos;s per-game numbers (preseason numbers until the regular season starts).</p>
+    {data.map(({roster, code, side, five, source}) => <section key={code} className="gp-side" style={{'--team': TEAMS[code].color}}>
+      <h3>{side.logo && <img src={side.logo} alt=""/>}<span>{roster.teamName}<small>Expected starting five</small></span></h3>
       <div className="starter-grid">{five.map(player => <div key={player.name} className="starter-card">
         <span className="starter-stage"><span className="slot-badge">{player.slot ?? player.pos}</span><Headshot player={player} className="starter-art"/></span>
         <h3>{player.name}</h3>
         <dl className="starter-line">
-          <div><dt>PPG</dt><dd>{per(player, 'points')}</dd></div>
-          <div><dt>RPG</dt><dd>{per(player, 'totalRebounds')}</dd></div>
-          <div><dt>APG</dt><dd>{per(player, 'assists')}</dd></div>
+          <div><dt>PPG</dt><dd>{per(player, 'ppg')}</dd></div>
+          <div><dt>RPG</dt><dd>{per(player, 'rpg')}</dd></div>
+          <div><dt>APG</dt><dd>{per(player, 'apg')}</dd></div>
         </dl>
-        {player.pre && <small className="gp-started">Started {player.pre.starts} of {player.pre.games} preseason</small>}
+        
       </div>)}</div>
-      <p className="gd-meta">Per game, last season. {roster.coach ? `Coach: ${roster.coach}.` : ''}</p>
+      <p className="gd-meta">Per game, {source === 'season' ? '2026–27 regular season' : '2026–27 preseason'}. {roster.coach ? `Coach: ${roster.coach}.` : ''}</p>
     </section>)}
     {context && <Context box={box} context={context}/>}
   </div>;

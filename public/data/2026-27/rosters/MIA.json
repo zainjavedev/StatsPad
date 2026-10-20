@@ -111,7 +111,8 @@
       "exp": 5,
       "college": null,
       "jersey": "5",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "C"
     },
     {
       "name": "Bam Adebayo",

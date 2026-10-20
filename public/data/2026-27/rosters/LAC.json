@@ -110,7 +110,8 @@
       "exp": 6,
       "college": "Kentucky",
       "jersey": "23",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "C"
     },
     {
       "name": "Kris Dunn",

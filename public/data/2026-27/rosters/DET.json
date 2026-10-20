@@ -111,7 +111,8 @@
       "exp": 7,
       "college": "DePaul",
       "jersey": "7",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "C"
     },
     {
       "name": "Jalen Duren",

@@ -27,18 +27,16 @@ for (const [id] of rows) {
     const minIndex = block?.labels?.indexOf('MIN') ?? -1;
     for (const item of block?.athletes ?? []) {
       if (item.didNotPlay || !item.stats?.length) continue;
-      const record = tally[code].get(String(item.athlete.id)) ?? {espnId: Number(item.athlete.id), name: item.athlete.displayName, starts: 0, games: 0, minutes: 0};
+      const record = tally[code].get(String(item.athlete.id)) ?? {espnId: Number(item.athlete.id), name: item.athlete.displayName, starts: 0, games: 0, minutes: 0, pts: 0, reb: 0, ast: 0};
       record.games += 1;
       if (item.starter) record.starts += 1;
       record.minutes += minutes(item.stats[minIndex]);
+      for (const [key, label] of [['pts', 'PTS'], ['reb', 'REB'], ['ast', 'AST']]) record[key] += Number(item.stats[block.labels.indexOf(label)]) || 0;
       tally[code].set(String(item.athlete.id), record);
     }
   }
 }
 
-/* Which slots a listed position can honestly fill: a slot is only written when it fits, so a lineup with four
-   guards shows G, G, G, G and a forward instead of a guard at centre. */
-const FITS = {PG: ['PG', 'SG'], SG: ['SG', 'PG', 'SF'], G: ['PG', 'SG'], SF: ['SF', 'PF', 'SG'], PF: ['PF', 'C', 'SF'], F: ['SF', 'PF'], C: ['C', 'PF'], GF: ['SG', 'SF'], FC: ['PF', 'C']};
 /* How guard-like a listed position is (0) to how centre-like (5). */
 const RANK = {PG: 0, G: 1, SG: 1, GF: 2, SF: 2.5, F: 3, PF: 4, FC: 4.5, C: 5};
 const SLOTS = ['PG', 'SG', 'SF', 'PF', 'C'];
@@ -49,7 +47,7 @@ for (const code of Object.keys(TEAMS)) {
   const file = `public/data/2026-27/rosters/${code}.json`;
   const roster = JSON.parse(fs.readFileSync(file, 'utf8'));
   const stats = [...tally[code].values()];
-  summary[code] = stats.sort((a, b) => b.starts - a.starts || b.minutes - a.minutes).map(({minutes: total, ...rest}) => ({...rest, minutes: total}));
+  summary[code] = stats.sort((a, b) => b.starts - a.starts || b.minutes - a.minutes).map(record => ({...record, ppg: +(record.pts / record.games).toFixed(1), rpg: +(record.reb / record.games).toFixed(1), apg: +(record.ast / record.games).toFixed(1)}));
   if ((code === 'PHI' && !all) || !stats.length) { console.log(`${code}: kept (${code === 'PHI' ? 'hand-curated' : 'no preseason games'})`); continue; }
 
   const onRoster = roster.players.filter(player => stats.some(stat => stat.espnId === player.espnId || plain(stat.name) === plain(player.name)));
@@ -66,10 +64,10 @@ for (const code of Object.keys(TEAMS)) {
   const lineup = SLOTS.map(slot => chosen.find(player => placed.get(player) === slot));
   const sizes = {second: 5, third: 5};
   let cursor = 0;
-  const players = [...lineup.map(player => { const {slot, ...clean} = player; return FITS[player.pos]?.includes(placed.get(player)) ? {...clean, unit: 'starters', slot: placed.get(player)} : {...clean, unit: 'starters'}; })];
+  const players = [...lineup.map(player => { return {...player, unit: 'starters', slot: placed.get(player)}; })];
   for (const unit of UNITS.slice(1)) {
     const take = sizes[unit] ?? Infinity;
-    for (const player of rest.slice(cursor, cursor + take)) { const {slot, ...clean} = player; players.push({...clean, unit}); }
+    for (const player of rest.slice(cursor, cursor + take)) { const clean = {...player}; delete clean.slot; players.push({...clean, unit}); }
     cursor += Math.min(take, rest.length - cursor);
   }
   roster.players = players;

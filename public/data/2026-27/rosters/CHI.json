@@ -110,7 +110,8 @@
       "exp": 7,
       "college": "Maryland",
       "jersey": "25",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "C"
     },
     {
       "name": "Nic Claxton",

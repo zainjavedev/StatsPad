@@ -83,7 +83,8 @@
       "exp": 3,
       "college": "UConn",
       "jersey": "5",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SF"
     },
     {
       "name": "Victor Wembanyama",
@@ -110,7 +111,8 @@
       "exp": 5,
       "college": "St. John's",
       "jersey": "30",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "C"
     },
     {
       "name": "De'Aaron Fox",

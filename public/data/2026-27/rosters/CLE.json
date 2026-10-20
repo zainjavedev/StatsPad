@@ -83,7 +83,8 @@
       "exp": 18,
       "college": "Arizona State",
       "jersey": "1",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SF"
     },
     {
       "name": "Evan Mobley",

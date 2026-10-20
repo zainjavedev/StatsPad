@@ -69,7 +69,8 @@
       "exp": 3,
       "college": null,
       "jersey": "10",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "SG"
     },
     {
       "name": "Cooper Flagg",
@@ -110,7 +111,8 @@
       "exp": 7,
       "college": "Xavier",
       "jersey": "3",
-      "unit": "starters"
+      "unit": "starters",
+      "slot": "C"
     },
     {
       "name": "Kyrie Irving",
