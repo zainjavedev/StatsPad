@@ -3,7 +3,6 @@ import { loadSchedule } from '../lib/schedule';
 import { TEAMS } from '../lib/teams';
 import { useFavorites } from '../lib/favorites';
 import GameTimeline from './GameTimeline';
-import GameDetail from './GameDetail';
 
 /* Every game of the season, filterable down to a team or a single matchup. */
 
@@ -13,7 +12,7 @@ const nick = code => TEAMS[code].name.replace(/^.* (?=\S+$)/, '');
 
 export default function SchedulePage() {
   const favorites = useFavorites();
-  const [games, setGames] = useState(null), [team, setTeam] = useState(''), [other, setOther] = useState(''), [mine, setMine] = useState(false), [when, setWhen] = useState('upcoming'), [openGame, setOpenGame] = useState(null);
+  const [games, setGames] = useState(null), [team, setTeam] = useState(''), [other, setOther] = useState(''), [mine, setMine] = useState(false), [when, setWhen] = useState('upcoming');
 
   useEffect(() => {
     loadSchedule().then(setGames).catch(() => setGames([]));
@@ -59,8 +58,7 @@ export default function SchedulePage() {
     </div>
     <div className="front-panel">
       <div className="front-panel-head"><h2>{shown ? `${shown.length} game${shown.length === 1 ? '' : 's'}` : 'Loading…'}</h2></div>
-      <GameTimeline games={shown} favorites={favorites} results={when === 'past'} all onOpen={setOpenGame}/>
+      <GameTimeline games={shown} favorites={favorites} results={when === 'past'} all onOpen={game => { window.location.href = `/games/${game.id}`; }}/>
     </div>
-    {openGame && <GameDetail game={openGame} onClose={() => setOpenGame(null)}/>}
   </section>;
 }

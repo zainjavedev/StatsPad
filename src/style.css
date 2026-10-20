@@ -1558,3 +1558,36 @@ header .brand small{margin-top:3px}
 .gd-fives li{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
 .gd-fives li span{width:28px;font-size:12px;font-weight:800;color:var(--text-3)}
 @media (max-width:640px){.gd{padding:16px}.gd-head b{font-size:15px}.gd-head strong{font-size:26px}.gd-fives{grid-template-columns:1fr}}
+
+/* game page */
+.gp{display:flex;flex-direction:column;width:min(980px,100%);margin:0 auto;padding:30px 28px 56px;color:var(--text-1)}
+.gp-back{display:inline-flex;align-items:center;gap:6px;margin-bottom:14px;color:var(--text-2);font-size:13px;font-weight:700;text-decoration:none}
+.gp-head{padding-right:0}
+.gp-leaders{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:20px}
+.gp-leader{display:flex;flex-direction:column;gap:10px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--ink-1)}
+.gp-leader>small{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.gp-leader>div{display:flex;align-items:center;gap:10px}
+.gp-leader span{display:flex;flex:1;flex-direction:column;min-width:0}
+.gp-leader b{overflow:hidden;font-size:14px;text-overflow:ellipsis;white-space:nowrap}
+.gp-leader i{font-size:12px;font-style:normal;color:var(--text-3)}
+.gp-leader strong{font-size:26px;font-weight:800}
+.gp-face{flex:none;border-radius:50%;object-fit:cover;object-position:center top;background:var(--ink-2)}
+.gp-name{display:inline-flex;align-items:center;gap:10px;vertical-align:middle}
+.gp-name span{display:inline-flex;flex-direction:column}
+.gp-name small{margin:0!important}
+.gp-badges{display:inline-flex;gap:4px;margin-left:10px;vertical-align:middle}
+.gp-badges em{padding:2px 6px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-size:10px;font-style:normal;font-weight:800;letter-spacing:.03em}
+.gd .num.led,.gp .num.led{color:var(--accent);font-weight:800}
+.gp .gd-fives li{gap:12px}
+.gp table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.gp th,.gp td{padding:7px 8px;border-bottom:1px solid var(--line);font-size:13px;white-space:nowrap}
+.gp th{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);text-align:right}
+.gp .who{text-align:left}
+.gp .num{text-align:right}
+.gp td.who b{display:block;font-weight:700}
+.gp td.who small{display:block;color:var(--text-3)}
+@media (max-width:640px){.gp{padding:20px 14px 40px}.gp-badges{display:none}}
+
+.gp .vs-radar{margin-top:20px;border:1px solid var(--line);border-radius:16px;background:var(--ink-1)}
+
+.gp-leader .gp-more{font-size:12px;font-style:normal;color:var(--text-3)}
