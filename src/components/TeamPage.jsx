@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowDown, ArrowUp, ChevronRight } from 'lucide-react';
+import { ArrowDown, ArrowUp, BarChart3, ChevronRight } from 'lucide-react';
+import { navigate } from '../lib/nav';
 import { GameList } from './Feeds';
 import { useFeed } from '../lib/useFeed';
 import { teamResults, teamSchedule } from '../lib/espn';
@@ -8,8 +9,6 @@ import { indexPlayers, isCurrent, isPreseason, pretty, stage, statsFor } from '.
 import TeamRail from './TeamRail';
 import FavoriteStar from './FavoriteStar';
 import { useFavorites } from '../lib/favorites';
-import ShareButton from './ShareButton';
-import { teamUrl } from '../lib/routes';
 import { TeamSkeletonBody } from './Skeletons';
 
 /* Team roster page: who is on the team this season, how the rotation is
@@ -134,10 +133,7 @@ function StatTable({players, season, onOpen}) {
         </tr>)}</tbody>
       </table>
     </div>
-    <p className="board-note">
-      {season ? pretty(season) : ''} {stage()}, per game. Faded percentages come from too few attempts and sort last.
-      {noStats.length > 0 && <> No NBA stats yet: {noStats.map(player => player.name).join(', ')}.</>}
-    </p>
+    <p className="board-note">{season ? pretty(season) : ''} {stage()}, per game. Faded percentages come from too few attempts.{noStats.length > 0 && ` ${noStats.length} player${noStats.length === 1 ? '' : 's'} without NBA stats yet.`}</p>
   </section>;
 }
 
@@ -171,15 +167,6 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, season, onOpe
   if (!roster) return shell(<TeamSkeletonBody/>);
   const unit = key => players.filter(player => player.unit === key);
   const open = player => player.profile && onOpen(player.profile);
-  const starters = unit('starters');
-  const shareSpec = {
-    kind: 'grid', eyebrow: `${roster.season.replace('-', '–')} roster`, title: roster.teamName, color: TEAMS[teamCode].color,
-    sub: `Expected starting five · per game, ${isCurrent(season) ? (isPreseason() ? 'preseason' : 'this season') : `last season (${pretty(season || roster.statsSeason || '2025-26')})`}`,
-    rows: starters.map(player => ({lead: player.slot ?? player.pos, name: player.name, person: {name: player.name, playerId: player.profile?.playerId, espnId: player.espnId},
-      lines: player.stats ? [['PTS', player.stats.points.toFixed(1)], ['REB', player.stats.totalRebounds.toFixed(1)], ['AST', player.stats.assists.toFixed(1)]] : [['', 'Rookie']]})),
-    summary: [`${starters.reduce((sum, player) => sum + (player.stats?.points ?? 0), 0).toFixed(1)} PPG`, 'combined from the starting five'],
-    foot: 'Lineups are projections from ESPN depth charts', path: teamUrl(teamCode),
-  };
 
   return shell(<section className="team-page">
     <div className="team-hero">
@@ -188,7 +175,7 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, season, onOpe
         <h1>{roster.teamName}</h1>
         <p>{roster.season.replace('-', '–')} roster</p>
       </div>
-      <ShareButton spec={shareSpec} filename={`${teamUrl(teamCode).split('/').pop()}-starting-five`} title={`${roster.teamName} starting five`} text={`${roster.teamName}: expected starting five`} path={teamUrl(teamCode)} className="team-hero-share"/>
+      <button className="team-hero-share" onClick={() => navigate(`/compare?mode=team&players=${encodeURIComponent(roster.teamName)}`)} title={`Compare the ${roster.teamName} with another team`}><BarChart3 size={15}/> Compare</button>
       <FavoriteStar code={teamCode} active={favorites.includes(teamCode)} className="on-hero"/>
     </div>
 

@@ -5,7 +5,7 @@ import StandingsPage from './StandingsPage';
 import GamePage from './GamePage';
 import { isAppPath, navigate } from '../lib/nav';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, BarChart3, CalendarDays, Check, Copy, Download, Home as HomeIcon, Link2, ListOrdered, Moon, Search, Sun, Trophy, Users, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BarChart3, CalendarDays, Check, Copy, Download, Home as HomeIcon, Link2, ListOrdered, Moon, Search, Sun, Trophy, Users, X } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import TeamPage from './TeamPage';
 import TeamsIndex from './TeamsIndex';
@@ -14,7 +14,6 @@ import TeamLineups from './TeamLineups';
 import { CompareSkeleton, HomeSkeleton, PageSkeleton, TeamLoading } from './Skeletons';
 import { TEAMS, espnLogoUrl, nickname, teamCodeOf } from '../lib/teams';
 import { CURRENT, loadLatest, pretty, qualified, setCurrentIsPreseason, stageOf } from '../lib/season';
-import { buildAwards } from '../lib/awards';
 import { compareUrl, leadersUrl, matchesName, playerUrl, routeParams, teamUrl } from '../lib/routes';
 import FrontPage from './FrontPage';
 import PlayerBody from './PlayerBody';
@@ -36,9 +35,9 @@ function loadSeasonBundle(seasonType){
   if(!SEASON_BUNDLES.has(seasonType))SEASON_BUNDLES.set(seasonType,loadLatest(seasonType).then(bundle=>{SEASON_YEARS[seasonType]=bundle.season;return bundle}));
   return SEASON_BUNDLES.get(seasonType);
 }
-const SEASON_TABS=[['preseason','Preseason'],['regular-season','Regular season'],['playoffs','Playoffs']];
-function SeasonTabs({seasonType,onChange,className}){
-  return <div className={className} role="group" aria-label="Season">{SEASON_TABS.map(([key,label])=><button key={key} className={seasonType===key?'active':''} onClick={()=>onChange(key)}><b>{label}</b>{SEASON_YEARS[key]&&<small>{pretty(SEASON_YEARS[key])}</small>}</button>)}</div>;
+const SEASON_TABS=[['regular-season','Regular season'],['playoffs','Playoffs']];
+function SeasonTabs({seasonType,onChange}){
+  return <div className="season-pills" role="group" aria-label="Season">{SEASON_TABS.map(([key,label])=><button key={key} className={seasonType===key?'active':''} onClick={()=>onChange(key)}><strong>{label}</strong>{SEASON_YEARS[key]&&<small>{pretty(SEASON_YEARS[key])}</small>}</button>)}</div>;
 }
 function playerTheme(player,index){if(PLAYER_COLOR_OVERRIDES[player.playerName])return PLAYER_COLOR_OVERRIDES[player.playerName];const background=JERSEY_COLORS[player.team]||CARD_THEMES[index%CARD_THEMES.length][0];const hex=background.replace('#','');const red=parseInt(hex.slice(0,2),16),green=parseInt(hex.slice(2,4),16),blue=parseInt(hex.slice(4,6),16);return [background,(red*299+green*587+blue*114)>145000?'#171717':'#fff']}
 const STAT_GROUPS = {
@@ -170,7 +169,7 @@ function SiteHeader({page,onHome,onLeaders,onCompare,onTeams,theme,onToggleTheme
   const tabs=className=><nav className={className} aria-label="Main">{NAV_ITEMS.map(([key,label,Icon])=><button key={key} className={current===key?'active':''} aria-current={current===key?'page':undefined} onClick={()=>go[key]()}><Icon size={19} className="nav-icon"/><span>{label}</span></button>)}</nav>;
   return <>
     <div className="site-header" role="banner"><div className="site-header-inner">
-      <button className="site-brand" onClick={()=>onHome()}>StatsPads</button>
+      <button className="site-brand" onClick={()=>onHome()}><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 2.5v19M2.5 12h19M5.6 5.6c3.4 3.4 3.4 9.4 0 12.8M18.4 5.6c-3.4 3.4-3.4 9.4 0 12.8"/></svg>StatsPads</button>
       {tabs('site-nav')}
       <div className="site-header-end"><AccountButton/><button className="theme-toggle" onClick={onToggleTheme} aria-label={theme==='dark'?'Switch to light theme':'Switch to dark theme'} title={theme==='dark'?'Light theme':'Dark theme'}>{theme==='dark'?<Sun size={16}/>:<Moon size={16}/>}</button></div>
     </div></div>
@@ -178,23 +177,29 @@ function SiteHeader({page,onHome,onLeaders,onCompare,onTeams,theme,onToggleTheme
   </>;
 }
 
-function Awards({pool,previous,seasonType,season,playerIds,onOpen}){
-  const awards=useMemo(()=>buildAwards(pool,previous),[pool,previous]);
-  if(!awards.length)return null;
-  const title=seasonType==='playoffs'?'Playoff awards':seasonType==='preseason'?'Preseason awards':'Regular-season awards';
-  return <section className="awards"><div className="awards-head"><h2>{title} <span aria-hidden="true">🏆</span></h2><p>{season?pretty(season):''} · just for fun, picked from the numbers</p></div><div className="awards-grid">{awards.map(award=>{const[winner,...rest]=award.winners;return <article className="award-card" key={award.key} onClick={()=>onOpen(winner)} role="button" tabIndex={0} onKeyDown={event=>event.key==='Enter'&&onOpen(winner)}><small>{award.title.toUpperCase()}</small><div className="award-winner"><EntityArt entity={winner} playerIds={playerIds} className="award-art"/><div><b>{winner.playerName}</b><span>{award.note(winner)}</span></div></div><p className="award-blurb">{award.blurb}</p>{rest.length>0&&<div className="award-runners">{rest.map(player=><span key={player.playerId}>{player.playerName}</span>)}</div>}</article>})}</div></section>
-}
 function Discovery({players,playerIds,onOpen,seasonType,onSeasonTypeChange,seasonChanging,season}){
-  const[listCard,setListCard]=useState(null),[previous,setPrevious]=useState([]);
-  useEffect(()=>{let active=true;if(seasonType==='preseason')loadSeasonBundle('regular-season').then(b=>{if(active)setPrevious(b.players.players)}).catch(()=>{});else setPrevious([]);return()=>{active=false}},[seasonType]);
+  const[listCard,setListCard]=useState(null);
   const leaderGroups=[['Scoring leader','points','PPG','scoring'],['Assist leader','assists','APG','playmaking'],['Rebound leader','totalRebounds','RPG','rebounding'],['Off. rebound leader','offensiveRebounds','ORB','rebounding'],['Def. rebound leader','defensiveRebounds','DRB','rebounding'],['Steal leader','steals','SPG','defense'],['Block leader','blocks','BPG','defense'],['Stocks leader','stocks','STK','defense'],['Field-goal leader','fieldGoalPercentage','FG%','shooting'],['Three-point leader','threePointPercentage','3P%','shooting'],['Free-throw leader','freeThrowPercentage','FT%','shooting'],['True-shooting leader','trueShootingPercentage','TS%','shooting'],['Turnover leader','turnovers','TOV','volume'],['Effective-FG leader','effectiveFieldGoalPercentage','eFG%','shooting'],['Field-goals-made leader','fieldGoalsMade','FGM','volume'],['Three-pointers-made leader','threePointersMade','3PM','volume'],['Free-throws-made leader','freeThrowsMade','FTM','volume'],['Minutes leader','minutesPerGame','MPG','volume'],['Field-goals-attempted leader','fieldGoalsAttempted','FGA','volume'],['Three-pointers-attempted leader','threePointersAttempted','3PA','volume'],['Free-throws-attempted leader','freeThrowsAttempted','FTA','volume'],['Foul leader','personalFouls','PF','defense']];
   const qualifiedPlayers=qualified(players);
   const leaderPool=qualifiedPlayers.length?qualifiedPlayers:players;
   const leaderCards=leaderGroups.map(([label,key,suffix,category])=>{const pool=key==='threePointPercentage'?leaderPool.filter(player=>player.stats.threePointersAttempted>=3):key==='freeThrowPercentage'?leaderPool.filter(player=>player.stats.freeThrowsAttempted>=2):leaderPool;const leaders=[...(pool.length?pool:leaderPool)].sort((a,b)=>metricValue(b,key)-metricValue(a,key)).slice(0,5);return {label,key,suffix,category,player:leaders[0],leaders}}).filter(card=>card.player);
   return <div className="muse-layout leaders-page"><div className={`muse-main ${seasonChanging?'season-changing':''}`}>
-    <section className="muse-home-grid"><div className="story-feed"><div className="feed-heading"><div><h2>League leaders</h2><p>{season?pretty(season):''} {stageOf(seasonType).toLowerCase()} · tap a card for the top 5</p></div><SeasonTabs className="season-toggle" seasonType={seasonType} onChange={onSeasonTypeChange}/></div><Awards pool={leaderPool} previous={previous} seasonType={seasonType} season={season} playerIds={playerIds} onOpen={onOpen}/><h3 className="cards-title">Category leaders</h3>{leaderCards.map((card,index)=><StoryCard key={`${card.key}-${card.player.playerId}`} player={card.player} leaders={card.leaders} index={index} label={card.label} statKey={card.key} suffix={card.suffix} playerIds={playerIds} onOpen={onOpen} onOpenList={setListCard}/>)}</div></section>
+    <section className="muse-home-grid"><div className="story-feed"><div className="feed-heading"><div><h2>League leaders</h2><p>{season?pretty(season):''} {stageOf(seasonType).toLowerCase()} · tap a card for the top 5</p></div><SeasonTabs seasonType={seasonType} onChange={onSeasonTypeChange}/></div><h3 className="cards-title">Category leaders</h3>{leaderCards.map((card,index)=><StoryCard key={`${card.key}-${card.player.playerId}`} player={card.player} leaders={card.leaders} index={index} label={card.label} statKey={card.key} suffix={card.suffix} playerIds={playerIds} onOpen={onOpen} onOpenList={setListCard}/>)}</div></section>
     {listCard&&<StatListModal seasonType={seasonType} card={listCard} season={season} playerIds={playerIds} onOpen={onOpen} onClose={()=>setListCard(null)}/>}
   </div></div>
+}
+
+/* The first three category-leader cards from the Leaders page, for the home page. */
+function LeaderPeek({players,playerIds,onOpen,onLeaders}){
+  const[listCard,setListCard]=useState(null);
+  const pool=useMemo(()=>{const q=qualified(players);return q.length?q:players},[players]);
+  const cards=[['Scoring leader','points','PPG'],['Assist leader','assists','APG'],['Rebound leader','totalRebounds','RPG']].map(([label,key,suffix])=>{const leaders=[...pool].sort((a,b)=>metricValue(b,key)-metricValue(a,key)).slice(0,5);return {label,key,suffix,player:leaders[0],leaders}}).filter(card=>card.player);
+  if(!cards.length)return null;
+  return <section className="front-panel peek">
+    <div className="front-panel-head"><h2>League leaders</h2><button className="front-more" onClick={onLeaders}>All leaders <ArrowRight size={14}/></button></div>
+    <div className="leaders-page home-leaders-wrap"><div className="story-feed home-leaders">{cards.map((card,index)=><StoryCard key={card.key} player={card.player} leaders={card.leaders} index={index} label={card.label} statKey={card.key} suffix={card.suffix} playerIds={playerIds} onOpen={onOpen} onOpenList={setListCard}/>)}</div></div>
+    {listCard&&<StatListModal seasonType="regular-season" card={listCard} season={undefined} playerIds={playerIds} onOpen={onOpen} onClose={()=>setListCard(null)}/>}
+  </section>
 }
 
 async function downloadCard(node,name){const dataUrl=await toPng(node,{pixelRatio:2,cacheBust:true});const link=document.createElement('a');link.download=`${name.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.png`;link.href=dataUrl;link.click()}
@@ -242,10 +247,10 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
     rows:shareMetrics.map(metric=>({label:metric[1],values:enriched.slice(0,2).map(entity=>statText(statValue(entity,metric[0]),metric[0],metric[3])),lead:leadOf(enriched,metric)})),
     foot:`${pretty(data.season)} ${stageOf(seasonType)}, per game`,path:sharePath}:null;
   return <main className="h2h-main"><SiteHeader page="compare" onHome={onHome} onCompare={()=>{}} onTeams={onTeams} onLeaders={onLeaders} theme={theme} onToggleTheme={onToggleTheme}/><section className="h2h-page">
-    <div className="h2h-bar">
-      <div className="segmented mode"><button className={entityType==='player'?'active':''} onClick={()=>setEntityType('player')}>Players</button><button className={entityType==='team'?'active':''} onClick={()=>setEntityType('team')}>Teams</button></div>
-      <SeasonTabs className="segmented season" seasonType={seasonType} onChange={switchSeason}/>
-      <div className="h2h-bar-actions">
+    <div className="cmp-bar">
+      <div className="pills"><button className={entityType==='player'?'active':''} onClick={()=>setEntityType('player')}>Players</button><button className={entityType==='team'?'active':''} onClick={()=>setEntityType('team')}>Teams</button></div>
+      <SeasonTabs seasonType={seasonType} onChange={switchSeason}/>
+      <div className="cmp-actions">
         <ShareButton spec={shareSpec} filename={shareFile} title={shareTitle} text={`${shareTitle} on StatsPads`} path={sharePath}/>
         <button className="ghost-button" onClick={onShare} title="Copy a link to this comparison"><Link2 size={15}/> Link</button>
         <button className="ghost-button" onClick={onCopy} disabled={!ready} title="Copy the verdict as text"><Copy size={15}/> Copy</button>
@@ -273,7 +278,7 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
 
 export default function Home(){
   const paramsOnLoad=useMemo(()=>routeParams(location.pathname,location.search),[]);
-  const[seasonType,setSeasonType]=useState(()=>paramsOnLoad.get('type')||'preseason'),[seasonChanging,setSeasonChanging]=useState(false),[entityType,setEntityType]=useState(()=>paramsOnLoad.get('mode')||'player'),[data,setData]=useState(null),[,setSplits]=useState(null),[selected,setSelected]=useState([]),[toast,setToast]=useState(''),[playerIds,setPlayerIds]=useState({}),[catalog,setCatalog]=useState({players:[],teams:[]}),[gameId,setGameId]=useState(()=>paramsOnLoad.get('game')),[page,setPage]=useState(['account','schedule','standings','game'].includes(paramsOnLoad.get('view'))?paramsOnLoad.get('view'):paramsOnLoad.get('view')==='leaders'?'leaders':paramsOnLoad.get('view')==='teams'?'teams':paramsOnLoad.has('team')?'team':paramsOnLoad.has('players')?'compare':paramsOnLoad.has('profile')?'profile':'home'),[regularPlayers,setRegularPlayers]=useState(null),[regularSeason,setRegularSeason]=useState(null),[profileFrom,setProfileFrom]=useState(null),[profile,setProfile]=useState(null),[profileBundle,setProfileBundle]=useState(null),[,setYearsTick]=useState(0),[teamCode,setTeamCode]=useState(()=>TEAMS[paramsOnLoad.get('team')]?paramsOnLoad.get('team'):'PHI');
+  const[seasonType,setSeasonType]=useState(()=>paramsOnLoad.get('type')==='playoffs'?'playoffs':'regular-season'),[seasonChanging,setSeasonChanging]=useState(false),[entityType,setEntityType]=useState(()=>paramsOnLoad.get('mode')||'player'),[data,setData]=useState(null),[,setSplits]=useState(null),[selected,setSelected]=useState([]),[toast,setToast]=useState(''),[playerIds,setPlayerIds]=useState({}),[catalog,setCatalog]=useState({players:[],teams:[]}),[gameId,setGameId]=useState(()=>paramsOnLoad.get('game')),[page,setPage]=useState(['account','schedule','standings','game'].includes(paramsOnLoad.get('view'))?paramsOnLoad.get('view'):paramsOnLoad.get('view')==='leaders'?'leaders':paramsOnLoad.get('view')==='teams'?'teams':paramsOnLoad.has('team')?'team':paramsOnLoad.has('players')?'compare':paramsOnLoad.has('profile')?'profile':'home'),[regularPlayers,setRegularPlayers]=useState(null),[regularSeason,setRegularSeason]=useState(null),[profileFrom,setProfileFrom]=useState(null),[profile,setProfile]=useState(null),[profileBundle,setProfileBundle]=useState(null),[,setYearsTick]=useState(0),[teamCode,setTeamCode]=useState(()=>TEAMS[paramsOnLoad.get('team')]?paramsOnLoad.get('team'):'PHI');
   const chartRef=useRef(null),seasonTransitionRef=useRef(0);
   const[theme,setTheme]=useState(()=>{try{return localStorage.getItem('statspad-theme')||'dark'}catch{return 'dark'}});
   useEffect(()=>{document.documentElement.dataset.theme=theme;try{localStorage.setItem('statspad-theme',theme)}catch{/* private mode */}},[theme]);
@@ -358,7 +363,7 @@ export default function Home(){
   const openTeam=(code=teamCode)=>{setTeamCode(code);setPage('team');setProfile(null);history.pushState({},'',teamUrl(code));scrollTo({top:0,behavior:'smooth'})};
   const openCompare=item=>{if(item){const items=Array.isArray(item)?item:[item],isTeam=items[0]?.entityType==='team';setEntityType(isTeam?'team':'player');setSelected(items.slice(0,2))}setPage('compare');setProfile(null);history.pushState({},'',item?compareUrl((Array.isArray(item)?item:[item]).map(entry=>entry.playerName),entityType,seasonType):'/compare');scrollTo({top:0,behavior:'smooth'})};
   if(page==='leaders')return <main><SiteHeader page={page} onHome={goHome} onCompare={()=>openCompare()} onTeams={openTeams} onLeaders={openLeaders} theme={theme} onToggleTheme={toggleTheme}/><Discovery season={data?.season} players={catalog.players} playerIds={playerIds} onOpen={openProfile} seasonType={seasonType} onSeasonTypeChange={switchSeason} seasonChanging={seasonChanging}/><footer><span>StatsPads · NBA numbers, visualized</span><span>{pretty(data.season)} data from <a href={data.source.url} target="_blank" rel="noreferrer">{data.source.name}</a></span></footer></main>;
-  if(page==='home')return <main><SiteHeader page={page} onHome={goHome} onCompare={()=>openCompare()} onTeams={openTeams} onLeaders={openLeaders} theme={theme} onToggleTheme={toggleTheme}/><FrontPage players={regularPlayers||catalog.players} season={regularSeason} teams={catalog.teams} playerIds={playerIds} Art={EntityArt} onOpen={openProfile} onCompare={pair=>openCompare(Array.isArray(pair)?pair:undefined)} onTeam={openTeam} onLeaders={openLeaders}/><footer><span>StatsPads · NBA numbers, visualized</span><span>Stats from <a href={data.source.url} target="_blank" rel="noreferrer">{data.source.name}</a> · games and news from <a href="https://www.espn.com/nba/" target="_blank" rel="noreferrer">ESPN</a></span></footer></main>;
+  if(page==='home')return <main><SiteHeader page={page} onHome={goHome} onCompare={()=>openCompare()} onTeams={openTeams} onLeaders={openLeaders} theme={theme} onToggleTheme={toggleTheme}/><FrontPage players={regularPlayers||catalog.players} season={regularSeason} teams={catalog.teams} playerIds={playerIds} Art={EntityArt} onOpen={openProfile} onCompare={pair=>openCompare(Array.isArray(pair)?pair:undefined)} onTeam={openTeam} onLeaders={openLeaders} leaderPeek={<LeaderPeek players={regularPlayers||catalog.players} playerIds={playerIds} onOpen={openProfile} onLeaders={openLeaders}/>}/><footer><span>StatsPads · NBA numbers, visualized</span><span>Stats from <a href={data.source.url} target="_blank" rel="noreferrer">{data.source.name}</a> · games and news from <a href="https://www.espn.com/nba/" target="_blank" rel="noreferrer">ESPN</a></span></footer></main>;
   if(page==='teams')return <main><SiteHeader page={page} onHome={goHome} onCompare={()=>openCompare()} onTeams={openTeams} onLeaders={openLeaders} theme={theme} onToggleTheme={toggleTheme}/><TeamsIndex onOpen={openTeam}/><footer><span>StatsPads · NBA numbers, visualized</span></footer></main>;
   if(page==='team')return <main><SiteHeader page={page} onHome={goHome} onCompare={()=>openCompare()} onTeams={openTeams} onLeaders={openLeaders} theme={theme} onToggleTheme={toggleTheme}/>{regularPlayers?<TeamPage teamCode={teamCode} leaguePlayers={regularPlayers} season={regularSeason} onOpen={player=>openProfile(player,'team')} onSwitchTeam={openTeam}/>:<TeamLoading teamCode={teamCode} color={TEAMS[teamCode].color} onPick={openTeam}/>}<footer><span>StatsPads · NBA numbers, visualized</span><span>{pretty(data.season)} stats from <a href={data.source.url} target="_blank" rel="noreferrer">{data.source.name}</a></span></footer></main>;
   if(page==='profile'&&profile){const pb=profileBundle,entities=pb?(profile.entityType==='team'?pb.teams.players:pb.players.players):(profile.entityType==='team'?catalog.teams:catalog.players),shown=entities.find(e=>e.playerId===profile.playerId||matchesName(e.playerName,profile.playerName))||profile;return <main><SiteHeader page={page} onHome={goHome} onCompare={()=>openCompare()} onTeams={openTeams} onLeaders={openLeaders} theme={theme} onToggleTheme={toggleTheme}/><Profile season={pb?.season||data?.season} playoffs={seasonType==='playoffs'} onOpen={player=>openProfile(player)} entity={shown} allEntities={entities} playerIds={playerIds} onBack={profileFrom==='team'?()=>openTeam():goHome} backLabel={profileFrom==='team'?`Back to the ${nickname(teamCode)}`:undefined} onCompare={openCompare}/><footer><span>StatsPads · NBA numbers, visualized</span><span>{pretty(pb?.season||data.season)} data from <a href={(pb?.players||data).source.url} target="_blank" rel="noreferrer">{(pb?.players||data).source.name}</a></span></footer></main>}

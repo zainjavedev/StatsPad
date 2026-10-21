@@ -25,6 +25,8 @@ const parse = data => (data.children ?? []).map(group => ({
   }).filter(row => row.code).sort((a, b) => a.seed - b.seed || Number(b.stat.winPercent) - Number(a.stat.winPercent) || TEAMS[a.code].name.localeCompare(TEAMS[b.code].name)),
 }));
 
+export const loadStandings = () => ask(2).then(parse);
+
 function Table({group, favorites, ranked, numbered}) {
   return <section className="front-panel stand">
     <div className="front-panel-head"><h2>{group.name}</h2></div>

@@ -1,17 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { loadSchedule, upcoming } from '../lib/schedule';
 import { TEAMS } from '../lib/teams';
-import { useSpoilers } from '../lib/spoilers';
 
-/* The home page's lead card: a live countdown to the next tip-off (or the score of a game in
-   progress). A game for a team the visitor follows comes first. */
-
-const pad = value => String(value).padStart(2, '0');
-
-const parts = ms => {
-  const total = Math.max(0, Math.floor(ms / 1000));
-  return {days: Math.floor(total / 86400), hours: Math.floor(total % 86400 / 3600), minutes: Math.floor(total % 3600 / 60), seconds: total % 60};
-};
+/* The home page's lead card: the next tip-off (or the score of a game in progress). A game for a team the visitor follows comes first. */
 
 export const codeOf = abbr => Object.keys(TEAMS).find(code => TEAMS[code].espn === abbr?.toLowerCase());
 export const followedGame = (game, favorites) => favorites.some(code => TEAMS[code].espn === game.home.abbr?.toLowerCase() || TEAMS[code].espn === game.away.abbr?.toLowerCase());
@@ -21,7 +13,7 @@ export function useGames(initial) {
   useEffect(() => { setGames(initial); }, [initial]);
   /* Scores and the switch from "starting" to live come from ESPN, so check again every minute. */
   useEffect(() => {
-    const refresh = setInterval(() => loadSchedule().then(all => setGames(upcoming(all, 12))).catch(() => {}), 60000);
+    const refresh = setInterval(() => loadSchedule().then(all => setGames(upcoming(all.filter(game => !game.preseason), 12))).catch(() => {}), 60000);
     return () => clearInterval(refresh);
   }, []);
   return games;
@@ -37,34 +29,63 @@ const stamp = date => {
 
 const Logo = ({team}) => team.logo ? <img src={team.logo} alt=""/> : <i/>;
 
-/* A scrolling strip of every upcoming game, ESPN and SofaScore style. The first chip is the one
-   to watch for: live if a game is on, otherwise the next tip-off (favorite teams' games are only highlighted),
-   with a ticking countdown. */
-export default function GameTicker({games, favorites}) {
-  const spoilers = useSpoilers();
-  const [now, setNow] = useState(() => Date.now());
-  useEffect(() => { const tick = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(tick); }, []);
-  if (games === null) return <div className="ticker loading" aria-busy="true"/>;
+const dayShort = new Intl.DateTimeFormat(undefined, {weekday: 'short'});
+const played = date => {
+  const today = new Date(), yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
+  return date.toDateString() === today.toDateString() ? 'Today' : date.toDateString() === yesterday.toDateString() ? 'Yday' : dayShort.format(date);
+};
+
+/* One short timeline: the last few finished games , then the game to watch
+   for (live, or the next tip-off with a ticking countdown), then everything coming up. */
+export default function GameTicker({games, results, favorites}) {
+  const scroller = useRef(null), nextRef = useRef(null);
+  const [edge, setEdge] = useState({start: true, end: false});
+  const check = useCallback(() => {
+    const node = scroller.current;
+    if (node) setEdge({start: node.scrollLeft <= 2, end: node.scrollLeft + node.clientWidth >= node.scrollWidth - 2});
+  }, []);
+  const scrollBy = direction => scroller.current?.scrollBy({left: direction * Math.max(240, scroller.current.clientWidth * .7), behavior: 'smooth'});
+  const ready = games !== null && results !== null;
+  /* Open with the next game near the left edge and the latest results just behind it. */
+  useEffect(() => {
+    if (ready && scroller.current && nextRef.current) scroller.current.scrollLeft = Math.max(0, nextRef.current.offsetLeft - scroller.current.offsetLeft - 130);
+    check();
+  }, [ready, check]);
+  if (!ready) return <div className="ticker loading" aria-busy="true"/>;
   const ordered = [...games].sort((a, b) => (b.state === 'in') - (a.state === 'in') || a.date - b.date);
-  if (!ordered.length) return null;
+  const before = [...results].slice(0, 6).reverse();
+  if (!ordered.length && !before.length) return null;
   const [first, ...rest] = ordered;
-  const live = first.state === 'in', remaining = first.date - now, left = parts(remaining);
-  const clock = `${left.days ? `${left.days}d ` : ''}${pad(left.hours)}:${pad(left.minutes)}:${pad(left.seconds)}`;
+  const live = first?.state === 'in';
+  const mine = game => (followedGame(game, favorites) ? ' mine' : '');
 
   return <div className="ticker" role="region" aria-label="Games">
-    <a href={`/games/${first.id}`} className={`ticker-first${live ? ' live' : ''}${followedGame(first, favorites) ? ' mine' : ''}`} style={{'--away': TEAMS[codeOf(first.away.abbr)]?.color, '--home': TEAMS[codeOf(first.home.abbr)]?.color}}>
-      <span className="ticker-label">{live ? <><i/> Live</> : 'Next up'}</span>
-      <span className="ticker-versus">
-        <span><Logo team={first.away}/><b>{first.away.abbr}</b></span>
-        {live && spoilers.revealed(first.id) ? <strong>{first.away.score}–{first.home.score}</strong> : <em>@</em>}
-        <span><Logo team={first.home}/><b>{first.home.abbr}</b></span>
-      </span>
-      <span className="ticker-clock">{live ? first.detail : remaining > 0 ? clock : 'Starting…'}</span>
-      {!live && remaining > 0 && <small className="ticker-sub">until tip-off · {stamp(first.date)}</small>}
-    </a>
-    <ul className="ticker-list">{rest.map(game => <li key={game.id} className={followedGame(game, favorites) ? 'mine' : ''}><a href={`/games/${game.id}`}>
-      <span className="ticker-when">{game.state === 'in' ? <b className="ticker-live">Live</b> : stamp(game.date)}</span>
-      <span className="ticker-teams"><Logo team={game.away}/><b>{game.away.abbr}</b>{game.state === 'in' && spoilers.revealed(game.id) ? <strong>{game.away.score}–{game.home.score}</strong> : <em>@</em>}<b>{game.home.abbr}</b><Logo team={game.home}/></span>
-    </a></li>)}</ul>
+    <button type="button" className="ticker-arrow" aria-label="Earlier games" disabled={edge.start} onClick={() => scrollBy(-1)}><ChevronLeft size={18}/></button>
+    <div className="ticker-scroll" ref={scroller} onScroll={check}>
+      {before.map(game => {
+        const open = true, away = Number(game.away.score), home = Number(game.home.score);
+        return <a key={game.id} href={`/games/${game.id}`} className={`tk done${mine(game)}`}>
+          <small>{played(game.date)}{game.preseason ? ' · Pre' : ''}</small>
+          <span className="tk-teams">
+            <Logo team={game.away}/><b className={open && away > home ? 'won' : ''}>{game.away.abbr}</b>
+            <strong>{game.away.score}–{game.home.score}</strong>
+            <b className={open && home > away ? 'won' : ''}>{game.home.abbr}</b><Logo team={game.home}/>
+          </span>
+        </a>;
+      })}
+      {first && <a href={`/games/${first.id}`} ref={nextRef} className={`tk next${live ? ' live' : ''}${mine(first)}`}>
+        <small>{live ? <><i/> Live · {first.detail}</> : `Next up · ${stamp(first.date)}`}</small>
+        <span className="tk-teams">
+          <Logo team={first.away}/><b>{first.away.abbr}</b>
+          {live ? <strong>{first.away.score}–{first.home.score}</strong> : <em>@</em>}
+          <b>{first.home.abbr}</b><Logo team={first.home}/>
+        </span>
+      </a>}
+      {rest.map(game => <a key={game.id} href={`/games/${game.id}`} className={`tk${mine(game)}`}>
+        <small>{game.state === 'in' ? <b className="ticker-live">Live</b> : stamp(game.date)}</small>
+        <span className="tk-teams"><Logo team={game.away}/><b>{game.away.abbr}</b>{game.state === 'in' ? <strong>{game.away.score}–{game.home.score}</strong> : <em>@</em>}<b>{game.home.abbr}</b><Logo team={game.home}/></span>
+      </a>)}
+    </div>
+    <button type="button" className="ticker-arrow" aria-label="Later games" disabled={edge.end} onClick={() => scrollBy(1)}><ChevronRight size={18}/></button>
   </div>;
 }

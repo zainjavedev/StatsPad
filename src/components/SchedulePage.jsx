@@ -15,7 +15,7 @@ export default function SchedulePage() {
   const [games, setGames] = useState(null), [team, setTeam] = useState(''), [other, setOther] = useState(''), [mine, setMine] = useState(false), [when, setWhen] = useState('upcoming'), [count, setCount] = useState(PAGE);
 
   useEffect(() => {
-    loadSchedule().then(setGames).catch(() => setGames([]));
+    loadSchedule().then(all => setGames(all.filter(game => !game.preseason))).catch(() => setGames([]));
     const params = new URLSearchParams(window.location.search);
     if (TEAMS[params.get('team')]) setTeam(params.get('team'));
     if (TEAMS[params.get('vs')]) setOther(params.get('vs'));
