@@ -284,7 +284,7 @@ export default function Home(){
   useEffect(()=>{(async()=>{
     const regular=await loadSeasonBundle('regular-season');let bundle=regular;
     if(regular.season!==CURRENT)try{bundle=await loadSeasonBundle('preseason')}catch{/* no preseason file: last season stays */}
-    setCurrentIsPreseason(bundle!==regular);setRegularPlayers(bundle.players.players);setRegularSeason(bundle.season);
+    setCurrentIsPreseason(bundle!==regular||Boolean(regular.standIn));setRegularPlayers(bundle.players.players);setRegularSeason(bundle.season);
     if(!paramsOnLoad.get('type')&&regular.season===CURRENT)setSeasonType('regular-season');
   })()},[paramsOnLoad]);
   useEffect(()=>{let active=true;loadSeasonBundle(seasonType).then(bundle=>{if(!active)return;setCatalog({players:bundle.players.players,teams:bundle.teams.players});setSplits(bundle.splits);setData(entityType==='team'?bundle.teams:bundle.players)}).catch(()=>{if(active&&seasonType==='preseason')setSeasonType('regular-season')});return()=>{active=false}},[seasonType,entityType]);

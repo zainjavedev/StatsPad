@@ -28,7 +28,16 @@ const readJson = async (url, hasRows) => {
 const fileOf = (suffix, kind) => suffix === 'preseason' ? (kind === 'teams' ? 'teams-preseason' : 'preseason') : (kind === 'teams' ? `teams-${suffix}` : suffix);
 const hasPlayers = data => Array.isArray(data?.players) && data.players.length > 0;
 
+/* The new regular season has no games yet, so until its file exists the 2026-27 preseason numbers stand in for it
+   (flagged standIn) instead of falling back to last season. */
 export async function loadLatest(suffix) {
+  if (suffix === 'regular-season') {
+    const [players, teams] = await Promise.all([readJson(`/data/${CURRENT}/regular-season.json`, hasPlayers), readJson(`/data/${CURRENT}/teams-regular-season.json`, hasPlayers)]);
+    if (!players || !teams) {
+      const [pre, preTeams, splits] = await Promise.all([readJson(`/data/${CURRENT}/preseason.json`, hasPlayers), readJson(`/data/${CURRENT}/teams-preseason.json`, hasPlayers), readJson(`/data/${CURRENT}/splits-preseason.json`, data => Boolean(data?.quarters))]);
+      if (pre && preTeams) return {season: CURRENT, players: pre, teams: preTeams, splits, standIn: true};
+    }
+  }
   for (const season of SEASONS) {
     const [players, teams, splits] = await Promise.all([
       readJson(`/data/${season}/${fileOf(suffix, 'players')}.json`, hasPlayers),
