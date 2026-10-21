@@ -89,14 +89,12 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
       return {...entry, player: [...eligible].sort((a, b) => b.stats[entry.key] - a.stats[entry.key])[0]};
     }).filter(entry => entry.player);
   }, [pool, players]);
-  const debates = useMemo(() => DEBATES.map(names => names.map(name => players.find(player => fold(player.playerName) === fold(name)))).filter(pair => pair.every(Boolean)), [players]);
+  const debates = useMemo(() => DEBATES.map(names => names.map(name => pool.find(player => fold(player.playerName) === fold(name)))).filter(pair => pair.every(Boolean)), [pool]);
 
   return <section className="front-page">
     <div className="home-search"><PlayerSearch players={players} Art={Art} playerIds={playerIds} onOpen={onOpen}/></div>
 
     <GameTicker games={games} favorites={favorites}/>
-
-    <HeadToHead debates={debates} stars={stars} pool={pool} Art={Art} playerIds={playerIds} onCompare={onCompare}/>
 
     <div className="home-grid">
       <section className="front-panel">
@@ -132,6 +130,8 @@ export default function FrontPage({players, teams, playerIds, Art, onOpen, onCom
       </div>
     </div>
 
+
+    {pool.length >= 2 && <HeadToHead debates={debates} stars={stars} pool={pool} Art={Art} playerIds={playerIds} onCompare={onCompare}/>}
 
     <section className="front-panel front-news">
       <div className="front-panel-head"><h2>Latest news</h2></div>
