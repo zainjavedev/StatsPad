@@ -10,7 +10,8 @@
     "data:teams": "node scripts/build-team-data.mjs",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "start": "next start",
-    "predev": "SKIP_OG=1 node scripts/prerender.mjs"
+    "predev": "SKIP_OG=1 node scripts/prerender.mjs",
+    "dev:split": "sh scripts/dev-split.sh"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.2.0",
