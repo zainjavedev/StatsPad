@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { followedGame } from './NextUp';
+import SpoilerToggle, { Hidden } from './SpoilerToggle';
+import { revealGame, useSpoilers } from '../lib/spoilers';
 
 /* Upcoming games grouped by day, one row per game: start time and how long to go, the matchup,
    and where it is played. */
@@ -23,7 +25,7 @@ const until = ms => {
 const Team = ({team, won, side}) => <span className={`tl-team ${side}${won ? ' won' : ''}`}>{side === 'away' && <><b className="tl-name">{team.name}</b><b className="tl-abbr">{team.abbr}</b></>}{team.logo ? <img src={team.logo} alt=""/> : <i/>}{side === 'home' && <><b className="tl-name">{team.name}</b><b className="tl-abbr">{team.abbr}</b></>}</span>;
 
 export default function GameTimeline({games, favorites, results = false, all: showEverything = false, empty, onOpen}) {
-  const [now, setNow] = useState(() => Date.now()), [all, setAll] = useState(showEverything);
+  const [now, setNow] = useState(() => Date.now()), [all, setAll] = useState(showEverything), spoilers = useSpoilers();
   useEffect(() => { const tick = setInterval(() => setNow(Date.now()), 30000); return () => clearInterval(tick); }, []);
   if (games === null) return <div className="timeline" aria-busy="true">{[0, 1, 2].map(index => <div key={index} className="tl-row skeleton"><div className="tl-when"><b/><span/></div><div className="tl-match"><i/><i/></div></div>)}</div>;
   if (!games.length) return <p className="feed-empty">{empty ?? (results ? 'No finished games in the last week.' : 'No games scheduled this week.')}</p>;
@@ -34,16 +36,18 @@ export default function GameTimeline({games, favorites, results = false, all: sh
     const day = days.find(entry => entry.key === key);
     if (day) day.games.push(game); else days.push({key, label: dayLabel(game.date), games: [game]});
   }
-  return <div className="timeline">{days.map(day => <section key={day.key}>
+  const anyFinal = results || shown.some(game => game.state === 'post');
+  return <div className="timeline">{anyFinal && <div className="tl-spoilers"><SpoilerToggle/></div>}{days.map(day => <section key={day.key}>
     <h3>{day.label} <small>{day.games.length} game{day.games.length === 1 ? '' : 's'}</small></h3>
     {day.games.map(game => {
       const final = game.state === 'post', scored = results || final || game.state === 'in', away = Number(game.away.score), home = Number(game.home.score);
-      const lead = (results || final) && away !== home ? (away > home ? 'away' : 'home') : null;
+      const hidden = (results || final) && !spoilers.revealed(game.id);
+      const lead = !hidden && (results || final) && away !== home ? (away > home ? 'away' : 'home') : null;
       return <div key={game.id} className={`${followedGame(game, favorites) ? 'tl-row mine' : 'tl-row'}${onOpen ? ' open' : ''}`} onClick={onOpen ? () => onOpen(game) : undefined} role={onOpen ? 'button' : undefined} tabIndex={onOpen ? 0 : undefined} onKeyDown={onOpen ? event => { if (event.key === 'Enter') onOpen(game); } : undefined}>
         <div className="tl-when">{results || final ? <><b>Final</b><span className="tl-done">{timeFormat.format(game.date)}</span></> : <><b>{timeFormat.format(game.date)}</b><span className={game.state === 'in' ? 'tl-live' : ''}>{game.state === 'in' ? 'Live' : until(game.date - now)}</span></>}</div>
         <div className="tl-match">
           <Team team={game.away} side="away" won={lead === 'away'}/>
-          {scored ? <em className="tl-score"><b className={lead === 'away' ? 'won' : ''}>{game.away.score}</b>–<b className={lead === 'home' ? 'won' : ''}>{game.home.score}</b></em> : <em>at</em>}
+          {hidden ? <em className="tl-score"><Hidden id={game.id} onReveal={revealGame}/></em> : scored ? <em className="tl-score"><b className={lead === 'away' ? 'won' : ''}>{game.away.score}</b>–<b className={lead === 'home' ? 'won' : ''}>{game.home.score}</b></em> : <em>at</em>}
           <Team team={game.home} side="home" won={lead === 'home'}/>
         </div>
         <div className="tl-meta">{game.preseason && <span className="tl-pill">Preseason</span>}{game.tv && !results && <span className="tl-pill">{game.tv}</span>}{game.venue && <small>{game.venue}</small>}</div>

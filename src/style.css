@@ -1972,3 +1972,11 @@ header .brand small{margin-top:3px}
   .h2h .vs-radar{margin:-8px 0 -10px!important}
   .h2h .vs-radar svg{max-height:250px!important}
 }
+
+.spoiler-toggle{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border,rgba(128,128,128,.35));background:transparent;color:inherit;border-radius:999px;padding:5px 11px;font:inherit;font-size:12px;font-weight:600;cursor:pointer}
+.spoiler-toggle[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.spoiler-hidden{border:1px dashed rgba(128,128,128,.55);background:transparent;color:inherit;border-radius:6px;padding:2px 8px;font:inherit;font-size:11px;font-weight:600;opacity:.75;cursor:pointer;white-space:nowrap}
+.tl-spoilers{display:flex;justify-content:flex-end;margin-bottom:8px}
+.gp-spoiler{display:grid;gap:10px;justify-items:center;text-align:center;padding:28px 16px;border:1px dashed rgba(128,128,128,.4);border-radius:12px;margin-top:12px}
+.gp-spoiler p{margin:0}
+.gp-past h3 .spoiler-toggle{margin-left:10px;vertical-align:middle}

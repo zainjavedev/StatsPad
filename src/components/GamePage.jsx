@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Eye } from 'lucide-react';
+import { revealGame, useSpoilers } from '../lib/spoilers';
+import SpoilerToggle, { Hidden } from './SpoilerToggle';
 import { loadBoxscore } from '../lib/boxscore';
 import Radar from './Radar';
 import { Headshot } from './TeamPage';
@@ -121,6 +123,7 @@ function Preview({box}) {
 
 /* The matchup context: how the two teams compare, how each is playing, and how past meetings went. */
 function Context({box, context}) {
+  const spoilers = useSpoilers();
   const {awayCode, homeCode, form, meetings, byCode} = context;
   const sides = [[awayCode, box.away], [homeCode, box.home]];
   const league = [...byCode.values()];
@@ -131,35 +134,37 @@ function Context({box, context}) {
   })})) : [];
   const wins = [0, 0];
   meetings.forEach(game => { const winner = game.home.score > game.away.score ? game.home.code : game.away.code; if (winner === awayCode) wins[0] += 1; else if (winner === homeCode) wins[1] += 1; });
+  const open = meetings.every(game => spoilers.revealed(game.id));
   return <>
     {axes.length > 0 && <Radar axes={axes} names={sides.map(([, side]) => side.short)} colors={['var(--accent)', 'var(--text-1)']} scope="all 30 teams" notes={["Last season's team numbers, each scaled from the league's lowest to highest team, so distance shows how far apart these two really are."]}/>}
     <section className="gp-form">
       <h3>Recent form</h3>
       <div className="gp-form-grid">{sides.map(([code, side], index) => <div key={code}>
-        <p className="gp-form-head">{side.logo && <img src={side.logo} alt=""/>}<b>{side.short}</b>{form[index]?.streak && <em className={form[index].streak.startsWith('W') ? 'win' : 'loss'}>{form[index].streak}</em>}</p>
+        <p className="gp-form-head">{side.logo && <img src={side.logo} alt=""/>}<b>{side.short}</b>{form[index]?.streak && <em className={form[index].streak.startsWith('W') ? 'win' : 'loss'}>{form[index].results.every(result => spoilers.revealed(result.id)) ? form[index].streak : '?'}</em>}</p>
         {form[index]?.results.length ? <ul>{form[index].results.map(result => <li key={result.id}>
-          <span className={`gp-wl ${result.win ? 'win' : 'loss'}`}>{result.win ? 'W' : 'L'}</span>
-          <span>{result.home ? 'vs' : '@'} {result.opp}{result.pre ? ' · Preseason' : ''}</span><strong>{result.us}–{result.them}</strong>
+          {spoilers.revealed(result.id) ? <span className={`gp-wl ${result.win ? 'win' : 'loss'}`}>{result.win ? 'W' : 'L'}</span> : <span className="gp-wl">?</span>}
+          <span>{result.home ? 'vs' : '@'} {result.opp}{result.pre ? ' · Preseason' : ''}</span>{spoilers.revealed(result.id) ? <strong>{result.us}–{result.them}</strong> : <Hidden id={result.id} onReveal={revealGame}/>}
         </li>)}</ul> : <p className="gd-note">No games played yet.</p>}
       </div>)}</div>
     </section>
     <section className="gp-past">
-      <h3>Past matchups</h3>
+      <h3>Past matchups <SpoilerToggle/></h3>
       {meetings.length ? <>
         <div className="gp-series">
-          <div className="gp-series-side"><img src={box.away.logo} alt=""/><strong>{wins[0]}</strong><span>{box.away.short}</span></div>
-          <div className="gp-series-bar" aria-hidden="true"><i style={{flex: wins[0] || 0.05}}/><i className="b" style={{flex: wins[1] || 0.05}}/></div>
-          <div className="gp-series-side right"><span>{box.home.short}</span><strong>{wins[1]}</strong><img src={box.home.logo} alt=""/></div>
+          <div className="gp-series-side"><img src={box.away.logo} alt=""/><strong>{open ? wins[0] : '?'}</strong><span>{box.away.short}</span></div>
+          <div className="gp-series-bar" aria-hidden="true"><i style={{flex: open ? wins[0] || 0.05 : 1}}/><i className="b" style={{flex: open ? wins[1] || 0.05 : 1}}/></div>
+          <div className="gp-series-side right"><span>{box.home.short}</span><strong>{open ? wins[1] : '?'}</strong><img src={box.home.logo} alt=""/></div>
         </div>
-        <p className="gd-meta gp-series-note">{wins[0] === wins[1] ? 'Dead even' : `${wins[0] > wins[1] ? box.away.short : box.home.short} lead`} over the last {meetings.length} meetings{meetings[0] ? ` · latest ${dayFormat.format(meetings[0].date)}` : ''}</p>
+        <p className="gd-meta gp-series-note">{!open ? `Last ${meetings.length} meetings` : wins[0] === wins[1] ? 'Dead even' : `${wins[0] > wins[1] ? box.away.short : box.home.short} lead`} over the last {meetings.length} meetings{meetings[0] ? ` · latest ${dayFormat.format(meetings[0].date)}` : ''}</p>
         <ul className="gp-meet">{meetings.map(game => {
           const homeWon = game.home.score > game.away.score, margin = Math.abs(game.home.score - game.away.score), winner = homeWon ? game.home : game.away;
           const logo = side => (side.code === awayCode ? box.away : box.home).logo;
+          const shown = spoilers.revealed(game.id);
           return <li key={game.id}>
-            <span className="gp-meet-date"><b>{dayFormat.format(game.date)}</b><small>{TEAMS[winner.code]?.name.split(' ').pop()} by {margin}</small></span>
-            <span className={`gp-meet-team${homeWon ? '' : ' won'}`}><img src={logo(game.away)} alt=""/><b>{game.away.score}</b></span>
+            <span className="gp-meet-date"><b>{dayFormat.format(game.date)}</b>{shown && <small>{TEAMS[winner.code]?.name.split(' ').pop()} by {margin}</small>}</span>
+            <span className={`gp-meet-team${shown && !homeWon ? ' won' : ''}`}><img src={logo(game.away)} alt=""/>{shown ? <b>{game.away.score}</b> : <Hidden id={game.id} onReveal={revealGame}/>}</span>
             <span className="gp-at">at</span>
-            <span className={`gp-meet-team${homeWon ? ' won' : ''}`}><b>{game.home.score}</b><img src={logo(game.home)} alt=""/></span>
+            <span className={`gp-meet-team${shown && homeWon ? ' won' : ''}`}>{shown && <b>{game.home.score}</b>}<img src={logo(game.home)} alt=""/></span>
           </li>;
         })}</ul>
       </> : <p className="gd-note">No recent regular-season meetings found.</p>}
@@ -168,7 +173,7 @@ function Context({box, context}) {
 }
 
 export default function GamePage({id}) {
-  const [box, setBox] = useState(undefined), [side, setSide] = useState(0), [more, setMore] = useState(false);
+  const [box, setBox] = useState(undefined), [side, setSide] = useState(0), [more, setMore] = useState(false), spoilers = useSpoilers();
   useEffect(() => { loadBoxscore(id).then(setBox); }, [id]);
 
   /* Top three in each category across both teams; the leader (ties included) is what the box score highlights. */
@@ -190,19 +195,19 @@ export default function GamePage({id}) {
   if (box === undefined) return <section className="gp"><p className="gd-note">Loading the game…</p></section>;
   if (!box?.away) return <section className="gp"><a className="gp-back" href="/schedule"><ArrowLeft size={15}/> Schedule</a><p className="gd-note">We couldn&apos;t load this game.</p></section>;
 
-  const scored = box.state !== 'pre';
+  const hidden = box.state === 'post' && !spoilers.revealed(String(id)), scored = box.state !== 'pre' && !hidden;
   const ordered = [...box.teams].sort((a, b) => (a.abbr === box.away.abbr ? 0 : 1) - (b.abbr === box.away.abbr ? 0 : 1));
 
   return <section className="gp">
     <a className="gp-back" href="/schedule"><ArrowLeft size={15}/> Schedule</a>
     <div className="gd-head gp-head">
       <div><img src={box.away.logo} alt=""/><b className="hd-name">{box.away.short}</b><b className="hd-abbr">{box.away.abbr}</b>{scored && <strong>{box.away.score}</strong>}</div>
-      <span>{box.state === 'post' ? 'Final' : box.state === 'in' ? (box.detail || 'Live') : 'Upcoming'}</span>
+      <span>{box.state === 'post' ? (hidden ? 'Played' : 'Final') : box.state === 'in' ? (box.detail || 'Live') : 'Upcoming'}</span>
       <div><img src={box.home.logo} alt=""/><b className="hd-name">{box.home.short}</b><b className="hd-abbr">{box.home.abbr}</b>{scored && <strong>{box.home.score}</strong>}</div>
     </div>
     <p className="gd-meta">{[box.date && dateFormat.format(new Date(box.date)), box.venue, box.tv, box.preseason ? 'Preseason' : ''].filter(Boolean).join(' · ')}</p>
 
-    {box.state === 'pre' ? <Preview box={box}/> : <>
+    {box.state === 'pre' ? <Preview box={box}/> : hidden ? <div className="gp-spoiler"><p>This game is over. The score and box score are hidden.</p><button type="button" className="spoiler-toggle" onClick={() => revealGame(String(id))}><Eye size={14}/> Show score</button></div> : <>
       <div className="gp-tabs" role="group" aria-label="Team">
         {ordered.map((team, index) => <button key={team.abbr} className={side === index ? 'active' : ''} onClick={() => setSide(index)}>{team.logo && <img src={team.logo} alt=""/>}{team.name}</button>)}
         <button className="gp-more-btn" onClick={() => setMore(open => !open)}>{more ? 'Fewer stats' : 'More stats'}</button>

@@ -1,5 +1,7 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
+import SpoilerToggle, { Hidden } from './SpoilerToggle';
+import { revealGame, useSpoilers } from '../lib/spoilers';
 
 /* Renderers for ESPN-backed lists. A null list is still loading and shows
    placeholder rows; an empty one shows a short note. */
@@ -18,24 +20,25 @@ function Team({team, home}) {
 }
 
 export function GameList({games, empty = 'No games scheduled this week.', results = false}) {
+  const spoilers = useSpoilers();
   if (games === null) return <ul className="game-list loading">{[0, 1, 2].map(index => <li key={index}/>)}</ul>;
   if (!games.length) return <p className="feed-empty">{empty}</p>;
-  return <ul className={results ? 'game-list results' : 'game-list'}>{games.map(game => {
-    const live = game.state === 'in', final = game.state === 'post', scored = live || final;
+  return <><ul className={results ? 'game-list results' : 'game-list'}>{games.map(game => {
+    const live = game.state === 'in', final = game.state === 'post', hidden = final && !spoilers.revealed(game.id), scored = live || final;
     const away = Number(game.away.score), home = Number(game.home.score);
-    const lead = final && away !== home ? (away > home ? 'away' : 'home') : null;
+    const lead = final && !hidden && away !== home ? (away > home ? 'away' : 'home') : null;
     return <li key={game.id}>
-      {game.result && <span className={`game-result ${game.result === 'W' ? 'win' : 'loss'}`} title={game.result === 'W' ? 'Win' : 'Loss'}>{game.result}</span>}
+      {game.result && !hidden && <span className={`game-result ${game.result === 'W' ? 'win' : 'loss'}`} title={game.result === 'W' ? 'Win' : 'Loss'}>{game.result}</span>}
       <span className="game-line">
         <Team team={game.away}/>
-        {scored ? <><b className={lead === 'away' ? 'game-score won' : 'game-score'}>{game.away.score}</b><span className="game-sep">–</span><b className={lead === 'home' ? 'game-score won' : 'game-score'}>{game.home.score}</b></> : <span className="game-sep">@</span>}
+        {hidden ? <Hidden id={game.id} onReveal={revealGame}/> : scored ? <><b className={lead === 'away' ? 'game-score won' : 'game-score'}>{game.away.score}</b><span className="game-sep">–</span><b className={lead === 'home' ? 'game-score won' : 'game-score'}>{game.home.score}</b></> : <span className="game-sep">@</span>}
         <Team team={game.home} home/>
       </span>
       <span className="game-when">
         {live ? <><span className="game-live">Live</span> {game.detail}</> : <>{gameDay(game.date)} · {final ? 'Final' : timeFormat.format(game.date)}</>}
       </span>
     </li>;
-  })}</ul>;
+  })}</ul>{results && <SpoilerToggle/>}</>;
 }
 
 const ago = date => {
