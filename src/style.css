@@ -2025,3 +2025,4 @@ header .brand small{margin-top:3px}
 @media(max-width:640px){.rc-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.rc{padding:12px 12px 8px}.rc-side{grid-template-columns:26px 1fr auto;gap:8px}.rc-side img,.rc-side i{width:26px;height:26px}.rc-side strong{font-size:20px}}
 .rc-tools{margin:0 0 12px;justify-content:flex-start}
 .spoiler-toggle[aria-pressed="true"] svg{stroke:#10120a}
+@media(min-width:901px){.ticker-list{display:grid;grid-template-rows:1fr 1fr;grid-auto-flow:column;grid-auto-columns:minmax(172px,1fr)}.ticker-list li{min-width:0;justify-content:center}}
