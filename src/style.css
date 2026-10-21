@@ -2005,3 +2005,21 @@ header .brand small{margin-top:3px}
 .ticker-sub{margin-top:-4px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3)}
 @media(max-width:900px){.ticker-first{width:100%;min-width:0}}
 @media(max-width:640px){.ticker-first{padding:14px 16px;gap:8px}.ticker-versus img,.ticker-versus i{width:44px;height:44px}.ticker-first .ticker-clock{font-size:30px}}
+
+/* Result cards on the home page. */
+.rc-tools{display:flex;justify-content:flex-end;margin:-6px 0 12px}
+.rc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.rc{position:relative;display:grid;gap:2px;padding:14px 14px 10px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(135deg,color-mix(in srgb,var(--away,#444) 22%,var(--ink-1)),var(--ink-1) 55%,color-mix(in srgb,var(--home,#444) 22%,var(--ink-1)));cursor:pointer;transition:transform .15s,border-color .15s}
+.rc:hover{transform:translateY(-2px);border-color:var(--line-2)}
+.rc.mine{border-color:var(--accent)}
+.rc.skeleton{height:118px;animation:skeleton-pulse 1.4s ease-in-out infinite}
+.rc-side{display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:10px;padding:5px 0;color:var(--text-3)}
+.rc-side img,.rc-side i{width:30px;height:30px;object-fit:contain}
+.rc-side b{font-size:15px;font-weight:800;letter-spacing:.04em}
+.rc-side strong{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
+.rc-side.won{color:var(--text-1)}
+.rc-side.won strong{color:var(--accent)}
+.rc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:6px;padding-top:8px;border-top:1px solid color-mix(in srgb,var(--line) 70%,transparent);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3)}
+.rc-eye{display:grid;place-items:center;width:28px;height:28px;border:1px solid var(--line);border-radius:50%;background:var(--ink-2);color:var(--text-2);cursor:pointer}
+.rc-eye:hover{border-color:var(--accent);color:var(--text-1)}
+@media(max-width:640px){.rc-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.rc{padding:12px 12px 8px}.rc-side{grid-template-columns:26px 1fr auto;gap:8px}.rc-side img,.rc-side i{width:26px;height:26px}.rc-side strong{font-size:20px}}
