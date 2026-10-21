@@ -195,7 +195,7 @@ export default function GamePage({id}) {
   if (box === undefined) return <section className="gp"><p className="gd-note">Loading the game…</p></section>;
   if (!box?.away) return <section className="gp"><a className="gp-back" href="/schedule"><ArrowLeft size={15}/> Schedule</a><p className="gd-note">We couldn&apos;t load this game.</p></section>;
 
-  const hidden = box.state === 'post' && !spoilers.revealed(String(id)), scored = box.state !== 'pre' && !hidden;
+  const hidden = box.state !== 'pre' && !spoilers.revealed(String(id)), scored = box.state !== 'pre' && !hidden;
   const ordered = [...box.teams].sort((a, b) => (a.abbr === box.away.abbr ? 0 : 1) - (b.abbr === box.away.abbr ? 0 : 1));
 
   return <section className="gp">
@@ -207,7 +207,7 @@ export default function GamePage({id}) {
     </div>
     <p className="gd-meta">{[box.date && dateFormat.format(new Date(box.date)), box.venue, box.tv, box.preseason ? 'Preseason' : ''].filter(Boolean).join(' · ')}</p>
 
-    {box.state === 'pre' ? <Preview box={box}/> : hidden ? <div className="gp-spoiler"><p>This game is over. The score and box score are hidden.</p><button type="button" className="spoiler-toggle" onClick={() => revealGame(String(id))}><Eye size={14}/> Show score</button></div> : <>
+    {box.state === 'pre' ? <Preview box={box}/> : hidden ? <div className="gp-spoiler"><p>This game has started. The score and box score are hidden.</p><button type="button" className="spoiler-toggle" onClick={() => revealGame(String(id))}><Eye size={14}/> Show score</button></div> : <>
       <div className="gp-tabs" role="group" aria-label="Team">
         {ordered.map((team, index) => <button key={team.abbr} className={side === index ? 'active' : ''} onClick={() => setSide(index)}>{team.logo && <img src={team.logo} alt=""/>}{team.name}</button>)}
         <button className="gp-more-btn" onClick={() => setMore(open => !open)}>{more ? 'Fewer stats' : 'More stats'}</button>

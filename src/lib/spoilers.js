@@ -3,7 +3,7 @@ import { useSyncExternalStore } from 'react';
 /* Finished scores stay hidden until the visitor asks: one switch for everything (remembered on this device) and
    a tap to reveal a single game for the rest of the visit. */
 
-const KEY = 'statspad-show-scores';
+const KEY = 'statspad-show-scores-v2';
 const listeners = new Set();
 const read = () => { try { return localStorage.getItem(KEY) === '1'; } catch { return false; } };
 let state = {all: read(), shown: new Set()};

@@ -41,7 +41,7 @@ export default function GameTimeline({games, favorites, results = false, all: sh
     <h3>{day.label} <small>{day.games.length} game{day.games.length === 1 ? '' : 's'}</small></h3>
     {day.games.map(game => {
       const final = game.state === 'post', scored = results || final || game.state === 'in', away = Number(game.away.score), home = Number(game.home.score);
-      const hidden = (results || final) && !spoilers.revealed(game.id);
+      const hidden = (results || final || game.state === 'in') && !spoilers.revealed(game.id);
       const lead = !hidden && (results || final) && away !== home ? (away > home ? 'away' : 'home') : null;
       return <div key={game.id} className={`${followedGame(game, favorites) ? 'tl-row mine' : 'tl-row'}${onOpen ? ' open' : ''}`} onClick={onOpen ? () => onOpen(game) : undefined} role={onOpen ? 'button' : undefined} tabIndex={onOpen ? 0 : undefined} onKeyDown={onOpen ? event => { if (event.key === 'Enter') onOpen(game); } : undefined}>
         <div className="tl-when">{results || final ? <><b>Final</b><span className="tl-done">{timeFormat.format(game.date)}</span></> : <><b>{timeFormat.format(game.date)}</b><span className={game.state === 'in' ? 'tl-live' : ''}>{game.state === 'in' ? 'Live' : until(game.date - now)}</span></>}</div>

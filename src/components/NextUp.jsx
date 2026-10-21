@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { loadSchedule, upcoming } from '../lib/schedule';
 import { TEAMS } from '../lib/teams';
+import { useSpoilers } from '../lib/spoilers';
 
 /* The home page's lead card: a live countdown to the next tip-off (or the score of a game in
    progress). A game for a team the visitor follows comes first. */
@@ -40,6 +41,7 @@ const Logo = ({team}) => team.logo ? <img src={team.logo} alt=""/> : <i/>;
    to watch for: live if a game is on, otherwise the next tip-off (favorite teams' games are only highlighted),
    with a ticking countdown. */
 export default function GameTicker({games, favorites}) {
+  const spoilers = useSpoilers();
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { const tick = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(tick); }, []);
   if (games === null) return <div className="ticker loading" aria-busy="true"/>;
@@ -52,12 +54,12 @@ export default function GameTicker({games, favorites}) {
   return <div className="ticker" role="region" aria-label="Games">
     <a href={`/games/${first.id}`} className={`ticker-first${live ? ' live' : ''}${followedGame(first, favorites) ? ' mine' : ''}`}>
       <span className="ticker-label">{live ? <><i/> Live</> : 'Next up'}</span>
-      <span className="ticker-teams"><Logo team={first.away}/><b>{first.away.abbr}</b>{live ? <strong>{first.away.score}–{first.home.score}</strong> : <em>@</em>}<b>{first.home.abbr}</b><Logo team={first.home}/></span>
+      <span className="ticker-teams"><Logo team={first.away}/><b>{first.away.abbr}</b>{live && spoilers.revealed(first.id) ? <strong>{first.away.score}–{first.home.score}</strong> : <em>@</em>}<b>{first.home.abbr}</b><Logo team={first.home}/></span>
       <span className="ticker-clock">{live ? first.detail : remaining > 0 ? clock : 'Starting…'}</span>
     </a>
     <ul className="ticker-list">{rest.map(game => <li key={game.id} className={followedGame(game, favorites) ? 'mine' : ''}><a href={`/games/${game.id}`}>
       <span className="ticker-when">{game.state === 'in' ? <b className="ticker-live">Live</b> : stamp(game.date)}</span>
-      <span className="ticker-teams"><Logo team={game.away}/><b>{game.away.abbr}</b>{game.state === 'in' ? <strong>{game.away.score}–{game.home.score}</strong> : <em>@</em>}<b>{game.home.abbr}</b><Logo team={game.home}/></span>
+      <span className="ticker-teams"><Logo team={game.away}/><b>{game.away.abbr}</b>{game.state === 'in' && spoilers.revealed(game.id) ? <strong>{game.away.score}–{game.home.score}</strong> : <em>@</em>}<b>{game.home.abbr}</b><Logo team={game.home}/></span>
     </a></li>)}</ul>
   </div>;
 }
