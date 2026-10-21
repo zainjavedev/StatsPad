@@ -5,12 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/prerender.mjs && next build",
+    "build": "node scripts/build-current-teams.mjs && node scripts/prerender.mjs && next build",
     "data:build": "node scripts/build-data.mjs",
     "data:teams": "node scripts/build-team-data.mjs",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "start": "next start",
-    "predev": "SKIP_OG=1 node scripts/prerender.mjs"
+    "predev": "node scripts/build-current-teams.mjs && SKIP_OG=1 node scripts/prerender.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.2.0",

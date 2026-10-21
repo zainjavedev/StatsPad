@@ -9,7 +9,7 @@ export const tsOf = row => (row.fga || row.fta ? (row.pts / (2 * (row.fga + 0.44
 export const liveRow = (entity, season) => {
   const s = entity.stats;
   return {
-    s: season, t: /^\d+TM$/.test(entity.team) ? 'TOT' : teamCodeOf(entity.team), live: 1,
+    s: season, t: /^\d+TM$/.test(entity.statsTeam ?? entity.team) ? 'TOT' : teamCodeOf(entity.statsTeam ?? entity.team), live: 1,
     gp: entity.gamesPlayed, gs: entity.gamesStarted || 0, mpg: entity.minutesPerGame,
     pts: s.points, reb: s.totalRebounds, ast: s.assists, stl: s.steals, blk: s.blocks, tov: s.turnovers, pf: s.personalFouls,
     fgm: s.fieldGoalsMade, fga: s.fieldGoalsAttempted, fgp: s.fieldGoalPercentage,
