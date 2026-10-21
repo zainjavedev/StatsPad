@@ -50,7 +50,7 @@ export default function GameTimeline({games, favorites, results = false, all: sh
           {hidden ? <em className="tl-score"><Hidden id={game.id} onReveal={revealGame}/></em> : scored ? <em className="tl-score"><b className={lead === 'away' ? 'won' : ''}>{game.away.score}</b>–<b className={lead === 'home' ? 'won' : ''}>{game.home.score}</b></em> : <em>at</em>}
           <Team team={game.home} side="home" won={lead === 'home'}/>
         </div>
-        <div className="tl-meta">{game.preseason && <span className="tl-pill">Preseason</span>}{game.tv && !results && <span className="tl-pill">{game.tv}</span>}{game.venue && <small>{game.venue}</small>}</div>
+        <div className="tl-meta">{game.preseason && <span className="tl-pill">Preseason</span>}</div>
       </div>;
     })}
   </section>)}{!showEverything && games.length > LIMIT && <button className="tl-more" onClick={() => setAll(open => !open)}>{all ? 'Show fewer' : `Show all ${games.length} games`}</button>}</div>;

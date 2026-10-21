@@ -52,10 +52,15 @@ export default function GameTicker({games, favorites}) {
   const clock = `${left.days ? `${left.days}d ` : ''}${pad(left.hours)}:${pad(left.minutes)}:${pad(left.seconds)}`;
 
   return <div className="ticker" role="region" aria-label="Games">
-    <a href={`/games/${first.id}`} className={`ticker-first${live ? ' live' : ''}${followedGame(first, favorites) ? ' mine' : ''}`}>
+    <a href={`/games/${first.id}`} className={`ticker-first${live ? ' live' : ''}${followedGame(first, favorites) ? ' mine' : ''}`} style={{'--away': TEAMS[codeOf(first.away.abbr)]?.color, '--home': TEAMS[codeOf(first.home.abbr)]?.color}}>
       <span className="ticker-label">{live ? <><i/> Live</> : 'Next up'}</span>
-      <span className="ticker-teams"><Logo team={first.away}/><b>{first.away.abbr}</b>{live && spoilers.revealed(first.id) ? <strong>{first.away.score}–{first.home.score}</strong> : <em>@</em>}<b>{first.home.abbr}</b><Logo team={first.home}/></span>
+      <span className="ticker-versus">
+        <span><Logo team={first.away}/><b>{first.away.abbr}</b></span>
+        {live && spoilers.revealed(first.id) ? <strong>{first.away.score}–{first.home.score}</strong> : <em>@</em>}
+        <span><Logo team={first.home}/><b>{first.home.abbr}</b></span>
+      </span>
       <span className="ticker-clock">{live ? first.detail : remaining > 0 ? clock : 'Starting…'}</span>
+      {!live && remaining > 0 && <small className="ticker-sub">until tip-off · {stamp(first.date)}</small>}
     </a>
     <ul className="ticker-list">{rest.map(game => <li key={game.id} className={followedGame(game, favorites) ? 'mine' : ''}><a href={`/games/${game.id}`}>
       <span className="ticker-when">{game.state === 'in' ? <b className="ticker-live">Live</b> : stamp(game.date)}</span>
