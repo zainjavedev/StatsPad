@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { TEAMS, espnLogoUrl, nickname } from '../lib/teams';
 import { useFeed } from '../lib/useFeed';
-import { loadStandings } from './StandingsPage';
+import { byRecord, loadStandings } from './StandingsPage';
 import { navigate } from '../lib/nav';
 import { useFavorites } from '../lib/favorites';
 
@@ -25,7 +25,7 @@ export function StandingsPeek({games}) {
   const [tab, setTab] = useState('eastern');
   const conferences = (groups ?? []).filter(group => /^(eastern|western)/i.test(group.name));
   const rows = useMemo(() => {
-    if (tab === 'league') return conferences.flatMap(group => group.rows).sort((a, b) => Number(b.stat.winPercent) - Number(a.stat.winPercent) || Number(b.stat.wins) - Number(a.stat.wins) || TEAMS[a.code].name.localeCompare(TEAMS[b.code].name));
+    if (tab === 'league') return conferences.flatMap(group => group.rows).sort(byRecord);
     return conferences.find(group => group.name.toLowerCase().startsWith(tab))?.rows ?? [];
   }, [conferences, tab]);
   const next = code => {

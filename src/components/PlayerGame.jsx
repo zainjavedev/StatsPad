@@ -1,18 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ChevronRight } from 'lucide-react';
-import ShareButton from './ShareButton';
 import ShotChart, { Flow } from './ShotChart';
 import { PerfCard } from './RecentPerformances';
-import { performancesOf } from '../lib/performances';
+import { bestOfNight, performancesOf } from '../lib/performances';
 import { loadBoxscore } from '../lib/boxscore';
 import { finished, loadSchedule } from '../lib/schedule';
-import { TEAMS } from '../lib/teams';
-import { flowOf, fps, quarterStats, rating, shotsOf, storyOf, tagsOf, total, tsPct, fgPct } from '../lib/playerGame';
+import { flowOf, fps, quarterStats, rating, shotsOf, tagsOf, total, tsPct, fgPct } from '../lib/playerGame';
 
 /* One player's night, told as a story: what he did in a sentence, where every shot came from, how the game
    swung while he scored, quarter by quarter, and who he set up. */
 
-const codeOf = abbr => Object.keys(TEAMS).find(code => TEAMS[code].espn === String(abbr).toLowerCase());
 const num = value => Number(String(value ?? '').replace('+', '')) || 0;
 const dayFormat = new Intl.DateTimeFormat(undefined, {weekday: 'short', month: 'short', day: 'numeric'});
 const label = quarter => (quarter <= 4 ? `Q${quarter}` : quarter === 5 ? 'OT' : `${quarter - 4}OT`);
@@ -42,28 +39,22 @@ function useSeasonGames(playerId) {
   return games;
 }
 
-export function gameCard({player, all, tags, grade, story, shots, assists, game, color}) {
-  const s = player.stats;
-  return {
-    kind: 'perf', eyebrow: 'Game report', title: player.name, person: {name: player.name, espnId: player.id}, color,
-    sub: `${game.team} ${game.home ? 'vs' : '@'} ${game.opp} · ${game.won ? 'W' : 'L'} ${game.score}${game.date ? ` · ${dayFormat.format(game.date)}` : ''}`,
-    rating: grade.toFixed(1), tone: tone(grade), story,
-    headline: [[all.PTS, 'pts'], [all.AST >= all.REB ? all.AST : all.REB, all.AST >= all.REB ? 'ast' : 'reb'], [`${Math.round(fgPct(all))}%`, 'fg']],
-    tags: tags.slice(0, 3).map(tag => `#${tag}`),
-    tiles: [['MIN', s.MIN], ['REB', s.REB], ['AST', s.AST], ['STL', s.STL], ['BLK', s.BLK], ['+/-', s['+/-']]],
-    shots, shotLine: `${all.FGM}/${all.FGA} FG · ${all.TPM}/${all.TPA} 3PT · ${all.FTM}/${all.FTA} FT`,
-    assists: assists.slice(0, 3),
-    foot: 'Shot chart · play by play',
-  };
-}
-
 export default function PlayerGame({gameId, box, plays, team, player, onClose, onPick, nameOf}) {
-  const code = codeOf(team.abbr), color = TEAMS[code]?.color ?? '#5b8def', accent = 'var(--text-1)';
+  const accent = 'var(--text-1)';
   const own = box.away.abbr === team.abbr ? box.away : box.home, other = own === box.away ? box.home : box.away;
   const away = own === box.away;
-  const margin = Math.abs(num(own.score) - num(other.score));
   const game = {team: team.abbr, opp: other.abbr, home: !away, won: num(own.score) > num(other.score), score: `${own.score}–${other.score}`, date: box.date ? new Date(box.date) : null};
   const [quarter, setQuarter] = useState(0), [metric, setMetric] = useState('PTS'), seasonGames = useSeasonGames(player.id);
+  const [moreTab, setMoreTab] = useState('game'), [recent, setRecent] = useState(null);
+  useEffect(() => {
+    if (moreTab !== 'recent' || recent) return undefined;
+    let live = true;
+    loadSchedule().then(all => finished(all.filter(game => !game.preseason), 10)).then(finals => bestOfNight(finals, 400)).then(found => {
+      const seen = new Set();
+      if (live) setRecent(found.filter(line => (seen.has(line.player.name) ? false : seen.add(line.player.name))).slice(0, 8));
+    }).catch(() => { if (live) setRecent([]); });
+    return () => { live = false; };
+  }, [moreTab, recent]);
   const {quarters, assisted} = useMemo(() => quarterStats(plays, player.id), [plays, player.id]);
   const allShots = useMemo(() => shotsOf(plays, player.id), [plays, player.id]);
   const flow = useMemo(() => flowOf(plays, player.id, away), [plays, player.id, away]);
@@ -76,11 +67,9 @@ export default function PlayerGame({gameId, box, plays, team, player, onClose, o
   const assists = assisted.map(entry => ({...entry, name: nameOf(entry.id)})).filter(entry => entry.name);
   const others = useMemo(() => performancesOf(box, gameId).filter(line => String(line.player.id) !== String(player.id)).sort((a, b) => b.rating - a.rating).slice(0, 4), [box, gameId, player.id]);
   const assistPts = assisted.reduce((sum, entry) => sum + entry.pts, 0);
-  const story = storyOf({name: player.name, row: all, quarters, won: game.won, margin, team: team.abbr, opp: other.abbr});
   const photo = id => team.players.find(entry => entry.id === id)?.photo;
   const cell = (name, value) => <div className={`pg-cell${name === '+/-' ? (num(value) > 0 ? ' pos' : num(value) < 0 ? ' neg' : '') : ''}`} key={name}><strong>{value}</strong><small>{name}</small></div>;
   const done = (made, tried) => `${made}/${tried}`;
-  const sharable = gameCard({player, all, tags, grade, story: `${story.lead} ${story.rest}`, shots: allShots.map(({x, y, made}) => ({x, y, made})), assists: assists.map(entry => ({name: entry.name, pts: entry.pts, ast: entry.ast})), game, color});
 
   return <section className="pg" style={{'--pg': accent, '--pgraw': '#3a3a3d'}}>
     <nav className="pg-crumbs" aria-label="Breadcrumb">
@@ -95,13 +84,14 @@ export default function PlayerGame({gameId, box, plays, team, player, onClose, o
     </a>)}</nav>}
     <div className="pg-cols">
     <div className="pg-main">
+    <div className="pg-top">
     <div className="pg-hero">
       <span className="pg-number" aria-hidden="true">{all.PTS}</span>
       {player.photo ? <img className="pg-photo" src={player.photo} alt=""/> : <i className="pg-photo"/>}
       <div className="pg-who">
-        <p className="pg-kicker"><img src={team.logo} alt=""/>{team.abbr} {game.home ? 'vs' : '@'} {other.abbr} · <b className={game.won ? 'win' : 'loss'}>{game.won ? 'W' : 'L'} {game.score}</b></p>
         <h2>{player.name.replace(/^(\S)\S*\s+/, '$1. ')}<span className="pg-fps"> · {fps(all)} fps</span></h2>
         <p className="pg-big"><b>{all.PTS}</b> pts <b>{all.REB}</b> reb <b>{all.AST}</b> ast</p>
+        <p className="pg-kicker"><img src={team.logo} alt={team.abbr}/><b className={game.won ? 'win' : 'loss'}>{game.score}</b><img src={other.logo} alt={other.abbr}/></p>
         {game.date && <small>{dayFormat.format(game.date)}</small>}
       </div>
       <div className={`pg-rating ${tone(grade)}`}><strong>{grade.toFixed(1)}</strong><small>grade</small></div>
@@ -119,6 +109,7 @@ export default function PlayerGame({gameId, box, plays, team, player, onClose, o
       {cell('FG', done(shown.FGM, shown.FGA))}{cell('3PT', done(shown.TPM, shown.TPA))}{cell('FT', done(shown.FTM, shown.FTA))}
       {cell('TO', shown.TO)}{cell('PF', shown.PF)}{cell('OREB', shown.OREB)}{cell('DREB', shown.DREB)}
       {cell('FG%', shown.FGA ? fgPct(shown).toFixed(1) : '–')}{cell('TS%', shown.FGA || shown.FTA ? tsPct(shown).toFixed(1) : '–')}{cell('FPS', fps(shown))}
+    </div>
     </div>
 
     {flow.points.length > 2 && <div className="pg-card">
@@ -146,18 +137,20 @@ export default function PlayerGame({gameId, box, plays, team, player, onClose, o
 
     </div>
     <aside className="pg-side">
-    {allShots.length > 0 && <div className="pg-card">
-      <div className="pg-card-head"><h3>Shot chart</h3><span className="pg-note">{shots.filter(shot => shot.made).length} of {shots.length} {quarter ? label(quarter) : 'from the floor'}</span></div>
+    {allShots.length > 0 && <div className="pg-card pg-shots">
       <ShotChart shots={shots} color={accent}/>
-      <div className="pg-key"><span><i className="make"/>Made</span><span><i className="miss"/>Missed</span></div>
     </div>}
 
-    {others.length > 0 && <div className="pg-card pg-more">
-      <div className="pg-card-head"><h3>More from this game</h3></div>
-      <ul className="rp-list">{others.map(line => <li key={line.player.id}><PerfCard line={line} onPick={onPick}/></li>)}</ul>
+    {(others.length > 0 || moreTab === 'recent') && <div className="pg-card pg-more">
+      <div className="pg-card-head"><h3>{moreTab === 'game' ? 'More from this game' : 'Top recent'}</h3>
+        <span className="pg-pills">{[['game', 'This game'], ['recent', 'Top recent']].map(([key, name]) => <button type="button" key={key} className={moreTab === key ? 'active' : ''} onClick={() => setMoreTab(key)}>{name}</button>)}</span>
+      </div>
+      {moreTab === 'game'
+        ? <ul className="rp-list">{others.map(line => <li key={line.player.id}><PerfCard line={line} onPick={onPick}/></li>)}</ul>
+        : recent === null ? <ul className="rp-list loading">{[0, 1, 2].map(index => <li key={index}/>)}</ul>
+          : <ul className="rp-list">{recent.filter(line => !(String(line.gameId) === String(gameId) && String(line.player.id) === String(player.id))).slice(0, 5).map(line => <li key={`${line.gameId}-${line.player.id}`}><PerfCard line={line}/></li>)}</ul>}
     </div>}
     </aside>
     </div>
-    <div className="pg-share"><ShareButton spec={sharable} filename={`${player.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-game-report`} title={`${player.name} game report`} text={`${player.name}: ${all.PTS} pts, ${all.REB} reb, ${all.AST} ast ${game.home ? 'vs' : '@'} ${other.abbr}`} label="Share game report"/></div>
   </section>;
 }

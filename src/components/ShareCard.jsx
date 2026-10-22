@@ -119,6 +119,30 @@ function List({spec}) {
   </>;
 }
 
+function Leader({spec}) {
+  const count = spec.photos?.length || 0, long = spec.names.length > 28;
+  return <>
+    <div className="sc-lead" style={{'--c': onDark(spec.color)}}>
+      <div className={`sc-lead-faces n-${Math.min(Math.max(count, 1), 3)}`}>
+        {(count ? spec.photos : [null]).map((src, index) => <Photo key={index} src={src} name={spec.people?.[index]?.name || spec.names} color={spec.color} className="sc-lead-photo"/>)}
+      </div>
+      <div className="sc-lead-copy">
+        <small>{spec.label}</small>
+        <b className={long ? 'long' : ''}>{spec.names}</b>
+        <strong>{spec.stat}<em>{spec.unit}</em></strong>
+      </div>
+    </div>
+    {spec.rows.length > 0 && <div className="sc-list sc-lead-list">
+      {spec.rows.map((row, index) => <div className="sc-li" key={`${row.name}-${index}`}>
+        <span className="sc-rank" style={{'--c': onDark(spec.color)}}>{row.lead}</span>
+        <Photo src={row.photo} name={row.name} color={spec.color} className="sc-thumb"/>
+        <span className="sc-who"><b>{row.name}</b>{row.sub && <small>{row.sub}</small>}</span>
+        <span className="sc-num">{row.value}</span>
+      </div>)}
+    </div>}
+  </>;
+}
+
 function Grid({spec}) {
   return <>
     <div className="sc-title">
@@ -145,7 +169,7 @@ const shownLink = path => { const host = siteHost(); return path && `${host}${pa
 
 const ShareCard = forwardRef(function ShareCard({spec}, ref) {
   const accent = onDark(spec.colors?.[0] || spec.color);
-  const Body = {versus: Versus, tiles: Tiles, list: List, grid: Grid, perf: Perf}[spec.kind];
+  const Body = {versus: Versus, tiles: Tiles, list: List, grid: Grid, perf: Perf, leader: Leader}[spec.kind];
   return <div className={`sc-card sc-kind-${spec.kind}`} ref={ref} style={{'--accent': accent}}>
     <Head spec={spec}/>
     <Body spec={spec}/>

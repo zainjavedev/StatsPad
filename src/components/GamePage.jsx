@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowLeft, Eye } from 'lucide-react';
 import { revealGame, useSpoilers } from '../lib/spoilers';
 import { performancesOf } from '../lib/performances';
@@ -24,10 +24,8 @@ const TeamLink = ({side}) => {
 /* One game on its own page: the score, who led it in each category (with photos), and the full box
    score for both teams with each category's leader highlighted. Before tip-off, the expected fives. */
 
-const LEADS = [['PTS', 'Points'], ['REB', 'Rebounds'], ['AST', 'Assists'], ['STL', 'Steals'], ['BLK', 'Blocks']];
 const codeOf = abbr => Object.keys(TEAMS).find(code => TEAMS[code].espn === String(abbr).toLowerCase());
 const num = value => Number(String(value ?? '').replace('+', '')) || 0;
-const dateFormat = new Intl.DateTimeFormat(undefined, {weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit'});
 
 /* How each side played, on a typical NBA game's range (a point is where that stat usually runs from low to high). */
 const SHAPE = [
@@ -45,7 +43,6 @@ const shapeAxes = (teams, scores) => SHAPE.map(([label, get, low, high, text]) =
   return {pct, text: text(value), rank: `${pct}% of a typical game's range`};
 })}));
 
-const Face = ({player, size = 40}) => player.photo ? <img className="gp-face" style={{width: size, height: size}} src={player.photo} alt="" loading="lazy" onError={event => { event.currentTarget.style.visibility = 'hidden'; }}/> : <i className="gp-face" style={{width: size, height: size}}/>;
 
 const plain = name => String(name).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[.']/g, '').replace(/\s+/g, ' ').trim();
 
@@ -188,16 +185,6 @@ export default function GamePage({id}) {
   useEffect(() => { loadBoxscore(id).then(setBox); }, [id]);
 
   /* Top three in each category across both teams; the leader (ties included) is what the box score highlights. */
-  const leaders = useMemo(() => {
-    if (!box?.teams?.length) return [];
-    const everyone = box.teams.flatMap(team => team.players.filter(player => !player.out).map(player => ({...player, team: team.abbr})));
-    return LEADS.map(([key, label]) => {
-      const ranked = everyone.filter(player => num(player.stats[key]) > 0).sort((a, b) => num(b.stats[key]) - num(a.stats[key]) || num(b.stats.PTS) - num(a.stats.PTS));
-      const top = ranked.length ? num(ranked[0].stats[key]) : 0;
-      return {key, label, top, ranked: ranked.slice(0, 3), players: ranked.filter(player => num(player.stats[key]) === top)};
-    }).filter(entry => entry.ranked.length);
-  }, [box]);
-
   if (box === undefined) return <section className="gp"><p className="gd-note">Loading the game…</p></section>;
   if (!box?.away) return <section className="gp"><a className="gp-back" href="/schedule"><ArrowLeft size={15}/> Schedule</a><p className="gd-note">We couldn&apos;t load this game.</p></section>;
 
@@ -214,7 +201,7 @@ export default function GamePage({id}) {
       <span>{box.state === 'post' ? (hidden ? 'Played' : 'Final') : box.state === 'in' ? (box.detail || 'Live') : 'Upcoming'}</span>
       <div><TeamLink side={box.home}/>{scored && <strong>{box.home.score}</strong>}</div>
     </div>
-    <p className="gd-meta">{[box.date && dateFormat.format(new Date(box.date)), box.venue, box.tv, box.preseason ? 'Preseason' : ''].filter(Boolean).join(' · ')}</p>
+    <p className="gd-meta">{[box.venue].filter(Boolean).join(' · ')}</p>
     </>}
 
     {focusTeam && <PlayerGame gameId={id} box={box} plays={box.plays ?? []} team={focusTeam} player={focusTeam.players.find(entry => entry.id === focus)} onClose={() => pick(null)} onPick={pick} nameOf={nameOf}/>}
@@ -225,9 +212,7 @@ export default function GamePage({id}) {
       {ordered[side] && (() => {
         const team = ordered[side];
         const rows = performancesOf(box, id).filter(line => line.team === team.abbr);
-        const order = new Map(team.players.map((player, index) => [String(player.id), index]));
-        const starters = new Set(team.players.filter(player => player.starter).map(player => String(player.id)));
-        const lines = [...rows].sort((a, b) => (starters.has(String(b.player.id)) - starters.has(String(a.player.id))) || (order.get(String(a.player.id)) - order.get(String(b.player.id))));
+        const lines = [...rows].sort((a, b) => (num(b.player.stats.PTS) - num(a.player.stats.PTS)) || (b.rating - a.rating));
         const out = team.players.filter(player => !player.starter && player.out);
         return <section className="gd-team gd-cards">
           <ul className="rp-list">{lines.map(line => <li key={line.player.id}><PerfCard line={line} onPick={pick}/></li>)}</ul>
@@ -235,13 +220,6 @@ export default function GamePage({id}) {
         </section>;
       })()}
       {ordered.length === 2 && <Radar axes={shapeAxes(ordered, ordered.map(team => team.abbr === box.away.abbr ? box.away.score : box.home.score))} names={ordered.map(team => team.abbr === box.away.abbr ? box.away.short : box.home.short)} colors={['var(--accent)', 'var(--series-2)']} scope="a typical NBA game" notes={['Each spoke runs from a low to a high night for that stat, so the shape shows how each team played, not season averages. Ball care rewards fewer turnovers.']}/>}
-      {leaders.length > 0 && <div className="gp-leaders">{leaders.map(entry => <section key={entry.key} className="gp-leader">
-        <small>{entry.label}</small>
-        <ol>{entry.ranked.map((player, index) => <li key={player.id} className={index === 0 ? 'top' : num(player.stats[entry.key]) === entry.top ? 'tied' : ''}>
-          <Face player={player} size={index === 0 ? 68 : 48}/>
-          <span className="gp-who"><b>{player.short ?? player.name}</b><i>{player.team}</i></span><strong>{player.stats[entry.key]}</strong>
-        </li>)}</ol>
-      </section>)}</div>}
     </>}
   </section>;
 }

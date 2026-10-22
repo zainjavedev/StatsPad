@@ -975,7 +975,7 @@ header .brand small{margin-top:3px}
   .site-nav{display:none}
   .site-brand{font-size:22px}
   body{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
-  .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:grid;grid-template-columns:repeat(4,1fr);padding:6px 6px calc(6px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:color-mix(in srgb,var(--ink-1) 92%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+  .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:grid;grid-template-columns:repeat(3,1fr);padding:6px 6px calc(6px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:color-mix(in srgb,var(--ink-1) 92%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
   .tabbar button{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0 6px;border:0;border-radius:12px;background:transparent;color:var(--text-3);font:inherit;font-size:11px;font-weight:700;cursor:pointer}
   .tabbar button.active{color:var(--text-1)}
   .tabbar button.active::before{content:'';position:absolute;top:0;left:50%;width:22px;height:3px;border-radius:0 0 3px 3px;background:var(--text-1);transform:translateX(-50%)}
@@ -1749,7 +1749,7 @@ header .brand small{margin-top:3px}
 
 /* phones */
 @media (max-width:760px){
-  .tabbar{grid-template-columns:repeat(6,1fr);padding:4px 2px calc(4px + env(safe-area-inset-bottom))}
+  .tabbar{grid-template-columns:repeat(3,1fr);padding:4px 2px calc(4px + env(safe-area-inset-bottom))}
   .tabbar button{gap:2px;padding:7px 0 5px;font-size:10px;letter-spacing:-.01em}
   .tabbar .nav-icon{width:20px;height:20px}
   .front-page,.sched,.gp,.acct{padding-left:14px;padding-right:14px}
@@ -2752,7 +2752,7 @@ a.pk-row:hover{background:var(--ink-2)}
 .rp-grade{align-self:start;font-size:22px;font-weight:600;color:var(--text-1);font-variant-numeric:tabular-nums}
 .rp-share{position:absolute;right:0;bottom:12px;border:0!important;background:none!important;color:var(--text-3)}
 .rp-list.loading li{height:108px}
-@media(max-width:520px){.rp-card{grid-template-columns:60px minmax(0,1fr) auto}.rp-face,.rp-face>img:first-child,.rp-face>i{width:60px;height:60px}.rp-trio b{font-size:30px}}
+@media(max-width:520px){.rp-card{grid-template-columns:44px minmax(0,1fr) auto;gap:10px;padding:10px 2px}.rp-face,.rp-face>img:first-child,.rp-face>i{width:44px;height:44px}.rp-team{width:20px;height:20px;padding:2px}.rp-top{font-size:14px}.rp-top small{font-size:12px}.rp-trio{gap:2px 12px;font-size:12px}.rp-trio b{font-size:22px;margin-right:3px}.rp-game{font-size:11px}.rp-grade{font-size:16px}.rp-list.loading li{height:76px}}
 
 /* Player report: black and white only, with green and red kept for plus-minus. */
 .pg-bars i{background:color-mix(in srgb,var(--text-1) 72%,transparent)!important}
@@ -2793,3 +2793,314 @@ a.pk-row:hover{background:var(--ink-2)}
 /* Top performers: the numbers are plain white (ink on light), no team colours. */
 .perf-rest li button strong,.perf-feature-copy strong{color:var(--text-1)!important}
 .perf-rest li button strong small,.perf-feature-copy em{color:var(--text-3)!important}
+
+/* Phone player report: a touch smaller. */
+@media(max-width:520px){
+  .pg-hero .pg-photo{width:64px!important;height:64px!important}
+  .pg-who h2{font-size:17px!important}
+  .pg-big b{font-size:34px!important}
+  .pg-rating strong{font-size:22px!important}
+  .pg-tags span{font-size:16px!important}
+  .pg-tabs button{min-height:34px;font-size:17px!important}
+  .pg-grid{gap:12px 18px!important}
+  .pg-cell strong{font-size:25px!important}
+  .pg-cell small{font-size:12px}
+  .pg-card{margin-top:22px!important}
+  .pg-card-head h3{font-size:18px!important}
+  .pg-bars b{font-size:15px!important}
+}
+
+/* Single column: the shot chart comes right after the stat grid. */
+@media(max-width:999px){
+  .pg-cols{display:flex;flex-direction:column}
+  .pg-main,.pg-side{display:contents}
+  .pg-cols .pg-card{order:2}
+  .pg-cols .pg-card.pg-shots{order:1}
+}
+
+/* Phone game header: one line, logos and scores only. */
+@media(max-width:520px){
+  .gp-head{grid-template-columns:1fr auto 1fr!important;gap:8px!important}
+  .gp-head>div{flex-direction:row!important;justify-content:flex-start;gap:10px!important}
+  .gp-head>div:last-child{flex-direction:row-reverse!important}
+  .gp-head>span{grid-column:auto!important;order:0!important}
+  .gp-head b{display:none!important}
+  .gp-head img{width:38px!important;height:38px!important}
+  .gp-head strong{font-size:28px!important}
+}
+
+/* Phone head to head: smaller so long names fit. */
+@media(max-width:520px){
+  .h2h-art{height:84px!important}
+  .h2h-player b{font-size:12px!important;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .h2h-player small{font-size:10px!important}
+  .h2h{padding:12px 10px 10px}
+  .h2h-head h2{font-size:16px}
+  .h2h-actions button{font-size:12px;padding:6px 10px}
+  .vs-radar-key{font-size:10px}
+}
+
+/* Phone comparison bar: compact, two short rows. */
+@media(max-width:520px){
+  .cmp-bar{gap:6px 8px;margin:10px 0 8px}
+  .cmp-bar .pills button,.cmp-bar .season-pills button{min-height:0;padding:6px 10px;font-size:12px}
+  .cmp-bar .season-pills small{font-size:10px!important}
+  .cmp-actions .ghost-button{width:32px;height:32px}
+  .cmp-actions{gap:4px}
+}
+
+/* Compare header: team logo instead of "IND · PF", quieter remove button, no dead space above. */
+.vs-team-logo{width:26px;height:26px;margin-top:6px;object-fit:contain}
+.vs-person:not(.is-empty) .vs-remove{top:6px;width:22px;height:22px;border-radius:50%;background:rgb(0 0 0 / .22)}
+@media(max-width:520px){
+  .vs-person,.vs-person:not(.is-empty){padding-top:14px!important;min-height:0!important}
+  .vs-person:not(.is-empty) .vs-remove{top:6px;right:6px}
+  .vs-head>.vs-person:first-child .vs-remove{left:6px}
+  .vs-art{height:110px!important}
+  .vs-team-logo{width:22px;height:22px}
+}
+
+/* Remove-player button: a clean round chip in the card corner. */
+.vs-person:not(.is-empty) .vs-remove{top:8px!important;right:8px!important;width:24px!important;height:24px!important;padding:0!important;border:0!important;border-radius:50%!important;background:rgb(0 0 0 / .35)!important;color:#fff!important;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);line-height:0}
+.vs-head>.vs-person:first-child:not(.is-empty) .vs-remove{left:8px!important;right:auto!important}
+.vs-person:not(.is-empty) .vs-remove svg{width:12px;height:12px;stroke-width:2.5}
+.vs-person:not(.is-empty) .vs-remove:hover{background:rgb(0 0 0 / .55)!important}
+
+/* Phone leaders page: compact cards that keep the player photo. */
+@media(max-width:520px){
+  .leaders-page .feed-heading h2{font-size:20px}
+  .leaders-page .feed-heading p{font-size:11px}
+  .leaders-page .cat-chips{gap:6px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+  .leaders-page .cat-chips button{flex:none;min-height:32px;padding:0 12px;font-size:12px}
+  .leaders-page .story-feed .story-card[class]{min-height:150px!important;border-radius:14px}
+  .leaders-page .story-copy{width:64%!important;padding:12px 10px 10px!important}
+  .leaders-page .story-card h2{font-size:15px!important;margin:4px 0 2px!important}
+  .leaders-page .story-card .story-stat{font-size:20px!important;margin-bottom:4px}
+  .leaders-page .story-card>small,.leaders-page .story-copy>small{font-size:9px!important}
+  .leaders-page .story-card .leader-list{margin-top:6px!important}
+  .leaders-page .story-card .leader-list span,.leaders-page .story-card .leader-list b,.leaders-page .story-card .leader-list strong{font-size:10px!important}
+  .leaders-page .story-card .leader-list span{min-height:0;padding:3px 0;grid-template-columns:12px minmax(0,1fr) auto}
+  .leaders-page .story-card .leader-list b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .leaders-page .story-card .story-art{display:block!important;position:absolute;width:40%!important;height:74%!important;right:0!important;bottom:0!important;top:auto!important;object-fit:contain;object-position:bottom right}
+}
+@media(max-width:520px){.leaders-page .story-feed{grid-template-columns:1fr!important}}
+
+/* Phone leaders: category filter as quiet text tabs instead of a row of pills. */
+@media(max-width:520px){
+  .leaders-page .cat-chips{gap:16px;margin:0 0 2px;height:auto}
+  .leaders-page .cat-chips button{min-height:28px!important;height:auto!important;padding:0!important;border:0!important;border-radius:0!important;background:none!important;color:var(--text-3)!important;font-size:13px!important}
+  .leaders-page .cat-chips button.active{color:var(--text-1)!important;box-shadow:inset 0 -2px 0 var(--text-1)}
+}
+
+/* Tied leaders: every tied headshot (up to 4) in a row, overlapping slightly. */
+.story-card .story-arts{position:absolute;z-index:2;top:0;right:0;bottom:0;width:58%;display:flex;align-items:flex-end;justify-content:flex-end;pointer-events:none}
+.story-card .story-arts .story-art{position:static!important;flex:1 1 0;min-width:0;width:auto!important;height:92%!important;max-height:100%;margin:0 0 0 -10%!important;object-fit:contain;object-position:bottom center;filter:drop-shadow(0 12px 12px #0005)}
+.story-card .story-arts .story-art:first-child{margin-left:0!important}
+
+@media(max-width:520px){
+  .leaders-page .story-card:has(.story-arts) .story-copy{width:56%!important}
+  .leaders-page .story-card .story-arts{width:44%;top:auto;height:78%}
+  .leaders-page .story-card .story-arts .story-art{width:auto!important;height:100%!important}
+  .leaders-page .story-card h2{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  /* Download button: always visible on touch, small and out of the way. */
+  .leaders-page .card-download{opacity:.85;transform:none;top:8px;right:8px;width:28px;height:28px}
+  .leaders-page .card-download svg{width:14px;height:14px}
+  /* Header */
+  .site-header-inner{height:48px;padding:0 14px}
+  .site-brand,.site-brand{font-size:16px}
+  .site-brand svg{width:20px;height:20px}
+  .site-header .theme-toggle,.site-header .account-btn.signed-out{width:32px;height:32px;min-width:0;min-height:0}
+}
+@media(hover:none){.card-download{opacity:.85;transform:none}}
+
+/* Share button on leader cards: a quiet round button, always reachable by touch. */
+.story-card .card-download{position:absolute!important;opacity:.75;transform:none;width:32px;height:32px;border:0;background:rgb(0 0 0 / .35);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.story-card .card-download:hover,.story-card .card-download:focus-visible{opacity:1}
+.story-card .card-download:disabled{opacity:.5;cursor:progress}
+@media(max-width:520px){.leaders-page .card-download{top:auto;bottom:8px;right:8px;width:30px;height:30px}}
+
+/* Leader share card: big headshot(s), name and stat, then the next ranks. */
+.sc-lead{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:stretch;gap:36px;height:430px;margin-top:40px;border-radius:32px;background:linear-gradient(135deg,color-mix(in srgb,var(--c) 34%,#12141a),#101217 75%);overflow:hidden}
+.sc-lead-faces{display:flex;align-items:flex-end;justify-content:center;min-width:0}
+.sc-lead-photo{flex:1 1 0;min-width:0;height:100%;border-radius:0;background:none!important}
+.sc-lead-photo img{object-fit:contain;object-position:50% 100%}
+.sc-lead-photo i{font-size:110px}
+.sc-lead-faces.n-2 .sc-lead-photo+.sc-lead-photo,.sc-lead-faces.n-3 .sc-lead-photo+.sc-lead-photo{margin-left:-14%}
+.sc-lead-copy{display:flex;flex-direction:column;justify-content:center;gap:14px;min-width:0;padding:30px 40px 30px 0}
+.sc-lead-copy small{color:var(--c);font-size:26px;font-weight:800;letter-spacing:.14em}
+.sc-lead-copy b{font:800 58px/1.04 -apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;letter-spacing:-.03em}
+.sc-lead-copy b.long{font-size:42px}
+.sc-lead-copy strong{font:800 112px/1 -apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.sc-lead-copy em{margin-left:14px;color:#a6a8af;font-size:38px;font-style:normal;font-weight:700;letter-spacing:0}
+.sc-lead-list{margin-top:22px}
+.sc-lead-list .sc-li{min-height:84px}
+.sc-lead-list .sc-thumb{width:64px;height:64px}
+
+/* Player report: grade sits flat in the hero, not tilted in a corner. */
+.pg-rating{position:static!important;transform:none!important;align-self:center!important}
+.pg-kicker{gap:8px}
+.pg-kicker img{width:22px;height:22px}
+
+/* Desktop: the stat block and the shot chart share the first row, top and bottom edges lined up. */
+@media(min-width:1000px){
+  .pg-cols{align-items:start}
+  .pg-main,.pg-side{display:contents;position:static}
+  .pg-top{grid-column:1;grid-row:1;align-self:start}
+  .pg-main>.pg-card{grid-column:1}
+  .pg-cols .pg-side .pg-card.pg-shots{grid-column:2;grid-row:1;align-self:stretch;display:flex;flex-direction:column;height:0;min-height:100%;margin-top:0!important;overflow:hidden}
+  .pg-shots .shot-chart{flex:1 1 0;min-height:0;width:100%;max-width:100%}
+  .pg-cols .pg-more{grid-column:2;grid-row:2 / span 8}
+}
+
+/* Shot chart: hollow makes in the key too. */
+.pg-key i.make{background:none!important;border:2px solid #7fc79d!important}
+
+/* Desktop: the shot chart takes the stat block's height (no stretching of the stats). */
+@media(min-width:1000px){
+  .pg-top{align-self:start;display:block}
+  .pg-cols .pg-side .pg-card.pg-shots{height:0;min-height:100%;overflow:hidden}
+  .pg-shots .shot-chart{flex:1 1 0;min-height:0;width:100%;height:auto;max-height:none}
+}
+
+/* Header score stays neutral; screenshot and share buttons sit in one row. */
+.pg-share{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+
+/* Performance cards: just logos and the score. */
+.rp-game{display:flex;align-items:center;gap:8px;font-weight:600}
+.rp-game img{width:18px;height:18px;object-fit:contain}
+
+/* Player report: the score line sits under the big numbers, and the stat block is tighter. */
+.pg-who .pg-kicker{margin:6px 0 0;font-size:14px}
+@media(min-width:1000px){
+  .pg-tags{margin:6px 0 2px}
+  .pg-tabs{margin:10px 0 0}
+  .pg-grid{gap:12px 20px!important;margin:8px 0 0}
+  .pg-cell strong{font-size:27px!important}
+}
+
+/* Score line: the score alone, green for a win and red for a loss, in the same numerals as the stats. */
+.pg-kicker b{font-size:16px;font-weight:700;letter-spacing:0;font-variant-numeric:tabular-nums}
+.pg-kicker b.win{color:#5ee08a!important}
+.pg-kicker b.loss{color:#ef6b6b!important}
+
+/* Shot chart: let the court's own rounded border show; a CSS radius on the picture clipped its corners. */
+.shot-chart,.pg .shot-chart{border-radius:0}
+
+/* Player report on phones: the grid may not grow past the screen. */
+.pg{grid-template-columns:minmax(0,1fr);min-width:0;max-width:100%}
+.pg-cols,.pg-main,.pg-top,.pg-card{min-width:0}
+
+/* Game page player rows on phones: roomier than the compact cards elsewhere. */
+@media(max-width:520px){
+  .gd-cards .rp-card{grid-template-columns:60px minmax(0,1fr) auto;gap:14px;padding:16px 2px}
+  .gd-cards .rp-face,.gd-cards .rp-face>img:first-child,.gd-cards .rp-face>i{width:60px;height:60px}
+  .gd-cards .rp-team{width:24px;height:24px;padding:3px}
+  .gd-cards .rp-top{font-size:16px}
+  .gd-cards .rp-top small{font-size:13px}
+  .gd-cards .rp-trio{gap:2px 16px;font-size:14px}
+  .gd-cards .rp-trio b{font-size:30px;margin-right:4px}
+  .gd-cards .rp-grade{font-size:20px}
+}
+
+/* Performances page: a tight list of small cards. */
+.perfs-page{width:min(760px,100%);margin:0 auto;padding:24px 16px 56px}
+.perfs-page h1{margin:0 0 4px;font-size:26px;font-weight:700}
+.perfs-page>p{margin:0 0 12px;color:var(--text-3);font-size:14px}
+.perfs-page .rp-card{padding:12px 2px}
+@media(max-width:520px){.perfs-page{padding:16px 14px 90px}.perfs-page h1{font-size:20px}}
+
+/* Stat leaderboard page: one card per player, the podium picked out in the team's colour. */
+.statpage{width:min(760px,100%);margin:0 auto;padding:22px 16px 64px}
+.statpage-back{display:inline-flex;align-items:center;gap:6px;margin-bottom:10px;padding:6px 2px;border:0;background:none;color:var(--text-3);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.statpage-back:hover{color:var(--text-1)}
+.statpage h1{margin:0;font-size:30px;font-weight:700;letter-spacing:-.02em}
+.statpage>p{margin:4px 0 14px;color:var(--text-3);font-size:14px}
+.statpage-tabs{display:flex;gap:8px;margin:0 -16px 16px;padding:0 16px;overflow-x:auto;scrollbar-width:none}
+.statpage-tabs button{flex:none;padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--text-2);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.statpage-tabs button.active{background:var(--text-1);border-color:var(--text-1);color:var(--ink-1)}
+.statpage-list{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.statpage-list li{border:1px solid var(--line);border-radius:16px;background:var(--ink-1);overflow:hidden}
+.statpage-list li button{display:grid;grid-template-columns:34px 56px minmax(0,1fr) auto;align-items:center;gap:12px;width:100%;padding:10px 16px 10px 12px;border:0;background:none;color:var(--text-1);font:inherit;text-align:left;cursor:pointer}
+.statpage-list li button:hover{background:var(--ink-2)}
+.statpage-rank{color:var(--text-3);font-size:16px;font-weight:700;text-align:center;font-variant-numeric:tabular-nums}
+.statpage-art{width:56px!important;height:56px!important;border-radius:50%;object-fit:cover;object-position:top;background:var(--ink-2)}
+.statpage-who{display:flex;flex-direction:column;gap:3px;min-width:0}
+.statpage-who b{overflow:hidden;font-size:16px;font-weight:600;text-overflow:ellipsis;white-space:nowrap}
+.statpage-who small{display:flex;align-items:center;gap:6px;color:var(--text-3);font-size:12px;font-weight:600}
+.statpage-who small img{width:16px;height:16px;object-fit:contain}
+.statpage-list strong{font-size:26px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;text-align:right}
+.statpage-list strong small{margin-left:5px;color:var(--text-3);font-size:11px;font-weight:700;letter-spacing:.04em}
+.statpage-list li.top{background:linear-gradient(100deg,color-mix(in srgb,var(--tc) 30%,var(--ink-1)),var(--ink-1) 72%);border-color:color-mix(in srgb,var(--tc) 55%,var(--line))}
+.statpage-list li.top .statpage-rank{color:var(--text-1);font-size:22px}
+.statpage-list li.top-1 button{padding-top:16px;padding-bottom:16px}
+.statpage-list li.top-1 .statpage-art{width:68px!important;height:68px!important}
+.statpage-list li.top-1 strong{font-size:34px}
+@media(max-width:520px){
+  .statpage{padding:16px 14px 90px}
+  .statpage h1{font-size:22px}
+  .statpage-tabs{margin:0 -14px 14px;padding:0 14px}
+  .statpage-list li button{grid-template-columns:26px 46px minmax(0,1fr) auto;gap:10px;padding:8px 12px 8px 8px}
+  .statpage-art{width:46px!important;height:46px!important}
+  .statpage-list li.top-1 .statpage-art{width:56px!important;height:56px!important}
+  .statpage-who b{font-size:15px}
+  .statpage-list strong{font-size:21px}
+  .statpage-list li.top-1 strong{font-size:27px}
+}
+
+/* Recent performances on a player page. */
+.pp-recent{margin-top:16px}
+.pp-recent h2{margin:0 0 4px;color:var(--text-2);font-size:14px;font-weight:700}
+
+/* Phone player page: dense, like a stat app. */
+@media(max-width:520px){
+  .profile-page{padding:8px 14px 90px!important}
+  .profile-page .back-button{margin-bottom:8px;font-size:12px}
+  .profile-hero{display:flex!important;align-items:center;gap:14px;min-height:0!important;padding:12px!important;border-radius:16px!important}
+  .profile-art-wrap{order:-1;position:relative!important;inset:auto!important;top:0!important;flex:none;width:76px!important;height:76px!important;min-height:0!important;margin:0!important;border-radius:50%;overflow:hidden;background:var(--ink-2)}
+  .profile-art-wrap>div{display:none!important}
+  .profile-art{position:static!important;width:100%!important;height:100%!important;max-width:none!important;object-fit:cover;object-position:top;transform:none!important}
+  .profile-copy{min-width:0;padding:0!important}
+  .profile-copy small{font-size:11px}
+  .profile-copy h1{margin:2px 0 2px!important;font-size:22px!important;line-height:1.1}
+  .profile-copy p{margin:0 0 8px!important;font-size:12px}
+  .profile-copy button{min-height:0!important;height:30px;padding:0 12px!important;font-size:12px!important;gap:6px}
+  .pp-share{height:0;margin:0;padding-right:10px;position:relative;top:-46px;z-index:2}
+  .pp-share .ghost-button{padding:6px 10px}
+  .pp-tiles{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:12px 2px;margin-top:12px}
+  .pp-tile{align-items:center;gap:1px;padding:0!important;border:0!important;background:none!important;text-align:center}
+  .pp-tile span{font-size:10px;letter-spacing:.04em}
+  .pp-tile strong{font-size:19px!important}
+  .pp-tile small{color:#6aa6ff;font-size:11px;font-weight:700}
+  .pp-tile small i{display:none}
+  .pp-card{margin-top:12px;padding:12px!important}
+  .pp-head{margin-bottom:8px}
+  .pp-head h2{font-size:15px}
+  .pp-table{font-size:12px}
+  .pp-table th,.pp-table td{padding:6px 7px}
+}
+
+/* Phone player page: tighter again. */
+@media(max-width:520px){
+  .pp-recent{margin-top:12px}
+  .pp-recent .rp-card{padding:8px 2px}
+  .pp-recent .rp-list>li:last-child{border-bottom:0}
+  .pp-card{margin-top:10px}
+  .pp-trend svg{max-height:150px}
+  .pp-tabs{gap:4px}
+  .pp-tabs button{padding:5px 9px;font-size:12px}
+}
+
+/* Phone game report: a bigger face. */
+@media(max-width:520px){
+  .pg-hero{gap:14px!important;align-items:center!important}
+  .pg-hero .pg-photo{width:104px!important;height:104px!important;border-radius:50%!important;object-position:50% 8%!important}
+  .pg-who h2{font-size:18px!important}
+  .pg-big b{font-size:30px!important}
+}
+@media(max-width:520px){
+  .pg-hero .pg-rating{width:auto!important;height:auto!important;min-width:0}
+  .pg-who{min-width:0;flex:1 1 auto}
+  .pg-big{white-space:nowrap;font-size:12px}
+  .pg-big b{font-size:26px!important;margin-left:4px!important}
+  .pg-who h2{font-size:17px!important;line-height:1.15}
+}

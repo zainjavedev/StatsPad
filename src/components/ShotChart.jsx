@@ -24,8 +24,8 @@ export default function ShotChart({shots, className = ''}) {
   return <svg className={`shot-chart ${className}`} viewBox="0 0 50 42" role="img" aria-label={`${makes.length} of ${shots.length} shots made`}>
     <rect width="50" height="42" rx="1.2" fill="#ffffff" fillOpacity=".035"/>
     <Court/>
-    {misses.map((shot, index) => <path key={`m${index}`} d={`M${shot.x - .5} ${sy(shot.y) - .5}l1 1M${shot.x + .5} ${sy(shot.y) - .5}l-1 1`} stroke="#c9777a" strokeWidth=".26" strokeLinecap="round" opacity=".75" fill="none"/>)}
-    {makes.map((shot, index) => <circle key={`h${index}`} cx={shot.x} cy={sy(shot.y)} r=".6" fill="#7fc79d" fillOpacity=".85"/>)}
+            {misses.map((shot, index) => <path key={`m${index}`} d={`M${shot.x - .5} ${sy(shot.y) - .5}l1 1M${shot.x + .5} ${sy(shot.y) - .5}l-1 1`} stroke="#c9777a" strokeWidth=".26" strokeLinecap="round" opacity=".75" fill="none"/>)}
+        {makes.map((shot, index) => <circle key={`h${index}`} cx={shot.x} cy={sy(shot.y)} r=".65" fill="none" stroke="#7fc79d" strokeWidth=".3"/>)}
   </svg>;
 }
 
@@ -43,7 +43,7 @@ export function Flow({flow, color, quarters}) {
       <clipPath id="fl-down"><rect y={mid} width={width} height={mid}/></clipPath>
     </defs>
     {marks.slice(0, quarters).map(t => <line key={t} x1={x(t)} x2={x(t)} y1="4" y2={height - 4} stroke="#fff" strokeOpacity=".12" strokeDasharray="2 3"/>)}
-    <path d={area} fill={color} fillOpacity=".38" clipPath="url(#fl-up)"/>
+    <path d={area} fill="#5ee08a" fillOpacity=".3" clipPath="url(#fl-up)"/>
     <path d={area} fill="#ef6b6b" fillOpacity=".3" clipPath="url(#fl-down)"/>
     <line x1="0" x2={width} y1={mid} y2={mid} stroke="#fff" strokeOpacity=".3"/>
     <path d={line} fill="none" stroke="#fff" strokeOpacity=".8" strokeWidth="1.2" strokeLinejoin="round"/>

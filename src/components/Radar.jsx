@@ -15,11 +15,10 @@ const point = (index, count, fraction, push = 0) => {
 const path = (count, fractionOf) => Array.from({length: count}, (_, index) => point(index, count, fractionOf(index)).map(value => value.toFixed(1)).join(',')).join(' ');
 const anchorFor = x => x < SIZE.cx - 8 ? 'end' : x > SIZE.cx + 8 ? 'start' : 'middle';
 
-export default function Radar({axes, names, colors, scope, notes = [], views = [], view, onView, blurb}) {
+export default function Radar({axes, names, colors, views = [], view, onView, blurb}) {
   const count = axes.length, [tip, setTip] = useState(null);
   return <section className="vs-radar">
     <div className="vs-radar-head">
-      <small>Shape of their game · vs the league{scope ? `: ${scope}` : ''}</small>
       <span className="vs-radar-key">{names.map((name, side) => <span key={name}><i style={{background: colors[side]}}/>{name}</span>)}</span>
     </div>
     {views.length > 1 && <div className="vs-radar-tabs">
@@ -60,6 +59,5 @@ export default function Radar({axes, names, colors, scope, notes = [], views = [
         </g>;
       })()}
     </svg>
-    {notes.length > 0 && <ul className="vs-radar-notes">{notes.map(note => <li key={note}>{note}</li>)}</ul>}
   </section>;
 }

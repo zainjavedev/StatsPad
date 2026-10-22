@@ -16,13 +16,16 @@ const COLUMNS = [
 ];
 const codeOf = abbr => Object.keys(TEAMS).find(code => TEAMS[code].espn === String(abbr).toLowerCase());
 
+/* Best record first; teams level on record are split by point difference, then by name. */
+export const byRecord = (a, b) => Number(b.stat.winPercent) - Number(a.stat.winPercent) || Number(b.stat.wins) - Number(a.stat.wins) || (Number(b.stat.differential) || 0) - (Number(a.stat.differential) || 0) || TEAMS[a.code].name.localeCompare(TEAMS[b.code].name);
+
 const parse = data => (data.children ?? []).map(group => ({
   name: group.name,
   rows: (group.standings?.entries ?? []).map(entry => {
     const stat = Object.fromEntries(entry.stats.map(item => [item.name, item.displayValue ?? item.value]));
     const code = codeOf(entry.team.abbreviation);
     return {code, seed: Number(stat.playoffSeed) || 99, stat};
-  }).filter(row => row.code).sort((a, b) => a.seed - b.seed || Number(b.stat.winPercent) - Number(a.stat.winPercent) || TEAMS[a.code].name.localeCompare(TEAMS[b.code].name)),
+  }).filter(row => row.code).sort(byRecord),
 }));
 
 export const loadStandings = () => ask(2).then(parse);

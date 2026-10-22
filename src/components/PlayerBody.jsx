@@ -5,6 +5,11 @@ import { TEAMS, teamCodeOf } from '../lib/teams';
 import { playerUrl, slugify } from '../lib/routes';
 import { bestSeason, careerOf, liveRow, seasonsOf, tsOf } from '../lib/career';
 import { pretty } from '../lib/season';
+import { performancesOf } from '../lib/performances';
+import { finished, loadSchedule } from '../lib/schedule';
+import { loadBoxscore } from '../lib/boxscore';
+import { navigate } from '../lib/nav';
+import { PerfCard } from './RecentPerformances';
 
 /* Everything under a player's hero: season tiles with league ranks, the
    career trend, the season-by-season table and who to compare with next. */
@@ -23,6 +28,36 @@ const TREND = [
 ];
 const ord = n => { const suffix = ['th', 'st', 'nd', 'rd'], v = n % 100; return `${n}${suffix[(v - 20) % 10] || suffix[v] || suffix[0]}`; };
 const f1 = value => Number(value).toFixed(1);
+const plain = name => name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[.']/g, '').replace(/ (jr|sr|ii|iii|iv)$/, '').trim();
+
+/* The player's last few games this season, newest first, found in the box scores of recent finals. */
+function useRecentLines(name) {
+  const [lines, setLines] = useState(null);
+  useEffect(() => {
+    let live = true;
+    setLines(null);
+    loadSchedule().then(all => finished(all.filter(game => !game.preseason), 60))
+      .then(finals => Promise.all(finals.map(game => loadBoxscore(game.id).then(box => performancesOf(box, game.id)).catch(() => []))))
+      .then(groups => {
+        if (!live) return;
+        const mine = groups.flat().filter(line => plain(line.player.name) === plain(name));
+        setLines(mine.sort((a, b) => (b.date || 0) - (a.date || 0)).slice(0, 8));
+      })
+      .catch(() => { if (live) setLines([]); });
+    return () => { live = false; };
+  }, [name]);
+  return lines;
+}
+
+function RecentGames({ lines }) {
+  if (lines && !lines.length) return null;
+  return <section className="pp-recent" aria-label="Recent performances">
+    <h2>Recent performances</h2>
+    {lines === null ? <ul className="rp-list loading">{[0, 1, 2].map(index => <li key={index}/>)}</ul>
+      : <ul className="rp-list">{lines.slice(0, 5).map(line => <li key={line.gameId}><PerfCard line={line} onPick={() => navigate(`/games/${line.gameId}?player=${line.player.id}`)}/></li>)}</ul>}
+  </section>;
+}
+
 const teamText = row => (row.tot ? 'TOT' : row.t);
 
 function rankOf(population, entity, [, get, gate]) {
@@ -100,7 +135,7 @@ function CareerTable({ seasons, career, currentSeason }) {
 export default function PlayerBody({ entity, season, population, bars, showCareer, onOpen, onCompare }) {
   const enriched = useMemo(() => ({ ...entity, trueShooting: tsOf({ pts: entity.stats.points, fga: entity.stats.fieldGoalsAttempted, fta: entity.stats.freeThrowsAttempted }) }), [entity]);
   const pool = useMemo(() => population.map(player => ({ ...player, trueShooting: tsOf({ pts: player.stats.points, fga: player.stats.fieldGoalsAttempted, fta: player.stats.freeThrowsAttempted }) })), [population]);
-  const history = useCareer(entity.playerName);
+  const history = useCareer(entity.playerName), recent = useRecentLines(entity.playerName);
   const seasons = useMemo(() => seasonsOf(history?.rows || [], season ? liveRow(entity, season) : null), [history, entity, season]);
   const career = useMemo(() => careerOf(seasons), [seasons]);
   const highs = useMemo(() => [['PPG', 'pts'], ['RPG', 'reb'], ['APG', 'ast']].map(([name, key]) => ({ name, entry: bestSeason(seasons, key), key })).filter(item => item.entry), [seasons]);
@@ -129,10 +164,11 @@ export default function PlayerBody({ entity, season, population, bars, showCaree
         const value = tile[1](enriched);
         return <article key={tile[0]} className="pp-tile">
           <span>{tile[0]}</span><strong>{f1(value)}</strong>
-          <small>{ranking ? `${ord(ranking.rank)} of ${ranking.total}` : 'Too few attempts'}</small>
+          <small>{ranking ? <>{ord(ranking.rank)}<i> of {ranking.total}</i></> : 'Too few attempts'}</small>
         </article>;
       })}
     </section>
+    <RecentGames lines={recent}/>
 
     <div className="pp-grid-2">
       {showCareer && <section className="pp-card">
