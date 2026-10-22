@@ -21,38 +21,6 @@ const TREND = [
   ['PPG', row => row.pts], ['RPG', row => row.reb], ['APG', row => row.ast], ['TS%', tsOf, row => row.fga >= 1],
   ['FG%', row => row.fgp], ['3P%', row => row.tpp, row => row.tpa >= 1], ['MPG', row => row.mpg],
 ];
-/* Report card: each skill is graded on where the player sits among the league's regulars. */
-const SKILLS = [
-  ['Scoring', p => p.stats.points, p => `${f1(p.stats.points)} PPG`],
-  ['Playmaking', p => p.stats.assists, p => `${f1(p.stats.assists)} APG`],
-  ['Rebounding', p => p.stats.totalRebounds, p => `${f1(p.stats.totalRebounds)} RPG`],
-  ['Defense', p => p.stats.steals + p.stats.blocks, p => `${f1(p.stats.steals)} STL · ${f1(p.stats.blocks)} BLK`],
-  ['Efficiency', p => p.trueShooting, p => `${f1(p.trueShooting)} TS%`],
-  ['Shooting', p => p.stats.threePointPercentage, p => `${f1(p.stats.threePointPercentage)} 3P%`, p => p.stats.threePointersAttempted >= 1],
-];
-const GRADES = [[96, 'A+'], [88, 'A'], [80, 'A-'], [72, 'B+'], [62, 'B'], [52, 'B-'], [42, 'C+'], [32, 'C'], [22, 'C-'], [12, 'D']];
-const gradeOf = pct => (GRADES.find(([min]) => pct >= min) || [0, 'F'])[1];
-const percentOf = (population, value, get, gate) => {
-  const pool = population.filter(player => !gate || gate(player)).map(get);
-  return pool.length ? Math.round(100 * (pool.filter(v => v < value).length + pool.filter(v => v === value).length / 2) / pool.length) : 0;
-};
-function reportSpec(entity, pool, season) {
-  const rows = SKILLS.filter(([, , , gate]) => !gate || gate(entity)).map(([label, get, text, gate]) => {
-    const pct = percentOf(pool, get(entity), get, gate);
-    return { label, pct, grade: gradeOf(pct), value: text(entity) };
-  });
-  const overall = Math.round(rows.reduce((sum, row) => sum + row.pct, 0) / rows.length);
-  const best = [...rows].sort((a, b) => b.pct - a.pct).filter(row => row.pct >= 75).slice(0, 2).map(row => row.label.toLowerCase());
-  const worst = [...rows].sort((a, b) => a.pct - b.pct)[0];
-  return {
-    kind: 'report', eyebrow: 'Report card', title: entity.playerName, person: { name: entity.playerName, playerId: entity.playerId },
-    sub: `${entity.team} · ${entity.position} · ${entity.gamesPlayed} ${entity.gamesPlayed === 1 ? 'game' : 'games'} · ${season ? pretty(season) : ''}`,
-    color: TEAMS[teamCodeOf(entity.team)]?.color,
-    overall: { grade: gradeOf(overall), note: 'Overall' }, rows,
-    verdict: best.length ? `Best at ${best.join(' and ')}. Room to grow: ${worst.label.toLowerCase()}.` : `Biggest gap: ${worst.label.toLowerCase()}.`,
-    foot: 'Graded against the league\u2019s regulars', path: playerUrl(entity.playerName),
-  };
-}
 const ord = n => { const suffix = ['th', 'st', 'nd', 'rd'], v = n % 100; return `${n}${suffix[(v - 20) % 10] || suffix[v] || suffix[0]}`; };
 const f1 = value => Number(value).toFixed(1);
 const teamText = row => (row.tot ? 'TOT' : row.t);
@@ -154,7 +122,7 @@ export default function PlayerBody({ entity, season, population, bars, showCaree
   };
 
   return <>
-    <div className="pp-share"><ShareButton spec={reportSpec(enriched, pool, season)} filename={`${slugify(entity.playerName)}-report-card`} title={`${entity.playerName} report card`} text={`${entity.playerName} report card on StatsPads`} path={playerUrl(entity.playerName)} label="Report card"/><ShareButton spec={shareSpec} filename={`${slugify(entity.playerName)}-stats`} title={entity.playerName} text={`${entity.playerName}: ${f1(entity.stats.points)} PPG, ${f1(entity.stats.totalRebounds)} RPG, ${f1(entity.stats.assists)} APG`} path={playerUrl(entity.playerName)}/></div>
+    <div className="pp-share"><ShareButton spec={shareSpec} filename={`${slugify(entity.playerName)}-stats`} title={entity.playerName} text={`${entity.playerName}: ${f1(entity.stats.points)} PPG, ${f1(entity.stats.totalRebounds)} RPG, ${f1(entity.stats.assists)} APG`} path={playerUrl(entity.playerName)}/></div>
     <section className="pp-tiles" aria-label="Season per-game stats">
       {TILES.map(tile => {
         const ranking = rankOf(pool, enriched, tile);
