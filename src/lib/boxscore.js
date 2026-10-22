@@ -4,6 +4,13 @@
 const URL = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=';
 const cache = new Map();
 
+/* Seconds into the game: twelve-minute quarters, five-minute overtimes; the clock reads "2:33" or "45.2". */
+function elapsed(period, clock) {
+  const [minutes, seconds] = String(clock ?? '0').includes(':') ? clock.split(':').map(Number) : [0, Number(clock)];
+  const left = (minutes || 0) * 60 + (seconds || 0);
+  return period <= 4 ? (period - 1) * 720 + 720 - left : 2880 + (period - 5) * 300 + 300 - left;
+}
+
 export function loadBoxscore(id) {
   if (!cache.has(id)) {
     cache.set(id, fetch(`${URL}${id}`).then(response => { if (!response.ok) throw new Error(response.status); return response.json(); }).then(data => {
@@ -22,7 +29,7 @@ export function loadBoxscore(id) {
         const entry = competition?.competitors?.find(item => item.homeAway === homeAway);
         return entry && {id: entry.team.id, abbr: entry.team.abbreviation, name: entry.team.displayName, short: entry.team.shortDisplayName ?? entry.team.displayName, logo: entry.team.logos?.[0]?.href ?? entry.team.logo, score: entry.score};
       };
-      const plays = (data.plays ?? []).map(play => ({q: play.period?.number ?? 1, type: play.type?.text ?? '', text: play.text ?? '', pts: play.scoreValue ?? 0, pa: play.pointsAttempted ?? 0, scoring: Boolean(play.scoringPlay), who: (play.participants ?? []).map(entry => entry.athlete?.id), team: play.team?.id}));
+      const plays = (data.plays ?? []).map(play => ({q: play.period?.number ?? 1, type: play.type?.text ?? '', text: play.text ?? '', pts: play.scoreValue ?? 0, pa: play.pointsAttempted ?? 0, scoring: Boolean(play.scoringPlay), who: (play.participants ?? []).map(entry => entry.athlete?.id), team: play.team?.id, x: play.coordinate?.x, y: play.coordinate?.y, as: play.awayScore, hs: play.homeScore, t: elapsed(play.period?.number ?? 1, play.clock?.displayValue)}));
       return {teams, plays, away: side('away'), home: side('home'), date: competition?.date ?? data.header?.competitions?.[0]?.date, state: status?.state ?? 'pre', detail: status?.detail ?? '', venue: data.gameInfo?.venue?.fullName ?? '', tv: data.broadcasts?.[0]?.media?.shortName ?? '', preseason: data.header?.season?.type === 1};
     }).catch(() => { cache.delete(id); return null; }));
   }

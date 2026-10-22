@@ -1,5 +1,6 @@
 import React, { forwardRef, useState } from 'react';
 import { onDark, siteHost } from '../lib/share';
+import ShotChart from './ShotChart';
 
 /* The 1080x1080 picture people post. Layouts, picked by spec.kind:
      versus  {eyebrow, names, subs, colors, score, rows: [{label, values, lead}], photos?}
@@ -76,7 +77,6 @@ function Tiles({spec}) {
 }
 
 function Perf({spec}) {
-  const top = Math.max(1, ...spec.bars.map(bar => bar.value));
   return <>
     <div className="sc-title with-photo">
       <Photo src={spec.photo} name={spec.title} color={spec.color} className="sc-hero-photo"/>
@@ -84,15 +84,18 @@ function Perf({spec}) {
         <b style={{'--c': onDark(spec.color)}}>{spec.title}</b>
         <small>{spec.sub}</small>
       </div>
-      <div className={`sc-rate ${spec.tone}`}><strong>{spec.rating}</strong><small>rating</small></div>
+      <div className={`sc-rate ${spec.tone}`}><strong>{spec.rating}</strong><small>grade</small></div>
     </div>
-    <div className="sc-head3">{spec.headline.map(([value, unit]) => <span key={unit}><b>{value}</b>{unit}</span>)}</div>
-    {spec.tags.length > 0 && <div className="sc-tags">{spec.tags.map(tag => <span key={tag}>{tag}</span>)}</div>}
+    <p className="sc-story">{spec.story}</p>
+    <div className="sc-perf">
+      <div className="sc-court"><ShotChart shots={spec.shots} color={onDark(spec.color)}/><small>{spec.shotLine}</small></div>
+      <div className="sc-side3">
+        <div className="sc-head3">{spec.headline.map(([value, unit]) => <span key={unit}><b>{value}</b>{unit}</span>)}</div>
+        {spec.tags.length > 0 && <div className="sc-tags">{spec.tags.map(tag => <span key={tag}>{tag}</span>)}</div>}
+        {spec.assists.length > 0 && <div className="sc-assists"><small>Set up</small>{spec.assists.map(entry => <div key={entry.name}><b>{entry.name.split(' ').slice(1).join(' ') || entry.name}</b><span>{entry.pts} pts · {entry.ast} ast</span></div>)}</div>}
+      </div>
+    </div>
     <div className="sc-mini">{spec.tiles.map(([name, value]) => <div key={name}><strong>{value}</strong><small>{name}</small></div>)}</div>
-    <div className="sc-lower">
-      <div className="sc-qbars">{spec.bars.map(bar => <div key={bar.label}><b>{bar.value}</b><i style={{height: `${Math.max(5, bar.value / top * 100)}%`}}/><span>{bar.label}</span></div>)}</div>
-      {spec.assists.length > 0 && <div className="sc-assists"><small>Assisted</small>{spec.assists.map(entry => <div key={entry.name}><b>{entry.name}</b><span>{entry.pts} pts · {entry.ast} ast</span></div>)}</div>}
-    </div>
   </>;
 }
 

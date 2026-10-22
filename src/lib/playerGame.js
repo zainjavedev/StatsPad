@@ -66,3 +66,38 @@ export function tagsOf(row, minutes) {
   if (num(minutes) >= 38) tags.push('workhorse');
   return tags;
 }
+
+/* Every field-goal attempt by the player, with where it was taken (feet from the basket: x across, y up the floor). */
+export function shotsOf(plays, id) {
+  return plays.filter(play => play.who[0] === id && play.q && !/Free Throw/i.test(play.type) && /\b(makes|misses|blocks)\b/i.test(play.text) && Number.isFinite(play.x) && play.x >= 0 && play.y > -100)
+    .map(play => ({x: play.x, y: play.y, made: /\bmakes\b/i.test(play.text), three: play.pa === 3, q: play.q, text: play.text.replace(/\s*\(.*?\)\s*$/, '')}));
+}
+
+/* The player's team's lead over the game, with his own scoring plays marked. */
+export function flowOf(plays, id, away) {
+  const points = [{t: 0, m: 0}], marks = [];
+  for (const play of plays) {
+    if (play.as === undefined || play.t === undefined) continue;
+    const margin = away ? play.as - play.hs : play.hs - play.as;
+    points.push({t: play.t, m: margin});
+    if (play.who[0] === id && play.scoring) marks.push({t: play.t, m: margin, pts: play.pts});
+  }
+  return {points, marks, end: Math.max(2880, ...points.map(point => point.t))};
+}
+
+/* A few honest sentences about the night. */
+export function storyOf({name, row, quarters, won, margin, team, opp, minutes}) {
+  const first = name.split(' ').slice(-1)[0].replace(/(Jr\.|Sr\.|II|III)$/, '').trim() || name;
+  let best = [0, 0];
+  for (const [quarter, value] of quarters) if (value.PTS > best[1]) best = [quarter, value.PTS];
+  const lead = `${row.PTS} points on ${row.FGM}-of-${row.FGA} shooting.`;
+  const extras = [];
+  if (row.TPM >= 3) extras.push(`${row.TPM} threes`);
+  if (row.AST >= 7) extras.push(`${row.AST} assists`);
+  if (row.REB >= 10) extras.push(`${row.REB} boards`);
+  if (row.STL + row.BLK >= 4) extras.push(`${row.STL + row.BLK} steals and blocks`);
+  const quarterText = best[1] >= 12 ? `${best[1]} of them came in the ${best[0] <= 4 ? ['first', 'second', 'third', 'fourth'][best[0] - 1] : 'overtime'}${best[0] <= 4 ? ' quarter' : ''}.` : '';
+  const result = won ? `${team} won by ${margin}.` : row.PTS >= 28 ? `It still wasn't enough: ${team} lost by ${margin}.` : `${team} lost to ${opp} by ${margin}.`;
+  const sentence = extras.length ? `${first} also had ${extras.slice(0, 2).join(' and ')}.` : '';
+  return {lead, rest: [quarterText, sentence, result].filter(Boolean).join(' '), minutes};
+}
