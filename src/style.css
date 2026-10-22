@@ -3104,3 +3104,10 @@ a.pk-row:hover{background:var(--ink-2)}
   .pg-big b{font-size:26px!important;margin-left:4px!important}
   .pg-who h2{font-size:17px!important;line-height:1.15}
 }
+
+/* Head to head on phones: a long name wraps to two lines, so pin both players to the top and give the name a fixed two-line height. The photo bars then line up. */
+@media (max-width:760px){
+  .h2h-body{align-items:start}
+  .h2h-player{align-self:start;margin-top:0}
+  .h2h-player b{min-height:2.4em}
+}
