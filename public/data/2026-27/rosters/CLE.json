@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Kenny Atkinson",
-  "lastUpdated": "2026-10-20",
+  "lastUpdated": "2026-10-22",
   "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
@@ -154,19 +154,6 @@
       "unit": "second"
     },
     {
-      "name": "Nae'Qwan Tomlin",
-      "bbrefId": "tomlina01",
-      "nbaId": null,
-      "espnId": 5106268,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2000-12-19",
-      "exp": 3,
-      "college": "Memphis",
-      "jersey": "35",
-      "unit": "second"
-    },
-    {
       "name": "Thomas Bryant",
       "bbrefId": "bryanth01",
       "nbaId": 1628418,
@@ -193,18 +180,6 @@
       "unit": "third"
     },
     {
-      "name": "Khalifa Diop",
-      "nbaId": null,
-      "espnId": 4997530,
-      "pos": "C",
-      "height": "6-11",
-      "birthDate": "2002-01-15",
-      "exp": 0,
-      "college": null,
-      "jersey": "18",
-      "unit": "third"
-    },
-    {
       "name": "Mario Hezonja",
       "nbaId": null,
       "espnId": 2995706,
@@ -214,18 +189,6 @@
       "exp": 6,
       "college": null,
       "jersey": "33",
-      "unit": "third"
-    },
-    {
-      "name": "Ernest Udeh Jr.",
-      "nbaId": null,
-      "espnId": 5106261,
-      "pos": "C",
-      "height": "6-11",
-      "birthDate": "2004-01-08",
-      "exp": 0,
-      "college": "Miami",
-      "jersey": "39",
       "unit": "third"
     },
     {
