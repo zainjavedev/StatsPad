@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { TEAMS, espnLogoUrl, nickname } from '../lib/teams';
 import { useFeed } from '../lib/useFeed';
@@ -15,27 +15,48 @@ const Head = ({title, to, label, onClick}) => <div className="front-panel-head">
 
 const link = code => `/teams/${TEAMS[code].name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 
-/* Seeds 1-6 go straight to the playoffs, 7-10 to the play-in. */
-const Conference = ({group, favorites}) => <div className="peek-conf">
-  <div className="peek-conf-head"><small>{group.name.replace(' Conference', '')}</small><span>W</span><span>L</span><span>PCT</span><span className="extra">GB</span><span className="extra">STRK</span></div>
-  <ol>{group.rows.slice(0, 10).map((row, index) => <React.Fragment key={row.code}>
-    {index === 6 && <li className="peek-cut" aria-hidden="true"><span>Play-in</span></li>}
-    <li className={`${index < 6 ? 'in' : ''}${favorites.includes(row.code) ? ' mine' : ''}`}>
-      <a href={link(row.code)}>
-        <i>{index + 1}</i><img src={espnLogoUrl(row.code)} alt=""/><b>{nickname(row.code)}</b>
-        <span>{row.stat.wins}</span><span>{row.stat.losses}</span><span>{Number(row.stat.winPercent) ? Number(row.stat.winPercent).toFixed(3).replace(/^0/, '') : '.000'}</span>
-        <span className="extra">{row.stat.gamesBehind}</span>
-        <span className={`extra${String(row.stat.streak).startsWith('W') ? ' up' : String(row.stat.streak).startsWith('L') ? ' down' : ''}`}>{row.stat.streak || '–'}</span>
-      </a>
-    </li>
-  </React.Fragment>)}</ol>
-</div>;
+const clock = new Intl.DateTimeFormat(undefined, {weekday: 'short', hour: 'numeric', minute: '2-digit'});
+const pct = value => (Number(value) ? Number(value).toFixed(3).replace(/^0/, '') : '.000');
 
-export function StandingsPeek() {
+/* One table with East, West and League tabs: record, point difference, streak and each team's next game. Seeds 1-6 go
+   straight to the playoffs, 7-10 to the play-in. */
+export function StandingsPeek({games}) {
   const groups = useFeed(loadStandings), favorites = useFavorites();
+  const [tab, setTab] = useState('eastern');
   const conferences = (groups ?? []).filter(group => /^(eastern|western)/i.test(group.name));
-  return <section className="front-panel peek">
+  const rows = useMemo(() => {
+    if (tab === 'league') return conferences.flatMap(group => group.rows).sort((a, b) => Number(b.stat.winPercent) - Number(a.stat.winPercent) || Number(b.stat.wins) - Number(a.stat.wins) || TEAMS[a.code].name.localeCompare(TEAMS[b.code].name));
+    return conferences.find(group => group.name.toLowerCase().startsWith(tab))?.rows ?? [];
+  }, [conferences, tab]);
+  const next = code => {
+    const game = (games ?? []).find(item => item.state !== 'post' && (item.away.code === code || item.home.code === code));
+    if (!game) return null;
+    const away = game.away.code === code, other = away ? game.home : game.away;
+    return {where: away ? '@' : 'vs', opp: other.abbr, when: game.state === 'in' ? 'Live' : clock.format(game.date)};
+  };
+  return <section className="front-panel peek pk">
     <Head title="Standings" to="/standings" label="Full standings"/>
-    {conferences.length ? <div className="peek-standings">{conferences.map(group => <Conference key={group.name} group={group} favorites={favorites}/>)}</div> : <div className="peek-standings"><div className="peek-conf skeleton-block"/><div className="peek-conf skeleton-block"/></div>}
+    <div className="pk-tabs" role="group" aria-label="Standings view">
+      {[['eastern', 'East'], ['western', 'West'], ['league', 'League']].map(([key, label]) => <button key={key} className={tab === key ? 'active' : ''} onClick={() => setTab(key)}>{label}</button>)}
+    </div>
+    {rows.length ? <div className="pk-table">
+      <div className="pk-row pk-head"><span/><span>Team</span><span>W-L</span><span>PCT</span><span className="extra">GB</span><span className="extra">DIFF</span><span>STRK</span><span className="extra">NEXT</span></div>
+      {rows.slice(0, 10).map((row, index) => {
+        const upcoming = next(row.code), streak = String(row.stat.streak || '');
+        return <React.Fragment key={row.code}>
+          {tab !== 'league' && index === 6 && <div className="pk-cut" aria-hidden="true"><span>Play-in</span></div>}
+          <a className={`pk-row${favorites.includes(row.code) ? ' mine' : ''}${tab !== 'league' && index < 6 ? ' in' : ''}`} href={link(row.code)}>
+            <i>{index + 1}</i>
+            <span className="pk-team"><img src={espnLogoUrl(row.code)} alt=""/><b>{nickname(row.code)}</b></span>
+            <span>{row.stat.wins}-{row.stat.losses}</span>
+            <span>{pct(row.stat.winPercent)}</span>
+            <span className="extra">{row.stat.gamesBehind}</span>
+            <span className="extra">{row.stat.differential && row.stat.differential !== '-' ? row.stat.differential : '–'}</span>
+            <span className={streak.startsWith('W') ? 'up' : streak.startsWith('L') ? 'down' : ''}>{streak || '–'}</span>
+            <span className="extra pk-next">{upcoming ? <>{upcoming.where} {upcoming.opp}<small>{upcoming.when}</small></> : '–'}</span>
+          </a>
+        </React.Fragment>;
+      })}
+    </div> : <div className="pk-table skeleton-block" style={{minHeight: 320}}/>}
   </section>;
 }

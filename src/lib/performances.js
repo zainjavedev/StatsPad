@@ -45,6 +45,7 @@ export const headline = ({player}) => {
 
 const versus = line => `${line.home ? 'vs' : '@'} ${line.opp} · ${line.won ? 'W' : 'L'} ${line.score}${line.date ? ` · ${dayFormat.format(line.date)}` : ''}`;
 const color = line => TEAMS[codeOf(line.team)]?.color;
+export const teamColorOf = color;
 const photoOf = player => player.id ? {name: player.name, espnId: player.id} : {name: player.name};
 
 /* One player's night as a tiles card. */
@@ -69,4 +70,49 @@ export function nightCard(lines, day) {
     rows: lines.map((line, index) => ({lead: index + 1, name: line.player.name, sub: `${line.team} ${line.home ? 'vs' : '@'} ${line.opp} · ${headline(line).split(' · ').slice(1).join(' · ') || line.score}`, value: `${line.player.stats.PTS} PTS`, person: photoOf(line.player)})),
     foot: 'Ranked by game score',
   };
+}
+
+/* StatMuse-style fun facts: the standout lines across every finished game so far, each with a plain-language reason it is
+   notable. Every fact is computed from the box scores on hand, so a "season high" is a high among the games played. */
+export function factCards(lines, limit = 6) {
+  const played = lines.filter(line => num(line.player.stats.MIN) > 0);
+  const stat = (line, key) => num(line.player.stats[key]);
+  const threes = line => made(line.player.stats['3PT'])[0];
+  const fg = line => made(line.player.stats.FG);
+  const top = (score, pool = played) => pool.reduce((best, line) => (!best || score(line) > score(best) ? line : best), null);
+  const picks = [];
+  const add = (line, fact, lead = 'PTS') => { if (line && !picks.some(pick => pick.line.player.name === line.player.name)) picks.push({line, fact, lead}); };
+  const best = top(line => stat(line, 'PTS'));
+  add(best, `Most points in a game this season (${stat(best ?? {player: {stats: {}}}, 'PTS')})`, 'PTS');
+  const bench = top(line => stat(line, 'PTS'), played.filter(line => !line.player.starter));
+  add(bench, 'Most points off the bench this season', 'PTS');
+  const long = top(threes);
+  add(long, `Most threes in a game this season (${threes(long ?? {player: {stats: {}}})})`, '3PM');
+  const boards = top(line => stat(line, 'REB'));
+  add(boards, `Most rebounds in a game this season (${stat(boards ?? {player: {stats: {}}}, 'REB')})`, 'REB');
+  const dimes = top(line => stat(line, 'AST'));
+  add(dimes, `Most assists in a game this season (${stat(dimes ?? {player: {stats: {}}}, 'AST')})`, 'AST');
+  const stocks = top(line => stat(line, 'STL') + stat(line, 'BLK'));
+  add(stocks, `Most steals plus blocks this season (${stat(stocks ?? {player: {stats: {}}}, 'STL') + stat(stocks ?? {player: {stats: {}}}, 'BLK')})`, 'STK');
+  const perfect = top(line => fg(line)[1], played.filter(line => fg(line)[1] >= 7 && fg(line)[0] === fg(line)[1]));
+  add(perfect, 'Perfect from the field', 'FG');
+  const big = top(line => stat(line, 'PTS'), played.filter(line => stat(line, 'PTS') >= 25 && stat(line, 'REB') >= 10));
+  add(big, 'A 25-point double-double', 'PTS');
+  return picks.slice(0, limit);
+}
+
+/* The stacked stat lines for a card: the stat the fact is about leads and is the largest, the rest follow. */
+export function cardLines(line, lead) {
+  const s = line.player.stats, three = made(s['3PT'])[0];
+  const lines = [];
+  if (lead === '3PM') lines.push([String(three), '3PM']);
+  else if (lead === 'STK') lines.push([String(num(s.STL) + num(s.BLK)), 'STL+BLK']);
+  else if (lead === 'FG') lines.push([s.FG, 'FG']);
+  else lines.push([String(num(s[lead])), lead]);
+  for (const key of ['PTS', 'REB', 'AST', 'STL', 'BLK']) {
+    if (lines.length >= 3) break;
+    const hidden = lead === key || (lead === 'STK' && (key === 'STL' || key === 'BLK'));
+    if (!hidden && (key === 'PTS' || num(s[key]) >= 5)) lines.push([String(num(s[key])), key]);
+  }
+  return lines;
 }

@@ -24,10 +24,11 @@ export function GameList({games, empty = 'No games scheduled this week.', result
   if (games === null) return <ul className="game-list loading">{[0, 1, 2].map(index => <li key={index}/>)}</ul>;
   if (!games.length) return <p className="feed-empty">{empty}</p>;
   return <><ul className={results ? 'game-list results' : 'game-list'}>{games.map(game => {
-    const live = game.state === 'in', final = game.state === 'post', hidden = (final || live) && !spoilers.revealed(game.id), scored = live || final;
+    const live = game.state === 'in', final = game.state === 'post', hidden = final && !spoilers.revealed(game.id, game.date), scored = live || final;
     const away = Number(game.away.score), home = Number(game.home.score);
     const lead = final && !hidden && away !== home ? (away > home ? 'away' : 'home') : null;
-    return <li key={game.id}>
+    return <li key={game.id} className="game-row">
+      <a className="game-open" href={`/games/${game.id}`} aria-label={`${game.away.abbr} at ${game.home.abbr}, open the game`}/>
       {game.result && !hidden && <span className={`game-result ${game.result === 'W' ? 'win' : 'loss'}`} title={game.result === 'W' ? 'Win' : 'Loss'}>{game.result}</span>}
       <span className="game-line">
         <Team team={game.away}/>

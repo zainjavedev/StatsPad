@@ -1,19 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Bell, BellRing, Eye, EyeOff, LogOut, Mail, ShieldCheck, Trash2 } from 'lucide-react';
+import { Eye, EyeOff, LogOut, ShieldCheck, Trash2 } from 'lucide-react';
 import { useFavorites, toggleFavorite } from '../lib/favorites';
 import { TEAMS } from '../lib/teams';
 import { TeamLogo } from './TeamRail';
-import { completeSignIn, disableAlerts, enableBrowserAlerts, logIn, pushSupported, readAlerts, sendSignInLink, setPassword, signInWithGoogle, signOut, signUp, syncAlertTeams } from '../lib/alerts';
+import { completeSignIn, disableAlerts, logIn, readAlerts, sendSignInLink, setPassword, signInWithGoogle, signOut, signUp, syncAlertTeams } from '../lib/alerts';
 
 const GOOGLE_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-const PERKS = [[BellRing, 'Game alerts', 'Tip-off and final-score emails for your favorite teams.'], [Bell, 'Browser notifications', 'Optional pings on this device, even when StatsPads is closed.'], [ShieldCheck, 'Your teams everywhere', 'Sign in on any browser and your followed teams are already there.']];
+const PERKS = [[ShieldCheck, 'Your teams everywhere', 'Sign in on any browser and your followed teams are already there.']];
 
 /* Sign in, create an account, and manage it. Following a team never needs an account;
-   alerts and syncing across devices do. */
+   syncing across devices does. */
 export default function AccountPage({onTeams}) {
   const favorites = useFavorites();
   const [saved, setSaved] = useState(null), [mode, setMode] = useState('in'), [email, setEmail] = useState(''), [password, setPasswordText] = useState(''), [show, setShow] = useState(false);
-  const [newPassword, setNewPassword] = useState(''), [busy, setBusy] = useState(false), [note, setNote] = useState({}), [supported, setSupported] = useState(false);
+  const [newPassword, setNewPassword] = useState(''), [busy, setBusy] = useState(false), [note, setNote] = useState({});
   const googleButton = useRef(null);
   const signedIn = Boolean(saved?.email);
 
@@ -25,7 +25,7 @@ export default function AccountPage({onTeams}) {
   const say = area => note[area] && <p className={`acct-note ${note[area].ok ? 'ok' : 'bad'}`} role="status">{note[area].text}</p>;
 
   useEffect(() => {
-    setSaved(readAlerts()); setSupported(pushSupported());
+    setSaved(readAlerts());
     const params = new URLSearchParams(window.location.search);
     if (window.location.pathname === '/signin' && readAlerts().email) window.history.replaceState(null, '', '/account');
     const code = params.get('signin');
@@ -56,7 +56,7 @@ export default function AccountPage({onTeams}) {
   if (!signedIn) return <section className="acct">
     <aside className="acct-side">
       <h1>{mode === 'up' ? 'Create your StatsPads account' : 'Welcome back'}</h1>
-      <p>Follow teams with no account. Sign in when you want alerts and your teams on every device.</p>
+      <p>Follow teams with no account. Sign in to keep your teams on every device.</p>
       <ul>{PERKS.map(([Icon, title, text]) => <li key={title}><Icon size={20}/><div><b>{title}</b><span>{text}</span></div></li>)}</ul>
     </aside>
     <div className="acct-card">
@@ -66,7 +66,7 @@ export default function AccountPage({onTeams}) {
       {GOOGLE_ID && <div className="acct-google" ref={googleButton}/>}
       <div className="acct-divider"><span>or with email</span></div>
       <form onSubmit={event => { event.preventDefault(); run('auth', async () => {
-        if (mode === 'up') { await signUp(email, password); return `Account created. Click the link we emailed to ${email} to start alerts.`; }
+        if (mode === 'up') { await signUp(email, password); return `Account created. Click the link we emailed to ${email} to finish setting up.`; }
         await logIn(email, password);
         return 'Signed in.';
       }); }}>
@@ -100,14 +100,6 @@ export default function AccountPage({onTeams}) {
         <button className="acct-secondary" onClick={onTeams}>{favorites.length ? 'Add more teams' : 'Pick your teams'}</button>
       </div>
       <div className="acct-card">
-        <h2>Alerts</h2>
-        <p><Mail size={15}/> Email alerts to {saved.emailAddress} when your teams tip off and finish.</p>
-        {supported && (saved.push
-          ? <button className="acct-secondary" disabled={busy} onClick={() => run('alerts', async () => { await disableAlerts('push'); return 'Browser alerts are off.'; })}>Turn off browser alerts</button>
-          : <button className="acct-secondary" disabled={busy || !favorites.length} onClick={() => run('alerts', async () => { await enableBrowserAlerts(favorites); return 'Browser alerts are on.'; })}>Also alert me in this browser</button>)}
-        {say('alerts')}
-      </div>
-      <div className="acct-card">
         <h2>Password</h2>
         <form onSubmit={event => { event.preventDefault(); run('password', async () => { await setPassword(newPassword); setNewPassword(''); return 'Password saved.'; }); }}>
           <label>Set or change password<input type="password" required minLength={8} value={newPassword} onChange={event => setNewPassword(event.target.value)} placeholder="At least 8 characters" autoComplete="new-password"/></label>
@@ -118,7 +110,7 @@ export default function AccountPage({onTeams}) {
       <div className="acct-card">
         <h2>Session</h2>
         <button className="acct-secondary" disabled={busy} onClick={() => { signOut(); setSaved(readAlerts()); window.history.replaceState(null, '', '/signin'); }}><LogOut size={15}/> Sign out on this browser</button>
-        <button className="acct-danger" disabled={busy} onClick={() => { if (window.confirm('Delete your account and all alerts? This cannot be undone.')) run('session', async () => { await disableAlerts('email'); window.history.replaceState(null, '', '/signin'); return 'Your account and alerts are deleted.'; }); }}><Trash2 size={15}/> Delete my account</button>
+        <button className="acct-danger" disabled={busy} onClick={() => { if (window.confirm('Delete your account? This cannot be undone.')) run('session', async () => { await disableAlerts('email'); window.history.replaceState(null, '', '/signin'); return 'Your account is deleted.'; }); }}><Trash2 size={15}/> Delete my account</button>
         {say('session')}
       </div>
     </div>

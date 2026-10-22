@@ -4,12 +4,23 @@ import { revealGame, useSpoilers } from '../lib/spoilers';
 import ShareButton from './ShareButton';
 import { headline, lineCard, performancesOf } from '../lib/performances';
 import PlayerGame from './PlayerGame';
+import { PerfCard } from './RecentPerformances';
 import SpoilerToggle, { Hidden } from './SpoilerToggle';
 import { loadBoxscore } from '../lib/boxscore';
 import Radar from './Radar';
 import { Headshot } from './TeamPage';
 import { loadSchedule } from '../lib/schedule';
 import { TEAMS, teamCodeOf } from '../lib/teams';
+
+/* A team's page from ESPN's abbreviation, so the game header can link to it. */
+const teamHref = abbr => {
+  const code = Object.keys(TEAMS).find(key => TEAMS[key].espn === String(abbr).toLowerCase());
+  return code ? `/teams/${TEAMS[code].name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}` : null;
+};
+const TeamLink = ({side}) => {
+  const href = teamHref(side.abbr), inner = <><img src={side.logo} alt=""/><b className="hd-name">{side.short}</b><b className="hd-abbr">{side.abbr}</b></>;
+  return href ? <a className="hd-link" href={href} title={`${side.short} team page`}>{inner}</a> : inner;
+};
 
 /* One game on its own page: the score, who led it in each category (with photos), and the full box
    score for both teams with each category's leader highlighted. Before tip-off, the expected fives. */
@@ -117,7 +128,6 @@ function Preview({box}) {
         </dl>
         
       </div>)}</div>
-      <p className="gd-meta">Per game, {source === 'season' ? '2026–27 regular season' : '2026–27 preseason'}. {roster.coach ? `Coach: ${roster.coach}.` : ''}</p>
     </section>)}
     {context && <Context box={box} context={context}/>}
   </div>;
@@ -139,7 +149,7 @@ function Context({box, context}) {
   meetings.forEach(game => { const winner = game.home.score > game.away.score ? game.home.code : game.away.code; if (winner === awayCode) wins[0] += 1; else if (winner === homeCode) wins[1] += 1; });
   const open = meetings.every(game => spoilers.revealed(game.id));
   return <>
-    {axes.length > 0 && <Radar axes={axes} names={sides.map(([, side]) => side.short)} colors={['var(--accent)', 'var(--text-1)']} scope="all 30 teams" notes={["Last season's team numbers, each scaled from the league's lowest to highest team, so distance shows how far apart these two really are."]}/>}
+    {axes.length > 0 && <Radar axes={axes} names={sides.map(([, side]) => side.short)} colors={['var(--accent)', 'var(--series-2)']} scope="all 30 teams" notes={["Last season's team numbers, each scaled from the league's lowest to highest team, so distance shows how far apart these two really are."]}/>}
     <section className="gp-form">
       <h3>Recent form</h3>
       <div className="gp-form-grid">{sides.map(([code, side], index) => <div key={code}>
@@ -206,43 +216,34 @@ export default function GamePage({id}) {
   const ordered = [...box.teams].sort((a, b) => (a.abbr === box.away.abbr ? 0 : 1) - (b.abbr === box.away.abbr ? 0 : 1));
 
   return <section className="gp">
-    <a className="gp-back" href="/schedule"><ArrowLeft size={15}/> Schedule</a>
+    {!focusTeam && <a className="gp-back" href="/schedule"><ArrowLeft size={15}/> Schedule</a>}
     {!focusTeam && <>
     <div className="gd-head gp-head">
-      <div><img src={box.away.logo} alt=""/><b className="hd-name">{box.away.short}</b><b className="hd-abbr">{box.away.abbr}</b>{scored && <strong>{box.away.score}</strong>}</div>
+      <div><TeamLink side={box.away}/>{scored && <strong>{box.away.score}</strong>}</div>
       <span>{box.state === 'post' ? (hidden ? 'Played' : 'Final') : box.state === 'in' ? (box.detail || 'Live') : 'Upcoming'}</span>
-      <div><img src={box.home.logo} alt=""/><b className="hd-name">{box.home.short}</b><b className="hd-abbr">{box.home.abbr}</b>{scored && <strong>{box.home.score}</strong>}</div>
+      <div><TeamLink side={box.home}/>{scored && <strong>{box.home.score}</strong>}</div>
     </div>
     <p className="gd-meta">{[box.date && dateFormat.format(new Date(box.date)), box.venue, box.tv, box.preseason ? 'Preseason' : ''].filter(Boolean).join(' · ')}</p>
     </>}
 
-    {focusTeam && <PlayerGame box={box} plays={box.plays ?? []} team={focusTeam} player={focusTeam.players.find(entry => entry.id === focus)} onClose={() => pick(null)} nameOf={nameOf}/>}
+    {focusTeam && <PlayerGame gameId={id} box={box} plays={box.plays ?? []} team={focusTeam} player={focusTeam.players.find(entry => entry.id === focus)} onClose={() => pick(null)} onPick={pick} nameOf={nameOf}/>}
     {focusTeam ? null : box.state === 'pre' ? <Preview box={box}/> : hidden ? <div className="gp-spoiler"><p>This game has started. The score and box score are hidden.</p><button type="button" className="spoiler-toggle" onClick={() => revealGame(String(id))}><Eye size={14}/> Show score</button></div> : <>
       <div className="gp-tabs" role="group" aria-label="Team">
         {ordered.map((team, index) => <button key={team.abbr} className={side === index ? 'active' : ''} onClick={() => setSide(index)}>{team.logo && <img src={team.logo} alt=""/>}{team.name}</button>)}
-        <button className="gp-more-btn" onClick={() => setMore(open => !open)}>{more ? 'Fewer stats' : 'More stats'}</button>
       </div>
       {ordered[side] && (() => {
-        const team = ordered[side], columns = more ? [...BASIC, ...EXTRA] : BASIC;
-        const starters = team.players.filter(player => player.starter), bench = team.players.filter(player => !player.starter && !player.out), out = team.players.filter(player => !player.starter && player.out);
-        const line = (player, face) => <tr key={player.id} className={face ? '' : 'bench'}>
-          <td className="who"><span className="gp-name">{face && <Face player={player}/>}<button type="button" className="gp-open" onClick={() => pick(player.id)}><b>{player.name}</b><small>{player.pos}</small></button>{lineOf(player) && <ShareButton spec={lineCard(lineOf(player))} filename={`${player.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-game`} title={player.name} text={`${player.name}: ${headline(lineOf(player))}`} compact label="Share this line" className="ghost-button gp-share"/>}</span></td>
-          {columns.map(label => <td key={label} className={`num${led.has(`${player.id}:${label}`) ? ' led' : ''}`}>{player.stats[label] ?? '–'}</td>)}
-        </tr>;
-        return <section className="gd-team">
-          <div className="gd-scroll"><table className="calm">
-            <thead><tr><th className="who">Starters</th>{columns.map(label => <th key={label} className="num">{label}</th>)}</tr></thead>
-            <tbody>
-              {starters.map(player => line(player, true))}
-              <tr className="gd-sub"><th className="who">Bench</th>{columns.map(label => <th key={label}/>)}</tr>
-              {bench.map(player => line(player, false))}
-              <tr className="gd-total"><td className="who"><b>Team</b></td>{columns.map(label => <td key={label} className="num">{['FG', '3PT', 'FT'].includes(label) ? team.totals[label] : ''}</td>)}</tr>
-            </tbody>
-          </table></div>
+        const team = ordered[side];
+        const rows = performancesOf(box, id).filter(line => line.team === team.abbr);
+        const order = new Map(team.players.map((player, index) => [String(player.id), index]));
+        const starters = new Set(team.players.filter(player => player.starter).map(player => String(player.id)));
+        const lines = [...rows].sort((a, b) => (starters.has(String(b.player.id)) - starters.has(String(a.player.id))) || (order.get(String(a.player.id)) - order.get(String(b.player.id))));
+        const out = team.players.filter(player => !player.starter && player.out);
+        return <section className="gd-team gd-cards">
+          <ul className="rp-list">{lines.map(line => <li key={line.player.id}><PerfCard line={line} onPick={pick}/></li>)}</ul>
           {out.length > 0 && <p className="gd-out">Did not play: {out.map(player => player.name).join(', ')}</p>}
         </section>;
       })()}
-      {ordered.length === 2 && <Radar axes={shapeAxes(ordered, ordered.map(team => team.abbr === box.away.abbr ? box.away.score : box.home.score))} names={ordered.map(team => team.abbr === box.away.abbr ? box.away.short : box.home.short)} colors={['var(--accent)', 'var(--text-1)']} scope="a typical NBA game" notes={['Each spoke runs from a low to a high night for that stat, so the shape shows how each team played, not season averages. Ball care rewards fewer turnovers.']}/>}
+      {ordered.length === 2 && <Radar axes={shapeAxes(ordered, ordered.map(team => team.abbr === box.away.abbr ? box.away.score : box.home.score))} names={ordered.map(team => team.abbr === box.away.abbr ? box.away.short : box.home.short)} colors={['var(--accent)', 'var(--series-2)']} scope="a typical NBA game" notes={['Each spoke runs from a low to a high night for that stat, so the shape shows how each team played, not season averages. Ball care rewards fewer turnovers.']}/>}
       {leaders.length > 0 && <div className="gp-leaders">{leaders.map(entry => <section key={entry.key} className="gp-leader">
         <small>{entry.label}</small>
         <ol>{entry.ranked.map((player, index) => <li key={player.id} className={index === 0 ? 'top' : num(player.stats[entry.key]) === entry.top ? 'tied' : ''}>

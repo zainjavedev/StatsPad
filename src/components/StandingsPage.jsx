@@ -51,7 +51,7 @@ export default function StandingsPage() {
   const favorites = useFavorites();
   const [groups, setGroups] = useState(null), [view, setView] = useState('eastern'), [error, setError] = useState(false);
   useEffect(() => {
-    ask(2).then(regular => setGroups(parse(regular))).catch(() => setError(true));
+    loadStandings().then(setGroups).catch(() => setError(true));
   }, []);
   const played = groups?.some(group => group.rows.some(row => Number(row.stat.wins) + Number(row.stat.losses) > 0));
   const ranked = Boolean(played);

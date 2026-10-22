@@ -4,7 +4,7 @@ import React from 'react';
    bottom. Makes are filled in the team colour, misses are hollow. */
 const HOOP_Y = 36.75;
 const sy = y => HOOP_Y - y;
-const LINE = {fill: 'none', stroke: 'currentColor', strokeWidth: .24, opacity: .38};
+const LINE = {fill: 'none', stroke: 'currentColor', strokeWidth: .28, opacity: .55};
 
 export function Court() {
   return <g style={{color: '#fff'}}>
@@ -22,18 +22,10 @@ export function Court() {
 export default function ShotChart({shots, color, className = ''}) {
   const misses = shots.filter(shot => !shot.made), makes = shots.filter(shot => shot.made);
   return <svg className={`shot-chart ${className}`} viewBox="0 0 50 42" role="img" aria-label={`${makes.length} of ${shots.length} shots made`}>
-    <defs>
-      <radialGradient id="sc-floor" cx="50%" cy="90%" r="85%"><stop offset="0" stopColor={color} stopOpacity=".28"/><stop offset="1" stopColor={color} stopOpacity=".04"/></radialGradient>
-    </defs>
-    <rect width="50" height="42" rx="1.2" fill="url(#sc-floor)"/>
+    <rect width="50" height="42" rx="1.2" fill="#ffffff" fillOpacity=".035"/>
     <Court/>
-    {misses.map((shot, index) => <g key={`m${index}`} stroke="#aab0bc" strokeWidth=".26" opacity=".75" strokeLinecap="round">
-      <path d={`M${shot.x - .55} ${sy(shot.y) - .55}l1.1 1.1M${shot.x + .55} ${sy(shot.y) - .55}l-1.1 1.1`}/>
-    </g>)}
-    {makes.map((shot, index) => <g key={`h${index}`}>
-      <circle cx={shot.x} cy={sy(shot.y)} r="1.9" fill={color} opacity=".25"/>
-      <circle cx={shot.x} cy={sy(shot.y)} r=".95" fill={color} stroke="#fff" strokeWidth=".3"/>
-    </g>)}
+    {misses.map((shot, index) => <path key={`m${index}`} d={`M${shot.x - .5} ${sy(shot.y) - .5}l1 1M${shot.x + .5} ${sy(shot.y) - .5}l-1 1`} stroke="#c9777a" strokeWidth=".26" strokeLinecap="round" opacity=".75" fill="none"/>)}
+    {makes.map((shot, index) => <circle key={`h${index}`} cx={shot.x} cy={sy(shot.y)} r=".6" fill="#7fc79d" fillOpacity=".85"/>)}
   </svg>;
 }
 

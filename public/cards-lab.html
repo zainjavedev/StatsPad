@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Share card lab</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&family=Big+Shoulders+Display:wght@700;800;900&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{--bg:#0b0b0c;--ink:#f2f2f0;--mute:#9a9b96;--line:#23262e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif}
+header{max-width:1280px;margin:0 auto;padding:36px 24px 8px}
+h1{margin:0 0 6px;font-size:30px}
+header p{margin:0;color:var(--mute);max-width:70ch;line-height:1.45}
+.grid{max-width:1280px;margin:0 auto;padding:24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:36px 28px}
+figure{margin:0}
+figcaption{margin:12px 2px 0;font-size:14px;line-height:1.4;color:var(--mute)}
+figcaption b{color:var(--ink);font-size:15px}
+.card{position:relative;width:100%;aspect-ratio:4/5;overflow:hidden;border-radius:6px;isolation:isolate}
+.card img{position:absolute;object-fit:contain;object-position:bottom center}
+.mono{font-family:'IBM Plex Mono',monospace}
+.disp{font-family:'Big Shoulders Display','Barlow',sans-serif}
+
+/* 1 StatMuse classic */
+.c1{background:#3d4a73;color:#fff;padding:26px}
+.c1 .who{font-size:15px;font-weight:600;opacity:.9;margin-bottom:6px}
+.c1 .l{font-size:22px;font-weight:600;opacity:.9;line-height:1.1}
+.c1 .l b{font-size:68px;font-weight:700;letter-spacing:-.03em;margin-right:6px}
+.c1 .l.s b{font-size:40px}
+.c1 .hook{position:absolute;left:26px;bottom:24px;width:46%;font-size:15px;font-weight:600;line-height:1.3;z-index:3}
+.c1 img{right:-6%;bottom:0;width:66%;height:56%}
+.c1 .mark{position:absolute;right:20px;top:18px;font-size:13px;font-weight:700;opacity:.8}
+
+/* 2 Box-score ticket */
+.c2{background:#101216;border:1px solid var(--line);padding:22px;display:flex;flex-direction:column}
+.c2 .top{display:flex;align-items:center;gap:14px}
+.c2 .top img{position:static;width:78px;height:78px;border-radius:50%;object-fit:cover;object-position:top;background:#23262e}
+.c2 h2{margin:0;font-size:24px;line-height:1.05}
+.c2 small{color:var(--mute);font-size:13px}
+.c2 table{width:100%;border-collapse:collapse;margin-top:18px;font-variant-numeric:tabular-nums}
+.c2 th{font-size:11px;font-weight:600;color:var(--mute);text-align:right;padding:6px 4px;border-bottom:1px solid #343842}
+.c2 td{font-size:30px;font-weight:700;text-align:right;padding:12px 4px;border-bottom:1px solid var(--line)}
+.c2 th:first-child,.c2 td:first-child{text-align:left}
+.c2 td.hl{color:#ffcf5a}
+.c2 .foot{margin-top:auto;font-size:13px;color:var(--mute);display:flex;justify-content:space-between}
+
+/* 3 Giant number */
+.c3{background:#5a2d81;color:#fff;padding:22px}
+.c3 .num{position:absolute;left:12px;top:-10px;font-size:330px;font-weight:900;line-height:.9;letter-spacing:-.03em;color:rgba(255,255,255,.95)}
+.c3 .unit{position:absolute;left:24px;top:290px;font-size:34px;font-weight:700;letter-spacing:.02em}
+.c3 img{right:-6%;bottom:0;width:52%;height:42%}
+.c3 .name{position:absolute;left:24px;bottom:96px;width:50%;font-size:28px;font-weight:700;line-height:1;z-index:3}
+.c3 .line{position:absolute;left:24px;bottom:24px;width:50%;font-size:14px;font-weight:600;opacity:.92;line-height:1.3;z-index:3}
+
+/* 4 Shooting split bars */
+.c4{background:#0f1a2e;color:#fff;padding:24px;display:flex;flex-direction:column}
+.c4 .why{margin-top:auto;padding-top:14px;border-top:1px solid #26344f;font-size:16px;font-weight:600;line-height:1.3}
+.c4 .why small{display:block;font-size:12px;font-weight:600;opacity:.65;margin-bottom:4px;letter-spacing:.04em}
+.c4 h2{margin:0;font-size:28px;line-height:1.05}
+.c4 .sub{font-size:14px;opacity:.7;margin-top:4px}
+.c4 .row{margin-top:20px}
+.c4 .row div{display:flex;justify-content:space-between;font-size:15px;font-weight:600}
+.c4 .row b{font-size:26px}
+.c4 .bar{height:10px;background:#26344f;border-radius:5px;margin-top:6px;overflow:hidden}
+.c4 .bar i{display:block;height:100%;background:#ffcf5a;border-radius:5px}
+.c4 .big{position:absolute;right:22px;top:20px;font-size:76px;font-weight:900;line-height:.9}
+.c4 .big small{display:block;font-size:14px;font-weight:600;opacity:.7;text-align:right}
+
+/* 5 Newspaper */
+.c5{background:#e9e6dc;color:#14140f;padding:22px;border:1px solid #cfcbbd}
+.c5 .masthead{display:flex;justify-content:space-between;font-size:12px;font-weight:600;border-bottom:3px solid #14140f;padding-bottom:6px}
+.c5 h2{margin:12px 0 4px;font-size:78px;line-height:.86;font-weight:900;text-transform:uppercase}
+.c5 .deck{font-size:16px;line-height:1.35;font-weight:500;max-width:30ch;margin:10px 0}
+.c5 img{right:-2%;bottom:46px;width:56%;height:46%;filter:grayscale(1) contrast(1.1)}
+.c5 .stats{position:absolute;left:22px;right:22px;bottom:18px;display:flex;justify-content:space-between;border-top:1px solid #14140f;padding-top:8px;font-size:14px;font-weight:600}
+
+/* 6 Broadcast score bug */
+.c6{background:#1a1a1d}
+.c6 img{left:50%;transform:translateX(-50%);bottom:96px;width:92%;height:70%}
+.c6 .plate{position:absolute;left:0;right:0;bottom:0;height:96px;background:#fff;color:#111;display:flex;align-items:center}
+.c6 .tc{width:80px;height:100%;background:#00471b;display:grid;place-items:center;color:#fff;font-size:30px;font-weight:900}
+.c6 .nm{padding:0 16px;flex:1}
+.c6 .nm b{display:block;font-size:24px;font-weight:800;text-transform:uppercase;line-height:1;white-space:nowrap}
+.c6 .nm span{display:block;margin-top:4px;font-size:12px;font-weight:600;color:#555;white-space:nowrap}
+.c6 .nm{min-width:0}
+.c6 .pts{padding:0 14px;font-size:40px;white-space:nowrap;font-weight:900;font-family:'Big Shoulders Display',sans-serif}
+.c6 .tag{position:absolute;left:14px;top:14px;background:#e03a3e;color:#fff;padding:7px 12px;font-size:12px;font-weight:700;letter-spacing:.06em}
+
+/* 7 Trading card */
+.c7{background:#1b1d22;padding:14px}
+.c7 .frame{position:absolute;inset:14px;border:3px solid #ffcf5a;border-radius:10px;background:#16203a;overflow:hidden}
+.c7 .badge{position:absolute;left:14px;top:12px;width:62px;height:62px;border-radius:50%;background:#ffcf5a;color:#16203a;display:grid;place-items:center;font-size:30px;font-weight:900;z-index:2}
+.c7 img{left:50%;transform:translateX(-50%);bottom:84px;width:96%;height:68%}
+.c7 .nameplate{position:absolute;left:0;right:0;bottom:0;background:#ffcf5a;color:#16203a;padding:10px 14px 12px}
+.c7 .nameplate b{display:block;font-size:24px;text-transform:uppercase;font-weight:800;line-height:1}
+.c7 .nameplate span{font-size:13px;font-weight:600}
+.c7 .stat{position:absolute;right:14px;top:14px;text-align:right;color:#fff;font-weight:800;font-size:46px;line-height:.9;z-index:2}
+.c7 .stat small{display:block;font-size:12px;opacity:.8;font-weight:600}
+
+/* 8 Hook headline */
+.c8{background:#0c0d10;padding:26px;display:flex;flex-direction:column;justify-content:space-between}
+.c8 .q{font-size:38px;font-weight:700;line-height:1.02;letter-spacing:-.02em}
+.c8 .q em{font-style:normal;color:#ffcf5a}
+.c8 .row{display:flex;gap:18px;font-variant-numeric:tabular-nums}
+.c8 .row div{font-size:13px;color:var(--mute);font-weight:600}
+.c8 .row b{display:block;font-size:44px;color:var(--ink);line-height:1}
+.c8 img{right:-4%;bottom:0;width:46%;height:34%;opacity:.95}
+.c8 .by{font-size:13px;color:var(--mute);max-width:52%}
+
+/* 9 Receipt */
+.c9{background:#f4f1e8;color:#14140f;padding:24px 22px;font-family:'IBM Plex Mono',monospace;font-size:14px}
+.c9 .hd{text-align:center;font-weight:600;border-bottom:2px dashed #14140f;padding-bottom:10px}
+.c9 .hd b{font-size:20px;display:block}
+.c9 .it{display:flex;justify-content:space-between;padding:7px 0}
+.c9 .it span:last-child{font-weight:600}
+.c9 hr{border:0;border-top:2px dashed #14140f;margin:10px 0}
+.c9 .tot{display:flex;justify-content:space-between;font-size:22px;font-weight:600}
+.c9 .ft{text-align:center;margin-top:14px;font-size:12px}
+.c9 img{position:static;display:block;margin:12px auto 0;width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:top;filter:grayscale(1)}
+
+/* 10 Photo and pills */
+.c10{background:#0e2240;color:#fff}
+.c10 img{left:50%;transform:translateX(-50%);bottom:0;width:104%;height:84%}
+.c10 .top{position:absolute;left:20px;top:18px;right:20px;display:flex;justify-content:space-between;align-items:flex-start;z-index:2}
+.c10 .top b{font-size:34px;font-weight:800;line-height:.95;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif}
+.c10 .top span{font-size:13px;font-weight:600;opacity:.85}
+.c10 .pills{position:absolute;left:14px;right:14px;bottom:14px;display:flex;gap:8px;z-index:2}
+.c10 .pills div{flex:1;background:rgba(10,12,18,.78);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:10px 12px;text-align:center;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.c10 .pills b{display:block;font-size:30px;line-height:1;font-weight:700}
+.c10 .pills small{font-size:11px;font-weight:600;opacity:.8}
+
+/* 11 Wrapped */
+.c11{background:#ff5a36;color:#14140f;padding:24px;display:flex;flex-direction:column;justify-content:space-between}
+.c11 .k{font-size:15px;font-weight:700}
+.c11 .a{font-size:92px;font-weight:900;line-height:.85;font-family:'Big Shoulders Display',sans-serif}
+.c11 .a small{font-size:26px;font-weight:800;margin-left:6px}
+.c11 .b{background:#14140f;color:#fff;border-radius:14px;padding:14px 16px;font-size:20px;font-weight:600;line-height:1.35}
+.c11 .b b{color:#ff9d80}
+.c11 .n{font-size:14px;font-weight:700}
+/* 12 Two 45s */
+.c12{background:#101216;display:grid;grid-template-columns:1fr 1fr}
+.c12 .h{position:relative;padding:18px 16px;display:flex;flex-direction:column;justify-content:space-between;color:#fff}
+.c12 .h:first-child{background:#3d4a73}.c12 .h:last-child{background:#0e2240}
+.c12 .h b{font-size:20px;line-height:1.05;position:relative;z-index:2}
+.c12 .h .big{font-size:120px;font-weight:900;line-height:.8;font-family:'Big Shoulders Display',sans-serif;position:relative;z-index:2}
+.c12 .h small{font-size:12px;font-weight:600;opacity:.85;position:relative;z-index:2}
+.c12 .h img{right:-14%;bottom:0;width:100%;height:46%;opacity:.5}
+.c12 .vs{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:4;background:#fff;color:#111;font-weight:900;font-size:15px;width:44px;height:44px;border-radius:50%;display:grid;place-items:center}
+.c12 .cap{position:absolute;left:0;right:0;bottom:0;z-index:4;background:#fff;color:#111;padding:10px 14px;font-size:14px;font-weight:700;text-align:center}
+/* 13 Leaderboard */
+.c13{background:#14161b;border:1px solid var(--line);padding:22px;display:flex;flex-direction:column}
+.c13 h2{margin:0 0 4px;font-size:24px;line-height:1}
+.c13 .sub{font-size:13px;color:var(--mute);margin-bottom:12px}
+.c13 .r{display:grid;grid-template-columns:22px 44px 1fr auto;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+.c13 .r i{font-style:normal;font-size:13px;color:var(--mute);font-weight:600}
+.c13 .r img{position:static;width:44px;height:44px;border-radius:50%;object-fit:cover;object-position:top;background:#23262e}
+.c13 .r b{font-size:17px;font-weight:600;line-height:1.3}
+.c13 .r b small{display:block;font-size:12px;font-weight:500;color:var(--mute)}
+.c13 .r strong{font-size:30px;font-weight:700;font-family:'Big Shoulders Display',sans-serif}
+.c13 .r:first-of-type strong{color:#ffcf5a}
+/* 14 Dot grid */
+.c14{background:#0d1b14;color:#fff;padding:24px}
+.c14 h2{margin:0;font-size:26px;line-height:1.05}
+.c14 .sub{font-size:13px;opacity:.7;margin-top:4px}
+.c14 .dots{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:22px 0 14px;max-width:260px}
+.c14 .dots i{aspect-ratio:1;border-radius:50%;border:2px solid #2e4a3a}
+.c14 .dots i.m{background:#5be08e;border-color:#5be08e}
+.c14 .big{font-size:64px;font-weight:900;line-height:.9;font-family:'Big Shoulders Display',sans-serif}
+.c14 .big small{font-size:15px;font-weight:600;opacity:.75;margin-left:8px;font-family:'Barlow',sans-serif}
+.c14 .foot{position:absolute;left:24px;right:24px;bottom:22px;font-size:14px;font-weight:600;opacity:.9}
+.c14 img{right:-6%;bottom:30px;width:44%;height:36%}
+/* 15 Versus the typical player */
+.c15{background:#f2f2f0;color:#14140f;padding:24px;display:flex;flex-direction:column}
+.c15 h2{margin:0;font-size:30px;line-height:1}
+.c15 .sub{font-size:14px;color:#55554d;margin-top:4px}
+.c15 .cmp{margin-top:26px}
+.c15 .cmp div{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;font-weight:600}
+.c15 .cmp b{font-size:48px;line-height:1;font-family:'Big Shoulders Display',sans-serif}
+.c15 .bar{height:18px;border-radius:3px;background:#14140f;margin:6px 0 20px}
+.c15 .bar.g{background:#b9b7ac;width:28.4%}
+.c15 .why{margin-top:auto;font-size:19px;font-weight:700;line-height:1.35}
+/* 16 Scoreboard */
+.c16{background:#0a0c10;color:#fff;padding:24px;display:flex;flex-direction:column}
+.c16 .fin{font-size:13px;font-weight:700;letter-spacing:.08em;color:#9a9b96}
+.c16 .row{display:flex;align-items:baseline;justify-content:space-between;margin-top:14px;font-family:'Big Shoulders Display',sans-serif;font-weight:900;line-height:.9}
+.c16 .row span{font-size:48px}
+.c16 .row b{font-size:96px;color:#fff}
+.c16 .row.l b{color:#6b6d72}
+.c16 .who{margin-top:auto;display:flex;align-items:center;gap:14px;background:#14161b;border-radius:10px;padding:14px}
+.c16 .who img{position:static;width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:top;background:#23262e}
+.c16 .who b{font-size:19px;display:block;line-height:1.3}
+.c16 .who span{font-size:14px;color:#9a9b96;font-weight:600}
+/* 17 Records so far */
+.c17{background:#ffcf5a;color:#14140f;padding:22px;display:flex;flex-direction:column}
+.c17 h2{margin:0;font-size:46px;line-height:.9;font-weight:900;text-transform:uppercase;font-family:'Big Shoulders Display',sans-serif}
+.c17 .sub{font-size:13px;font-weight:600;margin:6px 0 12px}
+.c17 .r{display:grid;grid-template-columns:70px 1fr auto;align-items:baseline;gap:10px;padding:8px 0;border-top:2px solid #14140f}
+.c17 .r small{font-size:12px;font-weight:700;letter-spacing:.06em}
+.c17 .r b{font-size:17px;font-weight:700}
+.c17 .r strong{font-size:34px;font-weight:900;line-height:.9;font-family:'Big Shoulders Display',sans-serif}
+/* 18 Swiss */
+.c18{background:#fff;color:#111;padding:26px;display:flex;flex-direction:column;justify-content:space-between}
+.c18 .t{font-size:13px;font-weight:600;display:flex;justify-content:space-between}
+.c18 .n{font-size:260px;line-height:.78;font-weight:800;letter-spacing:-.06em;font-family:'Barlow',sans-serif;margin-left:-8px}
+.c18 .name{font-size:22px;font-weight:700;line-height:1.1}
+.c18 .name span{display:block;font-size:14px;font-weight:500;color:#555;margin-top:4px}
+/* 19 Ticket stub */
+.c19{background:#22282f;padding:22px;display:flex;flex-direction:column;justify-content:center}
+.c19 .tk{position:relative;background:#f4f1e8;color:#14140f;border-radius:10px;display:grid;grid-template-columns:1fr 92px;min-height:240px}
+.c19 .tk::before,.c19 .tk::after{content:"";position:absolute;right:80px;width:22px;height:22px;border-radius:50%;background:#22282f}
+.c19 .tk::before{top:-11px}.c19 .tk::after{bottom:-11px}
+.c19 .main{padding:18px 18px 18px 20px;border-right:2px dashed #14140f}
+.c19 .main small{font-size:12px;font-weight:700;letter-spacing:.08em}
+.c19 .main h2{margin:8px 0 6px;font-size:34px;line-height:.95;font-weight:900;text-transform:uppercase;font-family:'Big Shoulders Display',sans-serif}
+.c19 .main p{margin:0;font-size:14px;font-weight:600;line-height:1.35}
+.c19 .stub{display:grid;place-items:center;text-align:center;font-family:'Big Shoulders Display',sans-serif;font-weight:900}
+.c19 .stub b{display:block;font-size:56px;line-height:.9}.c19 .stub span{font-size:15px}
+.c19 .cap{margin-top:16px;color:#c9c8c0;font-size:14px;font-weight:600;text-align:center}
+/* 20 Quote line */
+.c20{background:#2a1738;color:#fff;padding:26px;display:flex;flex-direction:column;justify-content:space-between}
+.c20 .q{font-size:40px;line-height:1.02;font-weight:700;letter-spacing:-.02em}
+.c20 .q em{font-style:normal;color:#ffb3f0}
+.c20 .row{display:flex;align-items:center;gap:14px}
+.c20 .row img{position:static;width:58px;height:58px;border-radius:50%;object-fit:cover;object-position:top;background:#3d2352}
+.c20 .row b{display:block;font-size:17px}.c20 .row span{font-size:13px;opacity:.75}
+</style>
+</head>
+<body>
+<header>
+  <h1>Share card lab</h1>
+  <p>Ten ways to turn one real stat line into a card people post. Every number is from a game already played this season (Oct 20-21, 2026). Tell me the numbers you like and I will build them into the real share button.</p>
+</header>
+<main class="grid">
+
+<figure><div class="card c1"><span class="mark">STATSPADS</span>
+  <div class="who">Ty Jerome vs UTAH</div>
+  <div class="l"><b>45</b> PTS</div><div class="l s"><b>7</b> REB</div><div class="l s"><b>6</b> AST</div>
+  <div class="hook">The most points in a game this season. 17-25 FG, 5-10 3P.</div>
+  <img src="https://a.espncdn.com/i/headshots/nba/players/full/4065733.png" alt=""></div>
+<figcaption><b>1. Classic.</b> Flat team colour, stacked stat lines, one hook sentence. The StatMuse look.</figcaption></figure>
+
+<figure><div class="card c2">
+  <div class="top"><img src="https://cdn.nba.com/headshots/nba/latest/1040x760/1630162.png" alt=""><div><h2>Anthony Edwards</h2><small>MIN @ MIA &middot; W 131-106</small></div></div>
+  <table><tr><th>PTS</th><th>REB</th><th>3PM</th><th>+/-</th></tr><tr><td class="hl">45</td><td>10</td><td>9</td><td>+25</td></tr></table>
+  <table><tr><th>FG</th><th>3P</th><th>MIN</th></tr><tr><td>16-29</td><td>9-17</td><td>33</td></tr></table>
+  <div class="foot"><span>Most threes this season</span><span>statspads</span></div></div>
+<figcaption><b>2. Box-score ticket.</b> Dark, ruled, precise. Looks like the real stat sheet, good for serious fans.</figcaption></figure>
+
+<figure><div class="card c3"><div class="num disp">18</div><div class="unit">REBOUNDS</div>
+  <img src="https://cdn.nba.com/headshots/nba/latest/1040x760/1627734.png" alt="">
+  <div class="name">Domantas Sabonis</div><div class="line">The most rebounds in a game this season. SAC @ LAC, 5-5 from the field.</div></div>
+<figcaption><b>3. Giant number.</b> One number fills the card. Reads from a thumbnail in a feed.</figcaption></figure>
+
+<figure><div class="card c4"><div class="big disp">45<small>PTS</small></div>
+  <h2>Ty Jerome</h2><div class="sub">MEM vs UTAH &middot; W 123-103</div>
+  <div class="row"><div><span>Field goals</span><b>17-25</b></div><div class="bar"><i style="width:68%"></i></div></div>
+  <div class="row"><div><span>Threes</span><b>5-10</b></div><div class="bar"><i style="width:50%"></i></div></div>
+  <div class="row"><div><span>Plus-minus</span><b>+22</b></div></div><div class="why"><small>THE HOOK</small>Most points in a game this season, on 68% shooting.</div></div>
+<figcaption><b>4. Shooting bars.</b> The efficiency story at a glance: how many he made and from where.</figcaption></figure>
+
+<figure><div class="card c5"><div class="masthead"><span>STATSPADS</span><span>OCT 21, 2026</span></div>
+  <h2 class="disp">Jerome drops 45</h2><div class="deck">Grizzlies guard goes 17 of 25 and adds seven rebounds and six assists in a 20-point win.</div>
+  <img src="https://a.espncdn.com/i/headshots/nba/players/full/4065733.png" alt="">
+  <div class="stats"><span>45 PTS</span><span>7 REB</span><span>6 AST</span><span>+22</span></div></div>
+<figcaption><b>5. Newspaper.</b> Headline first, black and white photo. Feels like a sports page clipping.</figcaption></figure>
+
+<figure><div class="card c6"><span class="tag">FINAL</span>
+  <img src="https://cdn.nba.com/headshots/nba/latest/1040x760/1629660.png" alt="">
+  <div class="plate"><div class="tc disp">MEM</div><div class="nm"><b>Ty Jerome</b><span>7 REB &middot; 6 AST &middot; 17-25 FG</span></div><div class="pts">45 PTS</div></div></div>
+<figcaption><b>6. Broadcast plate.</b> The lower-third from the TV, with a FINAL tag. Instantly familiar.</figcaption></figure>
+
+<figure><div class="card c7"><div class="frame"><div class="badge disp">45</div><div class="stat disp">9<small>THREES</small></div>
+  <img src="https://cdn.nba.com/headshots/nba/latest/1040x760/1630162.png" alt="">
+  <div class="nameplate"><b>Anthony Edwards</b><span>MIN &middot; Guard &middot; 45 PTS, 10 REB at MIA</span></div></div></div>
+<figcaption><b>7. Trading card.</b> A collector card with a number badge and name plate. Fun to collect and share.</figcaption></figure>
+
+<figure><div class="card c8"><div class="q">Only <em>one</em> player has scored more than 40 and grabbed 10 boards so far.</div>
+  <div class="row"><div><b>45</b>PTS</div><div><b>10</b>REB</div><div><b>9</b>3PM</div></div>
+  <div class="by">Anthony Edwards &middot; MIN @ MIA</div>
+  <img src="https://cdn.nba.com/headshots/nba/latest/1040x760/1630162.png" alt=""></div>
+<figcaption><b>8. The question.</b> A claim as a headline, numbers underneath. Made to start an argument in the replies.</figcaption></figure>
+
+<figure><div class="card c9"><div class="hd"><b>STATSPADS</b>GAME RECEIPT &middot; OCT 21</div>
+  <img src="https://cdn.nba.com/headshots/nba/latest/1040x760/1629027.png" alt="">
+  <div class="it"><span>Trae Young (WSH)</span><span></span></div><hr>
+  <div class="it"><span>ASSISTS</span><span>13</span></div><div class="it"><span>POINTS</span><span>20</span></div><div class="it"><span>FG</span><span>4-13</span></div><div class="it"><span>PLUS-MINUS</span><span>+6</span></div><hr>
+  <div class="tot"><span>TOTAL DIMES</span><span>13</span></div><div class="ft">most assists this season. thank you.</div></div>
+<figcaption><b>9. Receipt.</b> A playful till slip. A joke format that people screenshot.</figcaption></figure>
+
+<figure><div class="card c10"><div class="top"><b>Domantas<br>Sabonis</b><span>SAC @ LAC</span></div>
+  <img src="https://cdn.nba.com/headshots/nba/latest/1040x760/1627734.png" alt="">
+  <div class="pills"><div><b>18</b><small>REB</small></div><div><b>14</b><small>PTS</small></div><div><b>8</b><small>AST</small></div><div><b>5-5</b><small>FG</small></div></div></div>
+<figcaption><b>10. Photo and pills.</b> The player is the card. Stats sit in glass chips along the bottom, great for a story.</figcaption></figure>
+
+<figure><div class="card c11"><div class="k">TY JEROME &middot; OCT 21</div><div class="a">45<small>POINTS</small></div>
+  <div class="b">On <b>17-25</b> shooting, with <b>7</b> rebounds and <b>6</b> assists. Grizzlies won by <b>20</b>.</div><div class="n">statspads</div></div>
+<figcaption><b>11. Wrapped.</b> A loud colour block, one huge number and a black sentence box. Reads like a year-end recap, for one night.</figcaption></figure>
+
+<figure><div class="card c12"><div class="h"><b>Ty Jerome</b><div class="big">45</div><small>MEM vs UTAH &middot; W 123-103</small><img src="https://cdn.nba.com/headshots/nba/latest/1040x760/1629660.png" alt=""></div>
+  <div class="h"><b>Anthony Edwards</b><div class="big">45</div><small>MIN @ MIA &middot; W 131-106</small><img src="https://cdn.nba.com/headshots/nba/latest/1040x760/1630162.png" alt=""></div>
+  <div class="vs">=</div><div class="cap">Two 45-point nights. Who had it better?</div></div>
+<figcaption><b>12. Two 45s.</b> Two players level on a number, split card. Built for the "who had it better" fight.</figcaption></figure>
+
+<figure><div class="card c13"><h2>Top scorers so far</h2><div class="sub">2026-27, after 14 games</div>
+  <div class="r"><i>1</i><img src="https://cdn.nba.com/headshots/nba/latest/1040x760/1630162.png" alt=""><b>Anthony Edwards<small>MIN</small></b><strong>45</strong></div>
+  <div class="r"><i>2</i><img src="https://cdn.nba.com/headshots/nba/latest/1040x760/1629660.png" alt=""><b>Ty Jerome<small>MEM</small></b><strong>45</strong></div>
+  <div class="r"><i>3</i><img src="https://cdn.nba.com/headshots/nba/latest/1040x760/202331.png" alt=""><b>Paul George<small>BOS</small></b><strong>38</strong></div>
+  <div class="r"><i>4</i><img src="https://cdn.nba.com/headshots/nba/latest/1040x760/203507.png" alt=""><b>Giannis Antetokounmpo<small>MIA</small></b><strong>35</strong></div>
+  <div class="r"><i>5</i><img src="https://cdn.nba.com/headshots/nba/latest/1040x760/1631094.png" alt=""><b>Paolo Banchero<small>ORL</small></b><strong>35</strong></div></div>
+<figcaption><b>13. Leaderboard.</b> A ranked top five with faces. The classic "who is leading" share.</figcaption></figure>
+
+<figure><div class="card c14"><h2>Ty Jerome</h2><div class="sub">MEM vs UTAH &middot; Oct 21</div>
+  <div class="dots"><i class="m"></i><i class="m"></i><i class="m"></i><i class="m"></i><i class="m"></i><i class="m"></i><i class="m"></i><i class="m"></i><i class="m"></i><i class="m"></i><i class="m"></i><i class="m"></i><i class="m"></i><i class="m"></i><i class="m"></i><i class="m"></i><i class="m"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="big">17<small>of 25 shots</small></div>
+  <img src="https://cdn.nba.com/headshots/nba/latest/1040x760/1629660.png" alt=""><div class="foot">Every dot is a shot: 17 made, 8 missed.</div></div>
+<figcaption><b>14. Shot dots.</b> One dot per shot, filled when it went in. You see the night in a second.</figcaption></figure>
+
+<figure><div class="card c15"><h2>Edwards vs the typical player</h2><div class="sub">Points in the 2026-27 games so far</div>
+  <div class="cmp"><div><span>Anthony Edwards</span><b>45</b></div><div class="bar"></div>
+  <div><span>Average rotation player</span><b>12.8</b></div><div class="bar g"></div></div>
+  <div class="why">That is 3.5 times a normal night.</div></div>
+<figcaption><b>15. Versus the average.</b> Two bars, one giant gap. Makes a big number mean something. (12.8 is the real average for players with 15+ minutes a game.)</figcaption></figure>
+
+<figure><div class="card c16"><div class="fin">FINAL &middot; OCT 21</div>
+  <div class="row"><span>MEMPHIS</span><b>123</b></div><div class="row l"><span>UTAH</span><b>103</b></div>
+  <div class="who"><img src="https://cdn.nba.com/headshots/nba/latest/1040x760/1629660.png" alt=""><div><b>Ty Jerome</b><span>45 PTS &middot; 7 REB &middot; 6 AST</span></div></div></div>
+<figcaption><b>16. Final score.</b> The result first, then the player who made it happen. For recap posts.</figcaption></figure>
+
+<figure><div class="card c17"><h2>Records so far</h2><div class="sub">2026-27, after 14 games</div>
+  <div class="r"><small>POINTS</small><b>Anthony Edwards</b><strong>45</strong></div>
+  <div class="r"><small>REBOUNDS</small><b>Domantas Sabonis</b><strong>18</strong></div>
+  <div class="r"><small>ASSISTS</small><b>Trae Young</b><strong>13</strong></div>
+  <div class="r"><small>THREES</small><b>Anthony Edwards</b><strong>9</strong></div>
+  <div class="r"><small>STL+BLK</small><b>Jaxson Hayes</b><strong>8</strong></div></div>
+<figcaption><b>17. Records board.</b> The season highs on one yellow card. The page that gets saved and posted again each week.</figcaption></figure>
+
+<figure><div class="card c18"><div class="t"><span>MEM vs UTAH</span><span>OCT 21</span></div><div class="n">45</div>
+  <div class="name">Ty Jerome<span>points, on 17 of 25 shooting</span></div></div>
+<figcaption><b>18. Swiss.</b> White, one huge number, one name. The calmest card, easy to read anywhere.</figcaption></figure>
+
+<figure><div class="card c19"><div class="tk"><div class="main"><small>ADMIT ONE &middot; OCT 21</small><h2>Jerome<br>drops 45</h2><p>MEM 123, UTAH 103<br>17-25 FG &middot; 5-10 3P<br>7 REB &middot; 6 AST</p></div><div class="stub"><div><b>45</b><span>PTS</span></div></div></div>
+  <div class="cap">Best seat in the house.</div></div>
+<figcaption><b>19. Ticket stub.</b> A torn ticket with the number on the stub. Playful and different from every stat site.</figcaption></figure>
+
+<figure><div class="card c20"><div class="q">Edwards hit <em>nine</em> threes. Nobody else has more than seven.</div>
+  <div class="row"><img src="https://cdn.nba.com/headshots/nba/latest/1040x760/1630162.png" alt=""><div><b>Anthony Edwards</b><span>9-17 3P &middot; MIN @ MIA</span></div></div></div>
+<figcaption><b>20. The claim.</b> A bold sentence a fan wants to quote. The most shareable text format. (Next best is Paul George with 7.)</figcaption></figure>
+
+</main>
+</body>
+</html>

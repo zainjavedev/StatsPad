@@ -1,38 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <defs>
-    <radialGradient id="bg" cx=".5" cy=".45" r=".75"><stop offset="0" stop-color="#3a1f3f"/><stop offset=".6" stop-color="#140d1f"/><stop offset="1" stop-color="#0b0b0c"/></radialGradient>
-    <radialGradient id="ball" cx=".35" cy=".3" r=".85"><stop offset="0" stop-color="#ffb347"/><stop offset=".55" stop-color="#ff7a2f"/><stop offset="1" stop-color="#e2461c"/></radialGradient>
-    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c8ff3d"/><stop offset="1" stop-color="#7dffb0"/></linearGradient>
-    <clipPath id="clip"><circle cx="262" cy="250" r="126"/></clipPath>
-  </defs>
-  <rect width="512" height="512" fill="url(#bg)"/>
-  <circle cx="256" cy="250" r="190" fill="#ff7a2f" opacity=".08"/>
-  <!-- speed lines -->
-  <g stroke-linecap="round" fill="none">
-    <path d="M70 200h74" stroke="#c8ff3d" stroke-width="14" opacity=".9"/>
-    <path d="M52 250h100" stroke="#ff9a4d" stroke-width="14" opacity=".8"/>
-    <path d="M82 300h64" stroke="#c8ff3d" stroke-width="14" opacity=".6"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <rect width="24" height="24" fill="#0b0b0c"/>
+  <g transform="translate(12 12) scale(.8) translate(-12 -12)" fill="none" stroke="#f2f2f0" stroke-width="2" stroke-linecap="round">
+    <circle cx="12" cy="12" r="9.5"/>
+    <path d="M12 2.5v19M2.5 12h19M5.6 5.6c3.4 3.4 3.4 9.4 0 12.8M18.4 5.6c-3.4 3.4-3.4 9.4 0 12.8"/>
   </g>
-  <!-- shadow -->
-  <ellipse cx="262" cy="404" rx="96" ry="14" fill="#000" opacity=".45"/>
-  <!-- back half of ring -->
-  <g transform="translate(262 250) rotate(-24)" fill="none" stroke-linecap="round">
-    <path d="M-178 0A178 50 0 0 1 178 0" stroke="url(#ring)" stroke-width="18"/>
-  </g>
-  <!-- ball -->
-  <circle cx="262" cy="250" r="126" fill="url(#ball)"/>
-  <g clip-path="url(#clip)" fill="none" stroke="#2a0f14" stroke-width="11" stroke-linecap="round">
-    <path d="M262 110v280M122 250h280"/>
-    <path d="M168 150c52 44 52 156 0 200M356 150c-52 44-52 156 0 200"/>
-  </g>
-  <ellipse cx="222" cy="188" rx="30" ry="16" transform="rotate(-35 222 188)" fill="#fff" opacity=".35"/>
-  <!-- front half of ring -->
-  <g transform="translate(262 250) rotate(-24)" fill="none">
-    <path d="M-178 0A178 50 0 0 0 178 0" stroke="#140d1f" stroke-width="34"/>
-    <path d="M-178 0A178 50 0 0 0 178 0" stroke="url(#ring)" stroke-width="18" stroke-linecap="round"/>
-  </g>
-  <!-- sparkles -->
-  <path d="M410 120l7 18 18 7-18 7-7 18-7-18-18-7 18-7z" fill="#fff"/>
-  <path d="M120 120l4 10 10 4-10 4-4 10-4-10-10-4 10-4z" fill="#c8ff3d"/>
-  <circle cx="392" cy="400" r="6" fill="#c8ff3d"/>
 </svg>

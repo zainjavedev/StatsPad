@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 /* Two profiles on one chart. Every spoke is a league percentile, so a point
    further out means higher up the league, and the shapes show where the two
    differ at a glance. Hover a point for the number behind it. */
 
-const SIZE = {width: 480, height: 400, cx: 240, cy: 200, radius: 138};
+const SIZE = {width: 560, height: 400, cx: 280, cy: 200, radius: 138};
 const RINGS = [25, 50, 75, 100];
 
 const point = (index, count, fraction, push = 0) => {
@@ -16,7 +16,7 @@ const path = (count, fractionOf) => Array.from({length: count}, (_, index) => po
 const anchorFor = x => x < SIZE.cx - 8 ? 'end' : x > SIZE.cx + 8 ? 'start' : 'middle';
 
 export default function Radar({axes, names, colors, scope, notes = [], views = [], view, onView, blurb}) {
-  const count = axes.length;
+  const count = axes.length, [tip, setTip] = useState(null);
   return <section className="vs-radar">
     <div className="vs-radar-head">
       <small>Shape of their game · vs the league{scope ? `: ${scope}` : ''}</small>
@@ -41,14 +41,24 @@ export default function Radar({axes, names, colors, scope, notes = [], views = [
         return <g key={name}>
           <polygon className="radar-halo" points={points}/>
           <polygon className="radar-shape" points={points} style={{fill: colors[side], stroke: colors[side]}}/>
-          {axes.map((axis, index) => {
-            const [x, y] = point(index, count, Math.max(axis.sides[side].pct, 3) / 100);
-            return <circle key={axis.label} className="radar-dot" cx={x} cy={y} r="4" style={{fill: colors[side]}}>
-              <title>{`${name} · ${axis.label}: ${axis.sides[side].text} (${axis.sides[side].rank})`}</title>
-            </circle>;
-          })}
         </g>;
       })}
+      {/* Dots go last so neither player's shape covers the other's points. */}
+      {names.map((name, side) => axes.map((axis, index) => {
+        const [x, y] = point(index, count, Math.max(axis.sides[side].pct, 3) / 100);
+        const show = () => setTip({x, y, color: colors[side], value: axis.sides[side].text});
+        return <g key={`${name}-${axis.label}`} onMouseEnter={show} onMouseLeave={() => setTip(null)} onClick={show} tabIndex={0} onFocus={show} onBlur={() => setTip(null)} style={{cursor: 'pointer', outline: 'none'}}>
+          <circle cx={x} cy={y} r="13" fill="transparent"/>
+          <circle className="radar-dot" cx={x} cy={y} r="5" style={{fill: colors[side]}}/>
+        </g>;
+      }))}
+      {tip && (() => {
+        const width = 112, height = 38, left = Math.max(6, Math.min(SIZE.width - width - 6, tip.x - width / 2)), top = tip.y > SIZE.cy ? tip.y - height - 12 : tip.y + 12;
+        return <g className="radar-tip" pointerEvents="none">
+          <rect x={left} y={top} width={width} height={height} rx="10"/>
+          <text x={left + 12} y={top + 25} className="radar-tip-value"><tspan fill={tip.color}>●</tspan> {tip.value}</text>
+        </g>;
+      })()}
     </svg>
     {notes.length > 0 && <ul className="vs-radar-notes">{notes.map(note => <li key={note}>{note}</li>)}</ul>}
   </section>;

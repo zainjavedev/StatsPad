@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "tight-leading",
+        "value": "*",
+        "files": [
+          "public/cards-lab.html"
+        ],
+        "createdAt": "2026-10-22T14:37:48.428Z",
+        "reason": "assistant: lab page of share-card concepts, big numerals and headlines use deliberately tight display leading; body-size lines were raised to 1.3+"
+      }
+    ]
+  }
+}

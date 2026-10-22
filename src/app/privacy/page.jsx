@@ -11,14 +11,13 @@ export default function Privacy() {
     <h2>Information we collect</h2>
     <ul>
       <li><strong>Account information.</strong> Your email address, and your name only if you sign in with Google. From Google we receive your email address and whether it is verified. We do not receive your Google password or access any other Google data.</li>
-      <li><strong>Teams you follow.</strong> Stored with your account so we can send the right alerts and restore your teams on another browser. If you follow teams without signing in, they stay in your own browser and are not sent to us.</li>
+      <li><strong>Teams you follow.</strong> Stored with your account so we can restore your teams on another browser. If you follow teams without signing in, they stay in your own browser and are not sent to us.</li>
       <li><strong>Notification data.</strong> If you turn on browser notifications, the push subscription your browser gives us.</li>
       <li><strong>Usage data.</strong> Standard web analytics (pages viewed, device type, approximate location) collected through Vercel Analytics and Google Tag Manager.</li>
     </ul>
 
     <h2>How we use it</h2>
     <ul>
-      <li>To email or notify you when a team you follow tips off or finishes.</li>
       <li>To send sign-in and confirmation links.</li>
       <li>To understand how the site is used and improve it.</li>
     </ul>

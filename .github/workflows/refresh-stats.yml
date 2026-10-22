@@ -35,6 +35,7 @@ jobs:
       - run: node scripts/build-headshots.mjs
       - run: node scripts/build-schedule.mjs
       - run: node scripts/build-preseason-stats.mjs
+      - run: node scripts/build-regular-box-stats.mjs
       - run: node scripts/prune-rosters.mjs
       - name: Commit changes
         run: |

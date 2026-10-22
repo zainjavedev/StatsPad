@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { loadSchedule, upcoming } from '../lib/schedule';
 import { TEAMS } from '../lib/teams';
+import { revealGame, useSpoilers } from '../lib/spoilers';
+import { Hidden } from './SpoilerToggle';
 
 /* The home page's lead card: the next tip-off (or the score of a game in progress). A game for a team the visitor follows comes first. */
 
@@ -38,7 +40,7 @@ const played = date => {
 /* One short timeline: the last few finished games , then the game to watch
    for (live, or the next tip-off with a ticking countdown), then everything coming up. */
 export default function GameTicker({games, results, favorites}) {
-  const scroller = useRef(null), nextRef = useRef(null);
+  const scroller = useRef(null), nextRef = useRef(null), spoilers = useSpoilers();
   const [edge, setEdge] = useState({start: true, end: false});
   const check = useCallback(() => {
     const node = scroller.current;
@@ -63,12 +65,12 @@ export default function GameTicker({games, results, favorites}) {
     <button type="button" className="ticker-arrow" aria-label="Earlier games" disabled={edge.start} onClick={() => scrollBy(-1)}><ChevronLeft size={18}/></button>
     <div className="ticker-scroll" ref={scroller} onScroll={check}>
       {before.map(game => {
-        const open = true, away = Number(game.away.score), home = Number(game.home.score);
+        const open = spoilers.revealed(game.id, game.date), away = Number(game.away.score), home = Number(game.home.score);
         return <a key={game.id} href={`/games/${game.id}`} className={`tk done${mine(game)}`}>
           <small>{played(game.date)}{game.preseason ? ' · Pre' : ''}</small>
           <span className="tk-teams">
             <Logo team={game.away}/><b className={open && away > home ? 'won' : ''}>{game.away.abbr}</b>
-            <strong>{game.away.score}–{game.home.score}</strong>
+            {open ? <strong>{game.away.score}–{game.home.score}</strong> : <Hidden id={game.id} onReveal={revealGame}/>}
             <b className={open && home > away ? 'won' : ''}>{game.home.abbr}</b><Logo team={game.home}/>
           </span>
         </a>;
