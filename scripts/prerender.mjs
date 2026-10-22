@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import satori from 'satori';
@@ -20,7 +21,8 @@ import { SITE, compareUrl, playerUrl, slugify, teamUrl } from '../src/lib/routes
 const root = path.resolve(import.meta.dirname, '..');
 const publicDir = path.join(root, 'public');
 const manifestFile = path.join(root, 'src/seo/pages.json');
-const cacheDir = path.join(root, '.cache', 'og');
+/* Inside .next/cache so Vercel keeps it between deploys: downloaded photos and finished cards both live here. */
+const cacheDir = path.join(root, '.next', 'cache', 'statspads-og');
 const LIMIT = Number(process.env.SEO_LIMIT) || Infinity;
 const SKIP_OG = process.env.SKIP_OG === '1';
 const TOP_PLAYERS_FOR_PAIRS = 20;
@@ -110,12 +112,21 @@ const brand = h({position: 'absolute', top: 26, left: 34, fontSize: 30, fontWeig
 const footAt = side => h({position: 'absolute', bottom: 18, [side]: 40, fontSize: 20, fontWeight: 700, color: 'rgba(255,255,255,.7)'}, SITE.replace('https://', ''));
 const foot = footAt('left');
 
+/* A card is only drawn again when what it shows has changed: its finished picture is kept under a hash of
+   the card's content (text, colours, photos), so an unchanged player costs a file copy, not a render. */
 async function render(name, tree) {
   if (SKIP_OG) return;
   try {
-    const svg = await satori(tree, {width: 1200, height: 630, fonts});
-    const png = new Resvg(svg, {fitTo: {mode: 'width', value: 1200}}).render().asPng();
-    const jpg = await sharp(png).jpeg({quality: 78, mozjpeg: true}).toBuffer();
+    const key = crypto.createHash('sha1').update(JSON.stringify(tree)).digest('hex');
+    const kept = path.join(cacheDir, 'cards', `${key}.jpg`);
+    let jpg;
+    if (fs.existsSync(kept)) { jpg = fs.readFileSync(kept); reused += 1; } else {
+      const svg = await satori(tree, {width: 1200, height: 630, fonts});
+      const png = new Resvg(svg, {fitTo: {mode: 'width', value: 1200}}).render().asPng();
+      jpg = await sharp(png).jpeg({quality: 78, mozjpeg: true}).toBuffer();
+      fs.mkdirSync(path.dirname(kept), {recursive: true});
+      fs.writeFileSync(kept, jpg);
+    }
     const file = path.join(publicDir, 'og', `${name}.jpg`);
     fs.mkdirSync(path.dirname(file), {recursive: true});
     fs.writeFileSync(file, jpg);
@@ -159,7 +170,7 @@ async function teamCompareCard(a, b) {
 /* ---------- pages ---------- */
 const pool = (items, size = 6) => { const queue = [...items]; return Promise.all(Array.from({length: size}, async () => { while (queue.length) await queue.shift()(); })); };
 const jobs = [];
-let cards = 0;
+let cards = 0, reused = 0;
 const card = (name, builder) => jobs.push(async () => { if (await render(name, await builder())) cards += 1; });
 
 const cap = items => items.slice(0, LIMIT);
@@ -268,6 +279,6 @@ const today = new Date().toISOString().slice(0, 10);
 const urls = ['/', '/compare', '/leaders', '/teams', '/schedule', '/standings', '/privacy', ...written.filter(route => !['/compare', '/leaders', '/teams'].includes(route))];
 fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(route => `  <url><loc>${SITE}${route}</loc><lastmod>${today}</lastmod></url>`).join('\n')}\n</urlset>\n`);
 fs.writeFileSync(path.join(publicDir, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
-console.log(`prerender: ${written.length} pages, ${cards} share cards in ${((Date.now() - started) / 1000).toFixed(1)}s, ${players.filter(p => !p.nbaId && !p.espnId).length} of ${players.length} players without a headshot`);
+console.log(`prerender: ${written.length} pages, ${cards} share cards (${reused} reused) in ${((Date.now() - started) / 1000).toFixed(1)}s, ${players.filter(p => !p.nbaId && !p.espnId).length} of ${players.length} players without a headshot`);
 fs.mkdirSync(path.dirname(manifestFile), {recursive: true});
 fs.writeFileSync(manifestFile, JSON.stringify(pages));
