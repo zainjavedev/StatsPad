@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, Eye } from 'lucide-react';
 import { revealGame, useSpoilers } from '../lib/spoilers';
-import ShareButton from './ShareButton';
-import { headline, lineCard, performancesOf } from '../lib/performances';
+import { performancesOf } from '../lib/performances';
 import PlayerGame from './PlayerGame';
 import { PerfCard } from './RecentPerformances';
 import SpoilerToggle, { Hidden } from './SpoilerToggle';
@@ -25,8 +24,6 @@ const TeamLink = ({side}) => {
 /* One game on its own page: the score, who led it in each category (with photos), and the full box
    score for both teams with each category's leader highlighted. Before tip-off, the expected fives. */
 
-const BASIC = ['MIN', 'PTS', 'REB', 'AST', 'STL', 'BLK', 'FG'];
-const EXTRA = ['3PT', 'FT', 'TO', '+/-'];
 const LEADS = [['PTS', 'Points'], ['REB', 'Rebounds'], ['AST', 'Assists'], ['STL', 'Steals'], ['BLK', 'Blocks']];
 const codeOf = abbr => Object.keys(TEAMS).find(code => TEAMS[code].espn === String(abbr).toLowerCase());
 const num = value => Number(String(value ?? '').replace('+', '')) || 0;
@@ -116,7 +113,7 @@ function Preview({box}) {
   const per = (player, key) => Number.isFinite(player.line?.[key]) ? player.line[key].toFixed(1) : '—';
   return <div className="gp-preview">
     <p className="gd-note">No box score yet. Expected starters are who started the most preseason games, with this season&apos;s per-game numbers (preseason numbers until the regular season starts).</p>
-    {data.map(({roster, code, side, five, source}) => <section key={code} className="gp-side" style={{'--team': TEAMS[code].color}}>
+    {data.map(({roster, code, side, five}) => <section key={code} className="gp-side" style={{'--team': TEAMS[code].color}}>
       <h3>{side.logo && <img src={side.logo} alt=""/>}<span>{roster.teamName}<small>Expected starting five</small></span></h3>
       <div className="starter-grid">{five.map(player => <div key={player.name} className="starter-card">
         <span className="starter-stage"><span className="slot-badge">{player.slot ?? player.pos}</span><Headshot player={player} className="starter-art"/></span>
@@ -186,7 +183,7 @@ function Context({box, context}) {
 }
 
 export default function GamePage({id}) {
-  const [box, setBox] = useState(undefined), [side, setSide] = useState(0), [more, setMore] = useState(false), spoilers = useSpoilers(), [focus, setFocus] = useState(() => (typeof location === 'undefined' ? null : new URLSearchParams(location.search).get('player')));
+  const [box, setBox] = useState(undefined), [side, setSide] = useState(0), spoilers = useSpoilers(), [focus, setFocus] = useState(() => (typeof location === 'undefined' ? null : new URLSearchParams(location.search).get('player')));
   const pick = playerId => { setFocus(playerId); const url = new URL(location.href); if (playerId) url.searchParams.set('player', playerId); else url.searchParams.delete('player'); history.replaceState(null, '', url); window.scrollTo(0, 0); };
   useEffect(() => { loadBoxscore(id).then(setBox); }, [id]);
 
@@ -200,16 +197,10 @@ export default function GamePage({id}) {
       return {key, label, top, ranked: ranked.slice(0, 3), players: ranked.filter(player => num(player.stats[key]) === top)};
     }).filter(entry => entry.ranked.length);
   }, [box]);
-  const led = useMemo(() => {
-    const map = new Map();
-    leaders.filter(entry => ['PTS', 'REB', 'AST'].includes(entry.key) && entry.players.length === 1).forEach(entry => map.set(`${entry.players[0].id}:${entry.key}`, true));
-    return map;
-  }, [leaders]);
 
   if (box === undefined) return <section className="gp"><p className="gd-note">Loading the game…</p></section>;
   if (!box?.away) return <section className="gp"><a className="gp-back" href="/schedule"><ArrowLeft size={15}/> Schedule</a><p className="gd-note">We couldn&apos;t load this game.</p></section>;
 
-  const lines = performancesOf(box), lineOf = player => lines.find(line => line.player === player);
   const focusTeam = focus ? box.teams.find(team => team.players.some(entry => entry.id === focus && !entry.out)) : null;
   const nameOf = athlete => box.teams.flatMap(team => team.players).find(entry => entry.id === athlete)?.name;
   const hidden = box.state !== 'pre' && !spoilers.revealed(String(id)), scored = box.state !== 'pre' && !hidden;

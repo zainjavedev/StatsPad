@@ -19,7 +19,7 @@ export function Court() {
   </g>;
 }
 
-export default function ShotChart({shots, color, className = ''}) {
+export default function ShotChart({shots, className = ''}) {
   const misses = shots.filter(shot => !shot.made), makes = shots.filter(shot => shot.made);
   return <svg className={`shot-chart ${className}`} viewBox="0 0 50 42" role="img" aria-label={`${makes.length} of ${shots.length} shots made`}>
     <rect width="50" height="42" rx="1.2" fill="#ffffff" fillOpacity=".035"/>

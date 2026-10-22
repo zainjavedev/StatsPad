@@ -7,7 +7,6 @@ import { performancesOf } from '../lib/performances';
 import { loadBoxscore } from '../lib/boxscore';
 import { finished, loadSchedule } from '../lib/schedule';
 import { TEAMS } from '../lib/teams';
-import { onDark } from '../lib/share';
 import { flowOf, fps, quarterStats, rating, shotsOf, storyOf, tagsOf, total, tsPct, fgPct } from '../lib/playerGame';
 
 /* One player's night, told as a story: what he did in a sentence, where every shot came from, how the game
