@@ -11,6 +11,7 @@ import FavoriteStar from './FavoriteStar';
 import GameTicker, { useGames } from './NextUp';
 import HeadToHead from './HeadToHead';
 import { StandingsPeek } from './Peeks';
+import NightPanel from './NightPanel';
 
 /* The front door: settle a debate, find a player, see the league's top
    performers and what's on. Deep leaderboards live on the Leaders page. */
@@ -89,7 +90,7 @@ export default function FrontPage({players, playerIds, Art, onOpen, onCompare, o
       </div>
     </div>
 
-
+    <NightPanel results={results}/>
 
     {leaderPeek}
     <div className="peek-pair">

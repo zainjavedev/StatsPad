@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, Eye } from 'lucide-react';
 import { revealGame, useSpoilers } from '../lib/spoilers';
+import ShareButton from './ShareButton';
+import { headline, lineCard, performancesOf } from '../lib/performances';
 import SpoilerToggle, { Hidden } from './SpoilerToggle';
 import { loadBoxscore } from '../lib/boxscore';
 import Radar from './Radar';
@@ -195,6 +197,7 @@ export default function GamePage({id}) {
   if (box === undefined) return <section className="gp"><p className="gd-note">Loading the game…</p></section>;
   if (!box?.away) return <section className="gp"><a className="gp-back" href="/schedule"><ArrowLeft size={15}/> Schedule</a><p className="gd-note">We couldn&apos;t load this game.</p></section>;
 
+  const lines = performancesOf(box), lineOf = player => lines.find(line => line.player === player);
   const hidden = box.state !== 'pre' && !spoilers.revealed(String(id)), scored = box.state !== 'pre' && !hidden;
   const ordered = [...box.teams].sort((a, b) => (a.abbr === box.away.abbr ? 0 : 1) - (b.abbr === box.away.abbr ? 0 : 1));
 
@@ -216,7 +219,7 @@ export default function GamePage({id}) {
         const team = ordered[side], columns = more ? [...BASIC, ...EXTRA] : BASIC;
         const starters = team.players.filter(player => player.starter), bench = team.players.filter(player => !player.starter && !player.out), out = team.players.filter(player => !player.starter && player.out);
         const line = (player, face) => <tr key={player.id} className={face ? '' : 'bench'}>
-          <td className="who"><span className="gp-name">{face && <Face player={player}/>}<span><b>{player.name}</b><small>{player.pos}</small></span></span></td>
+          <td className="who"><span className="gp-name">{face && <Face player={player}/>}<span><b>{player.name}</b><small>{player.pos}</small></span>{lineOf(player) && <ShareButton spec={lineCard(lineOf(player))} filename={`${player.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-game`} title={player.name} text={`${player.name}: ${headline(lineOf(player))}`} compact label="Share this line" className="ghost-button gp-share"/>}</span></td>
           {columns.map(label => <td key={label} className={`num${led.has(`${player.id}:${label}`) ? ' led' : ''}`}>{player.stats[label] ?? '–'}</td>)}
         </tr>;
         return <section className="gd-team">
