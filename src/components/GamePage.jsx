@@ -3,6 +3,7 @@ import { ArrowLeft, Eye } from 'lucide-react';
 import { revealGame, useSpoilers } from '../lib/spoilers';
 import ShareButton from './ShareButton';
 import { headline, lineCard, performancesOf } from '../lib/performances';
+import PlayerGame from './PlayerGame';
 import SpoilerToggle, { Hidden } from './SpoilerToggle';
 import { loadBoxscore } from '../lib/boxscore';
 import Radar from './Radar';
@@ -175,7 +176,8 @@ function Context({box, context}) {
 }
 
 export default function GamePage({id}) {
-  const [box, setBox] = useState(undefined), [side, setSide] = useState(0), [more, setMore] = useState(false), spoilers = useSpoilers();
+  const [box, setBox] = useState(undefined), [side, setSide] = useState(0), [more, setMore] = useState(false), spoilers = useSpoilers(), [focus, setFocus] = useState(() => (typeof location === 'undefined' ? null : new URLSearchParams(location.search).get('player')));
+  const pick = playerId => { setFocus(playerId); const url = new URL(location.href); if (playerId) url.searchParams.set('player', playerId); else url.searchParams.delete('player'); history.replaceState(null, '', url); window.scrollTo(0, 0); };
   useEffect(() => { loadBoxscore(id).then(setBox); }, [id]);
 
   /* Top three in each category across both teams; the leader (ties included) is what the box score highlights. */
@@ -198,19 +200,24 @@ export default function GamePage({id}) {
   if (!box?.away) return <section className="gp"><a className="gp-back" href="/schedule"><ArrowLeft size={15}/> Schedule</a><p className="gd-note">We couldn&apos;t load this game.</p></section>;
 
   const lines = performancesOf(box), lineOf = player => lines.find(line => line.player === player);
+  const focusTeam = focus ? box.teams.find(team => team.players.some(entry => entry.id === focus && !entry.out)) : null;
+  const nameOf = athlete => box.teams.flatMap(team => team.players).find(entry => entry.id === athlete)?.name;
   const hidden = box.state !== 'pre' && !spoilers.revealed(String(id)), scored = box.state !== 'pre' && !hidden;
   const ordered = [...box.teams].sort((a, b) => (a.abbr === box.away.abbr ? 0 : 1) - (b.abbr === box.away.abbr ? 0 : 1));
 
   return <section className="gp">
     <a className="gp-back" href="/schedule"><ArrowLeft size={15}/> Schedule</a>
+    {!focusTeam && <>
     <div className="gd-head gp-head">
       <div><img src={box.away.logo} alt=""/><b className="hd-name">{box.away.short}</b><b className="hd-abbr">{box.away.abbr}</b>{scored && <strong>{box.away.score}</strong>}</div>
       <span>{box.state === 'post' ? (hidden ? 'Played' : 'Final') : box.state === 'in' ? (box.detail || 'Live') : 'Upcoming'}</span>
       <div><img src={box.home.logo} alt=""/><b className="hd-name">{box.home.short}</b><b className="hd-abbr">{box.home.abbr}</b>{scored && <strong>{box.home.score}</strong>}</div>
     </div>
     <p className="gd-meta">{[box.date && dateFormat.format(new Date(box.date)), box.venue, box.tv, box.preseason ? 'Preseason' : ''].filter(Boolean).join(' · ')}</p>
+    </>}
 
-    {box.state === 'pre' ? <Preview box={box}/> : hidden ? <div className="gp-spoiler"><p>This game has started. The score and box score are hidden.</p><button type="button" className="spoiler-toggle" onClick={() => revealGame(String(id))}><Eye size={14}/> Show score</button></div> : <>
+    {focusTeam && <PlayerGame box={box} plays={box.plays ?? []} team={focusTeam} player={focusTeam.players.find(entry => entry.id === focus)} onClose={() => pick(null)} nameOf={nameOf}/>}
+    {focusTeam ? null : box.state === 'pre' ? <Preview box={box}/> : hidden ? <div className="gp-spoiler"><p>This game has started. The score and box score are hidden.</p><button type="button" className="spoiler-toggle" onClick={() => revealGame(String(id))}><Eye size={14}/> Show score</button></div> : <>
       <div className="gp-tabs" role="group" aria-label="Team">
         {ordered.map((team, index) => <button key={team.abbr} className={side === index ? 'active' : ''} onClick={() => setSide(index)}>{team.logo && <img src={team.logo} alt=""/>}{team.name}</button>)}
         <button className="gp-more-btn" onClick={() => setMore(open => !open)}>{more ? 'Fewer stats' : 'More stats'}</button>
@@ -219,7 +226,7 @@ export default function GamePage({id}) {
         const team = ordered[side], columns = more ? [...BASIC, ...EXTRA] : BASIC;
         const starters = team.players.filter(player => player.starter), bench = team.players.filter(player => !player.starter && !player.out), out = team.players.filter(player => !player.starter && player.out);
         const line = (player, face) => <tr key={player.id} className={face ? '' : 'bench'}>
-          <td className="who"><span className="gp-name">{face && <Face player={player}/>}<span><b>{player.name}</b><small>{player.pos}</small></span>{lineOf(player) && <ShareButton spec={lineCard(lineOf(player))} filename={`${player.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-game`} title={player.name} text={`${player.name}: ${headline(lineOf(player))}`} compact label="Share this line" className="ghost-button gp-share"/>}</span></td>
+          <td className="who"><span className="gp-name">{face && <Face player={player}/>}<button type="button" className="gp-open" onClick={() => pick(player.id)}><b>{player.name}</b><small>{player.pos}</small></button>{lineOf(player) && <ShareButton spec={lineCard(lineOf(player))} filename={`${player.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-game`} title={player.name} text={`${player.name}: ${headline(lineOf(player))}`} compact label="Share this line" className="ghost-button gp-share"/>}</span></td>
           {columns.map(label => <td key={label} className={`num${led.has(`${player.id}:${label}`) ? ' led' : ''}`}>{player.stats[label] ?? '–'}</td>)}
         </tr>;
         return <section className="gd-team">

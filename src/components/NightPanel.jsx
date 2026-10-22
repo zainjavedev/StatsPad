@@ -21,7 +21,7 @@ export default function NightPanel({results}) {
     <ol className="night-list">{lines.map((line, index) => <li key={line.player.id ?? line.player.name}>
       <span className="perf-rank">{index + 1}</span>
       {line.player.photo && <img className="night-face" src={line.player.photo} alt="" loading="lazy"/>}
-      <span className="perf-name"><b>{line.player.name}</b><small>{line.team} {line.home ? 'vs' : '@'} {line.opp} · {line.won ? 'W' : 'L'} {line.score}</small></span>
+      <a className="perf-name night-link" href={`/games/${line.gameId}?player=${line.player.id}`}><b>{line.player.name}</b><small>{line.team} {line.home ? 'vs' : '@'} {line.opp} · {line.won ? 'W' : 'L'} {line.score}</small></a>
       <strong>{headline(line)}</strong>
       <ShareButton spec={lineCard(line)} filename={`${line.player.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-game`} title={line.player.name} text={`${line.player.name}: ${headline(line)}`} compact label="Share this line" className="ghost-button night-share"/>
     </li>)}</ol>

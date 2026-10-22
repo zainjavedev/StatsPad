@@ -22,7 +22,8 @@ export function loadBoxscore(id) {
         const entry = competition?.competitors?.find(item => item.homeAway === homeAway);
         return entry && {id: entry.team.id, abbr: entry.team.abbreviation, name: entry.team.displayName, short: entry.team.shortDisplayName ?? entry.team.displayName, logo: entry.team.logos?.[0]?.href ?? entry.team.logo, score: entry.score};
       };
-      return {teams, away: side('away'), home: side('home'), date: competition?.date ?? data.header?.competitions?.[0]?.date, state: status?.state ?? 'pre', detail: status?.detail ?? '', venue: data.gameInfo?.venue?.fullName ?? '', tv: data.broadcasts?.[0]?.media?.shortName ?? '', preseason: data.header?.season?.type === 1};
+      const plays = (data.plays ?? []).map(play => ({q: play.period?.number ?? 1, type: play.type?.text ?? '', text: play.text ?? '', pts: play.scoreValue ?? 0, pa: play.pointsAttempted ?? 0, scoring: Boolean(play.scoringPlay), who: (play.participants ?? []).map(entry => entry.athlete?.id), team: play.team?.id}));
+      return {teams, plays, away: side('away'), home: side('home'), date: competition?.date ?? data.header?.competitions?.[0]?.date, state: status?.state ?? 'pre', detail: status?.detail ?? '', venue: data.gameInfo?.venue?.fullName ?? '', tv: data.broadcasts?.[0]?.media?.shortName ?? '', preseason: data.header?.season?.type === 1};
     }).catch(() => { cache.delete(id); return null; }));
   }
   return cache.get(id);

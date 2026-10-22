@@ -5,6 +5,7 @@ import { onDark, siteHost } from '../lib/share';
      versus  {eyebrow, names, subs, colors, score, rows: [{label, values, lead}], photos?}
      tiles   {eyebrow, title, sub, color, tiles: [{label, value, note}], photo?}
      list    {eyebrow, title, sub, color, rows: [{lead, name, sub, value, photo?}]}
+     perf    {eyebrow, title, sub, color, person, rating, tone, headline: [[value, unit]], tags, tiles: [[label, value]], bars: [{label, value}], assists: [{name, pts, ast}]}
      grid    {eyebrow, title, sub, color, rows: [{lead, name, lines, photo?}], summary?}
    plus {foot} and the page address ({path}). Photos are ESPN headshots, filled
    in by lib/photos.js; anyone without one gets their initials. */
@@ -74,6 +75,27 @@ function Tiles({spec}) {
   </>;
 }
 
+function Perf({spec}) {
+  const top = Math.max(1, ...spec.bars.map(bar => bar.value));
+  return <>
+    <div className="sc-title with-photo">
+      <Photo src={spec.photo} name={spec.title} color={spec.color} className="sc-hero-photo"/>
+      <div className="sc-title-text">
+        <b style={{'--c': onDark(spec.color)}}>{spec.title}</b>
+        <small>{spec.sub}</small>
+      </div>
+      <div className={`sc-rate ${spec.tone}`}><strong>{spec.rating}</strong><small>rating</small></div>
+    </div>
+    <div className="sc-head3">{spec.headline.map(([value, unit]) => <span key={unit}><b>{value}</b>{unit}</span>)}</div>
+    {spec.tags.length > 0 && <div className="sc-tags">{spec.tags.map(tag => <span key={tag}>{tag}</span>)}</div>}
+    <div className="sc-mini">{spec.tiles.map(([name, value]) => <div key={name}><strong>{value}</strong><small>{name}</small></div>)}</div>
+    <div className="sc-lower">
+      <div className="sc-qbars">{spec.bars.map(bar => <div key={bar.label}><b>{bar.value}</b><i style={{height: `${Math.max(5, bar.value / top * 100)}%`}}/><span>{bar.label}</span></div>)}</div>
+      {spec.assists.length > 0 && <div className="sc-assists"><small>Assisted</small>{spec.assists.map(entry => <div key={entry.name}><b>{entry.name}</b><span>{entry.pts} pts · {entry.ast} ast</span></div>)}</div>}
+    </div>
+  </>;
+}
+
 function List({spec}) {
   const faces = spec.rows.some(row => row.photo !== undefined);
   return <>
@@ -120,7 +142,7 @@ const shownLink = path => { const host = siteHost(); return path && `${host}${pa
 
 const ShareCard = forwardRef(function ShareCard({spec}, ref) {
   const accent = onDark(spec.colors?.[0] || spec.color);
-  const Body = {versus: Versus, tiles: Tiles, list: List, grid: Grid}[spec.kind];
+  const Body = {versus: Versus, tiles: Tiles, list: List, grid: Grid, perf: Perf}[spec.kind];
   return <div className={`sc-card sc-kind-${spec.kind}`} ref={ref} style={{'--accent': accent}}>
     <Head spec={spec}/>
     <Body spec={spec}/>

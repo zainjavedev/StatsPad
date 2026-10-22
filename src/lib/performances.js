@@ -16,13 +16,13 @@ export function gameScore(stats) {
 }
 
 /* Every player who played in one finished game, with the context a card needs. */
-export function performancesOf(box) {
+export function performancesOf(box, gameId) {
   if (!box?.away || box.state !== 'post') return [];
   return box.teams.flatMap(team => {
     const mine = team.abbr === box.away.abbr ? box.away : box.home, other = mine === box.away ? box.home : box.away;
     const won = num(mine.score) > num(other.score);
     return team.players.filter(player => !player.out).map(player => ({
-      player, team: team.abbr, opp: other.abbr, home: mine === box.home, won, score: `${mine.score}–${other.score}`,
+      gameId, player, team: team.abbr, opp: other.abbr, home: mine === box.home, won, score: `${mine.score}–${other.score}`,
       date: box.date ? new Date(box.date) : null, rating: gameScore(player.stats),
     }));
   });
@@ -31,7 +31,7 @@ export function performancesOf(box) {
 /* The best lines across several games, newest slate first. */
 export async function bestOfNight(games, limit = 5) {
   const boxes = await Promise.all(games.map(game => loadBoxscore(game.id).catch(() => null)));
-  return boxes.flatMap(performancesOf).sort((a, b) => b.rating - a.rating).slice(0, limit);
+  return boxes.flatMap((box, index) => performancesOf(box, games[index].id)).sort((a, b) => b.rating - a.rating).slice(0, limit);
 }
 
 export const headline = ({player}) => {
