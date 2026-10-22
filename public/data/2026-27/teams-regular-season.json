@@ -4,8 +4,8 @@
   "description": "NBA team per-game statistics for the 2026-27 regular season",
   "lastUpdated": "2026-10-22",
   "source": {
-    "name": "ESPN box scores",
-    "url": "https://www.espn.com/nba/schedule"
+    "name": "ESPN",
+    "url": "https://www.espn.com/nba/stats/_/season/2027"
   },
   "totalTeams": 28,
   "players": [
@@ -146,7 +146,7 @@
         "steals": 11,
         "blocks": 7,
         "turnovers": 11,
-        "personalFouls": 22,
+        "personalFouls": 23,
         "fieldGoalsMade": 45,
         "fieldGoalsAttempted": 86,
         "fieldGoalPercentage": 52.3,
@@ -491,40 +491,10 @@
     },
     {
       "entityType": "team",
-      "teamId": 1610612766,
-      "team": "CHA",
-      "playerName": "Charlotte Hornets",
-      "rank": 17,
-      "gamesPlayed": 1,
-      "position": "Team",
-      "stats": {
-        "points": 110,
-        "assists": 26,
-        "totalRebounds": 44,
-        "offensiveRebounds": 15,
-        "defensiveRebounds": 29,
-        "steals": 9,
-        "blocks": 4,
-        "turnovers": 20,
-        "personalFouls": 23,
-        "fieldGoalsMade": 41,
-        "fieldGoalsAttempted": 93,
-        "fieldGoalPercentage": 44.1,
-        "threePointersMade": 15,
-        "threePointersAttempted": 48,
-        "threePointPercentage": 31.3,
-        "freeThrowsMade": 13,
-        "freeThrowsAttempted": 15,
-        "freeThrowPercentage": 86.7,
-        "effectiveFieldGoalPercentage": 52.2
-      }
-    },
-    {
-      "entityType": "team",
       "teamId": 1610612742,
       "team": "DAL",
       "playerName": "Dallas Mavericks",
-      "rank": 18,
+      "rank": 17,
       "gamesPlayed": 1,
       "position": "Team",
       "stats": {
@@ -547,6 +517,36 @@
         "freeThrowsAttempted": 26,
         "freeThrowPercentage": 65.4,
         "effectiveFieldGoalPercentage": 58.9
+      }
+    },
+    {
+      "entityType": "team",
+      "teamId": 1610612766,
+      "team": "CHA",
+      "playerName": "Charlotte Hornets",
+      "rank": 18,
+      "gamesPlayed": 1,
+      "position": "Team",
+      "stats": {
+        "points": 110,
+        "assists": 26,
+        "totalRebounds": 44,
+        "offensiveRebounds": 15,
+        "defensiveRebounds": 29,
+        "steals": 9,
+        "blocks": 4,
+        "turnovers": 20,
+        "personalFouls": 23,
+        "fieldGoalsMade": 41,
+        "fieldGoalsAttempted": 93,
+        "fieldGoalPercentage": 44.1,
+        "threePointersMade": 15,
+        "threePointersAttempted": 48,
+        "threePointPercentage": 31.3,
+        "freeThrowsMade": 13,
+        "freeThrowsAttempted": 15,
+        "freeThrowPercentage": 86.7,
+        "effectiveFieldGoalPercentage": 52.2
       }
     },
     {
@@ -718,15 +718,15 @@
         "turnovers": 18,
         "personalFouls": 23,
         "fieldGoalsMade": 35,
-        "fieldGoalsAttempted": 76,
-        "fieldGoalPercentage": 46.1,
+        "fieldGoalsAttempted": 75,
+        "fieldGoalPercentage": 46.7,
         "threePointersMade": 11,
-        "threePointersAttempted": 33,
-        "threePointPercentage": 33.3,
+        "threePointersAttempted": 32,
+        "threePointPercentage": 34.4,
         "freeThrowsMade": 22,
         "freeThrowsAttempted": 33,
         "freeThrowPercentage": 66.7,
-        "effectiveFieldGoalPercentage": 53.3
+        "effectiveFieldGoalPercentage": 54
       }
     },
     {
@@ -841,8 +841,8 @@
         "fieldGoalsAttempted": 84,
         "fieldGoalPercentage": 35.7,
         "threePointersMade": 6,
-        "threePointersAttempted": 31,
-        "threePointPercentage": 19.4,
+        "threePointersAttempted": 32,
+        "threePointPercentage": 18.8,
         "freeThrowsMade": 17,
         "freeThrowsAttempted": 23,
         "freeThrowPercentage": 73.9,

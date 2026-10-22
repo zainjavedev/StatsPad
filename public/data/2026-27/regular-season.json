@@ -4,8 +4,8 @@
   "description": "NBA player per-game statistics for the 2026-27 regular season",
   "lastUpdated": "2026-10-22",
   "source": {
-    "name": "ESPN box scores",
-    "url": "https://www.espn.com/nba/schedule"
+    "name": "ESPN",
+    "url": "https://www.espn.com/nba/stats/_/season/2027"
   },
   "totalPlayers": 322,
   "players": [
@@ -5340,7 +5340,7 @@
         "steals": 0,
         "blocks": 1,
         "turnovers": 1,
-        "personalFouls": 4,
+        "personalFouls": 5,
         "fieldGoalsMade": 3,
         "fieldGoalsAttempted": 6,
         "fieldGoalPercentage": 50,
@@ -5598,15 +5598,15 @@
         "turnovers": 3,
         "personalFouls": 0,
         "fieldGoalsMade": 2,
-        "fieldGoalsAttempted": 8,
-        "fieldGoalPercentage": 25,
+        "fieldGoalsAttempted": 7,
+        "fieldGoalPercentage": 28.6,
         "threePointersMade": 0,
-        "threePointersAttempted": 2,
+        "threePointersAttempted": 1,
         "threePointPercentage": 0,
         "freeThrowsMade": 3,
         "freeThrowsAttempted": 5,
         "freeThrowPercentage": 60,
-        "effectiveFieldGoalPercentage": 25
+        "effectiveFieldGoalPercentage": 28.6
       }
     },
     {
@@ -8961,7 +8961,7 @@
         "fieldGoalsAttempted": 5,
         "fieldGoalPercentage": 0,
         "threePointersMade": 0,
-        "threePointersAttempted": 3,
+        "threePointersAttempted": 4,
         "threePointPercentage": 0,
         "freeThrowsMade": 1,
         "freeThrowsAttempted": 2,
