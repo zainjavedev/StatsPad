@@ -1186,7 +1186,7 @@ header .brand small{margin-top:3px}
 .sc-list.roomy .sc-li{min-height:100px}
 
 /* Share buttons placed on pages (the card itself is styled above). */
-.pp-share{display:flex;justify-content:flex-end;margin:14px 0 10px}
+.pp-share{display:flex;gap:8px;justify-content:flex-end;margin:14px 0 10px}
 .profile-share{margin-top:10px;margin-left:8px}
 .stat-modal-share{margin:2px 0 12px}
 .team-hero-share{display:inline-flex;align-items:center;gap:7px;margin-left:auto;padding:10px 16px;border:1px solid rgb(255 255 255 / .4);border-radius:999px;background:rgb(255 255 255 / .08);color:#fff;font-size:13px;font-weight:700;white-space:nowrap;transition:background .15s}
@@ -2294,3 +2294,18 @@ header .brand small{margin-top:3px}
 .night-share,.gp-share{padding:6px 8px}
 .gp-share{margin-left:8px}
 @media (max-width:600px){.night-list li{grid-template-columns:22px 36px 1fr auto}.night-list strong{display:none}}
+
+.sc-overall{margin-left:auto;display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px 30px;border-radius:26px;background:#15181e;border:3px solid var(--c)}
+.sc-overall strong{font:800 96px/1 'Bricolage Grotesque','DM Sans',sans-serif;color:var(--c)}
+.sc-overall small{font-size:22px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8b8d94}
+.sc-report{display:grid;gap:10px;margin-top:22px}
+.sc-grade{display:flex;align-items:center;gap:22px;padding:8px 24px;border-radius:22px;background:#15181e}
+.sc-letter{flex:none;width:92px;text-align:center;font:800 56px/1 'Bricolage Grotesque','DM Sans',sans-serif}
+.sc-letter.g-a{color:#5ee08a}.sc-letter.g-b{color:#9bd65c}.sc-letter.g-c{color:#f0c54a}.sc-letter.g-d{color:#f08a4a}.sc-letter.g-f{color:#ef5a5a}
+.sc-grade-body{flex:1;display:grid;gap:6px}
+.sc-grade-top{display:flex;justify-content:space-between;align-items:baseline}
+.sc-grade-top em{font-style:normal;font-size:32px;font-weight:700}
+.sc-grade-top strong{font-size:28px;color:#aeb0b6;font-variant-numeric:tabular-nums}
+.sc-grade i{display:block;height:10px;border-radius:6px;background:#262a32;overflow:hidden}
+.sc-grade u{display:block;height:100%;border-radius:6px;background:var(--c)}
+.sc-verdict{margin:18px 0 0;font-size:28px;font-weight:600;color:#cfd1d6}

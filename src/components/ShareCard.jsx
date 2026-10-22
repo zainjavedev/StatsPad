@@ -5,6 +5,7 @@ import { onDark, siteHost } from '../lib/share';
      versus  {eyebrow, names, subs, colors, score, rows: [{label, values, lead}], photos?}
      tiles   {eyebrow, title, sub, color, tiles: [{label, value, note}], photo?}
      list    {eyebrow, title, sub, color, rows: [{lead, name, sub, value, photo?}]}
+     report  {eyebrow, title, sub, color, person?, overall: {grade, note}, rows: [{label, grade, pct, value}], verdict}
      grid    {eyebrow, title, sub, color, rows: [{lead, name, lines, photo?}], summary?}
    plus {foot} and the page address ({path}). Photos are ESPN headshots, filled
    in by lib/photos.js; anyone without one gets their initials. */
@@ -74,6 +75,26 @@ function Tiles({spec}) {
   </>;
 }
 
+function Report({spec}) {
+  return <>
+    <div className="sc-title with-photo">
+      <Photo src={spec.photo} name={spec.title} color={spec.color} className="sc-hero-photo"/>
+      <div className="sc-title-text">
+        <b style={{'--c': onDark(spec.color)}}>{spec.title}</b>
+        <small>{spec.sub}</small>
+      </div>
+      <div className="sc-overall" style={{'--c': onDark(spec.color)}}><strong>{spec.overall.grade}</strong><small>{spec.overall.note}</small></div>
+    </div>
+    <div className="sc-report">
+      {spec.rows.map(row => <div className="sc-grade" key={row.label}>
+        <b className={`sc-letter g-${row.grade[0].toLowerCase()}`}>{row.grade}</b>
+        <span className="sc-grade-body"><span className="sc-grade-top"><em>{row.label}</em><strong>{row.value}</strong></span><i><u style={{width: `${row.pct}%`, '--c': onDark(spec.color)}}/></i></span>
+      </div>)}
+    </div>
+    {spec.verdict && <p className="sc-verdict">{spec.verdict}</p>}
+  </>;
+}
+
 function List({spec}) {
   const faces = spec.rows.some(row => row.photo !== undefined);
   return <>
@@ -120,7 +141,7 @@ const shownLink = path => { const host = siteHost(); return path && `${host}${pa
 
 const ShareCard = forwardRef(function ShareCard({spec}, ref) {
   const accent = onDark(spec.colors?.[0] || spec.color);
-  const Body = {versus: Versus, tiles: Tiles, list: List, grid: Grid}[spec.kind];
+  const Body = {versus: Versus, tiles: Tiles, list: List, grid: Grid, report: Report}[spec.kind];
   return <div className={`sc-card sc-kind-${spec.kind}`} ref={ref} style={{'--accent': accent}}>
     <Head spec={spec}/>
     <Body spec={spec}/>
