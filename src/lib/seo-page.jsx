@@ -4,13 +4,13 @@ import ClientApp from '../components/ClientApp';
 
 /* Pages written by scripts/prerender.mjs: route -> {title, description, body, ogName}.
    A route that isn't in there (any other player or pairing) still opens the
-   app, just with generic tags. */
+   app with generic tags, kept out of the index so it doesn't compete with the real pages. */
 
 export const routesUnder = prefix => Object.keys(pages).filter(route => route.startsWith(`${prefix}/`)).map(route => route.slice(prefix.length + 1));
 
 export function seoMetadata(route) {
   const page = pages[route];
-  if (!page) return {alternates: {canonical: route}};
+  if (!page) return {alternates: {canonical: route}, robots: {index: false}};
   const images = [page.ogName ? `/og/${page.ogName}.jpg` : '/og-default.jpg'];
   return {
     title: page.title,

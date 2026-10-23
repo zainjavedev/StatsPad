@@ -25,6 +25,7 @@ const manifestFile = path.join(root, 'src/seo/pages.json');
 const cacheDir = path.join(root, '.next', 'cache', 'statspads-og');
 const LIMIT = Number(process.env.SEO_LIMIT) || Infinity;
 const SKIP_OG = process.env.SKIP_OG === '1';
+const OPENING_WEEK_GAMES = 5;
 const TOP_PLAYERS_FOR_PAIRS = 20;
 const TOP_TEAMS_FOR_PAIRS = 12;
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
@@ -40,7 +41,7 @@ const fixed = (value, places = 1) => Number(value).toFixed(places);
 const readRows = file => { try { const data = read(file); return data.players?.length ? data : null; } catch { return null; } };
 const settled = key => {
   const players = readRows(`public/data/${key}/regular-season.json`), teamRows = readRows(`public/data/${key}/teams-regular-season.json`);
-  return Boolean(players && teamRows) && (key !== SEASONS[0] || (players.players.length >= 150 && teamRows.players.length >= 30));
+  return Boolean(players && teamRows) && (key !== SEASONS[0] || (players.players.length >= 150 && teamRows.players.length >= 30 && Math.max(...players.players.map(p => p.gamesPlayed)) >= OPENING_WEEK_GAMES));
 };
 const regularKey = SEASONS.find(settled);
 if (!regularKey) throw new Error('No season data found under public/data');
