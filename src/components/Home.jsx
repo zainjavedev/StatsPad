@@ -7,7 +7,7 @@ import StandingsPage from './StandingsPage';
 import GamePage from './GamePage';
 import { isAppPath, navigate } from '../lib/nav';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, BarChart3, CalendarDays, Check, Copy, Flame, Home as HomeIcon, Link2, ListOrdered, Moon, Search, Sun, Trophy, Users, X } from 'lucide-react';
+import { ArrowLeft, BarChart3, BookOpen, Check, Flame, Home as HomeIcon, Moon, Search, Sun, Trophy, Users, X } from 'lucide-react';
 import TeamPage from './TeamPage';
 import TeamsIndex from './TeamsIndex';
 import Radar from './Radar';
@@ -47,7 +47,6 @@ const STAT_GROUPS = {
   offense: [['points','PPG'],['assists','APG'],['fieldGoalPercentage','FG%'],['threePointPercentage','3P%'],['trueShootingPercentage','TS%'],['turnovers','TOV',true]],
   defense: [['steals','SPG'],['blocks','BPG'],['totalRebounds','RPG'],['defensiveRebounds','DRB'],['personalFouls','PF',true],['turnovers','TOV',true]],
 };
-const TABLE_STATS = [['points','PPG'],['assists','APG'],['totalRebounds','RPG'],['steals','SPG'],['blocks','BPG'],['fieldGoalPercentage','FG%'],['threePointPercentage','3P%'],['freeThrowPercentage','FT%'],['trueShootingPercentage','TS%'],['effectiveFieldGoalPercentage','eFG%'],['turnovers','TOV',true]];
 const pctKeys = new Set(['turnoverPercentage','fieldGoalPercentage','threePointPercentage','freeThrowPercentage','trueShootingPercentage','effectiveFieldGoalPercentage']);
 const valueOf = (player,key) => player?.stats?.[key] ?? 0;
 const metricValue = (player,key) => key==='trueShootingPercentage' ? (player?.stats?.fieldGoalsAttempted ? Number((player.stats.points/(2*(player.stats.fieldGoalsAttempted+.44*player.stats.freeThrowsAttempted))*100).toFixed(1)) : 0) : key==='stocks' ? valueOf(player,'steals')+valueOf(player,'blocks') : player?.stats?.[key] ?? player?.[key] ?? 0;
@@ -162,12 +161,12 @@ function VsSlot({index,entity,options,playerIds,noun,onPick,onRemove,color}){
 }
 
 
-const NAV_ITEMS = [['home','Home',HomeIcon],['schedule','Schedule',CalendarDays],['standings','Standings',ListOrdered],['leaders','Leaders',Trophy],['performances','Performances',Flame],['compare','Compare',BarChart3],['teams','Teams',Users]];
+const NAV_ITEMS = [['home','Home',HomeIcon],['leaders','Leaders',Trophy],['performances','Performances',Flame],['compare','Compare',BarChart3],['teams','Teams',Users],['blog','Blog',BookOpen]];
 
 /* A banner div, not <header>, so none of the old header rules apply. The tab
    bar is a sibling because a blurred parent would trap a fixed child. */
 function SiteHeader({page,onHome,onLeaders,onCompare,onTeams,theme,onToggleTheme}){
-  const current=page==='team'?'teams':page,go={home:onHome,leaders:onLeaders,compare:onCompare,teams:onTeams,schedule:()=>navigate('/schedule'),standings:()=>navigate('/standings'),performances:()=>navigate('/performances')};
+  const current=page==='team'?'teams':page,go={home:onHome,leaders:onLeaders,compare:onCompare,teams:onTeams,blog:()=>{window.location.href='/blog'},performances:()=>navigate('/performances')};
   const TABBAR_KEYS=['home','performances','compare'];
   const tabs=(className,items=NAV_ITEMS)=><nav className={className} aria-label="Main">{items.map(([key,label,Icon])=><button key={key} className={current===key?'active':''} aria-current={current===key?'page':undefined} onClick={()=>go[key]()}><Icon size={19} className="nav-icon"/><span>{label}</span></button>)}</nav>;
   return <>
@@ -210,7 +209,7 @@ function Profile({entity,season,playoffs,allEntities,playerIds,onBack,backLabel=
   </section>
 }
 
-function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEntityType,seasonType,switchSeason,enriched,setSelected,playerIds,enrichedPopulation,chartRef,onHome,onShare,onCopy,toast,theme,onToggleTheme}){
+function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEntityType,seasonType,switchSeason,enriched,setSelected,playerIds,enrichedPopulation,chartRef,onHome,toast,theme,onToggleTheme}){
   const ready=enriched.length>=2,noun=entityType==='team'?'teams':'players';
   const colors=[0,1].map(index=>sideColor(enriched[index]));
   const sections=entityType==='team'?TEAM_SECTIONS:VS_SECTIONS;
@@ -226,26 +225,10 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
   const smallSample=entityType==='team'?[]:enriched.slice(0,2).filter(entity=>!(seasonType==='playoffs'?entity.gamesPlayed>=3&&entity.minutesPerGame>=10:qualified(data?.players||[]).some(other=>other.playerId===entity.playerId)));
   const radarNotes=['The centre is the lowest rotation player in the league and the edge is the highest, so distance shows how far apart two players really are. 3P% needs at least one attempt a game to count. Defense averages steals and blocks, a box-score stand-in for defending. Turnovers and fouls are in the stat rows below.',...smallSample.map(entity=>`Small sample: ${entity.playerName} played ${entity.gamesPlayed} game${entity.gamesPlayed===1?'':'s'} at ${entity.minutesPerGame} MPG, so these rankings can swing a lot.`)];
   const radarScope=entityType==='team'?'all 30 teams':`${enrichedPopulation.length} ${seasonType==='playoffs'?'playoff':stageOf(seasonType).replace(' ','-')} rotation players`;
-  const SHARE_KEYS=['points','totalRebounds','assists','steals','blocks','fieldGoalPercentage','threePointPercentage','trueShootingPercentage'];
-  const shareMetrics=SHARE_KEYS.map(key=>sections.flatMap(([,metrics])=>metrics).find(metric=>metric[0]===key)).filter(Boolean);
-  const tally=ready?sections.filter(([title])=>title!=='Season').flatMap(([,metrics])=>metrics).reduce((total,metric)=>{const lead=leadOf(enriched,metric);if(lead>=0)total[lead]+=1;return total},[0,0]):[0,0];
-  const shareNames=enriched.slice(0,2).map(entity=>entity.playerName);
-  const shareTitle=ready?shareNames.join(' vs '):'',shareFile=shareNames.map(name=>name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')).join('-vs-')||'comparison';
-  const sharePath=ready?compareUrl(shareNames,entityType,seasonType):'/compare';
-  const shareSpec=ready?{kind:'versus',eyebrow:`Head to head · ${pretty(data.season)}`,names:shareNames,people:entityType==='team'?undefined:enriched.slice(0,2).map(entity=>({name:entity.playerName,playerId:entity.playerId})),
-    subs:enriched.slice(0,2).map(entity=>entityType==='team'?`${entity.gamesPlayed} games`:`${teamLabel(entity.team)} · ${entity.position}`),
-    colors:enriched.slice(0,2).map(sideColor),score:tally,
-    rows:shareMetrics.map(metric=>({label:metric[1],values:enriched.slice(0,2).map(entity=>statText(statValue(entity,metric[0]),metric[0],metric[3])),lead:leadOf(enriched,metric)})),
-    foot:`${pretty(data.season)} ${stageOf(seasonType)}, per game`,path:sharePath}:null;
   return <main className="h2h-main"><SiteHeader page="compare" onHome={onHome} onCompare={()=>{}} onTeams={onTeams} onLeaders={onLeaders} theme={theme} onToggleTheme={onToggleTheme}/><section className="h2h-page">
     <div className="cmp-bar">
       <div className="pills"><button className={entityType==='player'?'active':''} onClick={()=>setEntityType('player')}>Players</button><button className={entityType==='team'?'active':''} onClick={()=>setEntityType('team')}>Teams</button></div>
       <SeasonTabs seasonType={seasonType} onChange={switchSeason}/>
-      <div className="cmp-actions">
-        <ShareButton spec={shareSpec} filename={shareFile} title={shareTitle} text={`${shareTitle} on StatsPads`} path={sharePath}/>
-        <button className="ghost-button" onClick={onShare} title="Copy a link to this comparison"><Link2 size={15}/> Link</button>
-        <button className="ghost-button" onClick={onCopy} disabled={!ready} title="Copy the verdict as text"><Copy size={15}/> Copy</button>
-      </div>
     </div>
     <section className="vs-card" ref={chartRef}>
       <div className="vs-head">
@@ -270,7 +253,7 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
 export default function Home(){
   const paramsOnLoad=useMemo(()=>routeParams(location.pathname,location.search),[]);
   const[statSlug,setStatSlug]=useState(()=>paramsOnLoad.get('stat')||'points');
-  const[seasonType,setSeasonType]=useState(()=>paramsOnLoad.get('type')==='playoffs'?'playoffs':'regular-season'),[seasonChanging,setSeasonChanging]=useState(false),[entityType,setEntityType]=useState(()=>paramsOnLoad.get('mode')||'player'),[data,setData]=useState(null),[,setSplits]=useState(null),[selected,setSelected]=useState([]),[toast,setToast]=useState(''),[playerIds,setPlayerIds]=useState({}),[catalog,setCatalog]=useState({players:[],teams:[]}),[gameId,setGameId]=useState(()=>paramsOnLoad.get('game')),[page,setPage]=useState(['account','schedule','standings','performances','stat','game'].includes(paramsOnLoad.get('view'))?paramsOnLoad.get('view'):paramsOnLoad.get('view')==='leaders'?'leaders':paramsOnLoad.get('view')==='teams'?'teams':paramsOnLoad.has('team')?'team':paramsOnLoad.has('players')?'compare':paramsOnLoad.has('profile')?'profile':'home'),[regularPlayers,setRegularPlayers]=useState(null),[regularSeason,setRegularSeason]=useState(null),[profileFrom,setProfileFrom]=useState(null),[profile,setProfile]=useState(null),[profileBundle,setProfileBundle]=useState(null),[,setYearsTick]=useState(0),[teamCode,setTeamCode]=useState(()=>TEAMS[paramsOnLoad.get('team')]?paramsOnLoad.get('team'):'PHI');
+  const[seasonType,setSeasonType]=useState(()=>paramsOnLoad.get('type')==='playoffs'?'playoffs':'regular-season'),[seasonChanging,setSeasonChanging]=useState(false),[entityType,setEntityType]=useState(()=>paramsOnLoad.get('mode')||'player'),[data,setData]=useState(null),[,setSplits]=useState(null),[selected,setSelected]=useState([]),[toast]=useState(''),[playerIds,setPlayerIds]=useState({}),[catalog,setCatalog]=useState({players:[],teams:[]}),[gameId,setGameId]=useState(()=>paramsOnLoad.get('game')),[page,setPage]=useState(['account','schedule','standings','performances','stat','game'].includes(paramsOnLoad.get('view'))?paramsOnLoad.get('view'):paramsOnLoad.get('view')==='leaders'?'leaders':paramsOnLoad.get('view')==='teams'?'teams':paramsOnLoad.has('team')?'team':paramsOnLoad.has('players')?'compare':paramsOnLoad.has('profile')?'profile':'home'),[regularPlayers,setRegularPlayers]=useState(null),[regularSeason,setRegularSeason]=useState(null),[profileFrom,setProfileFrom]=useState(null),[profile,setProfile]=useState(null),[profileBundle,setProfileBundle]=useState(null),[,setYearsTick]=useState(0),[teamCode,setTeamCode]=useState(()=>TEAMS[paramsOnLoad.get('team')]?paramsOnLoad.get('team'):'PHI');
   const chartRef=useRef(null),seasonTransitionRef=useRef(0);
   const[theme,setTheme]=useState(()=>{try{return localStorage.getItem('statspad-theme')||'dark'}catch{return 'dark'}});
   useEffect(()=>{document.documentElement.dataset.theme=theme;try{localStorage.setItem('statspad-theme',theme)}catch{/* private mode */}},[theme]);
@@ -336,10 +319,7 @@ export default function Home(){
     return()=>{window.removeEventListener('popstate',back);window.removeEventListener('statspad:navigate',go);document.removeEventListener('click',click)};
   },[]);
   const enrichedPopulation=useMemo(()=>population.map(enrich),[population]);
-  const notify=message=>{setToast(message);setTimeout(()=>setToast(''),2200)};
   const switchSeason=async next=>{if(next===seasonType||seasonChanging)return;const transition=++seasonTransitionRef.current;setSeasonChanging(true);try{const[bundle]=await Promise.all([loadSeasonBundle(next),new Promise(resolve=>window.setTimeout(resolve,180))]);if(transition!==seasonTransitionRef.current)return;setCatalog({players:bundle.players.players,teams:bundle.teams.players});setSplits(bundle.splits);setData(entityType==='team'?bundle.teams:bundle.players);setSeasonType(next);if(page==='leaders')history.pushState({},'',leadersUrl(next));window.requestAnimationFrame(()=>window.requestAnimationFrame(()=>setSeasonChanging(false)))}catch{setSeasonChanging(false)}};
-  const share=async()=>{const url=`${location.origin}${compareUrl(enriched.map(p=>p.playerName),entityType,seasonType)}`;await navigator.clipboard.writeText(url);notify('Comparison link copied')};
-  const copyTake=async()=>{const leaders=TABLE_STATS.slice(0,5).map(([key,label,inverse])=>{const ordered=[...enriched].sort((a,b)=>(valueOf(b,key)-valueOf(a,key))*(inverse?-1:1));return `${label}: ${ordered[0]?.playerName} (${format(valueOf(ordered[0],key),key)})`});await navigator.clipboard.writeText(`${enriched.map(p=>p.playerName).join(' vs ')} — 2025-26 ${data.seasonType}\n\n${leaders.join('\n')}\n\nMade with StatsPads`);notify('Debate-ready take copied')};
   const goHomeEarly=()=>navigate('/');
   if(page==='game')return <main><SiteHeader page='schedule' onHome={goHomeEarly} onCompare={()=>navigate('/compare')} onTeams={()=>navigate('/teams')} onLeaders={()=>navigate('/leaders')} theme={theme} onToggleTheme={toggleTheme}/><GamePage key={gameId} id={gameId}/><SiteFooter/></main>;
   if(page==='schedule'||page==='standings'||page==='performances')return <main><SiteHeader page={page} onHome={goHomeEarly} onCompare={()=>navigate('/compare')} onTeams={()=>navigate('/teams')} onLeaders={()=>navigate('/leaders')} theme={theme} onToggleTheme={toggleTheme}/>{page==='schedule'?<SchedulePage/>:page==='performances'?<PerformancesPage/>:<StandingsPage/>}<SiteFooter/></main>;
@@ -361,5 +341,5 @@ export default function Home(){
   if(page==='teams')return <main><SiteHeader page={page} onHome={goHome} onCompare={()=>openCompare()} onTeams={openTeams} onLeaders={openLeaders} theme={theme} onToggleTheme={toggleTheme}/><TeamsIndex onOpen={openTeam}/><SiteFooter/></main>;
   if(page==='team')return <main><SiteHeader page={page} onHome={goHome} onCompare={()=>openCompare()} onTeams={openTeams} onLeaders={openLeaders} theme={theme} onToggleTheme={toggleTheme}/>{regularPlayers?<TeamPage teamCode={teamCode} leaguePlayers={regularPlayers} season={regularSeason} onOpen={player=>openProfile(player,'team')} onSwitchTeam={openTeam}/>:<TeamLoading teamCode={teamCode} color={TEAMS[teamCode].color} onPick={openTeam}/>}<SiteFooter/></main>;
   if(page==='profile'&&profile){const pb=profileBundle,entities=pb?(profile.entityType==='team'?pb.teams.players:pb.players.players):(profile.entityType==='team'?catalog.teams:catalog.players),shown=entities.find(e=>e.playerId===profile.playerId||matchesName(e.playerName,profile.playerName))||profile;return <main><SiteHeader page={page} onHome={goHome} onCompare={()=>openCompare()} onTeams={openTeams} onLeaders={openLeaders} theme={theme} onToggleTheme={toggleTheme}/><Profile season={pb?.season||data?.season} playoffs={seasonType==='playoffs'} onOpen={player=>openProfile(player)} entity={shown} allEntities={entities} playerIds={playerIds} onBack={profileFrom==='team'?()=>openTeam():goHome} backLabel={profileFrom==='team'?`Back to the ${nickname(teamCode)}`:undefined} onCompare={openCompare}/><SiteFooter/></main>}
-  return <ComparisonPage leaguePlayers={regularPlayers||catalog.players} onTeams={openTeams} onLeaders={openLeaders} data={data} entityType={entityType} setEntityType={setEntityType} seasonType={seasonType} switchSeason={switchSeason} enriched={enriched} setSelected={setSelected} playerIds={playerIds} enrichedPopulation={enrichedPopulation} chartRef={chartRef} onHome={goHome} onShare={share} onCopy={copyTake} toast={toast} theme={theme} onToggleTheme={toggleTheme}/>;
+  return <ComparisonPage leaguePlayers={regularPlayers||catalog.players} onTeams={openTeams} onLeaders={openLeaders} data={data} entityType={entityType} setEntityType={setEntityType} seasonType={seasonType} switchSeason={switchSeason} enriched={enriched} setSelected={setSelected} playerIds={playerIds} enrichedPopulation={enrichedPopulation} chartRef={chartRef} onHome={goHome} toast={toast} theme={theme} onToggleTheme={toggleTheme}/>;
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ArrowLeft, Eye } from 'lucide-react';
 import { revealGame, useSpoilers } from '../lib/spoilers';
 import { performancesOf } from '../lib/performances';
+import { rating } from '../lib/playerGame';
 import PlayerGame from './PlayerGame';
 import { PerfCard } from './RecentPerformances';
 import SpoilerToggle, { Hidden } from './SpoilerToggle';
@@ -209,16 +210,15 @@ export default function GamePage({id}) {
       <div className="gp-tabs" role="group" aria-label="Team">
         {ordered.map((team, index) => <button key={team.abbr} className={side === index ? 'active' : ''} onClick={() => setSide(index)}>{team.logo && <img src={team.logo} alt=""/>}{team.name}</button>)}
       </div>
-      {ordered[side] && (() => {
-        const team = ordered[side];
-        const rows = performancesOf(box, id).filter(line => line.team === team.abbr);
-        const lines = [...rows].sort((a, b) => (num(b.player.stats.PTS) - num(a.player.stats.PTS)) || (b.rating - a.rating));
+      <div className="gd-sides">{ordered.map((team, index) => {
+        const lines = performancesOf(box, id).filter(line => line.team === team.abbr).sort((a, b) => rating(b.player.stats) - rating(a.player.stats));
         const out = team.players.filter(player => !player.starter && player.out);
-        return <section className="gd-team gd-cards">
+        return <section key={team.abbr} className={`gd-team gd-cards${side === index ? ' on' : ''}`}>
+          <h3>{team.logo && <img src={team.logo} alt=""/>}{team.name}</h3>
           <ul className="rp-list">{lines.map(line => <li key={line.player.id}><PerfCard line={line} onPick={pick}/></li>)}</ul>
           {out.length > 0 && <p className="gd-out">Did not play: {out.map(player => player.name).join(', ')}</p>}
         </section>;
-      })()}
+      })}</div>
       {ordered.length === 2 && <Radar axes={shapeAxes(ordered, ordered.map(team => team.abbr === box.away.abbr ? box.away.score : box.home.score))} names={ordered.map(team => team.abbr === box.away.abbr ? box.away.short : box.home.short)} colors={['var(--accent)', 'var(--series-2)']} scope="a typical NBA game" notes={['Each spoke runs from a low to a high night for that stat, so the shape shows how each team played, not season averages. Ball care rewards fewer turnovers.']}/>}
     </>}
   </section>;

@@ -2661,13 +2661,6 @@ a.pk-row:hover{background:var(--ink-2)}
 .story-feed .cat-chips button{height:40px;align-self:center}
 
 /* Player game report: his other games as a strip, and the big three beside his photo. */
-.pg-strip{display:flex;gap:14px;overflow-x:auto;padding:4px 2px 10px;margin:0 0 8px;scrollbar-width:none}
-.pg-strip a{flex:none;display:grid;justify-items:center;gap:6px;color:var(--text-3);text-decoration:none;padding-bottom:6px;border-bottom:3px solid transparent;font-size:12px;font-weight:600}
-.pg-strip a.on{color:var(--text-1);border-bottom-color:var(--text-1)}
-.pg-strip-face{position:relative;display:block;width:54px;height:54px}
-.pg-strip-face img,.pg-strip-face i{width:54px;height:54px;border-radius:50%;object-fit:cover;object-position:top;background:var(--ink-2);display:block}
-.pg-strip-face b{position:absolute;right:-8px;top:-4px;padding:1px 6px;border-radius:999px;background:var(--ink-1);border:1px solid var(--line-2);font-size:12px;font-weight:700;color:var(--text-1);font-variant-numeric:tabular-nums}
-.pg-strip-face b.great{color:#7ee0a0}.pg-strip-face b.good{color:#b8e07e}.pg-strip-face b.poor{color:#e0907e}
 .pg-big{margin:4px 0 0;font-size:16px;font-weight:500;color:var(--text-2)}
 .pg-big b{font-size:44px;font-weight:700;line-height:1;color:var(--text-1);letter-spacing:-.02em;margin:0 2px 0 8px;font-variant-numeric:tabular-nums}
 .pg-big b:first-child{margin-left:0}
@@ -2722,7 +2715,7 @@ a.pk-row:hover{background:var(--ink-2)}
   .pg-side{position:sticky;top:84px}
   .pg-side .pg-card:first-child{margin-top:6px!important}
   .pg .shot-chart{max-width:100%}
-  .pg-strip,.pg-back{grid-column:1/-1}
+  .pg-back{grid-column:1/-1}
 }
 @media(min-width:1000px){
   .gp:has(.pg){max-width:1200px!important;width:min(1200px,100%)!important}
@@ -2885,11 +2878,11 @@ a.pk-row:hover{background:var(--ink-2)}
 }
 @media(max-width:520px){.leaders-page .story-feed{grid-template-columns:1fr!important}}
 
-/* Phone leaders: category filter as quiet text tabs instead of a row of pills. */
+/* Phone leaders: category filter as a swipeable row of pills. */
 @media(max-width:520px){
-  .leaders-page .cat-chips{gap:16px;margin:0 0 2px;height:auto}
-  .leaders-page .cat-chips button{min-height:28px!important;height:auto!important;padding:0!important;border:0!important;border-radius:0!important;background:none!important;color:var(--text-3)!important;font-size:13px!important}
-  .leaders-page .cat-chips button.active{color:var(--text-1)!important;box-shadow:inset 0 -2px 0 var(--text-1)}
+  .leaders-page .cat-chips{gap:8px;margin:0 -2px 4px;height:auto}
+  .leaders-page .cat-chips button{min-height:38px!important;height:38px!important;padding:0 16px!important;border:1px solid var(--line)!important;border-radius:999px!important;background:var(--ink-1)!important;color:var(--text-2)!important;font-size:14px!important}
+  .leaders-page .cat-chips button.active{background:var(--text-1)!important;border-color:var(--text-1)!important;color:var(--ink-1)!important;box-shadow:none}
 }
 
 /* Tied leaders: every tied headshot (up to 4) in a row, overlapping slightly. */
@@ -3115,9 +3108,6 @@ a.pk-row:hover{background:var(--ink-2)}
 /* ---------- Blog (plain server pages: /blog and /blog/[slug]) ---------- */
 .blog{min-height:100vh;display:flex;flex-direction:column;color:var(--text-1);font:16px/1.65 system-ui,sans-serif}
 .blog a{color:inherit}
-.blog-top{height:auto;min-height:64px;border-bottom:0;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;max-width:720px;width:100%;margin:0 auto;padding:20px 16px}
-.blog-brand{font-weight:800;text-decoration:none;font-size:18px}
-.blog-top nav{display:flex;gap:16px;flex-wrap:wrap}.blog-top nav a{text-decoration:none;color:var(--text-2)}.blog-top nav a:hover{color:var(--text-1);text-decoration:underline}
 .blog-main{min-height:0;flex:1;max-width:720px;width:100%;margin:0 auto;padding:16px 16px 64px}
 .blog-main h1{font-size:clamp(26px,5vw,36px);line-height:1.2;margin:8px 0 8px}
 .blog-main h2{font-size:22px;line-height:1.3;margin:40px 0 8px}
@@ -3145,7 +3135,6 @@ a.pk-row:hover{background:var(--ink-2)}
 .blog-note{font-size:14px;color:var(--text-3);margin-top:40px}
 @media (max-width:480px){.blog-cards{grid-template-columns:1fr}}
 .blog-main p{margin:0 0 16px}
-.blog-top nav{background:none;border:0;padding:0;box-shadow:none;height:auto}
 
 /* ---------- Lineups page ---------- */
 .lu-main{min-height:0;flex:1;max-width:1100px;width:100%;margin:0 auto;padding:16px 16px 64px}
@@ -3163,3 +3152,81 @@ a.pk-row:hover{background:var(--ink-2)}
 .lu-pos{flex:none;width:30px;font-size:12px;font-weight:800;color:var(--text-3);letter-spacing:.04em}
 .lu-card .lu-more{display:inline-block;margin-top:10px;font-size:13px;color:var(--text-3)}
 .lu-links{margin-top:32px;color:var(--text-3)}.lu-links a{color:var(--text-2)}
+
+/* Teams index: search box and division filter. */
+.teams-filter{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin:0 0 20px}
+.teams-search{flex:1 1 240px;min-width:0;height:44px;padding:0 16px;border:1px solid var(--line);border-radius:999px;background:var(--ink-1);color:var(--text-1);font:inherit;font-size:15px}
+.teams-search:focus-visible{outline:2px solid var(--text-1);outline-offset:2px}
+.teams-chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;max-width:100%}
+.teams-chips::-webkit-scrollbar{display:none}
+.teams-chips button{flex:none;min-height:40px;padding:0 16px;border:1px solid var(--line);border-radius:999px;background:var(--ink-1);color:var(--text-2);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.teams-chips button:hover{color:var(--text-1);border-color:var(--line-2)}
+.teams-chips button.active{background:var(--text-1);border-color:var(--text-1);color:var(--ink-1)}
+.teams-empty{color:var(--text-3);font-size:15px}
+.teams-group{margin:0 0 28px}
+.teams-group h2{margin:0 0 12px;color:var(--text-3);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+
+/* Leaders category chips: one scrollable row on a phone, sticky under the header. */
+.story-feed .cat-chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -2px 8px;padding:6px 2px;-webkit-overflow-scrolling:touch}
+.story-feed .cat-chips::-webkit-scrollbar{display:none}
+.story-feed .cat-chips button{flex:none}
+.cat-chips button.active{box-shadow:0 2px 10px rgb(0 0 0 / .18)}
+
+/* Game page: both teams side by side on desktop, starters first in position order; a tab switch on a phone. */
+.gd-sides{display:grid;grid-template-columns:1fr 1fr;gap:0 32px;align-items:start}
+.gd-sides .gd-team h3{padding-bottom:8px;border-bottom:1px solid var(--line-2)}
+.gd-sides .rp-list{display:block;max-width:none}
+@media(min-width:821px){.gp-tabs{display:none}}
+@media(max-width:820px){
+  .gd-sides{display:block}
+  .gd-sides .gd-team:not(.on){display:none}
+  .gd-sides .gd-team h3{display:none}
+}
+
+/* The final score sits at the right end of the quarter tabs. */
+.pg-tabrow{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}
+.pg-tabrow .pg-tabs{min-width:0}
+.pg-tabrow .pg-kicker{margin:14px 0 0;flex:none;font-size:14px;white-space:nowrap}
+@media(max-width:520px){.pg-tabrow .pg-kicker{margin-top:10px}}
+
+/* Blog uses the app's banner; links take the place of its tab buttons. */
+.blog .site-header-inner{width:min(1240px,100%)}
+.blog .site-brand{text-decoration:none}
+.site-nav a{position:relative;display:inline-flex;align-items:center;gap:7px;height:64px;padding:0 15px;color:var(--text-2);font-size:15px;font-weight:500;text-decoration:none}
+.site-nav a:hover{color:var(--text-1)}
+.site-nav a.active{color:var(--text-1);font-weight:600}
+.site-nav a.active::after{content:"";position:absolute;left:15px;right:15px;bottom:-1px;height:3px;border-radius:3px 3px 0 0;background:var(--text-1)}
+.blog .site-header .account-btn{display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--line);border-radius:9px;background:var(--ink-1);color:var(--text-2)}
+.blog-main.wide{max-width:1100px;padding:40px 28px 72px}
+.blog-main.wide h1{font-size:clamp(32px,5vw,48px);font-weight:900;letter-spacing:-.03em}
+.blog-grid{list-style:none;margin:32px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.blog-tile{display:flex;flex-direction:column;height:100%;overflow:hidden;border:1px solid var(--line);border-radius:16px;background:var(--ink-1);color:inherit;text-decoration:none;transition:transform .15s,box-shadow .15s,border-color .15s}
+.blog-tile:hover{transform:translateY(-3px);border-color:var(--line-2);box-shadow:0 12px 30px rgb(0 0 0 / .22)}
+.blog-cover{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:0;height:200px;overflow:hidden;background:linear-gradient(105deg,var(--ca) 0 50%,var(--cb) 50% 100%)}
+.blog-cover::after{content:"";position:absolute;inset:auto 0 0;height:40%;background:linear-gradient(transparent,rgb(0 0 0 / .35));pointer-events:none}
+.blog-cover img{position:relative;z-index:1;width:46%;max-width:190px;height:auto;align-self:flex-end;object-fit:contain}
+.blog-cover i{position:absolute;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--ink-1);color:var(--text-1);font-size:13px;font-style:normal;font-weight:900;letter-spacing:.04em;box-shadow:0 4px 14px rgb(0 0 0 / .35)}
+.blog-cover em{position:absolute;z-index:2;left:12px;top:12px;padding:4px 10px;border-radius:999px;background:rgb(0 0 0 / .55);color:#fff;font-size:11px;font-style:normal;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.blog-cover.cta{align-items:center;background:repeating-linear-gradient(135deg,var(--ink-2) 0 14px,var(--ink-1) 14px 28px)}
+.blog-cover.cta b{font-size:84px;font-weight:900;color:var(--text-3)}
+.blog-tile-body{display:flex;flex-direction:column;gap:6px;padding:16px 18px 20px}
+.blog-tile-body time{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+.blog .blog-tile-body h2{margin:0;font-size:20px;line-height:1.25}
+.blog .blog-tile-body p{margin:0;font-size:15px;color:var(--text-2);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.blog-cta{border-style:dashed}
+@media(max-width:820px){.blog .site-header-inner{height:auto;grid-template-columns:1fr auto;row-gap:0;padding-top:8px}.blog .site-nav{display:flex;grid-column:1/-1;order:3;overflow-x:auto;scrollbar-width:none}.blog .site-nav a{height:44px;padding:0 12px;font-size:14px}.blog .site-nav a.active::after{left:12px;right:12px}.blog-main.wide{padding:24px 16px 56px}.blog-cover{height:170px}}
+@media(prefers-reduced-motion:reduce){.blog-tile{transition:none}.blog-tile:hover{transform:none}}
+
+/* Performances page: wide, grouped by night, cards in a responsive grid. */
+.perfs-page{width:min(1240px,100%)}
+.perfs-night{margin:28px 0 0}
+.perfs-night h2{display:flex;align-items:baseline;gap:12px;margin:0 0 12px;padding-bottom:10px;border-bottom:1px solid var(--line);font-size:18px;font-weight:700}
+.perfs-night h2 small{color:var(--text-3);font-size:13px;font-weight:600}
+.perfs-night .rp-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+.perfs-night .rp-list>li{border:1px solid var(--line);border-radius:14px;background:var(--ink-1);transition:border-color .15s,transform .15s}
+.perfs-night .rp-list>li:hover{border-color:var(--line-2);transform:translateY(-2px)}
+.perfs-night .rp-list>li:last-child{border-bottom:1px solid var(--line)}
+.perfs-night .rp-card{padding:14px 16px}
+.perfs-night .rp-trio{gap:2px 12px}.perfs-night .rp-trio b{font-size:26px}
+@media(max-width:520px){.perfs-page{padding:16px 14px 90px}.perfs-night .rp-list{grid-template-columns:1fr}.perfs-night .rp-card{padding:10px 12px}.perfs-night .rp-trio b{font-size:22px}}
+@media(prefers-reduced-motion:reduce){.perfs-night .rp-list>li{transition:none}.perfs-night .rp-list>li:hover{transform:none}}

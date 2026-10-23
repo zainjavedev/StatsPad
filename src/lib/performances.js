@@ -34,6 +34,12 @@ export async function bestOfNight(games, limit = 5) {
   return boxes.flatMap((box, index) => performancesOf(box, games[index].id)).sort((a, b) => b.rating - a.rating).slice(0, limit);
 }
 
+/* Latest night first; within a night the best line first. */
+export const newestFirst = lines => {
+  const dayOf = line => (line.date ? new Date(line.date.getFullYear(), line.date.getMonth(), line.date.getDate()).getTime() : 0);
+  return [...lines].sort((a, b) => dayOf(b) - dayOf(a) || b.rating - a.rating);
+};
+
 export const headline = ({player}) => {
   const s = player.stats, parts = [`${s.PTS} PTS`];
   if (num(s.REB) >= 5) parts.push(`${s.REB} REB`);

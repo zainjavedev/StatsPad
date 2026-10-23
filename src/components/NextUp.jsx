@@ -48,9 +48,10 @@ export default function GameTicker({games, results, favorites}) {
   }, []);
   const scrollBy = direction => scroller.current?.scrollBy({left: direction * Math.max(240, scroller.current.clientWidth * .7), behavior: 'smooth'});
   const ready = games !== null && results !== null;
-  /* Open with the next game near the left edge and the latest results just behind it. */
+  /* Open with the next game in the middle, finished games on its left and upcoming ones on its right. */
   useEffect(() => {
-    if (ready && scroller.current && nextRef.current) scroller.current.scrollLeft = Math.max(0, nextRef.current.offsetLeft - scroller.current.offsetLeft - 130);
+    const node = scroller.current, next = nextRef.current;
+    if (ready && node && next) node.scrollLeft = Math.max(0, next.offsetLeft - node.offsetLeft - (node.clientWidth - next.offsetWidth) / 2);
     check();
   }, [ready, check]);
   if (!ready) return <div className="ticker loading" aria-busy="true"/>;

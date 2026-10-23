@@ -7,10 +7,14 @@ import { TEAMS } from '../src/lib/teams.js';
    the "starters" unit of the club's roster file, keeping everyone else in their existing order.
    PHI is hand-curated, so it is left alone unless --all is passed.
 
-   Usage: node scripts/build-starters.mjs [--all] */
+   --regular reads the finished regular-season games instead, so the fives follow who actually started the
+   first games of the season. Clubs that have not played one keep their current five, and the preseason
+   summary file is left as it is.
 
-const all = process.argv.includes('--all');
-const rows = JSON.parse(fs.readFileSync('public/data/2026-27/schedule.json', 'utf8')).filter(row => row[9] === 1 && row[6] === 'post');
+   Usage: node scripts/build-starters.mjs [--all] [--regular] */
+
+const all = process.argv.includes('--all'), regular = process.argv.includes('--regular');
+const rows = JSON.parse(fs.readFileSync('public/data/2026-27/schedule.json', 'utf8')).filter(row => (row[9] === 1) !== regular && row[6] === 'post');
 const plain = name => name.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[.']/g, '').replace(/\s+/g, ' ').trim();
 const codeOf = abbr => Object.keys(TEAMS).find(code => TEAMS[code].espn === String(abbr).toLowerCase());
 const tally = Object.fromEntries(Object.keys(TEAMS).map(code => [code, new Map()]));
@@ -48,7 +52,7 @@ for (const code of Object.keys(TEAMS)) {
   const roster = JSON.parse(fs.readFileSync(file, 'utf8'));
   const stats = [...tally[code].values()];
   summary[code] = stats.sort((a, b) => b.starts - a.starts || b.minutes - a.minutes).map(record => ({...record, ppg: +(record.pts / record.games).toFixed(1), rpg: +(record.reb / record.games).toFixed(1), apg: +(record.ast / record.games).toFixed(1)}));
-  if ((code === 'PHI' && !all) || !stats.length) { console.log(`${code}: kept (${code === 'PHI' ? 'hand-curated' : 'no preseason games'})`); continue; }
+  if ((code === 'PHI' && !all) || !stats.length) { console.log(`${code}: kept (${code === 'PHI' ? 'hand-curated' : regular ? 'no games yet' : 'no preseason games'})`); continue; }
 
   const onRoster = roster.players.filter(player => stats.some(stat => stat.espnId === player.espnId || plain(stat.name) === plain(player.name)));
   const record = player => stats.find(stat => stat.espnId === player.espnId || plain(stat.name) === plain(player.name));
@@ -71,10 +75,10 @@ for (const code of Object.keys(TEAMS)) {
     cursor += Math.min(take, rest.length - cursor);
   }
   roster.players = players;
-  roster.note = 'Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.';
+  roster.note = `Starters are the five who started the most 2026–27 ${regular ? 'regular-season' : 'preseason'} games so far; the rest of the rotation is estimated, and coaches can change any of it.`;
   roster.lastUpdated = new Date().toISOString().slice(0, 10);
   fs.writeFileSync(file, `${JSON.stringify(roster, null, 2)}\n`);
   console.log(`${code}: ${lineup.map(player => `${placed.get(player)} ${player.name}`).join(', ')}`);
 }
-fs.writeFileSync('public/data/2026-27/preseason-starters.json', JSON.stringify(summary));
-console.log(`starters: ${rows.length} preseason games read`);
+if (!regular) fs.writeFileSync('public/data/2026-27/preseason-starters.json', JSON.stringify(summary));
+console.log(`starters: ${rows.length} ${regular ? 'regular-season' : 'preseason'} games read`);

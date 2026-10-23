@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { bestOfNight } from '../lib/performances';
+import { bestOfNight, newestFirst } from '../lib/performances';
 import { fps, rating } from '../lib/playerGame';
 import { TEAMS, espnLogoUrl } from '../lib/teams';
 
@@ -19,14 +19,14 @@ function trio(stats) {
 }
 
 /* One performance card; used on Home and beside a player's game report. */
-export function PerfCard({line, onPick}) {
+export function PerfCard({line, onPick, showDate = true}) {
   const s = line.player.stats, code = codeOf(line.team), oppCode = codeOf(line.opp);
   const row = {PTS: num(s.PTS), REB: num(s.REB), AST: num(s.AST), STL: num(s.STL), BLK: num(s.BLK), TO: num(s.TO)};
   return <>
     <a className="rp-card" href={`/games/${line.gameId}?player=${line.player.id}`} onClick={onPick ? event => { event.preventDefault(); onPick(line.player.id); } : undefined}>
       <span className="rp-face">{line.player.photo ? <img src={line.player.photo} alt="" loading="lazy"/> : <i/>}{code && <img className="rp-team" src={espnLogoUrl(code)} alt=""/>}</span>
       <span className="rp-main">
-        <span className="rp-top"><b>{short(line.player.name)}</b><small> · {fps(row)} fps{line.date ? ` · ${day.format(line.date)}` : ''}</small></span>
+        <span className="rp-top"><b>{short(line.player.name)}</b><small> · {fps(row)} fps{showDate && line.date ? ` · ${day.format(line.date)}` : ''}</small></span>
         <span className="rp-trio">{trio(s).map(([value, label]) => <span key={label}><b>{value}</b>{label}</span>)}</span>
         <small className="rp-game">{code && <img src={espnLogoUrl(code)} alt={line.team}/>}{line.won ? 'W' : 'L'} {line.score}{oppCode && <img src={espnLogoUrl(oppCode)} alt={line.opp}/>}</small>
       </span>
@@ -37,14 +37,18 @@ export function PerfCard({line, onPick}) {
 
 const LIMIT = 6;
 
+/* The lines worked out for each results list, so a return visit shows them without reading the box scores again. */
+const worked = new WeakMap();
+
 export default function RecentPerformances({results}) {
-  const [lines, setLines] = useState(null);
+  const [lines, setLines] = useState(() => (results ? worked.get(results) ?? null : null));
   useEffect(() => {
     if (!results?.length) return undefined;
     let live = true;
     bestOfNight(results, 400).then(found => {
       const seen = new Set();
-      const unique = found.filter(line => (seen.has(line.player.name) ? false : seen.add(line.player.name)));
+      const unique = newestFirst(found).filter(line => (seen.has(line.gameId) ? false : seen.add(line.gameId)));
+      worked.set(results, unique.slice(0, LIMIT));
       if (live) setLines(unique.slice(0, LIMIT));
     });
     return () => { live = false; };
