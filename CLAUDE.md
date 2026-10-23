@@ -4,12 +4,12 @@ StatsPads (statspads.com): a fast NBA stats site. Compare players and teams on a
 
 ## Stack
 
-Next.js 14 app router, React 18, Tailwind, Neon Postgres, web-push, satori + resvg for share/OG images. Deployed on Vercel from `master`. No TypeScript.
+Next.js 14 app router, React 18, Tailwind, Neon Postgres, web-push. Deployed on Vercel from `master`. No TypeScript.
 
 ## Commands
 
 ```bash
-npm run dev      # runs prerender first (SKIP_OG=1), then next dev
+npm run dev      # runs prerender first, then next dev
 npm run build    # node scripts/prerender.mjs && next build
 npm run lint     # eslint, zero warnings allowed
 ```
@@ -24,11 +24,11 @@ Run `npm run lint` before committing. The build fails on lint errors.
 
 ## SEO and prerender
 
-`scripts/prerender.mjs` generates `src/seo/pages.json`, `public/sitemap.xml`, `public/robots.txt` and `public/og/*`. All of these are gitignored, so never edit or commit them. Change the script instead.
+`scripts/prerender.mjs` generates `src/seo/pages.json`, `public/sitemap.xml`, and `public/robots.txt`. All of these are gitignored, so never edit or commit them. Change the script instead.
 
 - Pages render from `pages.json` through `src/lib/seo-page.jsx`. A route that isn't in it opens the app with generic tags and is `noindex`.
 - Until the 2026-27 season has a player with `OPENING_WEEK_GAMES` games and 150+ players, the static pages use preseason stats. After that they switch to regular-season stats and the sitemap shrinks accordingly.
-- `SEO_LIMIT=n` builds n pages of each kind for quick tests. `SKIP_OG=1` skips share-card images. A limited run overwrites `pages.json` and the sitemap, so rerun the full prerender afterwards.
+- `SEO_LIMIT=n` builds n pages of each kind for quick tests. A limited run overwrites `pages.json` and the sitemap, so rerun the full prerender afterwards.
 - New indexable routes need an entry in `prerender.mjs` (title, description, body), not just a page file.
 
 ## Data rules

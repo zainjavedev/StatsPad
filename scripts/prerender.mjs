@@ -1,9 +1,5 @@
-import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
-import satori from 'satori';
-import { Resvg } from '@resvg/resvg-js';
-import sharp from 'sharp';
 import { TEAMS, teamCodeOf } from '../src/lib/teams.js';
 import { SEASONS, pretty } from '../src/lib/season.js';
 import { makeCopy } from './seo-copy.mjs';
@@ -18,15 +14,12 @@ import { SITE, compareUrl, playerUrl, slugify, teamUrl } from '../src/lib/routes
    sitemap. React replaces the static text as soon as the app loads; search
    engines and link previews read it as is.
 
-   SEO_LIMIT=n builds only n pages of each kind; SKIP_OG=1 skips the images. */
+   SEO_LIMIT=n builds only n pages of each kind; */
 
 const root = path.resolve(import.meta.dirname, '..');
 const publicDir = path.join(root, 'public');
 const manifestFile = path.join(root, 'src/seo/pages.json');
-/* Inside .next/cache so Vercel keeps it between deploys: downloaded photos and finished cards both live here. */
-const cacheDir = path.join(root, '.next', 'cache', 'statspads-og');
 const LIMIT = Number(process.env.SEO_LIMIT) || Infinity;
-const SKIP_OG = process.env.SKIP_OG === '1';
 const OPENING_WEEK_GAMES = 5;
 const TOP_PLAYERS_FOR_PAIRS = 20;
 const TOP_TEAMS_FOR_PAIRS = 12;
@@ -72,13 +65,12 @@ const teams = Object.entries(TEAMS).map(([code, info]) => {
   const row = teamData.find(t => teamCodeOf(t.team) === code);
   return {code, ...info, slug: slugify(info.name), stats: row?.stats, roster: fs.existsSync(path.join(root, `public/data/2026-27/rosters/${code}.json`)) ? read(`public/data/2026-27/rosters/${code}.json`) : null};
 }).filter(team => team.stats);
-const colorOf = p => TEAMS[p.code]?.color || '#3b3b45';
 
 /* ---------- html ---------- */
 const pages = {};
 const written = [];
-function writePage({route, title, description, body, ogName, jsonLd}) {
-  pages[route] = {title, description, body, ogName: ogName ?? null, jsonLd: jsonLd ?? null};
+function writePage({route, title, description, body, jsonLd}) {
+  pages[route] = {title, description, body, jsonLd: jsonLd ?? null};
   if (route !== '/') written.push(route);
 }
 const table = (heads, rows, caption) => `<table>${caption ? `<caption>${esc(caption)}</caption>` : ''}<thead><tr>${heads.map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
@@ -94,92 +86,9 @@ const PLAYER_ROWS = [['GP', p => p.gamesPlayed, 0], ['MPG', p => p.minutesPerGam
 const TEAM_ROWS = [['PPG', t => t.stats.points], ['APG', t => t.stats.assists], ['RPG', t => t.stats.totalRebounds], ['SPG', t => t.stats.steals], ['BPG', t => t.stats.blocks], ['FG%', t => t.stats.fieldGoalPercentage], ['3P%', t => t.stats.threePointPercentage], ['3PM', t => t.stats.threePointersMade], ['FT%', t => t.stats.freeThrowPercentage], ['eFG%', t => t.stats.effectiveFieldGoalPercentage]];
 const cell = (rows, a, b) => rows.map(([label, get, places]) => [esc(label), fixed(get(a), places ?? 1), fixed(get(b), places ?? 1)]);
 
-/* ---------- share cards ---------- */
-fs.mkdirSync(cacheDir, {recursive: true});
-const fonts = [400, 700, 800].map(weight => ({name: 'DM Sans', weight, style: 'normal', data: fs.readFileSync(path.join(root, `scripts/fonts/DMSans-${weight}.ttf`))}));
-const imageCache = new Map();
-async function dataUri(url, type) {
-  if (imageCache.has(url)) return imageCache.get(url);
-  const file = path.join(cacheDir, slugify(url) + (type === 'svg' ? '.svg' : '.png'));
-  let buffer = fs.existsSync(file) ? fs.readFileSync(file) : null;
-  if (!buffer) {
-    try { const response = await fetch(url); if (response.ok) { buffer = Buffer.from(await response.arrayBuffer()); fs.writeFileSync(file, buffer); } } catch { /* offline: no photo */ }
-  }
-  const uri = buffer ? `data:image/${type === 'svg' ? 'svg+xml' : 'png'};base64,${buffer.toString('base64')}` : null;
-  imageCache.set(url, uri);
-  return uri;
-}
-const photo = player => player.nbaId ? dataUri(`https://cdn.nba.com/headshots/nba/latest/1040x760/${player.nbaId}.png`, 'png') : player.espnId ? dataUri(`https://a.espncdn.com/i/headshots/nba/players/full/${player.espnId}.png`, 'png') : null;
-const logo = team => dataUri(`https://cdn.nba.com/logos/nba/${team.id}/global/L/logo.svg`, 'svg');
-
-const h = (style, ...children) => ({type: 'div', props: {style: {display: 'flex', ...style}, children: children.flat().filter(c => c !== null && c !== undefined && c !== false)}});
-const t = (style, text) => h({...style}, String(text));
-const img = (src, style) => ({type: 'img', props: {src, style}});
-const shade = color => `linear-gradient(160deg, ${color}, #0b0b0c)`;
-const brand = h({position: 'absolute', top: 26, left: 34, fontSize: 30, fontWeight: 800, color: '#fff', letterSpacing: -1}, 'StatsPads');
-const footAt = side => h({position: 'absolute', bottom: 18, [side]: 40, fontSize: 20, fontWeight: 700, color: 'rgba(255,255,255,.7)'}, SITE.replace('https://', ''));
-const foot = footAt('left');
-
-/* A card is only drawn again when what it shows has changed: its finished picture is kept under a hash of
-   the card's content (text, colours, photos), so an unchanged player costs a file copy, not a render. */
-async function render(name, tree) {
-  if (SKIP_OG) return;
-  try {
-    const key = crypto.createHash('sha1').update(JSON.stringify(tree)).digest('hex');
-    const kept = path.join(cacheDir, 'cards', `${key}.jpg`);
-    let jpg;
-    if (fs.existsSync(kept)) { jpg = fs.readFileSync(kept); reused += 1; } else {
-      const svg = await satori(tree, {width: 1200, height: 630, fonts});
-      const png = new Resvg(svg, {fitTo: {mode: 'width', value: 1200}}).render().asPng();
-      jpg = await sharp(png).jpeg({quality: 78, mozjpeg: true}).toBuffer();
-      fs.mkdirSync(path.dirname(kept), {recursive: true});
-      fs.writeFileSync(kept, jpg);
-    }
-    const file = path.join(publicDir, 'og', `${name}.jpg`);
-    fs.mkdirSync(path.dirname(file), {recursive: true});
-    fs.writeFileSync(file, jpg);
-    return true;
-  } catch (error) { console.warn(`og ${name}: ${error.message}`); return false; }
-}
 const statLine = p => `${fixed(p.stats.points)} PPG · ${fixed(p.stats.totalRebounds)} RPG · ${fixed(p.stats.assists)} APG`;
 
-async function compareCard(a, b) {
-  const [pa, pb] = await Promise.all([photo(a), photo(b)]);
-  const half = (p, uri, right) => h({width: 600, height: 630, position: 'relative', background: shade(colorOf(p))},
-    uri ? img(uri, {position: 'absolute', bottom: 150, [right ? 'right' : 'left']: 40, width: 520, height: 380}) : h({position: 'absolute', top: 150, left: 190, width: 220, height: 220, borderRadius: 110, background: 'rgba(255,255,255,.18)', color: '#fff', fontSize: 80, fontWeight: 800, alignItems: 'center', justifyContent: 'center'}, plain(p.playerName).split(' ').map(w => w[0]).slice(0, 2).join('')));
-  const caption = p => h({flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}, t({fontSize: 40, fontWeight: 800, color: '#fff'}, plain(p.playerName)), t({fontSize: 25, fontWeight: 700, color: 'rgba(255,255,255,.78)', marginTop: 6}, statLine(p)));
-  return h({width: 1200, height: 630, position: 'relative', background: '#0b0b0c'}, half(a, pa, false), half(b, pb, true), brand,
-    h({position: 'absolute', bottom: 0, left: 0, width: 1200, height: 175, background: 'rgba(0,0,0,.62)'}, caption(a), caption(b)),
-    h({position: 'absolute', left: 540, top: 210, width: 120, height: 120, borderRadius: 60, background: '#fff', color: '#111', fontSize: 44, fontWeight: 800, alignItems: 'center', justifyContent: 'center'}, 'VS'), foot);
-}
-async function playerCard(p) {
-  const uri = await photo(p);
-  return h({width: 1200, height: 630, position: 'relative', background: shade(colorOf(p))}, brand,
-    uri ? img(uri, {position: 'absolute', right: 20, bottom: 0, width: 650, height: 475}) : null,
-    h({position: 'absolute', left: 50, top: 150, flexDirection: 'column', width: 600},
-      t({fontSize: 72, fontWeight: 800, color: '#fff', lineHeight: 1.02, letterSpacing: -2}, plain(p.playerName)),
-      t({fontSize: 28, fontWeight: 700, color: 'rgba(255,255,255,.8)', marginTop: 14}, `${p.code ? TEAMS[p.code].name : p.team} · ${p.position} · ${yearLabel}`),
-      h({marginTop: 44, gap: 44}, [[p.stats.points, 'PPG'], [p.stats.totalRebounds, 'RPG'], [p.stats.assists, 'APG']].map(([value, label]) => h({flexDirection: 'column'}, t({fontSize: 80, fontWeight: 800, color: '#fff'}, fixed(value)), t({fontSize: 24, fontWeight: 700, color: 'rgba(255,255,255,.75)'}, label))))), foot);
-}
-const disc = (uri, size) => h({width: size, height: size, borderRadius: size / 2, background: '#fff', alignItems: 'center', justifyContent: 'center'}, uri ? img(uri, {width: size * .72, height: size * .72}) : null);
-async function teamCard(team) {
-  const uri = await logo(team);
-  const five = team.roster ? team.roster.players.filter(p => p.unit === 'starters').map(p => plain(p.name).split(' ').slice(-1)[0]).join('  ·  ') : '';
-  return h({width: 1200, height: 630, position: 'relative', background: shade(team.color)}, brand,
-    h({position: 'absolute', left: 60, top: 150, alignItems: 'center', gap: 44}, disc(uri, 250),
-      h({flexDirection: 'column', width: 760}, t({fontSize: 68, fontWeight: 800, color: '#fff', lineHeight: 1.02, letterSpacing: -2}, team.name), t({fontSize: 28, fontWeight: 700, color: 'rgba(255,255,255,.8)', marginTop: 16}, '2026–27 roster and expected starting five'), five ? t({fontSize: 26, fontWeight: 700, color: '#fff', marginTop: 28}, five) : null)), foot);
-}
-async function teamCompareCard(a, b) {
-  const [la, lb] = await Promise.all([logo(a), logo(b)]);
-  const half = (team, uri) => h({width: 600, height: 630, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 22, background: shade(team.color)}, disc(uri, 230), t({fontSize: 44, fontWeight: 800, color: '#fff', textAlign: 'center'}, team.name), t({fontSize: 28, fontWeight: 700, color: 'rgba(255,255,255,.8)'}, `${fixed(team.stats.points)} PPG · ${fixed(team.stats.assists)} APG`));
-  return h({width: 1200, height: 630, position: 'relative'}, half(a, la), half(b, lb), brand, h({position: 'absolute', left: 540, top: 255, width: 120, height: 120, borderRadius: 60, background: '#fff', color: '#111', fontSize: 44, fontWeight: 800, alignItems: 'center', justifyContent: 'center'}, 'VS'), foot);
-}
-
 /* ---------- pages ---------- */
-const pool = (items, size = 6) => { const queue = [...items]; return Promise.all(Array.from({length: size}, async () => { while (queue.length) await queue.shift()(); })); };
-const jobs = [];
-let cards = 0, reused = 0;
-const card = (name, builder) => jobs.push(async () => { if (await render(name, await builder())) cards += 1; });
 
 const cap = items => items.slice(0, LIMIT);
 const topPlayers = players.slice(0, TOP_PLAYERS_FOR_PAIRS);
@@ -267,24 +176,20 @@ writePage({route: '/teams', title: 'NBA teams and rosters | StatsPads', descript
 
 for (const p of cap(players)) {
   const related = pairs.filter(pair => pair.includes(p)).slice(0, 4).map(([x, y]) => `<li>${link(compareUrl([x.playerName, y.playerName]), `${x.playerName} vs ${y.playerName}`)}</li>`).join('');
-  writePage({route: playerUrl(p.playerName), ogName: `players/${p.slug}`,
-    jsonLd: [crumbs(['Home', '/'], ['Players', '/stats/points'], [p.playerName, playerUrl(p.playerName)]), {'@context': 'https://schema.org', '@type': 'Person', name: p.playerName, jobTitle: 'Basketball player', url: SITE + playerUrl(p.playerName), ...(p.code ? {affiliation: {'@type': 'SportsTeam', name: TEAMS[p.code].name, sport: 'Basketball'}} : {})}],
+  writePage({route: playerUrl(p.playerName), jsonLd: [crumbs(['Home', '/'], ['Players', '/stats/points'], [p.playerName, playerUrl(p.playerName)]), {'@context': 'https://schema.org', '@type': 'Person', name: p.playerName, jobTitle: 'Basketball player', url: SITE + playerUrl(p.playerName), ...(p.code ? {affiliation: {'@type': 'SportsTeam', name: TEAMS[p.code].name, sport: 'Basketball'}} : {})}],
     title: fitTitle(`${p.playerName} stats ${pretty(seasonKey)}: ${fixed(p.stats.points)} PPG, ${fixed(p.stats.totalRebounds)} RPG, ${fixed(p.stats.assists)} APG | StatsPads`, `${p.playerName} stats ${pretty(seasonKey)}: ${fixed(p.stats.points)} PPG, ${fixed(p.stats.totalRebounds)} RPG, ${fixed(p.stats.assists)} APG`, `${p.playerName} stats ${pretty(seasonKey)}: ${fixed(p.stats.points)} PPG, ${fixed(p.stats.totalRebounds)} RPG`, `${p.playerName} stats ${pretty(seasonKey)}`),
     description: fitDescription(`${p.playerName} ${yearLabel} NBA stats: ${statLine(p)}, ${fixed(p.stats.fieldGoalPercentage)}% FG, ${fixed(p.stats.threePointPercentage)}% 3P, ${fixed(p.ts)}% TS in ${p.gamesPlayed} games. Compare ${p.playerName} with any player.`, `${p.playerName} ${yearLabel} NBA stats: ${statLine(p)}, ${fixed(p.stats.fieldGoalPercentage)}% FG, ${fixed(p.stats.threePointPercentage)}% 3P in ${p.gamesPlayed} games.`),
     body: `<main class="seo"><h1>${esc(p.playerName)} stats, ${yearLabel}</h1>${updated()}${copy.playerProfile(p)}${copy.playerRankings(p)}${table(['Stat', 'Per game'], PLAYER_ROWS.map(([label, get, places]) => [esc(label), fixed(get(p), places ?? 1)]), `${p.playerName} per-game stats, ${yearLabel}`)}${p.code ? `<p>${link(teamUrl(p.code), `${TEAMS[p.code].name} roster`)}</p>` : ''}${careerHtml(p)}${copy.teammates(p)}${copy.neighbours(p)}${related ? `<h2>Compare</h2><ul>${related}</ul>` : ''}</main>`});
-  card(`players/${p.slug}`, () => playerCard(p));
 }
 for (const team of cap(teams)) {
   const roster = team.roster?.players ?? [];
   const slug = name => bySlug.get(slugify(name));
   const line = player => slug(player.name) ? link(playerUrl(player.name), player.name) : esc(player.name);
   const starters = roster.filter(p => p.unit === 'starters');
-  writePage({route: teamUrl(team.code), ogName: `teams/${team.slug}`,
-    jsonLd: [crumbs(['Home', '/'], ['Teams', '/teams'], [team.name, teamUrl(team.code)]), {'@context': 'https://schema.org', '@type': 'SportsTeam', name: team.name, sport: 'Basketball', url: SITE + teamUrl(team.code), memberOf: {'@type': 'SportsOrganization', name: 'NBA'}}],
+  writePage({route: teamUrl(team.code), jsonLd: [crumbs(['Home', '/'], ['Teams', '/teams'], [team.name, teamUrl(team.code)]), {'@context': 'https://schema.org', '@type': 'SportsTeam', name: team.name, sport: 'Basketball', url: SITE + teamUrl(team.code), memberOf: {'@type': 'SportsOrganization', name: 'NBA'}}],
     title: fitTitle(`${team.name} roster 2026–27: expected starting five | StatsPads`, `${team.name} roster 2026–27 and starting five`, `${team.name} roster 2026–27`),
     description: fitDescription(`${team.name} 2026–27 roster with the expected starting five${starters.length ? ` (${starters.map(p => p.name).join(', ')})` : ''}, ${statsWord} per-game stats and recent results.`, `${team.name} 2026–27 roster with the expected starting five, ${statsWord} per-game stats and recent results.`),
     body: `<main class="seo"><h1>${esc(team.name)} roster, 2026–27</h1>${updated()}${copy.teamProfile(team)}${copy.teamRankings(team)}${starters.length ? `<h2>Expected starting five</h2><ol>${starters.map(p => `<li>${esc(p.slot)} ${line(p)}</li>`).join('')}</ol>` : ''}${roster.length ? `<h2>Full roster</h2><ul>${roster.map(p => `<li>${line(p)}</li>`).join('')}</ul>` : ''}<h2>${yearLabel} team stats</h2>${table(['Stat', 'Per game'], TEAM_ROWS.map(([label, get]) => [esc(label), fixed(get(team))]), `${team.name} per-game stats, ${yearLabel}`)}</main>`});
-  card(`teams/${team.slug}`, () => teamCard(team));
 }
 /* Three questions people ask about a pairing, answered from the numbers. Marked up as FAQPage so search and AI answers can quote them. */
 const moreOf = (a, b, get, unit) => {
@@ -302,22 +207,18 @@ const faqSchema = items => ({'@context': 'https://schema.org', '@type': 'FAQPage
 for (const [a, b] of cap(pairs)) {
   const route = compareUrl([a.playerName, b.playerName]);
   const faq = faqFor(a, b);
-  writePage({route, ogName: `compare/${a.slug}-vs-${b.slug}`, jsonLd: [crumbs(['Home', '/'], ['Compare', '/compare'], [`${a.playerName} vs ${b.playerName}`, route]), faqSchema(faq)],
+  writePage({route, jsonLd: [crumbs(['Home', '/'], ['Compare', '/compare'], [`${a.playerName} vs ${b.playerName}`, route]), faqSchema(faq)],
     title: fitTitle(`${a.playerName} vs ${b.playerName}: ${pretty(seasonKey)} stats | StatsPads`, `${a.playerName} vs ${b.playerName}: ${pretty(seasonKey)} stats`, `${a.playerName} vs ${b.playerName} stats`),
     description: fitDescription(`${a.playerName} vs ${b.playerName} ${yearLabel} stats side by side: ${fixed(a.stats.points)} vs ${fixed(b.stats.points)} PPG, ${fixed(a.stats.totalRebounds)} vs ${fixed(b.stats.totalRebounds)} RPG, ${fixed(a.stats.assists)} vs ${fixed(b.stats.assists)} APG, with a skill radar.`, `${a.playerName} vs ${b.playerName} stats: ${fixed(a.stats.points)} vs ${fixed(b.stats.points)} PPG, ${fixed(a.stats.totalRebounds)} vs ${fixed(b.stats.totalRebounds)} RPG, ${fixed(a.stats.assists)} vs ${fixed(b.stats.assists)} APG, with a skill radar.`),
     body: `<main class="seo"><h1>${esc(a.playerName)} vs ${esc(b.playerName)}: ${yearLabel} stats</h1><p>${esc(a.playerName)} averaged ${esc(statLine(a))}. ${esc(b.playerName)} averaged ${esc(statLine(b))}.</p>${updated()}${copy.playerComparison(a, b)}${copy.comparisonRankings(a, b)}${table(['Stat', a.playerName, b.playerName], cell(PLAYER_ROWS, a, b))}<p>${link(playerUrl(a.playerName), `${a.playerName} stats`)} · ${link(playerUrl(b.playerName), `${b.playerName} stats`)}${a.code ? ` · ${link(teamUrl(a.code), `${TEAMS[a.code].name} roster`)}` : ''}${b.code && b.code !== a.code ? ` · ${link(teamUrl(b.code), `${TEAMS[b.code].name} roster`)}` : ''}</p>${faqHtml(faq)}${copy.moreComparisons(a, b)}</main>`});
-  card(`compare/${a.slug}-vs-${b.slug}`, () => compareCard(a, b));
 }
 for (const [a, b] of cap(teamPairs)) {
-  writePage({route: compareUrl([a.name, b.name]), ogName: `compare/${a.slug}-vs-${b.slug}`,
-    title: fitTitle(`${a.name} vs ${b.name}: ${pretty(seasonKey)} team stats | StatsPads`, `${a.name} vs ${b.name}: ${pretty(seasonKey)} team stats`, `${a.name} vs ${b.name} team stats`),
+  writePage({route: compareUrl([a.name, b.name]), title: fitTitle(`${a.name} vs ${b.name}: ${pretty(seasonKey)} team stats | StatsPads`, `${a.name} vs ${b.name}: ${pretty(seasonKey)} team stats`, `${a.name} vs ${b.name} team stats`),
     description: fitDescription(`${a.name} vs ${b.name} ${yearLabel} team stats side by side: ${fixed(a.stats.points)} vs ${fixed(b.stats.points)} PPG, ${fixed(a.stats.assists)} vs ${fixed(b.stats.assists)} APG, ${fixed(a.stats.totalRebounds)} vs ${fixed(b.stats.totalRebounds)} RPG, with a skill radar and the expected starting fives.`, `${a.name} vs ${b.name} team stats: ${fixed(a.stats.points)} vs ${fixed(b.stats.points)} PPG, ${fixed(a.stats.assists)} vs ${fixed(b.stats.assists)} APG, ${fixed(a.stats.totalRebounds)} vs ${fixed(b.stats.totalRebounds)} RPG, with a skill radar.`),
     body: `<main class="seo"><h1>${esc(a.name)} vs ${esc(b.name)}: ${yearLabel} team stats</h1>${updated()}${copy.teamComparison(a, b, starterNames)}${copy.teamComparisonRankings(a, b)}${table(['Stat', a.name, b.name], cell(TEAM_ROWS, a, b))}<p>${link(teamUrl(a.code), `${a.name} roster`)} · ${link(teamUrl(b.code), `${b.name} roster`)}</p></main>`});
-  card(`compare/${a.slug}-vs-${b.slug}`, () => teamCompareCard(a, b));
 }
 
 const started = Date.now();
-await pool(jobs, 6);
 
 /* ---------- sitemap and robots ---------- */
 const today = new Date().toISOString().slice(0, 10);
@@ -325,6 +226,6 @@ const urls = ['/', '/compare', '/stats/points', '/teams', '/schedule', '/standin
 fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(route => `  <url><loc>${SITE}${route}</loc><lastmod>${today}</lastmod></url>`).join('\n')}\n</urlset>\n`);
 fs.writeFileSync(path.join(publicDir, 'llms.txt'), `# StatsPads\n\n> StatsPads (${SITE}) is a free NBA stats site: side-by-side player and team comparisons on a skill radar, league leaders, standings, the schedule, team pages with expected starting fives, and game pages with box scores. Stats come from ESPN's public feeds and are refreshed every few hours.\n\n## Main pages\n\n- [Home](${SITE}/): today's picture of the league\n- [Compare](${SITE}/compare): pick any two players or teams\n- [Stat leaders](${SITE}/leaders): top five in each major category\n- [Teams](${SITE}/teams): all 30 teams with rosters and expected starting fives\n- [Starting lineups](${SITE}/lineups): the expected starting five for every team\n- [Standings](${SITE}/standings): both conferences with seeds\n- [Schedule](${SITE}/schedule): every game of the season\n- [Top performances](${SITE}/performances): the best recent individual game lines\n- [Blog](${SITE}/blog): player comparisons and stat breakdowns\n${published().map(post => `- [${post.title}](${SITE}/blog/${post.slug}): ${post.description}`).join('\n')}\n\n## Stat rankings\n\n${LEADERS.map(entry => `- [${entry.label} leaders](${SITE}${statUrl(entry.slug)})`).join('\n')}\n\n## Page patterns\n\n- Players: ${SITE}/players/{player-name}, per-game stats, league ranks, career by season\n- Teams: ${SITE}/teams/{team-name}, roster, expected starting five, team stats\n- Comparisons: ${SITE}/compare/{a}-vs-{b}\n\nFull list of pages: ${SITE}/sitemap.xml\n`);
 fs.writeFileSync(path.join(publicDir, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
-console.log(`prerender: ${written.length} pages, ${cards} share cards (${reused} reused) in ${((Date.now() - started) / 1000).toFixed(1)}s, ${players.filter(p => !p.nbaId && !p.espnId).length} of ${players.length} players without a headshot`);
+console.log(`prerender: ${written.length} pages, in ${((Date.now() - started) / 1000).toFixed(1)}s, ${players.filter(p => !p.nbaId && !p.espnId).length} of ${players.length} players without a headshot`);
 fs.mkdirSync(path.dirname(manifestFile), {recursive: true});
 fs.writeFileSync(manifestFile, JSON.stringify(pages));

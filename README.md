@@ -16,7 +16,7 @@ The place for everything NBA: compare players and teams, follow your team, check
 
 ## Stack
 
-Next.js 14 (app router), React 18, Neon Postgres, Resend (email), web-push, satori + resvg for share and OG images, deployed on Vercel.
+Next.js 14 (app router), React 18, Neon Postgres, Resend (email), web-push, deployed on Vercel.
 
 ## Data
 

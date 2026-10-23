@@ -11,7 +11,7 @@ export const routesUnder = prefix => Object.keys(pages).filter(route => route.st
 export function seoMetadata(route) {
   const page = pages[route];
   if (!page) return {alternates: {canonical: route}, robots: {index: false}};
-  const images = [page.ogName ? `/og/${page.ogName}.jpg` : '/og-default.jpg'];
+  const images = ['/og-default.jpg'];
   return {
     title: page.title,
     description: page.description,
