@@ -132,5 +132,21 @@ export function makeCopy({players, teams, esc, link, nameOf, playerHref, pairRou
     return paragraphs.map(text => `<p>${text}</p>`).join('');
   }
 
-  return {playerProfile, neighbours, teammates, playerComparison, moreComparisons, teamProfile, teamComparison};
+  /* Where each category sits in the league: one line per stat, unique to the player or team. */
+  function rankedLines(pool, cats, entries, noun) {
+    return cats.map(cat => {
+      const parts = entries.map(entry => { const rank = rankIn(pool, entry.item, cat); return rank ? `${esc(entry.name)} ${fixed(cat.get(entry.item))}, ${ord(rank)} of ${pool.length}` : null; });
+      return parts.every(Boolean) ? `<li><strong>${cat.label}</strong>: ${parts.join(' · ')}</li>` : '';
+    }).filter(Boolean).join('');
+  }
+  const rankings = (pool, cats, entries, noun) => {
+    const lines = rankedLines(pool, cats, entries, noun);
+    return lines ? `<h2>League rankings</h2><p>Where ${list(entries.map(entry => esc(entry.name)))} ${entries.length > 1 ? 'rank' : 'ranks'} among ${pool.length} ${noun} in each category, with the average per game.</p><ul>${lines}</ul>` : '';
+  };
+  const playerRankings = p => rankings(players, PLAYER_CATS, [{name: p.playerName, item: p}], 'qualified players');
+  const teamRankings = t => rankings(teams, TEAM_CATS, [{name: t.name, item: t}], 'NBA teams');
+  const comparisonRankings = (a, b) => rankings(players, PLAYER_CATS, [{name: a.playerName, item: a}, {name: b.playerName, item: b}], 'qualified players');
+  const teamComparisonRankings = (a, b) => rankings(teams, TEAM_CATS, [{name: a.name, item: a}, {name: b.name, item: b}], 'NBA teams');
+
+  return {playerProfile, neighbours, teammates, playerComparison, moreComparisons, teamProfile, teamComparison, playerRankings, teamRankings, comparisonRankings, teamComparisonRankings};
 }

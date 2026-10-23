@@ -32,4 +32,5 @@ tools
 public/og
 public/sitemap.xml
 public/robots.txt
+public/llms.txt
 src/seo/pages.json

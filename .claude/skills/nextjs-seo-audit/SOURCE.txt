@@ -1,0 +1,1 @@
+Source: https://github.com/thisisAhsanIqbal/nextjs-seo-audit (MIT), commit d149aac, downloaded 2026-10-23. Reviewed: plain checklists, no scripts or commands.
