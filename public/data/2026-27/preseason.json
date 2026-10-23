@@ -2,7 +2,7 @@
   "season": "2026-27",
   "seasonType": "Preseason",
   "description": "NBA player per-game statistics for the 2026-27 preseason",
-  "lastUpdated": "2026-10-22",
+  "lastUpdated": "2026-10-23",
   "source": {
     "name": "ESPN preseason box scores",
     "url": "https://www.espn.com/nba/schedule"
@@ -10894,7 +10894,7 @@
       "playerName": "Jordan Goodwin",
       "team": "PHX",
       "position": "PG",
-      "age": 27,
+      "age": 28,
       "gamesPlayed": 5,
       "gamesStarted": 0,
       "minutesPerGame": 14.4,
@@ -16334,7 +16334,7 @@
       "playerName": "Ernest Udeh Jr.",
       "team": "CLE",
       "position": "C",
-      "age": 22,
+      "age": 0,
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 10,
