@@ -1,0 +1,1 @@
+Source: https://github.com/hardikpandya/stop-slop (MIT), commit 8da1f03, downloaded 2026-10-23. Reviewed: plain writing rules, no scripts or commands.
