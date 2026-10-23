@@ -7,7 +7,7 @@ import StandingsPage from './StandingsPage';
 import GamePage from './GamePage';
 import { isAppPath, navigate } from '../lib/nav';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, BarChart3, BookOpen, Check, Flame, Home as HomeIcon, Moon, Search, Sun, Trophy, Users, X } from 'lucide-react';
+import { ArrowLeft, BarChart3, BookOpen, Check, Flame, Gamepad2, Home as HomeIcon, Moon, Search, Sun, Trophy, Users, X } from 'lucide-react';
 import TeamPage from './TeamPage';
 import TeamsIndex from './TeamsIndex';
 import Radar from './Radar';
@@ -161,13 +161,13 @@ function VsSlot({index,entity,options,playerIds,noun,onPick,onRemove,color}){
 }
 
 
-const NAV_ITEMS = [['home','Home',HomeIcon],['leaders','Leaders',Trophy],['performances','Performances',Flame],['compare','Compare',BarChart3],['teams','Teams',Users],['blog','Blog',BookOpen]];
+const NAV_ITEMS = [['home','Home',HomeIcon],['leaders','Leaders',Trophy],['performances','Performances',Flame],['compare','Compare',BarChart3],['teams','Teams',Users],['play','Games',Gamepad2],['blog','Blog',BookOpen]];
 
 /* A banner div, not <header>, so none of the old header rules apply. The tab
    bar is a sibling because a blurred parent would trap a fixed child. */
 function SiteHeader({page,onHome,onLeaders,onCompare,onTeams,theme,onToggleTheme}){
-  const current=page==='team'?'teams':page,go={home:onHome,leaders:onLeaders,compare:onCompare,teams:onTeams,blog:()=>{window.location.href='/blog'},performances:()=>navigate('/performances')};
-  const TABBAR_KEYS=['home','performances','compare'];
+  const current=page==='team'?'teams':page,go={home:onHome,leaders:onLeaders,compare:onCompare,teams:onTeams,blog:()=>{window.location.href='/blog'},play:()=>{window.location.href='/play'},performances:()=>navigate('/performances')};
+  const TABBAR_KEYS=['home','performances','play'];
   const tabs=(className,items=NAV_ITEMS)=><nav className={className} aria-label="Main">{items.map(([key,label,Icon])=><button key={key} className={current===key?'active':''} aria-current={current===key?'page':undefined} onClick={()=>go[key]()}><Icon size={19} className="nav-icon"/><span>{label}</span></button>)}</nav>;
   return <>
     <div className="site-header" role="banner"><div className="site-header-inner">

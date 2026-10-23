@@ -33,4 +33,12 @@ await sql`create table if not exists login_codes (
   subscriber_token text not null,
   expires_at timestamptz not null
 )`;
+await sql`create table if not exists play_scores (
+  token text primary key,
+  correct int not null default 0,
+  total int not null default 0,
+  streak int not null default 0,
+  best int not null default 0,
+  updated_at timestamptz not null default now()
+)`;
 console.log('db: ready');

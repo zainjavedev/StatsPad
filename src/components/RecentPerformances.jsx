@@ -12,7 +12,7 @@ const codeOf = abbr => Object.keys(TEAMS).find(code => TEAMS[code].espn === Stri
 
 /* His three best numbers of the night: each stat is scored against a good night in that category, and the top three show,
    shown in the usual order (points, rebounds, assists...). Shooting only counts with enough attempts. */
-function trio(stats) {
+export function trio(stats) {
   const [fgm, fga] = String(stats.FG ?? '0-0').split('-').map(Number), three = Number(String(stats['3PT'] ?? '0-0').split('-')[0]);
   const all = [
     [num(stats.PTS), 'pts', num(stats.PTS) / 20], [num(stats.REB), 'reb', num(stats.REB) / 8], [num(stats.AST), 'ast', num(stats.AST) / 6],

@@ -36,7 +36,7 @@ export default function FrontPage({players, playerIds, Art, onCompare, onLeaders
   const stars = useMemo(() => [...pool].sort((a, b) => b.stats.points - a.stats.points).slice(0, 40), [pool]);
   const leaders = useMemo(() => {
     const base = pool.length ? pool : players;
-    return LEADERS.map(entry => {
+    return LEADERS.filter(entry => entry.home !== false).map(entry => {
       const eligible = entry.min ? base.filter(player => player.stats[entry.min[0]] >= entry.min[1]) : base;
       const ranked = [...eligible].sort((a, b) => b.stats[entry.key] - a.stats[entry.key] || a.playerName.localeCompare(b.playerName));
       /* Everyone level on the top number shares the spot. */

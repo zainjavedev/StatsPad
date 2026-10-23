@@ -35,7 +35,12 @@ export default function AccountPage({onTeams}) {
     }
   }, []);
   useEffect(() => { if (signedIn) syncAlertTeams(favorites); }, [favorites, signedIn]);
-  useEffect(() => { if (signedIn) window.history.replaceState(null, '', '/account'); }, [signedIn]);
+  useEffect(() => {
+    if (!signedIn) return;
+    let back = null;
+    try { back = sessionStorage.getItem('statspad-return'); sessionStorage.removeItem('statspad-return'); } catch { /* private mode */ }
+    if (back && back.startsWith('/')) window.location.href = back; else window.history.replaceState(null, '', '/account');
+  }, [signedIn]);
 
   useEffect(() => {
     if (saved === null || signedIn || !GOOGLE_ID) return;

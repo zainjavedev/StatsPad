@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 /* Two profiles on one chart. Every spoke is a league percentile, so a point
    further out means higher up the league, and the shapes show where the two
@@ -13,6 +13,40 @@ const point = (index, count, fraction, push = 0) => {
   return [SIZE.cx + Math.cos(angle) * distance, SIZE.cy + Math.sin(angle) * distance];
 };
 const path = (count, fractionOf) => Array.from({length: count}, (_, index) => point(index, count, fractionOf(index)).map(value => value.toFixed(1)).join(',')).join(' ');
+const TRACE = 1.7, STAGGER = 0.25;
+const reduced = () => typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+/* How far round the outline each corner sits (0 to 1), so a corner's dot can appear as the glow reaches it. */
+const stops = coords => {
+  const loop = [...coords, coords[0]], cum = [0];
+  for (let i = 1; i < loop.length; i += 1) cum.push(cum[i - 1] + Math.hypot(loop[i][0] - loop[i - 1][0], loop[i][1] - loop[i - 1][1]));
+  return cum.map(value => value / cum[cum.length - 1]);
+};
+/* A glowing dot that runs from corner to corner along the outline while it draws. */
+function Comet({coords, delay, color}) {
+  const ref = useRef(null), shape = coords.join(' ');
+  useEffect(() => {
+    const dot = ref.current, at = stops(coords), loop = [...coords, coords[0]];
+    if (!dot || reduced()) return undefined;
+    let raf, begin;
+    const step = now => {
+      begin ??= now;
+      const t = (now - begin) / 1000 - delay;
+      if (t < 0) { raf = requestAnimationFrame(step); return; }
+      const done = Math.min(1, t / TRACE);
+      let i = 1;
+      while (i < at.length - 1 && at[i] < done) i += 1;
+      const k = (done - at[i - 1]) / ((at[i] - at[i - 1]) || 1);
+      dot.setAttribute('cx', loop[i - 1][0] + (loop[i][0] - loop[i - 1][0]) * k);
+      dot.setAttribute('cy', loop[i - 1][1] + (loop[i][1] - loop[i - 1][1]) * k);
+      dot.style.opacity = done < 1 ? 1 : 0;
+      if (done < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shape, delay]);
+  return <circle ref={ref} className="radar-comet" r="6.5" cx="-20" cy="-20" style={{fill: color, color, opacity: 0}}/>;
+}
 const anchorFor = x => x < SIZE.cx - 8 ? 'end' : x > SIZE.cx + 8 ? 'start' : 'middle';
 
 export default function Radar({axes, names, colors, views = [], view, onView, blurb}) {
@@ -36,21 +70,24 @@ export default function Radar({axes, names, colors, views = [], view, onView, bl
         </g>;
       })}
       {names.map((name, side) => {
-        const points = path(count, index => Math.max(axes[index].sides[side].pct, 3) / 100);
-        return <g key={name}>
+        const coords = axes.map((axis, index) => point(index, count, Math.max(axis.sides[side].pct, 3) / 100));
+        const points = coords.map(pair => pair.map(value => value.toFixed(1)).join(',')).join(' ');
+        const begin = side * STAGGER, at = stops(coords);
+        return <g key={`${name}-${points}`} style={{'--begin': `${begin}s`}}>
           <polygon className="radar-halo" points={points}/>
-          <polygon className="radar-shape" points={points} style={{fill: colors[side], stroke: colors[side]}}/>
+          <polygon className="radar-shape" pathLength="1" points={points} style={{fill: colors[side], stroke: colors[side]}}/>
+          <Comet coords={coords} delay={begin} color={colors[side]}/>
+          {/* Dots go last so neither player's shape covers the other's points. */}
+          {axes.map((axis, index) => {
+            const [x, y] = coords[index];
+            const show = () => setTip({x, y, color: colors[side], value: axis.sides[side].text});
+            return <g key={axis.label} className="radar-dot-g" style={{cursor: 'pointer', outline: 'none', '--d': `${begin + at[index] * TRACE}s`}} onMouseEnter={show} onMouseLeave={() => setTip(null)} onClick={show} tabIndex={0} onFocus={show} onBlur={() => setTip(null)}>
+              <circle cx={x} cy={y} r="13" fill="transparent"/>
+              <circle className="radar-dot" cx={x} cy={y} r="5" style={{fill: colors[side]}}/>
+            </g>;
+          })}
         </g>;
       })}
-      {/* Dots go last so neither player's shape covers the other's points. */}
-      {names.map((name, side) => axes.map((axis, index) => {
-        const [x, y] = point(index, count, Math.max(axis.sides[side].pct, 3) / 100);
-        const show = () => setTip({x, y, color: colors[side], value: axis.sides[side].text});
-        return <g key={`${name}-${axis.label}`} onMouseEnter={show} onMouseLeave={() => setTip(null)} onClick={show} tabIndex={0} onFocus={show} onBlur={() => setTip(null)} style={{cursor: 'pointer', outline: 'none'}}>
-          <circle cx={x} cy={y} r="13" fill="transparent"/>
-          <circle className="radar-dot" cx={x} cy={y} r="5" style={{fill: colors[side]}}/>
-        </g>;
-      }))}
       {tip && (() => {
         const width = 112, height = 38, left = Math.max(6, Math.min(SIZE.width - width - 6, tip.x - width / 2)), top = tip.y > SIZE.cy ? tip.y - height - 12 : tip.y + 12;
         return <g className="radar-tip" pointerEvents="none">
