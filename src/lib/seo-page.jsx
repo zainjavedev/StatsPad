@@ -1,7 +1,6 @@
 import React from 'react';
 import pages from '../seo/pages.json';
 import ClientApp from '../components/ClientApp';
-import { LEADERS, statUrl } from './statLeaders';
 
 /* Pages written by scripts/prerender.mjs: route -> {title, description, body, ogName}.
    A route that isn't in there (any other player or pairing) still opens the
@@ -22,15 +21,14 @@ export function seoMetadata(route) {
   };
 }
 
-/* The same links on every static page, so the hub pages (home, compare, leaders...) and the stat rankings get an incoming link from every other page. */
-const HUBS = [['/', 'Home'], ['/compare', 'Compare players and teams'], ['/leaders', 'Stat leaders'], ['/teams', 'Teams and rosters'], ['/standings', 'Standings'], ['/schedule', 'Schedule'], ['/performances', 'Top performances'], ['/privacy', 'Privacy']];
+/* The same links on every static page, so the hub pages (home, compare, leaders...) get an incoming link from every other page. Stat rankings are linked from /leaders and from each other. */
+const HUBS = [['/', 'Home'], ['/compare', 'Compare players and teams'], ['/leaders', 'Stat leaders'], ['/teams', 'Teams and rosters'], ['/standings', 'Standings'], ['/schedule', 'Schedule'], ['/performances', 'Top performances'], ['/about', 'About StatsPads'], ['/contact', 'Contact'], ['/terms', 'Terms of service'], ['/privacy', 'Privacy'], ['/llms.txt', 'llms.txt']];
 
 export function SeoPage({route}) {
   return <>
     {(pages[route]?.jsonLd ?? []).map((data, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(data)}}/>)}
     <nav className="seo-static" aria-label="StatsPads">
       {HUBS.map(([href, label]) => <a key={href} href={href}>{label}</a>)}
-      {LEADERS.map(entry => <a key={entry.slug} href={statUrl(entry.slug)}>{`NBA ${entry.label.toLowerCase()} leaders`}</a>)}
     </nav>
     <div className="seo-static" dangerouslySetInnerHTML={{__html: pages[route]?.body ?? ''}}/>
     <ClientApp/>

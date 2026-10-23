@@ -18,6 +18,8 @@ const GTM = "(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date(
 export default function RootLayout({children}) {
   return <html lang="en" suppressHydrationWarning>
     <head>
+      <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin=""/>
+      <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt"/>
       <script dangerouslySetInnerHTML={{__html: GTM}}/>
       <script dangerouslySetInnerHTML={{__html: THEME}}/>
     </head>

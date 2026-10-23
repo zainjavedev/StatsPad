@@ -132,16 +132,20 @@ export function makeCopy({players, teams, esc, link, nameOf, playerHref, pairRou
     return paragraphs.map(text => `<p>${text}</p>`).join('');
   }
 
-  /* Where each category sits in the league: one line per stat, unique to the player or team. */
-  function rankedLines(pool, cats, entries, noun) {
-    return cats.map(cat => {
-      const parts = entries.map(entry => { const rank = rankIn(pool, entry.item, cat); return rank ? `${esc(entry.name)} ${fixed(cat.get(entry.item))}, ${ord(rank)} of ${pool.length}` : null; });
-      return parts.every(Boolean) ? `<li><strong>${cat.label}</strong>: ${parts.join(' · ')}</li>` : '';
-    }).filter(Boolean).join('');
-  }
+  /* Where each category sits in the league, as a table so each name appears once in the header instead of on every line. */
   const rankings = (pool, cats, entries, noun) => {
-    const lines = rankedLines(pool, cats, entries, noun);
-    return lines ? `<h2>League rankings</h2><p>Where ${list(entries.map(entry => esc(entry.name)))} ${entries.length > 1 ? 'rank' : 'ranks'} among ${pool.length} ${noun} in each category, with the average per game.</p><ul>${lines}</ul>` : '';
+    const rows = cats.map(cat => {
+      const cells = entries.map(entry => { const rank = rankIn(pool, entry.item, cat); return rank ? [fixed(cat.get(entry.item)), ord(rank)] : null; });
+      return cells.every(Boolean) ? `<tr><th scope="row">${cat.label}</th>${cells.map(([value, rank]) => `<td>${value}</td><td>${rank}</td>`).join('')}</tr>` : '';
+    }).filter(Boolean).join('');
+    if (!rows) return '';
+    const heads = entries.map(entry => `<th colspan="2" scope="colgroup">${esc(entry.name)}</th>`).join('');
+    let verdict = '';
+    if (entries.length === 1) {
+      const ranked = cats.map(cat => ({label: cat.label, rank: rankIn(pool, entries[0].item, cat)})).filter(entry => entry.rank).sort((x, y) => x.rank - y.rank);
+      if (ranked.length > 1) verdict = ` ${esc(entries[0].name)} ranks highest in ${ranked[0].label} (${ord(ranked[0].rank)}) and lowest in ${ranked.at(-1).label} (${ord(ranked.at(-1).rank)}). The next strongest categories are ${list(ranked.slice(1, 3).map(entry => `${entry.label} (${ord(entry.rank)})`))}, and the next weakest are ${list(ranked.slice(-3, -1).reverse().map(entry => `${entry.label} (${ord(entry.rank)})`))}.`;
+    }
+    return `<h2>League rankings</h2><p>Each stat per game, with the rank among ${pool.length} ${noun}.${verdict}</p><table><thead><tr><th></th>${heads}</tr><tr><th>Stat</th>${entries.map(() => '<th>Avg</th><th>Rank</th>').join('')}</tr></thead><tbody>${rows}</tbody></table>`;
   };
   const playerRankings = p => rankings(players, PLAYER_CATS, [{name: p.playerName, item: p}], 'qualified players');
   const teamRankings = t => rankings(teams, TEAM_CATS, [{name: t.name, item: t}], 'NBA teams');

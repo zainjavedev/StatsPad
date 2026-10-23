@@ -1,7 +1,7 @@
 import React from 'react';
 
 /* One footer for every page: where to go, where the numbers come from, and that this is a fan project. */
-const LINKS = [['Home', '/'], ['Schedule', '/schedule'], ['Standings', '/standings'], ['Leaders', '/leaders'], ['Compare', '/compare'], ['Teams', '/teams'], ['Privacy', '/privacy']];
+const LINKS = [['Home', '/'], ['Schedule', '/schedule'], ['Standings', '/standings'], ['Leaders', '/leaders'], ['Compare', '/compare'], ['Teams', '/teams'], ['About', '/about'], ['Contact', '/contact'], ['Terms', '/terms'], ['Privacy', '/privacy']];
 
 export default function SiteFooter() {
   return <footer className="site-footer">
