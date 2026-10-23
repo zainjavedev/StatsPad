@@ -5,8 +5,8 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Will Hardy",
-  "lastUpdated": "2026-10-20",
-  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
+  "lastUpdated": "2026-10-23",
+  "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -72,20 +72,6 @@
       "slot": "SG"
     },
     {
-      "name": "Jaren Jackson Jr.",
-      "bbrefId": "jacksja02",
-      "nbaId": 1628991,
-      "espnId": 4277961,
-      "pos": "F",
-      "height": "6-10",
-      "birthDate": "1999-09-15",
-      "exp": 9,
-      "college": "Michigan State",
-      "jersey": "20",
-      "unit": "starters",
-      "slot": "SF"
-    },
-    {
       "name": "Lauri Markkanen",
       "bbrefId": "markkla01",
       "nbaId": 1628374,
@@ -96,6 +82,20 @@
       "exp": 10,
       "college": "Arizona",
       "jersey": "23",
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Jaren Jackson Jr.",
+      "bbrefId": "jacksja02",
+      "nbaId": 1628991,
+      "espnId": 4277961,
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "1999-09-15",
+      "exp": 9,
+      "college": "Michigan State",
+      "jersey": "20",
       "unit": "starters",
       "slot": "PF"
     },

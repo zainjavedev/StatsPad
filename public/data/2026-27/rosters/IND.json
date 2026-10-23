@@ -5,8 +5,8 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Rick Carlisle",
-  "lastUpdated": "2026-10-20",
-  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
+  "lastUpdated": "2026-10-23",
+  "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,20 +45,6 @@
   ],
   "players": [
     {
-      "name": "Kelly Oubre Jr.",
-      "bbrefId": "oubreke01",
-      "nbaId": 1626162,
-      "espnId": 3133603,
-      "pos": "G",
-      "height": "6-8",
-      "birthDate": "1995-12-09",
-      "exp": 12,
-      "college": "Kansas",
-      "jersey": "10",
-      "unit": "starters",
-      "slot": "PG"
-    },
-    {
       "name": "Andrew Nembhard",
       "bbrefId": "nembhan01",
       "nbaId": null,
@@ -70,7 +56,7 @@
       "college": "Gonzaga",
       "jersey": "2",
       "unit": "starters",
-      "slot": "SG"
+      "slot": "PG"
     },
     {
       "name": "Tyrese Haliburton",
@@ -82,6 +68,20 @@
       "exp": 7,
       "college": "Iowa State",
       "jersey": "0",
+      "unit": "starters",
+      "slot": "SG"
+    },
+    {
+      "name": "Kelly Oubre Jr.",
+      "bbrefId": "oubreke01",
+      "nbaId": 1626162,
+      "espnId": 3133603,
+      "pos": "G",
+      "height": "6-8",
+      "birthDate": "1995-12-09",
+      "exp": 12,
+      "college": "Kansas",
+      "jersey": "10",
       "unit": "starters",
       "slot": "SF"
     },

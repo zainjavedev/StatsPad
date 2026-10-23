@@ -5,8 +5,8 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Steve Kerr",
-  "lastUpdated": "2026-10-20",
-  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
+  "lastUpdated": "2026-10-23",
+  "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,20 +45,6 @@
   ],
   "players": [
     {
-      "name": "Brandin Podziemski",
-      "bbrefId": "podzibr01",
-      "nbaId": null,
-      "espnId": 4709138,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "2003-02-25",
-      "exp": 4,
-      "college": "Santa Clara",
-      "jersey": "2",
-      "unit": "starters",
-      "slot": "PG"
-    },
-    {
       "name": "Stephen Curry",
       "bbrefId": "curryst01",
       "nbaId": 201939,
@@ -69,6 +55,20 @@
       "exp": 18,
       "college": "Davidson",
       "jersey": "30",
+      "unit": "starters",
+      "slot": "PG"
+    },
+    {
+      "name": "De'Anthony Melton",
+      "bbrefId": "meltode01",
+      "nbaId": 1629001,
+      "espnId": 4066436,
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "1998-05-28",
+      "exp": 9,
+      "college": "USC",
+      "jersey": "8",
       "unit": "starters",
       "slot": "SG"
     },
@@ -86,20 +86,6 @@
       "slot": "SF"
     },
     {
-      "name": "Draymond Green",
-      "bbrefId": "greendr01",
-      "nbaId": 203110,
-      "espnId": 6589,
-      "pos": "F",
-      "height": "6-6",
-      "birthDate": "1990-03-04",
-      "exp": 15,
-      "college": "Michigan State",
-      "jersey": "23",
-      "unit": "starters",
-      "slot": "PF"
-    },
-    {
       "name": "Gui Santos",
       "bbrefId": "santogu01",
       "nbaId": null,
@@ -111,19 +97,33 @@
       "college": null,
       "jersey": "15",
       "unit": "starters",
+      "slot": "PF"
+    },
+    {
+      "name": "Draymond Green",
+      "bbrefId": "greendr01",
+      "nbaId": 203110,
+      "espnId": 6589,
+      "pos": "F",
+      "height": "6-6",
+      "birthDate": "1990-03-04",
+      "exp": 15,
+      "college": "Michigan State",
+      "jersey": "23",
+      "unit": "starters",
       "slot": "C"
     },
     {
-      "name": "De'Anthony Melton",
-      "bbrefId": "meltode01",
-      "nbaId": 1629001,
-      "espnId": 4066436,
+      "name": "Brandin Podziemski",
+      "bbrefId": "podzibr01",
+      "nbaId": null,
+      "espnId": 4709138,
       "pos": "G",
-      "height": "6-2",
-      "birthDate": "1998-05-28",
-      "exp": 9,
-      "college": "USC",
-      "jersey": "8",
+      "height": "6-4",
+      "birthDate": "2003-02-25",
+      "exp": 4,
+      "college": "Santa Clara",
+      "jersey": "2",
       "unit": "second"
     },
     {

@@ -5,8 +5,8 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Mike Brown",
-  "lastUpdated": "2026-10-20",
-  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
+  "lastUpdated": "2026-10-23",
+  "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,20 +45,6 @@
   ],
   "players": [
     {
-      "name": "Mikal Bridges",
-      "bbrefId": "bridgmi01",
-      "nbaId": 1628969,
-      "espnId": 3147657,
-      "pos": "G",
-      "height": "6-6",
-      "birthDate": "1996-08-30",
-      "exp": 9,
-      "college": "Villanova",
-      "jersey": "25",
-      "unit": "starters",
-      "slot": "PG"
-    },
-    {
       "name": "Jalen Brunson",
       "bbrefId": "brunsja01",
       "nbaId": 1628973,
@@ -69,6 +55,20 @@
       "exp": 9,
       "college": "Villanova",
       "jersey": "11",
+      "unit": "starters",
+      "slot": "PG"
+    },
+    {
+      "name": "Mikal Bridges",
+      "bbrefId": "bridgmi01",
+      "nbaId": 1628969,
+      "espnId": 3147657,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "1996-08-30",
+      "exp": 9,
+      "college": "Villanova",
+      "jersey": "25",
       "unit": "starters",
       "slot": "SG"
     },

@@ -5,8 +5,8 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Kenny Atkinson",
-  "lastUpdated": "2026-10-22",
-  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
+  "lastUpdated": "2026-10-23",
+  "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -59,20 +59,6 @@
       "slot": "PG"
     },
     {
-      "name": "Peyton Watson",
-      "bbrefId": "watsope01",
-      "nbaId": null,
-      "espnId": 4576087,
-      "pos": "G",
-      "height": "6-8",
-      "birthDate": "2002-09-11",
-      "exp": 5,
-      "college": "UCLA",
-      "jersey": "8",
-      "unit": "starters",
-      "slot": "SG"
-    },
-    {
       "name": "James Harden",
       "bbrefId": "hardeja01",
       "nbaId": 201935,
@@ -83,6 +69,20 @@
       "exp": 18,
       "college": "Arizona State",
       "jersey": "1",
+      "unit": "starters",
+      "slot": "SG"
+    },
+    {
+      "name": "Peyton Watson",
+      "bbrefId": "watsope01",
+      "nbaId": null,
+      "espnId": 4576087,
+      "pos": "G",
+      "height": "6-8",
+      "birthDate": "2002-09-11",
+      "exp": 5,
+      "college": "UCLA",
+      "jersey": "8",
       "unit": "starters",
       "slot": "SF"
     },
@@ -177,7 +177,7 @@
       "exp": 2,
       "college": "Duke",
       "jersey": "24",
-      "unit": "third"
+      "unit": "second"
     },
     {
       "name": "Mario Hezonja",
@@ -214,7 +214,7 @@
       "exp": 0,
       "college": "Arkansas",
       "jersey": "15",
-      "unit": "camp"
+      "unit": "third"
     },
     {
       "name": "Riley Minix",
@@ -227,7 +227,7 @@
       "exp": 3,
       "college": "Morehead State",
       "jersey": "12",
-      "unit": "camp"
+      "unit": "third"
     }
   ]
 }

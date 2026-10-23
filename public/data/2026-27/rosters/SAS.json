@@ -5,8 +5,8 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Mitch Johnson",
-  "lastUpdated": "2026-10-20",
-  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
+  "lastUpdated": "2026-10-23",
+  "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,20 +45,6 @@
   ],
   "players": [
     {
-      "name": "Devin Vassell",
-      "bbrefId": "vassede01",
-      "nbaId": 1630170,
-      "espnId": 4395630,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "2000-08-23",
-      "exp": 7,
-      "college": "Florida State",
-      "jersey": "24",
-      "unit": "starters",
-      "slot": "PG"
-    },
-    {
       "name": "Dylan Harper",
       "bbrefId": "harpedy01",
       "nbaId": null,
@@ -70,7 +56,35 @@
       "college": "Rutgers",
       "jersey": "2",
       "unit": "starters",
+      "slot": "PG"
+    },
+    {
+      "name": "De'Aaron Fox",
+      "bbrefId": "foxde01",
+      "nbaId": 1628368,
+      "espnId": 4066259,
+      "pos": "G",
+      "height": "6-3",
+      "birthDate": "1997-12-20",
+      "exp": 10,
+      "college": "Kentucky",
+      "jersey": "4",
+      "unit": "starters",
       "slot": "SG"
+    },
+    {
+      "name": "Devin Vassell",
+      "bbrefId": "vassede01",
+      "nbaId": 1630170,
+      "espnId": 4395630,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "2000-08-23",
+      "exp": 7,
+      "college": "Florida State",
+      "jersey": "24",
+      "unit": "starters",
+      "slot": "SF"
     },
     {
       "name": "Stephon Castle",
@@ -84,7 +98,7 @@
       "college": "UConn",
       "jersey": "5",
       "unit": "starters",
-      "slot": "SF"
+      "slot": "PF"
     },
     {
       "name": "Victor Wembanyama",
@@ -98,7 +112,7 @@
       "college": null,
       "jersey": "1",
       "unit": "starters",
-      "slot": "PF"
+      "slot": "C"
     },
     {
       "name": "Julian Champagnie",
@@ -111,20 +125,6 @@
       "exp": 5,
       "college": "St. John's",
       "jersey": "30",
-      "unit": "starters",
-      "slot": "C"
-    },
-    {
-      "name": "De'Aaron Fox",
-      "bbrefId": "foxde01",
-      "nbaId": 1628368,
-      "espnId": 4066259,
-      "pos": "G",
-      "height": "6-3",
-      "birthDate": "1997-12-20",
-      "exp": 10,
-      "college": "Kentucky",
-      "jersey": "4",
       "unit": "second"
     },
     {

@@ -5,8 +5,8 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Mark Daigneault",
-  "lastUpdated": "2026-10-20",
-  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
+  "lastUpdated": "2026-10-23",
+  "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -73,46 +73,6 @@
       "slot": "SG"
     },
     {
-      "name": "Alex Caruso",
-      "bbrefId": "carusal01",
-      "nbaId": 1627936,
-      "espnId": 2991350,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "1994-02-28",
-      "exp": 10,
-      "college": "Texas A&M",
-      "jersey": "9",
-      "unit": "starters",
-      "slot": "SF"
-    },
-    {
-      "name": "Bennett Stirtz",
-      "nbaId": null,
-      "espnId": 5241364,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "2003-10-03",
-      "exp": 0,
-      "college": "Iowa",
-      "jersey": "14",
-      "unit": "starters",
-      "slot": "PF"
-    },
-    {
-      "name": "Aday Mara",
-      "nbaId": null,
-      "espnId": 5174983,
-      "pos": "C",
-      "height": "7-3",
-      "birthDate": "2005-04-07",
-      "exp": 0,
-      "college": "Michigan",
-      "jersey": "15",
-      "unit": "starters",
-      "slot": "C"
-    },
-    {
       "name": "Cason Wallace",
       "bbrefId": "wallaca01",
       "nbaId": null,
@@ -123,7 +83,8 @@
       "exp": 4,
       "college": "Kentucky",
       "jersey": "22",
-      "unit": "second"
+      "unit": "starters",
+      "slot": "SF"
     },
     {
       "name": "Chet Holmgren",
@@ -136,7 +97,8 @@
       "exp": 4,
       "college": "Gonzaga",
       "jersey": "7",
-      "unit": "second"
+      "unit": "starters",
+      "slot": "PF"
     },
     {
       "name": "Isaiah Hartenstein",
@@ -149,6 +111,44 @@
       "exp": 9,
       "college": null,
       "jersey": "55",
+      "unit": "starters",
+      "slot": "C"
+    },
+    {
+      "name": "Alex Caruso",
+      "bbrefId": "carusal01",
+      "nbaId": 1627936,
+      "espnId": 2991350,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "1994-02-28",
+      "exp": 10,
+      "college": "Texas A&M",
+      "jersey": "9",
+      "unit": "second"
+    },
+    {
+      "name": "Bennett Stirtz",
+      "nbaId": null,
+      "espnId": 5241364,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2003-10-03",
+      "exp": 0,
+      "college": "Iowa",
+      "jersey": "14",
+      "unit": "second"
+    },
+    {
+      "name": "Aday Mara",
+      "nbaId": null,
+      "espnId": 5174983,
+      "pos": "C",
+      "height": "7-3",
+      "birthDate": "2005-04-07",
+      "exp": 0,
+      "college": "Michigan",
+      "jersey": "15",
       "unit": "second"
     },
     {

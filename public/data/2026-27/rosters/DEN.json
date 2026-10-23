@@ -5,8 +5,8 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "David Adelman",
-  "lastUpdated": "2026-10-20",
-  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
+  "lastUpdated": "2026-10-23",
+  "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,20 +45,6 @@
   ],
   "players": [
     {
-      "name": "Christian Braun",
-      "bbrefId": "braunch01",
-      "nbaId": null,
-      "espnId": 4431767,
-      "pos": "G",
-      "height": "6-6",
-      "birthDate": "2001-04-17",
-      "exp": 5,
-      "college": "Kansas",
-      "jersey": "0",
-      "unit": "starters",
-      "slot": "PG"
-    },
-    {
       "name": "Jamal Murray",
       "bbrefId": "murraja01",
       "nbaId": 1627750,
@@ -70,21 +56,21 @@
       "college": "Kentucky",
       "jersey": "27",
       "unit": "starters",
-      "slot": "SG"
+      "slot": "PG"
     },
     {
-      "name": "Cameron Johnson",
-      "bbrefId": "johnsca02",
-      "nbaId": 1629661,
-      "espnId": 3138196,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "1996-03-03",
-      "exp": 8,
-      "college": "North Carolina",
-      "jersey": "23",
+      "name": "Christian Braun",
+      "bbrefId": "braunch01",
+      "nbaId": null,
+      "espnId": 4431767,
+      "pos": "G",
+      "height": "6-6",
+      "birthDate": "2001-04-17",
+      "exp": 5,
+      "college": "Kansas",
+      "jersey": "0",
       "unit": "starters",
-      "slot": "SF"
+      "slot": "SG"
     },
     {
       "name": "Aaron Gordon",
@@ -97,6 +83,20 @@
       "exp": 13,
       "college": "Arizona",
       "jersey": "32",
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Cameron Johnson",
+      "bbrefId": "johnsca02",
+      "nbaId": 1629661,
+      "espnId": 3138196,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "1996-03-03",
+      "exp": 8,
+      "college": "North Carolina",
+      "jersey": "23",
       "unit": "starters",
       "slot": "PF"
     },

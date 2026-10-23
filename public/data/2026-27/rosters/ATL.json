@@ -5,8 +5,8 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Quin Snyder",
-  "lastUpdated": "2026-10-20",
-  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
+  "lastUpdated": "2026-10-23",
+  "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,20 +45,6 @@
   ],
   "players": [
     {
-      "name": "Nickeil Alexander-Walker",
-      "bbrefId": "alexani01",
-      "nbaId": 1629638,
-      "espnId": 4278039,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "1998-09-02",
-      "exp": 8,
-      "college": "Virginia Tech",
-      "jersey": "7",
-      "unit": "starters",
-      "slot": "PG"
-    },
-    {
       "name": "Dyson Daniels",
       "bbrefId": "daniedy01",
       "nbaId": null,
@@ -69,6 +55,20 @@
       "exp": 5,
       "college": null,
       "jersey": "5",
+      "unit": "starters",
+      "slot": "PG"
+    },
+    {
+      "name": "Nickeil Alexander-Walker",
+      "bbrefId": "alexani01",
+      "nbaId": 1629638,
+      "espnId": 4278039,
+      "pos": "G",
+      "height": "6-5",
+      "birthDate": "1998-09-02",
+      "exp": 8,
+      "college": "Virginia Tech",
+      "jersey": "7",
       "unit": "starters",
       "slot": "SG"
     },

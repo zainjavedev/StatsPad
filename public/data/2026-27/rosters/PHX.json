@@ -5,8 +5,8 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Jordan Ott",
-  "lastUpdated": "2026-10-20",
-  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
+  "lastUpdated": "2026-10-23",
+  "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,20 +45,6 @@
   ],
   "players": [
     {
-      "name": "Jalen Green",
-      "bbrefId": "greenja05",
-      "nbaId": null,
-      "espnId": 4437244,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "2002-02-09",
-      "exp": 6,
-      "college": null,
-      "jersey": "4",
-      "unit": "starters",
-      "slot": "PG"
-    },
-    {
       "name": "Devin Booker",
       "bbrefId": "bookede01",
       "nbaId": 1626164,
@@ -70,21 +56,21 @@
       "college": "Kentucky",
       "jersey": "15",
       "unit": "starters",
-      "slot": "SG"
+      "slot": "PG"
     },
     {
-      "name": "Dillon Brooks",
-      "bbrefId": "brookdi01",
-      "nbaId": 1628415,
-      "espnId": 3155526,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "1996-01-22",
-      "exp": 10,
-      "college": "Oregon",
-      "jersey": "3",
+      "name": "Jalen Green",
+      "bbrefId": "greenja05",
+      "nbaId": null,
+      "espnId": 4437244,
+      "pos": "G",
+      "height": "6-4",
+      "birthDate": "2002-02-09",
+      "exp": 6,
+      "college": null,
+      "jersey": "4",
       "unit": "starters",
-      "slot": "SF"
+      "slot": "SG"
     },
     {
       "name": "Miles Bridges",
@@ -97,6 +83,20 @@
       "exp": 8,
       "college": "Michigan State",
       "jersey": "22",
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Dillon Brooks",
+      "bbrefId": "brookdi01",
+      "nbaId": 1628415,
+      "espnId": 3155526,
+      "pos": "F",
+      "height": "6-7",
+      "birthDate": "1996-01-22",
+      "exp": 10,
+      "college": "Oregon",
+      "jersey": "3",
       "unit": "starters",
       "slot": "PF"
     },

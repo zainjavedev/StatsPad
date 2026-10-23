@@ -5,8 +5,8 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Ime Udoka",
-  "lastUpdated": "2026-10-20",
-  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
+  "lastUpdated": "2026-10-23",
+  "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,19 +45,6 @@
   ],
   "players": [
     {
-      "name": "Fred VanVleet",
-      "nbaId": 1627832,
-      "espnId": 2991230,
-      "pos": "G",
-      "height": "6-0",
-      "birthDate": "1994-02-25",
-      "exp": 11,
-      "college": "Wichita State",
-      "jersey": "5",
-      "unit": "starters",
-      "slot": "PG"
-    },
-    {
       "name": "Amen Thompson",
       "bbrefId": "thompam01",
       "nbaId": null,
@@ -69,21 +56,20 @@
       "college": null,
       "jersey": "1",
       "unit": "starters",
-      "slot": "SG"
+      "slot": "PG"
     },
     {
-      "name": "Jabari Smith Jr.",
-      "bbrefId": "smithja05",
-      "nbaId": null,
-      "espnId": 4432639,
-      "pos": "F",
-      "height": "6-11",
-      "birthDate": "2003-05-13",
-      "exp": 5,
-      "college": "Auburn",
-      "jersey": "10",
+      "name": "Fred VanVleet",
+      "nbaId": 1627832,
+      "espnId": 2991230,
+      "pos": "G",
+      "height": "6-0",
+      "birthDate": "1994-02-25",
+      "exp": 11,
+      "college": "Wichita State",
+      "jersey": "5",
       "unit": "starters",
-      "slot": "SF"
+      "slot": "SG"
     },
     {
       "name": "Kevin Durant",
@@ -96,6 +82,20 @@
       "exp": 20,
       "college": "Texas",
       "jersey": "7",
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Jabari Smith Jr.",
+      "bbrefId": "smithja05",
+      "nbaId": null,
+      "espnId": 4432639,
+      "pos": "F",
+      "height": "6-11",
+      "birthDate": "2003-05-13",
+      "exp": 5,
+      "college": "Auburn",
+      "jersey": "10",
       "unit": "starters",
       "slot": "PF"
     },

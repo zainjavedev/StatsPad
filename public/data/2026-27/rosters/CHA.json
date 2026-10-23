@@ -5,8 +5,8 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Charles Lee",
-  "lastUpdated": "2026-10-20",
-  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
+  "lastUpdated": "2026-10-23",
+  "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -59,16 +59,16 @@
       "slot": "PG"
     },
     {
-      "name": "Liam McNeeley",
-      "bbrefId": "mcneeli01",
+      "name": "Sion James",
+      "bbrefId": "jamessi01",
       "nbaId": null,
-      "espnId": 5239590,
+      "espnId": 4602025,
       "pos": "G",
-      "height": "6-7",
-      "birthDate": "2005-10-10",
+      "height": "6-5",
+      "birthDate": "2002-12-04",
       "exp": 2,
-      "college": "UConn",
-      "jersey": "33",
+      "college": "Duke",
+      "jersey": "4",
       "unit": "starters",
       "slot": "SG"
     },
@@ -113,6 +113,19 @@
       "jersey": "0",
       "unit": "starters",
       "slot": "C"
+    },
+    {
+      "name": "Liam McNeeley",
+      "bbrefId": "mcneeli01",
+      "nbaId": null,
+      "espnId": 5239590,
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "2005-10-10",
+      "exp": 2,
+      "college": "UConn",
+      "jersey": "33",
+      "unit": "second"
     },
     {
       "name": "Coby White",
@@ -164,19 +177,6 @@
       "exp": 10,
       "college": "Baylor",
       "jersey": "00",
-      "unit": "second"
-    },
-    {
-      "name": "Sion James",
-      "bbrefId": "jamessi01",
-      "nbaId": null,
-      "espnId": 4602025,
-      "pos": "G",
-      "height": "6-5",
-      "birthDate": "2002-12-04",
-      "exp": 2,
-      "college": "Duke",
-      "jersey": "4",
       "unit": "second"
     },
     {

@@ -5,8 +5,8 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Erik Spoelstra",
-  "lastUpdated": "2026-10-20",
-  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
+  "lastUpdated": "2026-10-23",
+  "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -73,20 +73,6 @@
       "slot": "SG"
     },
     {
-      "name": "Andrew Wiggins",
-      "bbrefId": "wiggian01",
-      "nbaId": 203952,
-      "espnId": 3059319,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "1995-02-23",
-      "exp": 13,
-      "college": "Kansas",
-      "jersey": "22",
-      "unit": "starters",
-      "slot": "SF"
-    },
-    {
       "name": "Giannis Antetokounmpo",
       "bbrefId": "antetgi01",
       "nbaId": 203507,
@@ -98,21 +84,21 @@
       "college": null,
       "jersey": "7",
       "unit": "starters",
-      "slot": "PF"
+      "slot": "SF"
     },
     {
-      "name": "Nikola Jovic",
-      "bbrefId": "jovicni01",
-      "nbaId": null,
-      "espnId": 4997528,
+      "name": "Andrew Wiggins",
+      "bbrefId": "wiggian01",
+      "nbaId": 203952,
+      "espnId": 3059319,
       "pos": "F",
-      "height": "6-10",
-      "birthDate": "2003-06-09",
-      "exp": 5,
-      "college": null,
-      "jersey": "5",
+      "height": "6-7",
+      "birthDate": "1995-02-23",
+      "exp": 13,
+      "college": "Kansas",
+      "jersey": "22",
       "unit": "starters",
-      "slot": "C"
+      "slot": "PF"
     },
     {
       "name": "Bam Adebayo",
@@ -125,6 +111,20 @@
       "exp": 10,
       "college": "Kentucky",
       "jersey": "13",
+      "unit": "starters",
+      "slot": "C"
+    },
+    {
+      "name": "Nikola Jovic",
+      "bbrefId": "jovicni01",
+      "nbaId": null,
+      "espnId": 4997528,
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "2003-06-09",
+      "exp": 5,
+      "college": null,
+      "jersey": "5",
       "unit": "second"
     },
     {

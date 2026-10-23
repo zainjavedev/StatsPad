@@ -5,8 +5,8 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Chris Finch",
-  "lastUpdated": "2026-10-20",
-  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
+  "lastUpdated": "2026-10-23",
+  "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -73,20 +73,6 @@
       "slot": "SG"
     },
     {
-      "name": "Jaden McDaniels",
-      "bbrefId": "mcdanja02",
-      "nbaId": 1630183,
-      "espnId": 4431671,
-      "pos": "F",
-      "height": "6-9",
-      "birthDate": "2000-09-29",
-      "exp": 7,
-      "college": "Washington",
-      "jersey": "3",
-      "unit": "starters",
-      "slot": "SF"
-    },
-    {
       "name": "Jonathan Kuminga",
       "bbrefId": "kuminjo01",
       "nbaId": null,
@@ -97,6 +83,20 @@
       "exp": 6,
       "college": null,
       "jersey": "24",
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Jaden McDaniels",
+      "bbrefId": "mcdanja02",
+      "nbaId": 1630183,
+      "espnId": 4431671,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2000-09-29",
+      "exp": 7,
+      "college": "Washington",
+      "jersey": "3",
       "unit": "starters",
       "slot": "PF"
     },

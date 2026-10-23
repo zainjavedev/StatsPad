@@ -5,8 +5,8 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Dusty May",
-  "lastUpdated": "2026-10-20",
-  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
+  "lastUpdated": "2026-10-23",
+  "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -59,16 +59,15 @@
       "slot": "PG"
     },
     {
-      "name": "Zaccharie Risacher",
-      "bbrefId": "risacza01",
-      "nbaId": null,
-      "espnId": 5211175,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2005-04-08",
-      "exp": 3,
-      "college": null,
-      "jersey": "10",
+      "name": "Kyrie Irving",
+      "nbaId": 202681,
+      "espnId": 6442,
+      "pos": "G",
+      "height": "6-2",
+      "birthDate": "1992-03-23",
+      "exp": 15,
+      "college": "Duke",
+      "jersey": "11",
       "unit": "starters",
       "slot": "SG"
     },
@@ -101,6 +100,33 @@
       "slot": "PF"
     },
     {
+      "name": "Daniel Gafford",
+      "bbrefId": "gaffoda01",
+      "nbaId": 1629655,
+      "espnId": 4278049,
+      "pos": "F",
+      "height": "6-10",
+      "birthDate": "1998-10-01",
+      "exp": 8,
+      "college": "Arkansas",
+      "jersey": "21",
+      "unit": "starters",
+      "slot": "C"
+    },
+    {
+      "name": "Zaccharie Risacher",
+      "bbrefId": "risacza01",
+      "nbaId": null,
+      "espnId": 5211175,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2005-04-08",
+      "exp": 3,
+      "college": null,
+      "jersey": "10",
+      "unit": "second"
+    },
+    {
       "name": "Naji Marshall",
       "bbrefId": "marshna01",
       "nbaId": 1630230,
@@ -111,19 +137,6 @@
       "exp": 7,
       "college": "Xavier",
       "jersey": "3",
-      "unit": "starters",
-      "slot": "C"
-    },
-    {
-      "name": "Kyrie Irving",
-      "nbaId": 202681,
-      "espnId": 6442,
-      "pos": "G",
-      "height": "6-2",
-      "birthDate": "1992-03-23",
-      "exp": 15,
-      "college": "Duke",
-      "jersey": "11",
       "unit": "second"
     },
     {
@@ -137,19 +150,6 @@
       "exp": 4,
       "college": "Duke",
       "jersey": "2",
-      "unit": "second"
-    },
-    {
-      "name": "Daniel Gafford",
-      "bbrefId": "gaffoda01",
-      "nbaId": 1629655,
-      "espnId": 4278049,
-      "pos": "F",
-      "height": "6-10",
-      "birthDate": "1998-10-01",
-      "exp": 8,
-      "college": "Arkansas",
-      "jersey": "21",
       "unit": "second"
     },
     {

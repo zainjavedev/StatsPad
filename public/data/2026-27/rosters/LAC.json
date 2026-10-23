@@ -5,8 +5,8 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Tyronn Lue",
-  "lastUpdated": "2026-10-20",
-  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
+  "lastUpdated": "2026-10-23",
+  "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -59,15 +59,16 @@
       "slot": "PG"
     },
     {
-      "name": "Keaton Wagler",
-      "nbaId": null,
-      "espnId": 5254165,
+      "name": "Kris Dunn",
+      "bbrefId": "dunnkr01",
+      "nbaId": 1627739,
+      "espnId": 2991139,
       "pos": "G",
-      "height": "6-5",
-      "birthDate": "2007-02-03",
-      "exp": 0,
-      "college": "Illinois",
-      "jersey": "1",
+      "height": "6-3",
+      "birthDate": "1994-03-18",
+      "exp": 11,
+      "college": "Providence",
+      "jersey": "8",
       "unit": "starters",
       "slot": "SG"
     },
@@ -114,16 +115,15 @@
       "slot": "C"
     },
     {
-      "name": "Kris Dunn",
-      "bbrefId": "dunnkr01",
-      "nbaId": 1627739,
-      "espnId": 2991139,
+      "name": "Keaton Wagler",
+      "nbaId": null,
+      "espnId": 5254165,
       "pos": "G",
-      "height": "6-3",
-      "birthDate": "1994-03-18",
-      "exp": 11,
-      "college": "Providence",
-      "jersey": "8",
+      "height": "6-5",
+      "birthDate": "2007-02-03",
+      "exp": 0,
+      "college": "Illinois",
+      "jersey": "1",
       "unit": "second"
     },
     {

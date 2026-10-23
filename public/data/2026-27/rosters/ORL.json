@@ -5,8 +5,8 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Sean Sweeney",
-  "lastUpdated": "2026-10-20",
-  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
+  "lastUpdated": "2026-10-23",
+  "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -59,16 +59,16 @@
       "slot": "PG"
     },
     {
-      "name": "Jase Richardson",
-      "bbrefId": "richaja02",
+      "name": "Jalen Suggs",
+      "bbrefId": "suggsja01",
       "nbaId": null,
-      "espnId": 5239561,
+      "espnId": 4432165,
       "pos": "G",
-      "height": "6-1",
-      "birthDate": "2005-10-16",
-      "exp": 2,
-      "college": "Michigan State",
-      "jersey": "11",
+      "height": "6-5",
+      "birthDate": "2001-06-03",
+      "exp": 6,
+      "college": "Gonzaga",
+      "jersey": "4",
       "unit": "starters",
       "slot": "SG"
     },
@@ -115,16 +115,16 @@
       "slot": "C"
     },
     {
-      "name": "Jalen Suggs",
-      "bbrefId": "suggsja01",
+      "name": "Jase Richardson",
+      "bbrefId": "richaja02",
       "nbaId": null,
-      "espnId": 4432165,
+      "espnId": 5239561,
       "pos": "G",
-      "height": "6-5",
-      "birthDate": "2001-06-03",
-      "exp": 6,
-      "college": "Gonzaga",
-      "jersey": "4",
+      "height": "6-1",
+      "birthDate": "2005-10-16",
+      "exp": 2,
+      "college": "Michigan State",
+      "jersey": "11",
       "unit": "second"
     },
     {

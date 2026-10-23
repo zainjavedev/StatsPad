@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Nick Nurse",
-  "lastUpdated": "2026-10-20",
+  "lastUpdated": "2026-10-23",
   "sources": [
     {
       "label": "Basketball Reference roster",
@@ -53,29 +53,29 @@
       "unit": "starters"
     },
     {
-      "name": "VJ Edgecombe",
-      "espnId": "5124612",
-      "bbrefId": "edgecvj01",
-      "nbaId": 1642845,
-      "pos": "G-F",
-      "slot": "SG",
-      "height": "6-4",
-      "birthDate": "2005-07-30",
-      "exp": 1,
-      "college": "Baylor",
-      "unit": "starters"
-    },
-    {
       "name": "Jaylen Brown",
       "espnId": "3917376",
       "bbrefId": "brownja02",
       "nbaId": 1627759,
       "pos": "F-G",
-      "slot": "SF",
+      "slot": "SG",
       "height": "6-6",
       "birthDate": "1996-10-24",
       "exp": 10,
       "college": "California",
+      "unit": "starters"
+    },
+    {
+      "name": "VJ Edgecombe",
+      "espnId": "5124612",
+      "bbrefId": "edgecvj01",
+      "nbaId": 1642845,
+      "pos": "G-F",
+      "slot": "SF",
+      "height": "6-4",
+      "birthDate": "2005-07-30",
+      "exp": 1,
+      "college": "Baylor",
       "unit": "starters"
     },
     {
@@ -233,7 +233,7 @@
       "birthDate": "2001-09-27",
       "exp": 1,
       "college": "UNC / Arizona",
-      "unit": "third"
+      "unit": "camp"
     },
     {
       "name": "Tacko Fall",
@@ -246,5 +246,6 @@
       "college": "UCF",
       "unit": "camp"
     }
-  ]
+  ],
+  "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it."
 }

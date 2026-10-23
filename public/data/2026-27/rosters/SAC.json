@@ -5,8 +5,8 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Doug Christie",
-  "lastUpdated": "2026-10-20",
-  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
+  "lastUpdated": "2026-10-23",
+  "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -72,16 +72,16 @@
       "slot": "SG"
     },
     {
-      "name": "Precious Achiuwa",
-      "bbrefId": "achiupr01",
-      "nbaId": 1630173,
-      "espnId": 4431679,
+      "name": "Domantas Sabonis",
+      "bbrefId": "sabondo01",
+      "nbaId": 1627734,
+      "espnId": 3155942,
       "pos": "F",
-      "height": "6-8",
-      "birthDate": "1999-09-19",
-      "exp": 7,
-      "college": "Memphis",
-      "jersey": "9",
+      "height": "6-10",
+      "birthDate": "1996-05-03",
+      "exp": 11,
+      "college": "Gonzaga",
+      "jersey": "11",
       "unit": "starters",
       "slot": "SF"
     },
@@ -114,16 +114,16 @@
       "slot": "C"
     },
     {
-      "name": "Domantas Sabonis",
-      "bbrefId": "sabondo01",
-      "nbaId": 1627734,
-      "espnId": 3155942,
+      "name": "Precious Achiuwa",
+      "bbrefId": "achiupr01",
+      "nbaId": 1630173,
+      "espnId": 4431679,
       "pos": "F",
-      "height": "6-10",
-      "birthDate": "1996-05-03",
-      "exp": 11,
-      "college": "Gonzaga",
-      "jersey": "11",
+      "height": "6-8",
+      "birthDate": "1999-09-19",
+      "exp": 7,
+      "college": "Memphis",
+      "jersey": "9",
       "unit": "second"
     },
     {

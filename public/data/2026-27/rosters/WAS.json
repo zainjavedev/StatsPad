@@ -5,8 +5,8 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Brian Keefe",
-  "lastUpdated": "2026-10-20",
-  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
+  "lastUpdated": "2026-10-23",
+  "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -59,31 +59,18 @@
       "slot": "PG"
     },
     {
-      "name": "Kyshawn George",
-      "bbrefId": "georgky01",
+      "name": "Bilal Coulibaly",
+      "bbrefId": "coulibi01",
       "nbaId": null,
-      "espnId": 5174563,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "2003-12-12",
-      "exp": 3,
-      "college": "Miami",
-      "jersey": "18",
+      "espnId": 5104155,
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "2004-07-26",
+      "exp": 4,
+      "college": null,
+      "jersey": "0",
       "unit": "starters",
       "slot": "SG"
-    },
-    {
-      "name": "AJ Dybantsa",
-      "nbaId": null,
-      "espnId": 5142718,
-      "pos": "F",
-      "height": "6-9",
-      "birthDate": "2007-01-29",
-      "exp": 0,
-      "college": "BYU",
-      "jersey": "4",
-      "unit": "starters",
-      "slot": "SF"
     },
     {
       "name": "Anthony Davis",
@@ -96,6 +83,20 @@
       "exp": 15,
       "college": "Kentucky",
       "jersey": "23",
+      "unit": "starters",
+      "slot": "SF"
+    },
+    {
+      "name": "Kyshawn George",
+      "bbrefId": "georgky01",
+      "nbaId": null,
+      "espnId": 5174563,
+      "pos": "F",
+      "height": "6-8",
+      "birthDate": "2003-12-12",
+      "exp": 3,
+      "college": "Miami",
+      "jersey": "18",
       "unit": "starters",
       "slot": "PF"
     },
@@ -112,6 +113,18 @@
       "jersey": "20",
       "unit": "starters",
       "slot": "C"
+    },
+    {
+      "name": "AJ Dybantsa",
+      "nbaId": null,
+      "espnId": 5142718,
+      "pos": "F",
+      "height": "6-9",
+      "birthDate": "2007-01-29",
+      "exp": 0,
+      "college": "BYU",
+      "jersey": "4",
+      "unit": "second"
     },
     {
       "name": "Bub Carrington",
@@ -137,19 +150,6 @@
       "exp": 9,
       "college": "Arizona",
       "jersey": "8",
-      "unit": "second"
-    },
-    {
-      "name": "Bilal Coulibaly",
-      "bbrefId": "coulibi01",
-      "nbaId": null,
-      "espnId": 5104155,
-      "pos": "G",
-      "height": "6-7",
-      "birthDate": "2004-07-26",
-      "exp": 4,
-      "college": null,
-      "jersey": "0",
       "unit": "second"
     },
     {

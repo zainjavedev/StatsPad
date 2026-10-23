@@ -5,8 +5,8 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Joe Mazzulla",
-  "lastUpdated": "2026-10-20",
-  "note": "Starters are the five who started the most 2026–27 preseason games; the rest of the rotation is estimated, and coaches can change any of it.",
+  "lastUpdated": "2026-10-23",
+  "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
       "label": "ESPN roster",
@@ -45,20 +45,6 @@
   ],
   "players": [
     {
-      "name": "Jordan Walsh",
-      "bbrefId": "walshjo01",
-      "nbaId": null,
-      "espnId": 4683689,
-      "pos": "G",
-      "height": "6-7",
-      "birthDate": "2004-03-03",
-      "exp": 4,
-      "college": "Arkansas",
-      "jersey": "27",
-      "unit": "starters",
-      "slot": "PG"
-    },
-    {
       "name": "Derrick White",
       "bbrefId": "whitede01",
       "nbaId": 1628401,
@@ -69,6 +55,20 @@
       "exp": 10,
       "college": "Colorado",
       "jersey": "9",
+      "unit": "starters",
+      "slot": "PG"
+    },
+    {
+      "name": "Jordan Walsh",
+      "bbrefId": "walshjo01",
+      "nbaId": null,
+      "espnId": 4683689,
+      "pos": "G",
+      "height": "6-7",
+      "birthDate": "2004-03-03",
+      "exp": 4,
+      "college": "Arkansas",
+      "jersey": "27",
       "unit": "starters",
       "slot": "SG"
     },
