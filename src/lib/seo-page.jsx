@@ -22,7 +22,7 @@ export function seoMetadata(route) {
 }
 
 /* The same links on every static page, so the hub pages (home, compare, leaders...) get an incoming link from every other page. Stat rankings are linked from /leaders and from each other. */
-const HUBS = [['/', 'Home'], ['/compare', 'Compare players and teams'], ['/leaders', 'Stat leaders'], ['/teams', 'Teams and rosters'], ['/lineups', 'Starting lineups'], ['/blog', 'Blog'], ['/standings', 'Standings'], ['/schedule', 'Schedule'], ['/performances', 'Top performances'], ['/about', 'About StatsPads'], ['/contact', 'Contact'], ['/terms', 'Terms of service'], ['/privacy', 'Privacy'], ['/llms.txt', 'llms.txt']];
+const HUBS = [['/', 'Home'], ['/compare', 'Compare players and teams'], ['/stats/points', 'Stat leaders'], ['/teams', 'Teams and rosters'], ['/lineups', 'Starting lineups'], ['/blog', 'Blog'], ['/standings', 'Standings'], ['/schedule', 'Schedule'], ['/performances', 'Top performances'], ['/about', 'About StatsPads'], ['/contact', 'Contact'], ['/terms', 'Terms of service'], ['/privacy', 'Privacy'], ['/llms.txt', 'llms.txt']];
 
 export function SeoPage({route}) {
   return <>

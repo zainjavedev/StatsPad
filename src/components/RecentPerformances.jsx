@@ -10,12 +10,18 @@ const day = new Intl.DateTimeFormat(undefined, {month: 'short', day: 'numeric'})
 const short = name => name.replace(/^(\S)\S*\s+/, '$1. ');
 const codeOf = abbr => Object.keys(TEAMS).find(code => TEAMS[code].espn === String(abbr).toLowerCase());
 
-/* Points always lead; the second number is whatever stood out most, the third is shooting. */
+/* His three best numbers of the night: each stat is scored against a good night in that category, and the top three show,
+   shown in the usual order (points, rebounds, assists...). Shooting only counts with enough attempts. */
 function trio(stats) {
   const [fgm, fga] = String(stats.FG ?? '0-0').split('-').map(Number), three = Number(String(stats['3PT'] ?? '0-0').split('-')[0]);
-  const options = [[num(stats.REB), 'reb', num(stats.REB)], [num(stats.AST), 'ast', num(stats.AST)], [three, '3pm', three * 1.4], [num(stats.STL) + num(stats.BLK), 'stk', (num(stats.STL) + num(stats.BLK)) * 1.5]];
-  const best = options.reduce((a, b) => (b[2] > a[2] ? b : a));
-  return [[num(stats.PTS), 'pts'], [best[0], best[1]], [fga ? `${Math.round(fgm / fga * 100)}%` : '–', 'fg']];
+  const all = [
+    [num(stats.PTS), 'pts', num(stats.PTS) / 20], [num(stats.REB), 'reb', num(stats.REB) / 8], [num(stats.AST), 'ast', num(stats.AST) / 6],
+    [num(stats.STL), 'stl', num(stats.STL) / 2], [num(stats.BLK), 'blk', num(stats.BLK) / 2], [three, '3pm', three / 3],
+  ];
+  if (fga >= 6) all.push([`${Math.round(fgm / fga * 100)}%`, 'fg', Math.round(fgm / fga * 100) / 55]);
+  const best = all.filter(item => item[2] > 0).sort((a, b) => b[2] - a[2]).slice(0, 3);
+  for (const fallback of all.slice(0, 3)) if (best.length < 3 && !best.includes(fallback)) best.push(fallback);
+  return best.sort((a, b) => all.indexOf(a) - all.indexOf(b)).map(([value, label]) => [value, label]);
 }
 
 /* One performance card; used on Home and beside a player's game report. */

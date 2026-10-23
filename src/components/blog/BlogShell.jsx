@@ -3,7 +3,7 @@ import { BarChart3, BookOpen, Flame, Home, Trophy, User, Users } from 'lucide-re
 import SiteFooter from '../SiteFooter';
 
 /* The same banner the stats app wears, as plain links so the page stays a server page. */
-const NAV = [['/', 'Home', Home], ['/leaders', 'Leaders', Trophy], ['/performances', 'Performances', Flame], ['/compare', 'Compare', BarChart3], ['/teams', 'Teams', Users], ['/blog', 'Blog', BookOpen]];
+const NAV = [['/', 'Home', Home], ['/stats/points', 'Leaders', Trophy], ['/performances', 'Performances', Flame], ['/compare', 'Compare', BarChart3], ['/teams', 'Teams', Users], ['/blog', 'Blog', BookOpen]];
 
 export default function BlogShell({children}) {
   return <div className="blog">

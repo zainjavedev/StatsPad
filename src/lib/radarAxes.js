@@ -8,7 +8,7 @@ import { TEAMS, teamCodeOf } from './teams';
 const rgb = hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
 /* Clubs whose official primary is too dark to read as a data colour use their gold instead. */
 const RADAR_COLOR = {IND: '#fdbb30'};
-const teamHex = player => { const code = teamCodeOf(player?.team); return RADAR_COLOR[code] || TEAMS[code]?.color || '#8a8a8a'; };
+export const teamHex = player => { const code = teamCodeOf(player?.team); return RADAR_COLOR[code] || TEAMS[code]?.color || '#8a8a8a'; };
 const hue = hex => {
   const [r, g, b] = rgb(hex).map(v => v / 255), max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
   if (!d) return null;

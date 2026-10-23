@@ -1,0 +1,16 @@
+name: Send alerts
+
+# Vercel's free cron only runs daily, so this pings the alerts route every
+# 5 minutes (GitHub may delay a run by a few minutes). The route sends tip-off
+# and final-score alerts for subscribers' favorite teams, once per game.
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  alerts:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl --fail --silent --show-error -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" "https://statspads.com/api/cron/alerts"

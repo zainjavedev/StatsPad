@@ -3230,3 +3230,243 @@ a.pk-row:hover{background:var(--ink-2)}
 .perfs-night .rp-trio{gap:2px 12px}.perfs-night .rp-trio b{font-size:26px}
 @media(max-width:520px){.perfs-page{padding:16px 14px 90px}.perfs-night .rp-list{grid-template-columns:1fr}.perfs-night .rp-card{padding:10px 12px}.perfs-night .rp-trio b{font-size:22px}}
 @media(prefers-reduced-motion:reduce){.perfs-night .rp-list>li{transition:none}.perfs-night .rp-list>li:hover{transform:none}}
+
+.pg-profile{display:flex;align-self:flex-end;flex:none;color:inherit;text-decoration:none}
+.pg-name{color:inherit;text-decoration:none}
+.pg-name:hover{text-decoration:underline;text-underline-offset:4px}
+
+.pp-grid-2{grid-template-columns:minmax(0,1fr)}
+
+/* Profile page recent games: each one a tappable card, with a photo as tall as the text beside it. */
+.pp-recent .rp-list{display:grid;gap:8px}
+.pp-recent .rp-list>li,.pp-recent .rp-list>li:last-child{border:1px solid var(--line);border-radius:14px;background:var(--ink-1);transition:border-color .15s,background .15s}
+.pp-recent .rp-list>li:hover{border-color:var(--line-2);background:var(--ink-2)}
+.pp-recent .rp-list>li:active{background:var(--ink-2)}
+.pp-recent .rp-card{grid-template-columns:72px minmax(0,1fr) auto;gap:14px;padding:10px 14px 10px 10px}
+.pp-recent .rp-face,.pp-recent .rp-face>img:first-child,.pp-recent .rp-face>i{width:72px;height:72px}
+.pp-recent .rp-team{width:26px;height:26px}
+.pp-recent .rp-list>li::after{content:"";position:absolute;right:14px;bottom:13px;width:7px;height:7px;border:solid var(--text-3);border-width:0 2px 2px 0;transform:rotate(-45deg);pointer-events:none;transition:transform .15s,border-color .15s}
+.pp-recent .rp-list>li:hover::after{border-color:var(--text-1);transform:translateX(2px) rotate(-45deg)}
+@media(max-width:520px){.pp-recent .rp-card{grid-template-columns:64px minmax(0,1fr) auto;gap:12px;padding:9px 12px 9px 9px}.pp-recent .rp-face,.pp-recent .rp-face>img:first-child,.pp-recent .rp-face>i{width:64px;height:64px}.pp-recent .rp-team{width:22px;height:22px}}
+@media(prefers-reduced-motion:reduce){.pp-recent .rp-list>li,.pp-recent .rp-list>li::after{transition:none}}
+
+/* Player game page: roomier header, tiled stat grid, a legend instead of the chart note. */
+.pg-fps::before{content:" · "}
+.pg-legend{display:flex;gap:16px;margin:10px 0 0;color:var(--text-3);font-size:12px;font-weight:600}
+.pg-legend span{display:inline-flex;align-items:center;gap:6px}
+.pg-legend i{display:inline-block}
+.pg-legend .lead{width:16px;height:6px;border-radius:3px;background:var(--pg,var(--text-1));opacity:.7}
+.pg-legend .dot{width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px #0006}
+@media(max-width:520px){
+  .pg-fps{white-space:nowrap}
+  .pg-hero{gap:12px!important}
+  .pg-tags{margin:16px 0 4px!important;gap:6px 14px}
+  .pg-grid{display:flex!important;flex-wrap:wrap;gap:14px 20px!important;margin:12px 0 0!important}
+  .pg-cell,.pg-cell.pos,.pg-cell.neg{display:block;min-width:0;padding:0!important;border:0;background:none!important;text-align:left}
+  .pg-cell strong{font-size:25px!important;line-height:1.1}
+  .pg-cell small{font-size:12px;letter-spacing:.02em}
+  .pg-card{margin-top:6px}
+}
+@media(max-width:520px){.pg-hero{margin-bottom:14px!important}.pg-tags{margin-top:0!important}}
+
+.pg-legend{flex-wrap:wrap;gap:6px 16px}
+.pg-legend .lead,.pg-legend .trail{width:16px;height:6px;border-radius:3px;opacity:1}
+.pg-legend .lead{background:#5ee08a}
+.pg-legend .trail{background:#ef6b6b}
+
+/* Report layout: header, a position and score line, flat stats, then the quarter tabs underneath. */
+.pg-profile{position:relative}
+.pg-badge{position:absolute;right:-2px;bottom:2px;width:28px;height:28px;padding:3px;border-radius:50%;background:var(--ink-1);object-fit:contain;box-shadow:0 0 0 2px var(--bg,#0b0b0c)}
+.pg-matchline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0 0;padding-top:14px;border-top:1px solid var(--line)}
+.pg-pos{display:inline-flex;align-items:center;gap:8px;color:var(--text-2);font-size:16px;font-weight:700}
+.pg-pos i{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--ink-2);color:var(--text-1);font:700 11px/1 inherit;font-style:normal}
+.pg-matchline .pg-kicker{margin:0;font-size:16px}
+.pg-matchline+.pg-grid{margin-top:12px}
+.pg-grid+.pg-tabs{margin:18px 0 0}
+.pg-tabs button{background:none}
+.pg-tabs button.active{color:#6aa6ff;background:none;border-color:#6aa6ff}
+:root[data-theme="light"] .pg-tabs button.active{color:#0b57d0;border-color:#0b57d0}
+.pg-bars i,.pg-bars button.on i{background:#3d82e0!important}
+.pg-bars button:not(.on) i{opacity:.85}
+.pg-bars b{font-size:15px!important;font-weight:700}
+.pg-card-head h3{color:var(--text-2)}
+.pg-tabs button.active{color:#6aa6ff!important;border-color:#6aa6ff!important;box-shadow:none}
+:root[data-theme="light"] .pg-tabs button.active{color:#0b57d0!important;border-color:#0b57d0!important}
+
+/* Player game page: score without colour (the winner is bold), tags on one line, fps after the name. */
+.pg-fps{display:inline;margin:0;font-size:13px;font-weight:600;white-space:nowrap}
+.pg-pos{font-size:16px}
+.pg-kicker .score{color:var(--text-2);font-weight:500}
+.pg-kicker .score.lead{color:var(--text-1);font-weight:800}
+.pg-tags{flex-wrap:nowrap!important;gap:12px!important;overflow:hidden;margin:18px 0 0!important;white-space:nowrap}
+.pg-tags span{font-size:15px!important;flex:none}
+@media(max-width:520px){.pg-tags{margin:18px 0 0!important;gap:10px!important}.pg-tags span{font-size:14px!important}}
+
+/* Player profile: stats on the left, recent games pinned on the right. */
+.pp-layout{display:grid;grid-template-columns:minmax(0,1fr) 400px;column-gap:20px;align-items:start}
+.pp-layout>*{grid-column:1}
+.pp-layout>.pp-recent{grid-column:2;grid-row:1/span 8;position:sticky;top:90px;margin-top:15px}
+@media(max-width:900px){.pp-layout{display:block}.pp-layout>.pp-recent{position:static;margin-top:16px}}
+@media(min-width:901px){
+  .profile-hero.is-player{display:flex!important;align-items:center;gap:26px;min-height:0!important;padding:22px 28px!important}
+  .profile-hero.is-player .profile-art-wrap{order:-1;position:relative!important;inset:auto!important;flex:none;width:124px!important;height:124px!important;min-height:0!important;margin:0!important;border-radius:50%;overflow:hidden;background:var(--ink-2)}
+  .profile-hero.is-player .profile-art-wrap>div{display:none!important}
+  .profile-hero.is-player .profile-art{position:static!important;width:100%!important;height:100%!important;max-width:none!important;object-fit:cover;object-position:top;transform:none!important}
+  .profile-hero.is-player .profile-copy{width:auto!important;padding:0!important}
+  .profile-hero.is-player .profile-copy h1{font-size:40px!important;margin:4px 0!important}
+}
+
+/* Even breathing room around the tags: same gap above and below. */
+.pg-hero{margin-bottom:0!important}
+.pg-tags{margin:16px 0 0!important}
+.pg-tags+.pg-matchline{margin-top:16px}
+.pg-hero+.pg-matchline{margin-top:18px}
+@media(max-width:520px){.pg-hero{margin-bottom:0!important}.pg-tags{margin:16px 0 0!important}}
+.pg-profile .pg-photo{margin-bottom:0!important}
+.pg-hero{align-items:center!important}
+.pg-profile{align-self:center}
+
+
+/* Report header, closer to the reference: bigger round photo, bare team logo on its corner, name and fps on one line. */
+section.pg .pg-hero{gap:18px!important}
+section.pg .pg-hero .pg-photo{width:104px!important;height:104px!important}
+section.pg .pg-badge{right:-10px;bottom:-4px;width:38px;height:38px;padding:0;background:none;box-shadow:none;filter:drop-shadow(0 1px 3px #000a)}
+section.pg .pg-who h2{font-size:24px!important;line-height:1.1}
+section.pg .pg-fps{font-size:18px;font-weight:500;color:var(--text-3)}
+section.pg .pg-big{margin:4px 0 0;font-size:16px;color:var(--text-2)}
+section.pg .pg-big b{font-size:46px!important;line-height:1;color:var(--text-1)}
+@media(max-width:520px){
+  section.pg .pg-hero{gap:14px!important}
+  section.pg .pg-hero .pg-photo{width:88px!important;height:88px!important}
+  section.pg .pg-badge{width:32px;height:32px;right:-8px}
+  section.pg .pg-who h2{font-size:20px!important}
+  section.pg .pg-fps{font-size:14px}
+  section.pg .pg-big{font-size:14px;white-space:nowrap}
+  section.pg .pg-big b{font-size:38px!important}
+}
+
+/* Game page: logo-only header with the winner in bold, top six per team, swing chart and team totals. */
+.gp-head .hd-link img,.gd-head.gp-head img{width:84px;height:84px}
+.gp-head strong{font-size:52px;font-weight:500;color:var(--text-3)}
+.gp-head strong.won{font-weight:800;color:var(--text-1)}
+.gp-head>div{gap:20px!important}
+@media(max-width:640px){.gp-head .hd-link img,.gd-head.gp-head img{width:56px;height:56px}.gp-head strong{font-size:38px}}
+.gd-more{display:block;margin:14px auto 0;padding:10px 20px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--text-1);font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.gd-more:hover{background:var(--ink-2)}
+.gd-card{margin-top:22px;padding:18px 20px;border:1px solid var(--line);border-radius:18px;background:var(--ink-1)}
+.gd-card .pg-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.gd-card .pg-card-head h3{margin:0;font-size:18px;color:var(--text-2)}
+.gd-card .flow-chart{display:block;width:100%;height:auto}
+.gd-card .pg-axis{display:flex;justify-content:space-around;margin-top:6px;color:var(--text-3);font-size:11px;font-weight:700}
+.gd-compare-head{display:flex;justify-content:space-between;padding:0 2px 8px;color:var(--text-2);font-size:13px;font-weight:800;border-bottom:1px solid var(--line)}
+.gd-compare-head span{display:inline-flex;align-items:center;gap:8px}
+.gd-compare-head img{width:24px;height:24px;object-fit:contain}
+.gd-compare-row{display:grid;grid-template-columns:90px 1fr 90px;align-items:center;gap:10px;padding:11px 2px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.gd-compare-row:last-child{border-bottom:0}
+.gd-compare-row span{text-align:center;color:var(--text-3);font-size:13px;font-weight:600}
+.gd-compare-row b{font-size:17px;font-weight:500;color:var(--text-2)}
+.gd-compare-row b:last-child{text-align:right}
+.gd-compare-row b.lead{font-weight:800;color:var(--text-1)}
+
+/* Player game: labels under the big numbers, a tidier quarter chart, shot-chart key. */
+section.pg .pg-big{display:flex!important;align-items:baseline;gap:20px;white-space:nowrap}
+section.pg .pg-big span{display:inline-flex;align-items:baseline;gap:5px}
+section.pg .pg-big small{font-size:18px;font-weight:600;color:var(--text-3)}
+section.pg .pg-big b{margin-left:0!important}
+@media(max-width:520px){section.pg .pg-big{gap:14px}section.pg .pg-big small{font-size:14px}}
+
+.pg-bars{justify-content:center!important;gap:14px!important;height:200px!important}
+.pg-bars button{flex:0 0 auto!important;width:min(78px,21%);padding:12px 8px 8px!important;border-radius:16px;background:rgb(255 255 255 / .04)!important;transition:background .15s}
+.pg-bars button:hover{background:rgb(255 255 255 / .08)!important}
+.pg-bars button.on{background:rgb(106 166 255 / .14)!important;box-shadow:inset 0 0 0 1.5px #6aa6ff}
+.pg-bars i{width:100%!important;border-radius:10px 10px 6px 6px!important;background:linear-gradient(180deg,#6aa6ff,#2f63c7)!important;opacity:1!important}
+.pg-bars b{font-size:16px!important}
+.pg-bars span{margin-top:2px}
+.shot-key{justify-content:center;margin:10px 0 0}
+.shot-key i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.shot-key .made{border:2px solid #7fc79d;background:none}
+.shot-key .missed{background:none;position:relative;width:10px;height:10px}
+.shot-key .missed::before,.shot-key .missed::after{content:"";position:absolute;left:4px;top:-1px;width:2px;height:12px;background:#c9777a;transform:rotate(45deg)}
+.shot-key .missed::after{transform:rotate(-45deg)}
+.shot-key .assist{border-radius:2px;background:#6aa6ff;transform:rotate(45deg) scale(.8)}
+
+/* Player game: quarter chart and assists side by side on wide screens. */
+.pg-pair{display:grid;grid-template-columns:1fr;gap:0 28px;align-items:start}
+.pg-pair>.pg-card{min-width:0}
+@media(min-width:1000px){.pg-pair{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.pg-pair .pg-bars{gap:8px!important}.pg-pair .pg-bars button{width:auto!important;flex:1 1 0!important;max-width:64px}}
+
+/* Player profile on wide screens: the phone's flat stat row, ranks in blue, share button inside the header. */
+@media(min-width:521px){
+  .pp-tiles{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:22px 8px!important;margin-top:20px}
+  .pp-tile{align-items:center;gap:3px;padding:0!important;border:0!important;background:none!important;text-align:center}
+  .pp-tile span{font-size:12px;letter-spacing:.06em}
+  .pp-tile strong{font-size:32px!important}
+  .pp-tile small{color:#6aa6ff;font-size:13px;font-weight:700}
+  .pp-tile small i{display:none}
+}
+@media(min-width:901px){
+  .pp-layout>.pp-tiles{margin-top:22px}
+  .pp-recent .rp-list{gap:10px}
+}
+
+.pg-pair .pg-card-head{flex-wrap:wrap;gap:8px 12px}
+
+/* Player profile on wide screens: one card with the player on the left and the season stats on the right. */
+@media(min-width:901px){
+  .pp-layout>.pp-top{grid-column:1/-1;position:relative;display:grid;grid-template-columns:minmax(300px,400px) minmax(0,1fr);align-items:center;gap:20px 36px;padding:26px 32px;border:1px solid var(--line);border-radius:14px;background:var(--ink-1)}
+  .pp-top .profile-hero.is-player{border:0!important;background:none!important;padding:0!important}
+  .pp-top .profile-hero.is-player .profile-art-wrap{width:112px!important;height:112px!important}
+  .pp-top .profile-hero.is-player .profile-copy h1{font-size:32px!important}
+  .pp-top .pp-share{position:absolute;top:14px;right:16px;margin:0;padding:0;z-index:2}
+  .pp-top .pp-tiles{margin-top:0!important;gap:20px 6px!important}
+  .pp-top .pp-tile strong{font-size:28px!important}
+  .pp-layout>.pp-recent{grid-row:2/span 8}
+}
+@media(min-width:901px){.pp-top .pp-tiles{padding-top:22px}.pp-top .pp-share{top:12px;right:14px}}
+
+/* ---- Player profile, wide layout: team-themed top card, everything full width ---- */
+.pp-layout{display:block!important}
+.pp-layout>.pp-recent{position:static!important;margin-top:20px}
+.pp-recent .rp-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:10px}
+@media(min-width:901px){
+  .pp-layout>.pp-top{background:radial-gradient(110% 170% at 100% 0,color-mix(in srgb,var(--team) 55%,transparent),transparent 62%),radial-gradient(60% 120% at 0 100%,color-mix(in srgb,var(--team) 30%,transparent),transparent 70%),var(--ink-1);border-color:color-mix(in srgb,var(--team) 55%,var(--line))}
+  .pp-top .profile-hero.is-player .profile-art-wrap{box-shadow:0 0 0 3px color-mix(in srgb,var(--team) 75%,#ffffff 12%),0 10px 30px color-mix(in srgb,var(--team) 50%,transparent)}
+  .pp-grid-2{grid-template-columns:minmax(0,1.35fr) minmax(0,.85fr)!important}
+}
+.pp-radar .vs-radar{border:0!important;background:none!important;padding:0!important;margin:0!important;box-shadow:none!important}
+.pp-radar svg{max-width:100%}
+
+/* Career trend: the line draws itself with a light travelling along it, and the dots and numbers appear as it passes. */
+.pp-trend svg{color:var(--series-1)}
+.pp-line{stroke-dasharray:1;stroke-dashoffset:1;animation:ppDraw 1.3s linear forwards}
+.pp-area{fill:url(#ppFade);stroke:none;opacity:0;animation:ppIn .9s .5s ease-out forwards}
+.pp-dot,.pp-val{opacity:0;animation:ppPop .5s cubic-bezier(.3,1.5,.5,1) forwards;animation-delay:var(--t,0s)}
+.pp-dot{transform-box:fill-box;transform-origin:center}
+.pp-val{animation-name:ppIn}
+.pp-comet{fill:#fff;filter:drop-shadow(0 0 7px currentColor) drop-shadow(0 0 14px currentColor);animation:ppOut .4s 1.3s ease-in forwards}
+@keyframes ppDraw{to{stroke-dashoffset:0}}
+@keyframes ppIn{to{opacity:1}}
+@keyframes ppPop{from{opacity:0;transform:scale(.2)}to{opacity:1;transform:scale(1)}}
+@keyframes ppOut{to{opacity:0}}
+.pp-dot{cursor:pointer;transition:r .15s}
+@media(prefers-reduced-motion:reduce){.pp-line,.pp-area,.pp-dot,.pp-val{animation:none;opacity:1;stroke-dashoffset:0}.pp-comet{display:none}}
+
+/* Season by season: roomier rows, the headline numbers in bold, the rest muted. */
+.pp-table th,.pp-table td{padding:13px 14px;font-size:14px}
+.pp-table td{color:var(--text-2)}
+.pp-table td:nth-child(6),.pp-table td:nth-child(7),.pp-table td:nth-child(8){color:var(--text-1);font-weight:800}
+.pp-table tbody tr:hover td,.pp-table tbody tr:hover th{background:var(--ink-2)}
+.pp-table tr.current td,.pp-table tr.current th{background:color-mix(in srgb,var(--team,var(--series-1)) 16%,transparent)}
+.pp-table tr.career td,.pp-table tr.career th{background:var(--ink-2)}
+
+/* Head to head: Tyrese's face against each suggested player's. */
+.pp-vs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:12px}
+.pp-vs{overflow:hidden;border:1px solid var(--line);border-radius:16px;background:radial-gradient(90% 120% at 0 0,color-mix(in srgb,var(--a) 38%,transparent),transparent 60%),radial-gradient(90% 120% at 100% 0,color-mix(in srgb,var(--b) 38%,transparent),transparent 60%),var(--ink-2);transition:transform .15s,border-color .15s}
+.pp-vs:hover{transform:translateY(-3px);border-color:var(--line-2)}
+.pp-vs-faces{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;width:100%;height:132px;padding:12px 10px 0;border:0;background:none;cursor:pointer}
+.pp-vs-face{display:flex;justify-content:center;align-items:flex-end;height:100%}
+.pp-vs-face img{max-height:100%;max-width:100%;object-fit:contain;object-position:bottom;filter:drop-shadow(0 8px 10px #0008)}
+.pp-vs-face i{width:70px;height:70px;border-radius:50%;background:var(--ink-1);margin-bottom:12px}
+.pp-vs-faces>b{align-self:center;margin:0 -8px;z-index:2;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--text-1);color:var(--ink-1);font-size:11px;font-weight:800}
+.pp-vs-meta{display:flex;flex-direction:column;align-items:stretch;gap:10px;padding:12px 14px;background:rgb(0 0 0 / .28)}
+.pp-vs-meta .pp-versus{justify-content:center}

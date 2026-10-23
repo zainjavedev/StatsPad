@@ -10,6 +10,8 @@ import { finished, loadSchedule } from '../lib/schedule';
 import { loadBoxscore } from '../lib/boxscore';
 import { navigate } from '../lib/nav';
 import { PerfCard } from './RecentPerformances';
+import Radar from './Radar';
+import { radarAxes, teamHex as radarHex } from '../lib/radarAxes';
 
 /* Everything under a player's hero: season tiles with league ranks, the
    career trend, the season-by-season table and who to compare with next. */
@@ -58,6 +60,9 @@ function RecentGames({ lines }) {
   </section>;
 }
 
+const espnPhoto = player => { const id = (/^espn-(\d+)$/.exec(player.playerId ?? '') || [])[1]; return id ? `https://a.espncdn.com/i/headshots/nba/players/full/${id}.png` : null; };
+const teamHex = player => TEAMS[teamCodeOf(player.team)]?.color || '#8a8a8a';
+
 const teamText = row => (row.tot ? 'TOT' : row.t);
 
 function rankOf(population, entity, [, get, gate]) {
@@ -78,7 +83,7 @@ function useCareer(name) {
   return state;
 }
 
-function TrendChart({ seasons }) {
+function TrendChart({ seasons, tint }) {
   const [metric, setMetric] = useState(0);
   const [label, get, gate] = TREND[metric];
   const points = seasons.filter(entry => entry.main.gp > 0 && (!gate || gate(entry.main))).map(entry => ({ s: entry.s, value: get(entry.main), live: entry.main.live }));
@@ -98,10 +103,13 @@ function TrendChart({ seasons }) {
     </div>
     {points.length < 2
       ? <p className="pp-empty">{points.length ? 'One season so far, so there is no trend yet.' : 'Not enough shooting attempts to chart this stat.'}</p>
-      : <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${label} by season`}>
+      : <svg key={metric} style={{ color: tint }} viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${label} by season`}>
+        <defs><linearGradient id="ppFade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="currentColor" stopOpacity=".28"/><stop offset="1" stopColor="currentColor" stopOpacity="0"/></linearGradient></defs>
         {[0, 0.5, 1].map(step => <line key={step} x1={pad.left} x2={width - pad.right} y1={pad.top + step * (height - pad.top - pad.bottom)} y2={pad.top + step * (height - pad.top - pad.bottom)} className="pp-grid"/>)}
-        <path d={path} className="pp-line"/>
-        {points.map((point, index) => <g key={point.s}>
+        <path d={`${path} L${x(points.length - 1).toFixed(1)},${height - pad.bottom} L${x(0).toFixed(1)},${height - pad.bottom} Z`} className="pp-area"/>
+        <path d={path} className="pp-line" pathLength="1"/>
+        <circle r="6" className="pp-comet"><animateMotion dur="1.3s" fill="freeze" path={path} calcMode="linear"/></circle>
+        {points.map((point, index) => <g key={point.s} style={{ '--t': `${(points.length > 1 ? index / (points.length - 1) : 0) * 1.25}s` }}>
           <circle cx={x(index)} cy={y(point.value)} r={point.live || index === points.length - 1 ? 5 : 3.5} className={point.live ? 'pp-dot live' : 'pp-dot'}><title>{`${pretty(point.s)}: ${f1(point.value)} ${label}`}</title></circle>
           {showValues && <text x={x(index)} y={y(point.value) - 10} textAnchor="middle" className="pp-val">{f1(point.value)}</text>}
           {index % every === 0 && <text x={x(index)} y={height - 8} textAnchor="middle" className="pp-axis">{point.s.slice(2)}</text>}
@@ -132,7 +140,7 @@ function CareerTable({ seasons, career, currentSeason }) {
   </table></div>;
 }
 
-export default function PlayerBody({ entity, season, population, bars, showCareer, onOpen, onCompare }) {
+export default function PlayerBody({ hero, entity, season, population, showCareer, onOpen, onCompare }) {
   const enriched = useMemo(() => ({ ...entity, trueShooting: tsOf({ pts: entity.stats.points, fga: entity.stats.fieldGoalsAttempted, fta: entity.stats.freeThrowsAttempted }) }), [entity]);
   const pool = useMemo(() => population.map(player => ({ ...player, trueShooting: tsOf({ pts: player.stats.points, fga: player.stats.fieldGoalsAttempted, fta: player.stats.freeThrowsAttempted }) })), [population]);
   const history = useCareer(entity.playerName), recent = useRecentLines(entity.playerName);
@@ -156,7 +164,9 @@ export default function PlayerBody({ entity, season, population, bars, showCaree
     foot: `${season ? pretty(season) : ''} per game, ranked among regulars`, path: playerUrl(entity.playerName),
   };
 
-  return <>
+  return <div className="pp-layout">
+    <div className="pp-top" style={{ '--team': teamHex(entity) }}>
+    {hero}
     <div className="pp-share"><ShareButton spec={shareSpec} filename={`${slugify(entity.playerName)}-stats`} title={entity.playerName} text={`${entity.playerName}: ${f1(entity.stats.points)} PPG, ${f1(entity.stats.totalRebounds)} RPG, ${f1(entity.stats.assists)} APG`} path={playerUrl(entity.playerName)}/></div>
     <section className="pp-tiles" aria-label="Season per-game stats">
       {TILES.map(tile => {
@@ -168,6 +178,7 @@ export default function PlayerBody({ entity, season, population, bars, showCaree
         </article>;
       })}
     </section>
+    </div>
     <RecentGames lines={recent}/>
 
     <div className="pp-grid-2">
@@ -175,15 +186,16 @@ export default function PlayerBody({ entity, season, population, bars, showCaree
         <div className="pp-head"><small>CAREER TREND</small><h2>How {entity.playerName.split(' ')[0]}&apos;s numbers have moved</h2></div>
         {history === undefined
           ? <div className="sk" style={{ height: 230, borderRadius: 12 }}/>
-          : <TrendChart seasons={seasons}/>}
+          : <TrendChart seasons={seasons} tint={radarHex(entity)}/>}
         {highs.length > 0 && seasons.length > 1 && <div className="pp-highs">
           {highs.map(({ name, entry, key }) => <span key={name}><b>{f1(entry.main[key])}</b> {name}<small>best season, {pretty(entry.s)}</small></span>)}
         </div>}
       </section>}
-      <aside className="pp-card pp-bars">
-        <div className="pp-head"><small>PLAYER PROFILE</small><h2>League percentile</h2></div>
-        {bars}
-      </aside>
+      {pool.length > 10 && <aside className="pp-card pp-radar">
+        <div className="pp-head"><small>PLAYER PROFILE</small><h2>{entity.playerName.split(' ')[0]}&apos;s skill radar</h2></div>
+        <Radar axes={radarAxes(enriched, enriched, pool).map(axis => ({ ...axis, sides: [axis.sides[0]] }))} names={[entity.playerName]} colors={[radarHex(entity)]}/>
+        <p className="pp-note">Each spoke runs from the league&apos;s lowest to highest rotation player.</p>
+      </aside>}
     </div>
 
     {showCareer && <section className="pp-card">
@@ -196,12 +208,19 @@ export default function PlayerBody({ entity, season, population, bars, showCaree
 
     {suggestions.length > 0 && <section className="pp-card">
       <div className="pp-head"><small>COMPARE</small><h2>Put {entity.playerName.split(' ')[0]} head to head</h2></div>
-      <div className="pp-suggest">
-        {suggestions.map(player => <div key={player.playerId} className="pp-suggest-item">
-          <button className="pp-open" onClick={() => onOpen(player)}><b>{player.playerName}</b><small>{player.team} · {f1(player.stats.points)} PPG</small></button>
-          <button className="pp-versus" onClick={() => onCompare([entity, player])} aria-label={`Compare ${entity.playerName} with ${player.playerName}`}><BarChart3 size={14}/> Compare</button>
+      <div className="pp-vs-grid">
+        {suggestions.map(player => <div key={player.playerId} className="pp-vs" style={{ '--a': teamHex(entity), '--b': teamHex(player) }}>
+          <button className="pp-vs-faces" onClick={() => onCompare([entity, player])} aria-label={`Compare ${entity.playerName} with ${player.playerName}`}>
+            <span className="pp-vs-face">{espnPhoto(entity) ? <img src={espnPhoto(entity)} alt="" loading="lazy"/> : <i/>}</span>
+            <b>VS</b>
+            <span className="pp-vs-face">{espnPhoto(player) ? <img src={espnPhoto(player)} alt="" loading="lazy"/> : <i/>}</span>
+          </button>
+          <div className="pp-vs-meta">
+            <button className="pp-open" onClick={() => onOpen(player)}><b>{player.playerName}</b><small>{player.team} · {f1(player.stats.points)} PPG</small></button>
+            <button className="pp-versus" onClick={() => onCompare([entity, player])}><BarChart3 size={14}/> Compare</button>
+          </div>
         </div>)}
       </div>
     </section>}
-  </>;
+  </div>;
 }

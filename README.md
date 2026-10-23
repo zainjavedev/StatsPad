@@ -30,7 +30,7 @@ ESPN has no regular-season numbers before the first game, so until then the pres
 GitHub Actions keep it fresh:
 
 - `refresh-stats.yml` rebuilds stats, schedule, rosters and headshots every 4 hours
-- `send-alerts.yml` triggers game-start alerts every 10 minutes (needs the `CRON_SECRET` and `SITE_URL` repo secrets)
+- `send-alerts.yml` triggers tip-off alerts (never final scores) every 5 minutes (needs the `CRON_SECRET` and `SITE_URL` repo secrets)
 
 Rebuild a Basketball Reference season from a downloaded per-game page:
 

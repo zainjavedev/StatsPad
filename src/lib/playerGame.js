@@ -51,26 +51,35 @@ export const fgPct = row => (row.FGA ? Math.round(1000 * row.FGM / row.FGA) / 10
 export const rating = line => Math.max(0, Math.min(10, +(2.5 + gameScore(line) / 6.5).toFixed(1)));
 
 export function tagsOf(row, minutes) {
-  const tags = [], cats = [row.PTS, row.REB, row.AST, row.STL, row.BLK].filter(value => value >= 10).length;
+  const tags = [], cats = [row.PTS, row.REB, row.AST, row.STL, row.BLK].filter(value => value >= 10).length, mins = num(minutes);
   if (cats >= 3) tags.push('tripledouble'); else if (cats >= 2) tags.push('doubledouble');
   if (row.PTS >= 40) tags.push('40bomb'); else if (row.PTS >= 30) tags.push('30bomb'); else if (row.PTS >= 20) tags.push('20pointer');
-  if (row.FGA >= 8 && tsPct(row) >= 65) tags.push('efficient');
-  if (row.AST >= 8) tags.push('generous');
-  if (row.REB >= 12) tags.push('glasseater');
-  if (row.STL + row.BLK >= 5) tags.push('lockdown');
-  if (row.TPM >= 5) tags.push('rainmaker');
-  if (row.FTA >= 8 && row.FTM === row.FTA) tags.push('perfectfts');
+  if (row.FGA >= 5 && row.FGM === row.FGA) tags.push('automatic');
+  else if (row.FGA >= 8 && tsPct(row) >= 65) tags.push('efficient');
+  else if (row.FGA >= 6 && fgPct(row) >= 70) tags.push('sniper');
+  if (row.TPM >= 5) tags.push('rainmaker'); else if (row.TPM >= 3) tags.push('splashbro');
+  if (row.AST >= 8) tags.push('generous'); else if (row.AST >= 6 && row.TO <= 1) tags.push('cleandimes');
+  if (row.REB >= 12) tags.push('glasseater'); else if (row.OREB >= 4) tags.push('putbackking');
+  if (row.STL + row.BLK >= 5) tags.push('lockdown'); else if (row.STL >= 4) tags.push('pickpocket'); else if (row.BLK >= 3) tags.push('swatter');
+  if (row.FTA >= 8 && row.FTM === row.FTA) tags.push('perfectfts'); else if (row.FTA >= 10) tags.push('livesattheline');
   if (row.FGA >= 12 && fgPct(row) < 35) tags.push('brickfest');
-  if (row.TO >= 5) tags.push('sloppy');
+  if (row.TO >= 5) tags.push('sloppy'); else if (row.TO === 0 && mins >= 24) tags.push('cleanhands');
   if (row.PF >= 5) tags.push('foultrouble');
-  if (num(minutes) >= 38) tags.push('workhorse');
-  return tags;
+  if (mins >= 42) tags.push('ironman'); else if (mins >= 38) tags.push('workhorse');
+  if (row.PTS <= 2 && mins >= 20) tags.push('ghostmode');
+  return tags.slice(0, 5);
 }
 
 /* Every field-goal attempt by the player, with where it was taken (feet from the basket: x across, y up the floor). */
 export function shotsOf(plays, id) {
   return plays.filter(play => play.who[0] === id && play.q && !/Free Throw/i.test(play.type) && /\b(makes|misses|blocks)\b/i.test(play.text) && Number.isFinite(play.x) && play.x >= 0 && play.y > -100)
     .map(play => ({x: play.x, y: play.y, made: /\bmakes\b/i.test(play.text), three: play.pa === 3, q: play.q, text: play.text.replace(/\s*\(.*?\)\s*$/, '')}));
+}
+
+/* Baskets by teammates that this player set up, with where they were taken. */
+export function assistShotsOf(plays, id) {
+  return plays.filter(play => play.who[1] === id && play.scoring && play.q && !/Free Throw/i.test(play.type) && Number.isFinite(play.x) && play.x >= 0 && play.y > -100)
+    .map(play => ({x: play.x, y: play.y, made: true, q: play.q, three: play.pa === 3}));
 }
 
 /* The player's team's lead over the game, with his own scoring plays marked. */

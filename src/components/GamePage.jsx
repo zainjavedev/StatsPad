@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { ArrowLeft, Eye } from 'lucide-react';
 import { revealGame, useSpoilers } from '../lib/spoilers';
 import { performancesOf } from '../lib/performances';
-import { rating } from '../lib/playerGame';
+import { flowOf, rating } from '../lib/playerGame';
 import PlayerGame from './PlayerGame';
+import { Flow } from './ShotChart';
 import { PerfCard } from './RecentPerformances';
 import SpoilerToggle, { Hidden } from './SpoilerToggle';
 import { loadBoxscore } from '../lib/boxscore';
@@ -18,14 +19,50 @@ const teamHref = abbr => {
   return code ? `/teams/${TEAMS[code].name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}` : null;
 };
 const TeamLink = ({side}) => {
-  const href = teamHref(side.abbr), inner = <><img src={side.logo} alt=""/><b className="hd-name">{side.short}</b><b className="hd-abbr">{side.abbr}</b></>;
-  return href ? <a className="hd-link" href={href} title={`${side.short} team page`}>{inner}</a> : inner;
+  const href = teamHref(side.abbr), logo = <img src={side.logo} alt={side.short}/>;
+  return href ? <a className="hd-link" href={href} title={`${side.short} team page`}>{logo}</a> : logo;
 };
+
+/* Team totals side by side: the better number in each row is bold (fewer is better for turnovers and fouls). */
+const COMPARE = [
+  ['Field goals', 'FG'], ['FG%', 'Field Goal %', '%'], ['3-pointers', '3PT'], ['3P%', 'Three Point %', '%'], ['Free throws', 'FT'], ['FT%', 'Free Throw %', '%'],
+  ['Rebounds', 'Rebounds'], ['Offensive rebounds', 'Offensive Rebounds'], ['Assists', 'Assists'], ['Steals', 'Steals'], ['Blocks', 'Blocks'],
+  ['Turnovers', 'Turnovers', '', true], ['Fouls', 'Fouls', '', true], ['Points in the paint', 'Points in Paint'], ['Fast-break points', 'Fast Break Points'], ['Largest lead', 'Largest Lead'],
+];
+const lead = value => parseFloat(String(value ?? '').split('-')[0]);
+function TeamCompare({teams}) {
+  const rows = COMPARE.filter(([, key]) => teams.every(team => team.totals?.[key] !== undefined));
+  if (rows.length === 0) return null;
+  return <section className="gd-card gd-compare">
+    <div className="pg-card-head"><h3>Team stats</h3></div>
+    <div className="gd-compare-head">{teams.map(team => <span key={team.abbr}>{team.logo && <img src={team.logo} alt=""/>}{team.abbr}</span>)}</div>
+    {rows.map(([label, key, suffix = '', fewer]) => {
+      const [a, b] = teams.map(team => lead(team.totals[key])), best = a === b ? -1 : (fewer ? a < b : a > b) ? 0 : 1;
+      return <div key={label} className="gd-compare-row">
+        <b className={best === 0 ? 'lead' : ''}>{teams[0].totals[key]}{suffix}</b><span>{label}</span><b className={best === 1 ? 'lead' : ''}>{teams[1].totals[key]}{suffix}</b>
+      </div>;
+    })}
+  </section>;
+}
+
+/* The score margin through the whole game, from the away team's side. */
+function GameFlow({box, plays}) {
+  const flow = flowOf(plays, null, true), periods = Math.max(4, ...plays.map(play => play.q || 0));
+  const label = quarter => (quarter <= 4 ? `Q${quarter}` : quarter === 5 ? 'OT' : `${quarter - 4}OT`);
+  if (flow.points.length <= 2) return null;
+  return <section className="gd-card">
+    <div className="pg-card-head"><h3>How the game swung</h3></div>
+    <Flow flow={flow} color="var(--text-1)" quarters={periods}/>
+    <div className="pg-axis">{Array.from({length: periods}, (_, index) => <span key={index}>{label(index + 1)}</span>)}</div>
+    <p className="pg-legend"><span><i className="lead"/>{box.away.short} ahead</span><span><i className="trail"/>{box.home.short} ahead</span></p>
+  </section>;
+}
 
 /* One game on its own page: the score, who led it in each category (with photos), and the full box
    score for both teams with each category's leader highlighted. Before tip-off, the expected fives. */
 
 const codeOf = abbr => Object.keys(TEAMS).find(code => TEAMS[code].espn === String(abbr).toLowerCase());
+const TOP = 6;
 const num = value => Number(String(value ?? '').replace('+', '')) || 0;
 
 /* How each side played, on a typical NBA game's range (a point is where that stat usually runs from low to high). */
@@ -181,7 +218,7 @@ function Context({box, context}) {
 }
 
 export default function GamePage({id}) {
-  const [box, setBox] = useState(undefined), [side, setSide] = useState(0), spoilers = useSpoilers(), [focus, setFocus] = useState(() => (typeof location === 'undefined' ? null : new URLSearchParams(location.search).get('player')));
+  const [box, setBox] = useState(undefined), [side, setSide] = useState(0), [all, setAll] = useState(false), spoilers = useSpoilers(), [focus, setFocus] = useState(() => (typeof location === 'undefined' ? null : new URLSearchParams(location.search).get('player')));
   const pick = playerId => { setFocus(playerId); const url = new URL(location.href); if (playerId) url.searchParams.set('player', playerId); else url.searchParams.delete('player'); history.replaceState(null, '', url); window.scrollTo(0, 0); };
   useEffect(() => { loadBoxscore(id).then(setBox); }, [id]);
 
@@ -198,9 +235,9 @@ export default function GamePage({id}) {
     {!focusTeam && <a className="gp-back" href="/schedule"><ArrowLeft size={15}/> Schedule</a>}
     {!focusTeam && <>
     <div className="gd-head gp-head">
-      <div><TeamLink side={box.away}/>{scored && <strong>{box.away.score}</strong>}</div>
+      <div><TeamLink side={box.away}/>{scored && <strong className={Number(box.away.score) > Number(box.home.score) ? 'won' : ''}>{box.away.score}</strong>}</div>
       <span>{box.state === 'post' ? (hidden ? 'Played' : 'Final') : box.state === 'in' ? (box.detail || 'Live') : 'Upcoming'}</span>
-      <div><TeamLink side={box.home}/>{scored && <strong>{box.home.score}</strong>}</div>
+      <div><TeamLink side={box.home}/>{scored && <strong className={Number(box.home.score) > Number(box.away.score) ? 'won' : ''}>{box.home.score}</strong>}</div>
     </div>
     <p className="gd-meta">{[box.venue].filter(Boolean).join(' · ')}</p>
     </>}
@@ -213,12 +250,16 @@ export default function GamePage({id}) {
       <div className="gd-sides">{ordered.map((team, index) => {
         const lines = performancesOf(box, id).filter(line => line.team === team.abbr).sort((a, b) => rating(b.player.stats) - rating(a.player.stats));
         const out = team.players.filter(player => !player.starter && player.out);
+        const shown = all ? lines : lines.slice(0, TOP);
         return <section key={team.abbr} className={`gd-team gd-cards${side === index ? ' on' : ''}`}>
           <h3>{team.logo && <img src={team.logo} alt=""/>}{team.name}</h3>
-          <ul className="rp-list">{lines.map(line => <li key={line.player.id}><PerfCard line={line} onPick={pick}/></li>)}</ul>
+          <ul className="rp-list">{shown.map(line => <li key={line.player.id}><PerfCard line={line} onPick={pick}/></li>)}</ul>
           {out.length > 0 && <p className="gd-out">Did not play: {out.map(player => player.name).join(', ')}</p>}
         </section>;
       })}</div>
+      {!all && ordered.some(team => performancesOf(box, id).filter(line => line.team === team.abbr).length > TOP) && <button type="button" className="gd-more" onClick={() => setAll(true)}>View all players</button>}
+      <GameFlow box={box} plays={box.plays ?? []}/>
+      {ordered.length === 2 && <TeamCompare teams={ordered}/>}
       {ordered.length === 2 && <Radar axes={shapeAxes(ordered, ordered.map(team => team.abbr === box.away.abbr ? box.away.score : box.home.score))} names={ordered.map(team => team.abbr === box.away.abbr ? box.away.short : box.home.short)} colors={['var(--accent)', 'var(--series-2)']} scope="a typical NBA game" notes={['Each spoke runs from a low to a high night for that stat, so the shape shows how each team played, not season averages. Ball care rewards fewer turnovers.']}/>}
     </>}
   </section>;

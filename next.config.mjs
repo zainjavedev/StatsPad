@@ -14,6 +14,10 @@ export default {
     ]}];
   },
   async redirects() {
-    return [{source: '/:path*', has: [{type: 'host', value: 'stats-pad.vercel.app'}], destination: 'https://statspads.com/:path*', permanent: true}];
+    return [
+      {source: '/leaders', destination: '/stats/points', permanent: true},
+      {source: '/leaders/:type', destination: '/stats/points', permanent: true},
+      {source: '/:path*', has: [{type: 'host', value: 'stats-pad.vercel.app'}], destination: 'https://statspads.com/:path*', permanent: true},
+    ];
   },
 };

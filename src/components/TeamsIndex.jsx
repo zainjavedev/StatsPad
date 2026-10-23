@@ -26,7 +26,7 @@ export default function TeamsIndex({onOpen}) {
   return <section className="teams-index">
     <div className="teams-index-head">
       <h1>Teams</h1>
-      <p>All 30 clubs. Pick one to see its 2026–27 roster, expected rotation, last season&apos;s numbers and recent games. Tap the star on a team to make it a favorite.</p>
+      <p>All 30 clubs. Pick one to see its 2026–27 roster, expected rotation, last season&apos;s numbers and recent games. Tap the bell on a team to get its tip-off alerts.</p>
     </div>
     <AlertsBanner/>
     <div className="teams-filter">

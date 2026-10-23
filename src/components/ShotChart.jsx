@@ -19,13 +19,14 @@ export function Court() {
   </g>;
 }
 
-export default function ShotChart({shots, className = ''}) {
+export default function ShotChart({shots, assists = [], className = ''}) {
   const misses = shots.filter(shot => !shot.made), makes = shots.filter(shot => shot.made);
   return <svg className={`shot-chart ${className}`} viewBox="0 0 50 42" role="img" aria-label={`${makes.length} of ${shots.length} shots made`}>
     <rect width="50" height="42" rx="1.2" fill="#ffffff" fillOpacity=".035"/>
     <Court/>
             {misses.map((shot, index) => <path key={`m${index}`} d={`M${shot.x - .5} ${sy(shot.y) - .5}l1 1M${shot.x + .5} ${sy(shot.y) - .5}l-1 1`} stroke="#c9777a" strokeWidth=".26" strokeLinecap="round" opacity=".75" fill="none"/>)}
         {makes.map((shot, index) => <circle key={`h${index}`} cx={shot.x} cy={sy(shot.y)} r=".65" fill="none" stroke="#7fc79d" strokeWidth=".3"/>)}
+    {assists.map((shot, index) => <rect key={`a${index}`} x={shot.x - .6} y={sy(shot.y) - .6} width="1.2" height="1.2" fill="#6aa6ff" opacity=".95" transform={`rotate(45 ${shot.x} ${sy(shot.y)})`}/>)}
   </svg>;
 }
 

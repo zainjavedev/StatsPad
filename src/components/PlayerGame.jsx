@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ChevronRight } from 'lucide-react';
-import ShotChart, { Flow } from './ShotChart';
+import ShotChart from './ShotChart';
 import { PerfCard } from './RecentPerformances';
 import { bestOfNight, performancesOf } from '../lib/performances';
 import { finished, loadSchedule } from '../lib/schedule';
-import { flowOf, fps, quarterStats, rating, shotsOf, tagsOf, total, tsPct, fgPct } from '../lib/playerGame';
+import { playerUrl } from '../lib/routes';
+import { assistShotsOf, fps, quarterStats, rating, shotsOf, tagsOf, total, tsPct, fgPct } from '../lib/playerGame';
 
 /* One player's night, told as a story: what he did in a sentence, where every shot came from, how the game
    swung while he scored, quarter by quarter, and who he set up. */
@@ -33,11 +34,12 @@ export default function PlayerGame({gameId, box, plays, team, player, onClose, o
   }, [moreTab, recent]);
   const {quarters, assisted} = useMemo(() => quarterStats(plays, player.id), [plays, player.id]);
   const allShots = useMemo(() => shotsOf(plays, player.id), [plays, player.id]);
-  const flow = useMemo(() => flowOf(plays, player.id, away), [plays, player.id, away]);
+  const allAssists = useMemo(() => assistShotsOf(plays, player.id), [plays, player.id]);
   const periods = [...quarters.keys()].sort((a, b) => a - b);
   const all = total(quarters), shown = quarter ? total(quarters, quarter) : all;
   const s = player.stats, grade = rating(s), tags = tagsOf(all, s.MIN);
   const shots = quarter ? allShots.filter(shot => shot.q === quarter) : allShots;
+  const assistShots = quarter ? allAssists.filter(shot => shot.q === quarter) : allAssists;
   const series = periods.map(period => [period, metric === 'PTS' ? total(quarters, period).PTS : fps(total(quarters, period))]);
   const top = Math.max(1, ...series.map(([, value]) => value));
   const assists = assisted.map(entry => ({...entry, name: nameOf(entry.id)})).filter(entry => entry.name);
@@ -59,10 +61,10 @@ export default function PlayerGame({gameId, box, plays, team, player, onClose, o
     <div className="pg-top">
     <div className="pg-hero">
       <span className="pg-number" aria-hidden="true">{all.PTS}</span>
-      {player.photo ? <img className="pg-photo" src={player.photo} alt=""/> : <i className="pg-photo"/>}
+      <a className="pg-profile" href={playerUrl(player.name)} aria-label={`${player.name} profile`}>{player.photo ? <img className="pg-photo" src={player.photo} alt=""/> : <i className="pg-photo"/>}<img className="pg-badge" src={team.logo} alt={team.abbr}/></a>
       <div className="pg-who">
-        <h2>{player.name.replace(/^(\S)\S*\s+/, '$1. ')}<span className="pg-fps"> · {fps(all)} fps</span></h2>
-        <p className="pg-big"><b>{all.PTS}</b> pts <b>{all.REB}</b> reb <b>{all.AST}</b> ast</p>
+        <h2><a className="pg-name" href={playerUrl(player.name)}>{player.name.replace(/^(\S)\S*\s+/, '$1. ')}</a><span className="pg-fps">{fps(all)} fps</span></h2>
+        <p className="pg-big"><span><b>{all.PTS}</b><small>pts</small></span><span><b>{all.REB}</b><small>reb</small></span><span><b>{all.AST}</b><small>ast</small></span></p>
         {game.date && <small>{dayFormat.format(game.date)}</small>}
       </div>
       <div className={`pg-rating ${tone(grade)}`}><strong>{grade.toFixed(1)}</strong><small>grade</small></div>
@@ -70,11 +72,9 @@ export default function PlayerGame({gameId, box, plays, team, player, onClose, o
 
     {tags.length > 0 && <div className="pg-tags">{tags.map(tag => <span key={tag}>#{tag}</span>)}</div>}
 
-    <div className="pg-tabrow">
-    <div className="pg-tabs" role="group" aria-label="Quarter">
-      {[0, ...periods].map(period => <button type="button" key={period} className={quarter === period ? 'active' : ''} onClick={() => setQuarter(period)}>{period ? label(period) : 'All'}</button>)}
-    </div>
-    <p className="pg-kicker"><img src={team.logo} alt={team.abbr}/><b className={game.won ? 'win' : 'loss'}>{game.score}</b><img src={other.logo} alt={other.abbr}/></p>
+    <div className="pg-matchline">
+      <span className="pg-pos">{player.pos || 'Player'}</span>
+      <p className="pg-kicker"><img src={team.logo} alt={team.abbr}/><b><span className={`score${game.won ? ' lead' : ''}`}>{own.score}</span>–<span className={`score${game.won ? '' : ' lead'}`}>{other.score}</span></b><img src={other.logo} alt={other.abbr}/></p>
     </div>
     <div className="pg-grid">
       {!quarter && cell('MIN', s.MIN)}
@@ -84,16 +84,14 @@ export default function PlayerGame({gameId, box, plays, team, player, onClose, o
       {cell('TO', shown.TO)}{cell('PF', shown.PF)}{cell('OREB', shown.OREB)}{cell('DREB', shown.DREB)}
       {cell('FG%', shown.FGA ? fgPct(shown).toFixed(1) : '–')}{cell('TS%', shown.FGA || shown.FTA ? tsPct(shown).toFixed(1) : '–')}{cell('FPS', fps(shown))}
     </div>
+    <div className="pg-tabs" role="group" aria-label="Quarter">
+      {[0, ...periods].map(period => <button type="button" key={period} className={quarter === period ? 'active' : ''} onClick={() => setQuarter(period)}>{period ? label(period) : 'All'}</button>)}
+    </div>
     </div>
 
-    {flow.points.length > 2 && <div className="pg-card">
-      <div className="pg-card-head"><h3>How the game swung</h3><span className="pg-note">{team.abbr} lead · dots are his baskets</span></div>
-      <Flow flow={flow} color={accent} quarters={periods.length}/>
-      <div className="pg-axis">{periods.map(period => <span key={period}>{label(period)}</span>)}</div>
-    </div>}
-
+    <div className="pg-pair">
     <div className="pg-card">
-      <div className="pg-card-head"><h3>Quarter by quarter</h3>
+      <div className="pg-card-head"><h3>By quarter</h3>
         <span className="pg-pills">{[['PTS', 'Points'], ['FPS', 'Fantasy']].map(([key, name]) => <button type="button" key={key} className={metric === key ? 'active' : ''} onClick={() => setMetric(key)}>{name}</button>)}</span>
       </div>
       <div className="pg-bars">{series.map(([period, value]) => <button type="button" key={period} className={quarter === period ? 'on' : ''} onClick={() => setQuarter(quarter === period ? 0 : period)}>
@@ -108,11 +106,13 @@ export default function PlayerGame({gameId, box, plays, team, player, onClose, o
         <span><b>{lastName(entry.name)}</b><small>{entry.pts} pts</small></span><strong>{entry.ast} ast</strong>
       </li>)}</ul>
     </div>}
+    </div>
 
     </div>
     <aside className="pg-side">
-    {allShots.length > 0 && <div className="pg-card pg-shots">
-      <ShotChart shots={shots} color={accent}/>
+    {(allShots.length > 0 || allAssists.length > 0) && <div className="pg-card pg-shots">
+      <ShotChart shots={shots} assists={assistShots} color={accent}/>
+      <p className="pg-legend shot-key"><span><i className="made"/>Made</span><span><i className="missed"/>Missed</span>{assistShots.length > 0 && <span><i className="assist"/>Assisted ({assistShots.length} {assistShots.length === 1 ? 'basket' : 'baskets'}, {assistShots.reduce((sum, shot) => sum + (shot.three ? 3 : 2), 0)} pts)</span>}</p>
     </div>}
 
     {(others.length > 0 || moreTab === 'recent') && <div className="pg-card pg-more">
