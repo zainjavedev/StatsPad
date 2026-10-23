@@ -9,5 +9,5 @@ export const metadata = {
 };
 
 export default function Page() {
-  return <BlogShell active="/play" className="play"><PlayGame/></BlogShell>;
+  return <BlogShell active="/play" className="play" tabs><PlayGame/></BlogShell>;
 }
