@@ -1,12 +1,14 @@
 import '../style.css';
+import { socialTags } from '../lib/social';
+
+const TITLE = 'StatsPads: NBA player and team comparisons', DESCRIPTION = 'Compare NBA players and teams side by side, browse rosters and see the league leaders.';
 
 export const metadata = {
   metadataBase: new URL(process.env.SITE_URL || 'https://statspads.com'),
-  title: 'StatsPads: NBA player and team comparisons',
-  description: 'Compare NBA players and teams side by side, browse rosters and see the league leaders.',
+  title: TITLE,
+  description: DESCRIPTION,
   applicationName: 'StatsPads',
-  openGraph: {type: 'website', siteName: 'StatsPads', locale: 'en_US', images: [{url: '/og-default.jpg', width: 1200, height: 630, alt: 'StatsPads'}]},
-  twitter: {card: 'summary_large_image', images: ['/og-default.jpg']},
+  ...socialTags({title: TITLE, description: DESCRIPTION}),
   verification: {google: 'uAikhNEtc4OO0e0Bg0WiwK_23KQh4t-MDsXrh49jbfw'},
 };
 

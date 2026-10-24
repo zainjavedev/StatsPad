@@ -1,6 +1,7 @@
 import { randomBytes } from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { sql } from '../../../../server/db';
+import { notifyOwner } from '../../../../server/mail';
 import { TEAMS } from '../../../../lib/teams';
 
 export const dynamic = 'force-dynamic';
@@ -19,6 +20,10 @@ export async function POST(request) {
     on conflict (lower(email)) where email is not null do update set email_confirmed_at = coalesce(subscribers.email_confirmed_at, now()),
       password_hash = case when subscribers.email_confirmed_at is null then null else subscribers.password_hash end,
       teams = (select coalesce(array_agg(distinct t), '{}') from unnest(subscribers.teams || excluded.teams) t)
-    returning token, email, teams`;
-  return NextResponse.json({token: row.token, email: row.email, teams: row.teams});
+    returning token, email, teams, (xmax = 0) as created`;
+  if (row.created) {
+    const [{count}] = await sql`select count(*)::int as count from subscribers where channel = 'email'`;
+    await notifyOwner(`New StatsPads account: ${row.email}`, [`${row.email} just created an account with Google.`, `Teams followed: ${row.teams.length ? row.teams.join(', ') : 'none yet'}.`, `Accounts so far: ${count}.`]);
+  }
+  return NextResponse.json({token: row.token, email: row.email, teams: row.teams, picture: /^https:\/\//.test(info.picture || '') ? info.picture : null});
 }

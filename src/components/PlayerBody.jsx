@@ -3,7 +3,7 @@ import { BarChart3 } from 'lucide-react';
 import ShareButton from './ShareButton';
 import { TEAMS, teamCodeOf } from '../lib/teams';
 import { playerUrl, slugify } from '../lib/routes';
-import { bestSeason, careerOf, liveRow, seasonsOf, tsOf } from '../lib/career';
+import { careerOf, liveRow, seasonsOf, tsOf } from '../lib/career';
 import { pretty } from '../lib/season';
 import { performancesOf } from '../lib/performances';
 import { finished, loadSchedule } from '../lib/schedule';
@@ -87,7 +87,7 @@ function TrendChart({ seasons, tint }) {
   const [metric, setMetric] = useState(0);
   const [label, get, gate] = TREND[metric];
   const points = seasons.filter(entry => entry.main.gp > 0 && (!gate || gate(entry.main))).map(entry => ({ s: entry.s, value: get(entry.main), live: entry.main.live }));
-  const width = 640, height = 210, pad = { left: 34, right: 18, top: 24, bottom: 30 };
+  const width = 640, height = 250, pad = { left: 34, right: 18, top: 24, bottom: 30 };
   const values = points.map(point => point.value);
   const low = Math.min(...values), high = Math.max(...values);
   const span = high - low || 1;
@@ -146,11 +146,14 @@ export default function PlayerBody({ hero, entity, season, population, showCaree
   const history = useCareer(entity.playerName), recent = useRecentLines(entity.playerName);
   const seasons = useMemo(() => seasonsOf(history?.rows || [], season ? liveRow(entity, season) : null), [history, entity, season]);
   const career = useMemo(() => careerOf(seasons), [seasons]);
-  const highs = useMemo(() => [['PPG', 'pts'], ['RPG', 'reb'], ['APG', 'ast']].map(([name, key]) => ({ name, entry: bestSeason(seasons, key), key })).filter(item => item.entry), [seasons]);
-  const index = pool.findIndex(player => player.playerId === entity.playerId);
-  const neighbours = useMemo(() => (index < 0 ? [] : [...pool.slice(Math.max(0, index - 2), index), ...pool.slice(index + 1, index + 3)]), [pool, index]);
-  const mates = useMemo(() => pool.filter(player => player.team === entity.team && player.playerId !== entity.playerId && !/^\d+TM$/.test(entity.team)).slice(0, 3), [pool, entity]);
-  const suggestions = [...mates, ...neighbours.filter(player => !mates.includes(player))].slice(0, 5);
+  /* Head-to-head suggestions: players at the same kind of position, on other teams, who put up similar numbers. */
+  const suggestions = useMemo(() => {
+    const kind = position => (/C/.test(position) ? 'big' : /F/.test(position) ? 'wing' : 'guard');
+    const gap = other => Math.abs(other.stats.points - entity.stats.points) + .8 * Math.abs(other.stats.totalRebounds - entity.stats.totalRebounds) + .8 * Math.abs(other.stats.assists - entity.stats.assists);
+    const others = pool.filter(player => player.playerId !== entity.playerId && player.team !== entity.team);
+    const alike = others.filter(player => kind(player.position) === kind(entity.position));
+    return [...(alike.length >= 5 ? alike : others)].sort((a, b) => gap(a) - gap(b)).slice(0, 5);
+  }, [pool, entity]);
 
   const shareLabels = ['PPG', 'RPG', 'APG', 'SPG', 'BPG', 'FG%', '3P%', 'FT%', 'TS%'];
   const shareSpec = {
@@ -187,9 +190,6 @@ export default function PlayerBody({ hero, entity, season, population, showCaree
         {history === undefined
           ? <div className="sk" style={{ height: 230, borderRadius: 12 }}/>
           : <TrendChart seasons={seasons} tint={radarHex(entity)}/>}
-        {highs.length > 0 && seasons.length > 1 && <div className="pp-highs">
-          {highs.map(({ name, entry, key }) => <span key={name}><b>{f1(entry.main[key])}</b> {name}<small>best season, {pretty(entry.s)}</small></span>)}
-        </div>}
       </section>}
       {pool.length > 10 && <aside className="pp-card pp-radar">
         <div className="pp-head"><small>PLAYER PROFILE</small><h2>{entity.playerName.split(' ')[0]}&apos;s skill radar</h2></div>

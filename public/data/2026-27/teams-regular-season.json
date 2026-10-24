@@ -4,8 +4,8 @@
   "description": "NBA team per-game statistics for the 2026-27 regular season",
   "lastUpdated": "2026-10-24",
   "source": {
-    "name": "ESPN",
-    "url": "https://www.espn.com/nba/stats/_/season/2027"
+    "name": "ESPN box scores",
+    "url": "https://www.espn.com/nba/schedule"
   },
   "totalTeams": 30,
   "players": [
@@ -84,7 +84,7 @@
         "offensiveRebounds": 14.5,
         "defensiveRebounds": 36,
         "steals": 10,
-        "blocks": 3,
+        "blocks": 2.5,
         "turnovers": 13,
         "personalFouls": 19.5,
         "fieldGoalsMade": 45.5,
@@ -221,10 +221,40 @@
     },
     {
       "entityType": "team",
+      "teamId": 1610612749,
+      "team": "MIL",
+      "playerName": "Milwaukee Bucks",
+      "rank": 8,
+      "gamesPlayed": 2,
+      "position": "Team",
+      "stats": {
+        "points": 120.5,
+        "assists": 28.5,
+        "totalRebounds": 42.5,
+        "offensiveRebounds": 12,
+        "defensiveRebounds": 30.5,
+        "steals": 5,
+        "blocks": 4,
+        "turnovers": 17.5,
+        "personalFouls": 29,
+        "fieldGoalsMade": 43.5,
+        "fieldGoalsAttempted": 91.5,
+        "fieldGoalPercentage": 47.5,
+        "threePointersMade": 17,
+        "threePointersAttempted": 43.5,
+        "threePointPercentage": 39.1,
+        "freeThrowsMade": 16.5,
+        "freeThrowsAttempted": 24.5,
+        "freeThrowPercentage": 67.3,
+        "effectiveFieldGoalPercentage": 56.8
+      }
+    },
+    {
+      "entityType": "team",
       "teamId": 1610612740,
       "team": "NOP",
       "playerName": "New Orleans Pelicans",
-      "rank": 8,
+      "rank": 9,
       "gamesPlayed": 2,
       "position": "Team",
       "stats": {
@@ -254,15 +284,15 @@
       "teamId": 1610612746,
       "team": "LAC",
       "playerName": "LA Clippers",
-      "rank": 9,
+      "rank": 10,
       "gamesPlayed": 2,
       "position": "Team",
       "stats": {
         "points": 119,
         "assists": 26.5,
-        "totalRebounds": 42,
+        "totalRebounds": 41.5,
         "offensiveRebounds": 11,
-        "defensiveRebounds": 31,
+        "defensiveRebounds": 30.5,
         "steals": 13.5,
         "blocks": 4.5,
         "turnovers": 21,
@@ -277,36 +307,6 @@
         "freeThrowsAttempted": 28,
         "freeThrowPercentage": 71.4,
         "effectiveFieldGoalPercentage": 60
-      }
-    },
-    {
-      "entityType": "team",
-      "teamId": 1610612749,
-      "team": "MIL",
-      "playerName": "Milwaukee Bucks",
-      "rank": 10,
-      "gamesPlayed": 2,
-      "position": "Team",
-      "stats": {
-        "points": 118,
-        "assists": 28.5,
-        "totalRebounds": 40,
-        "offensiveRebounds": 11,
-        "defensiveRebounds": 29,
-        "steals": 5,
-        "blocks": 3.5,
-        "turnovers": 17.5,
-        "personalFouls": 26,
-        "fieldGoalsMade": 42.5,
-        "fieldGoalsAttempted": 87,
-        "fieldGoalPercentage": 48.9,
-        "threePointersMade": 17,
-        "threePointersAttempted": 41,
-        "threePointPercentage": 41.5,
-        "freeThrowsMade": 16,
-        "freeThrowsAttempted": 22.5,
-        "freeThrowPercentage": 71.1,
-        "effectiveFieldGoalPercentage": 58.6
       }
     },
     {
@@ -431,10 +431,40 @@
     },
     {
       "entityType": "team",
+      "teamId": 1610612741,
+      "team": "CHI",
+      "playerName": "Chicago Bulls",
+      "rank": 15,
+      "gamesPlayed": 2,
+      "position": "Team",
+      "stats": {
+        "points": 112,
+        "assists": 22.5,
+        "totalRebounds": 50.5,
+        "offensiveRebounds": 17,
+        "defensiveRebounds": 33.5,
+        "steals": 8,
+        "blocks": 5.5,
+        "turnovers": 20.5,
+        "personalFouls": 27,
+        "fieldGoalsMade": 36.5,
+        "fieldGoalsAttempted": 91.5,
+        "fieldGoalPercentage": 39.9,
+        "threePointersMade": 8,
+        "threePointersAttempted": 40.5,
+        "threePointPercentage": 19.8,
+        "freeThrowsMade": 31,
+        "freeThrowsAttempted": 38.5,
+        "freeThrowPercentage": 80.5,
+        "effectiveFieldGoalPercentage": 44.3
+      }
+    },
+    {
+      "entityType": "team",
       "teamId": 1610612762,
       "team": "UTA",
       "playerName": "Utah Jazz",
-      "rank": 15,
+      "rank": 16,
       "gamesPlayed": 2,
       "position": "Team",
       "stats": {
@@ -464,7 +494,7 @@
       "teamId": 1610612738,
       "team": "BOS",
       "playerName": "Boston Celtics",
-      "rank": 16,
+      "rank": 17,
       "gamesPlayed": 2,
       "position": "Team",
       "stats": {
@@ -494,7 +524,7 @@
       "teamId": 1610612755,
       "team": "PHI",
       "playerName": "Philadelphia 76ers",
-      "rank": 17,
+      "rank": 18,
       "gamesPlayed": 2,
       "position": "Team",
       "stats": {
@@ -524,7 +554,7 @@
       "teamId": 1610612753,
       "team": "ORL",
       "playerName": "Orlando Magic",
-      "rank": 18,
+      "rank": 19,
       "gamesPlayed": 2,
       "position": "Team",
       "stats": {
@@ -554,7 +584,7 @@
       "teamId": 1610612748,
       "team": "MIA",
       "playerName": "Miami Heat",
-      "rank": 19,
+      "rank": 20,
       "gamesPlayed": 2,
       "position": "Team",
       "stats": {
@@ -584,7 +614,7 @@
       "teamId": 1610612758,
       "team": "SAC",
       "playerName": "Sacramento Kings",
-      "rank": 20,
+      "rank": 21,
       "gamesPlayed": 2,
       "position": "Team",
       "stats": {
@@ -614,7 +644,7 @@
       "teamId": 1610612759,
       "team": "SAS",
       "playerName": "San Antonio Spurs",
-      "rank": 21,
+      "rank": 22,
       "gamesPlayed": 2,
       "position": "Team",
       "stats": {
@@ -644,7 +674,7 @@
       "teamId": 1610612744,
       "team": "GSW",
       "playerName": "Golden State Warriors",
-      "rank": 22,
+      "rank": 23,
       "gamesPlayed": 2,
       "position": "Team",
       "stats": {
@@ -674,7 +704,7 @@
       "teamId": 1610612739,
       "team": "CLE",
       "playerName": "Cleveland Cavaliers",
-      "rank": 23,
+      "rank": 24,
       "gamesPlayed": 1,
       "position": "Team",
       "stats": {
@@ -704,7 +734,7 @@
       "teamId": 1610612760,
       "team": "OKC",
       "playerName": "Oklahoma City Thunder",
-      "rank": 24,
+      "rank": 25,
       "gamesPlayed": 2,
       "position": "Team",
       "stats": {
@@ -727,36 +757,6 @@
         "freeThrowsAttempted": 17,
         "freeThrowPercentage": 85.3,
         "effectiveFieldGoalPercentage": 48.2
-      }
-    },
-    {
-      "entityType": "team",
-      "teamId": 1610612741,
-      "team": "CHI",
-      "playerName": "Chicago Bulls",
-      "rank": 25,
-      "gamesPlayed": 2,
-      "position": "Team",
-      "stats": {
-        "points": 105,
-        "assists": 22,
-        "totalRebounds": 48.5,
-        "offensiveRebounds": 17,
-        "defensiveRebounds": 31.5,
-        "steals": 7,
-        "blocks": 5,
-        "turnovers": 20.5,
-        "personalFouls": 26,
-        "fieldGoalsMade": 35.5,
-        "fieldGoalsAttempted": 89,
-        "fieldGoalPercentage": 39.9,
-        "threePointersMade": 8,
-        "threePointersAttempted": 39,
-        "threePointPercentage": 20.5,
-        "freeThrowsMade": 26,
-        "freeThrowsAttempted": 33.5,
-        "freeThrowPercentage": 77.6,
-        "effectiveFieldGoalPercentage": 44.4
       }
     },
     {

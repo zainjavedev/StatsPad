@@ -1,8 +1,8 @@
 'use client';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowRight, Check, Flame, LogIn, RotateCcw, SkipForward, X } from 'lucide-react';
+import { ArrowRight, Check, LogIn, RotateCcw, SkipForward, X } from 'lucide-react';
 import { Court } from './ShotChart';
-import { trio } from './RecentPerformances';
+import { trio } from '../lib/trio';
 import { fps, rating } from '../lib/playerGame';
 import { readAlerts } from '../lib/alerts';
 import { loadPool, nextRound } from '../lib/playRound';
@@ -165,7 +165,6 @@ export default function PlayGame() {
     return () => window.removeEventListener('keydown', onKey);
   }, [auth, finished, picked, choose, next, skip]);
 
-  const percent = stats.total ? Math.round(stats.correct / stats.total * 100) : 0;
   const revealed = picked !== null;
   const right = revealed && round.choices[picked].correct;
   const number = Math.min(ROUND, results.length + (revealed ? 0 : 1));
@@ -173,10 +172,6 @@ export default function PlayGame() {
   return <main className="pl">
     <div className="pl-top">
       <div><h1>Guess the player</h1><p>A shot chart and a stat line from this season. Which starter is it?</p></div>
-      {auth === 'in' && <div className="pl-score" aria-live="polite">
-        <div><b>{stats.correct}<span>/{stats.total}</span></b><small>{stats.total ? `${percent}% career` : 'career'}</small></div>
-        <div className={`pl-streak ${stats.streak >= 3 ? 'hot' : ''}`}><Flame size={18}/><b>{stats.streak}</b><small>streak</small></div>
-      </div>}
     </div>
 
     {auth === 'in' && !finished && round && <div className="pl-progress" aria-label={`Round ${number} of ${ROUND}`}>

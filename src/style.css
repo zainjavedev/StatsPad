@@ -2743,7 +2743,6 @@ a.pk-row:hover{background:var(--ink-2)}
 .rp-trio b{font-size:38px;font-weight:600;line-height:1;margin-right:4px;color:var(--text-1);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 .rp-game{font-size:13px;color:var(--text-3)}
 .rp-grade{align-self:start;font-size:22px;font-weight:600;color:var(--text-1);font-variant-numeric:tabular-nums}
-.rp-share{position:absolute;right:0;bottom:12px;border:0!important;background:none!important;color:var(--text-3)}
 .rp-list.loading li{height:108px}
 @media(max-width:520px){.rp-card{grid-template-columns:44px minmax(0,1fr) auto;gap:10px;padding:10px 2px}.rp-face,.rp-face>img:first-child,.rp-face>i{width:44px;height:44px}.rp-team{width:20px;height:20px;padding:2px}.rp-top{font-size:14px}.rp-top small{font-size:12px}.rp-trio{gap:2px 12px;font-size:12px}.rp-trio b{font-size:22px;margin-right:3px}.rp-game{font-size:11px}.rp-grade{font-size:16px}.rp-list.loading li{height:76px}}
 
@@ -3803,3 +3802,176 @@ section.pg .pg-big b{margin-left:0!important}
   .tabbar a.active::before{content:'';position:absolute;top:0;left:50%;width:22px;height:3px;border-radius:0 0 3px 3px;background:var(--text-1);transform:translateX(-50%)}
 }
 @media(max-width:759px){.pl-chart svg{height:clamp(96px,calc(100svh - 612px),240px)}}
+/* Small phones (iPhone SE size): everything still fits above the tab bar. */
+@media(max-width:759px) and (max-height:640px){
+  .pl{padding-top:8px}
+  .pl-top{margin-bottom:6px}.pl-top h1{font-size:19px;line-height:1.1}
+  .pl-score>div{padding:2px 8px}.pl-score b{font-size:15px}
+  .pl-progress{margin-bottom:6px}
+  .pl-card{padding:10px 12px;row-gap:4px}
+  .pl-disc{width:56px}
+  .pl-perf .rp-trio{gap:0 8px}.pl-perf .rp-trio b{font-size:24px}
+  .pl-perf .pl-splits{display:none}
+  .pl-chart svg{height:clamp(66px,calc(100svh - 470px),130px)}
+  .pl-choices{margin:6px 0 4px;gap:6px}
+  .pl-face{width:52px;height:52px}.pl-face .pl-badge{width:18px;height:18px}
+  .pl-choice{padding:6px 4px;gap:5px;border-radius:12px}.pl-choice b{font-size:12px}
+  .pl-next,.pl-next.on{margin-top:6px}.pl-next .pl-primary,.pl-next.idle .pl-skip{min-height:38px}
+}
+.pl-perf-head>div{min-width:0}
+@media(max-width:759px) and (max-width:360px){.pl-perf .rp-top small{display:none}.pl-verdict{margin-right:4px}}
+/* Shot chart takes whatever height the screen has left (measured on iPhone 13, 14 Pro Max and Chrome). */
+@media(max-width:759px) and (min-height:641px){.pl-chart svg{height:clamp(100px,calc(100svh - 556px),240px)}}
+/* Phone: the game owns the whole screen. The site banner goes (the tab bar has Home), and the shot chart gets that room. */
+@media(max-width:759px){.blog.play .site-header{display:none}.pl{padding-top:14px}}
+@media(max-width:759px) and (min-height:701px){.pl-chart svg{height:clamp(100px,calc(100svh - 515px),240px)}}
+@media(max-width:759px) and (min-height:641px) and (max-height:700px){
+  .pl-face{width:72px;height:72px}.pl-face .pl-badge{width:24px;height:24px}.pl-choice{padding:8px 6px}
+  .pl-chart svg{height:clamp(100px,calc(100svh - 505px),200px)}
+}
+@media(max-width:759px) and (max-height:640px){.pl-chart svg{height:clamp(66px,calc(100svh - 423px),150px)}}
+@media(max-width:759px) and (min-height:701px){.pl-chart svg{height:clamp(100px,calc(100svh - 500px),240px)}}
+@media(max-width:759px) and (min-height:641px) and (max-height:700px){.pl-chart svg{height:clamp(100px,calc(100svh - 510px),200px)}}
+@media(max-width:759px) and (max-height:640px){.pl-chart svg{height:clamp(66px,calc(100svh - 432px),150px)}}
+@media(max-width:759px) and (min-height:701px){.pl-chart svg{height:clamp(100px,calc(100svh - 508px),240px)}}
+@media(max-width:759px) and (min-height:641px) and (max-height:700px){.pl-chart svg{height:clamp(100px,calc(100svh - 492px),200px)}}
+@media(max-width:759px) and (min-height:701px){.pl-chart svg{height:clamp(100px,calc(100svh - 516px),240px)}}
+.shot-key .assist{background:transparent!important;border:2px solid #6aa6ff}
+
+/* Scores on performance cards: no W/L letter, the winning side's number is the bright one. */
+.rp-game b{font-weight:600;color:var(--text-3)}
+.rp-game b.win{font-weight:800;color:var(--text-1)}
+
+/* Phone ticker, smaller so more games show at once. */
+@media(max-width:640px){
+  .ticker{height:48px;margin-bottom:10px}.ticker.loading{height:48px}
+  .tk{gap:2px;padding:0 9px;border-radius:10px}
+  .tk small{font-size:9px!important;letter-spacing:.04em}
+  .tk-teams{gap:4px;font-size:11.5px}.tk-teams img,.tk-teams i{width:15px;height:15px}
+  .tk.next{padding:0 11px;gap:3px}.tk-clock{font-size:14px}
+}
+
+/* Profile: the headshot is never cropped at the edges; the trend chart gets the room. */
+.pp-top .profile-hero.is-player .profile-art,.profile-hero.is-player .profile-art{object-fit:contain!important;object-position:50% 100%!important;padding:0}
+.pp-grid-2{grid-template-columns:minmax(0,1.6fr) minmax(0,.8fr)!important}
+.pp-trend svg{max-height:none!important}
+@media(max-width:900px){.pp-grid-2{grid-template-columns:minmax(0,1fr)!important}.pp-trend svg{max-height:240px!important}}
+
+/* Compare button on the head-to-head cards: a team-coloured pill. */
+.pp-vs-meta .pp-versus{justify-content:center;gap:7px;padding:10px 14px;border:0;border-radius:999px;background:linear-gradient(100deg,var(--a),var(--b));color:#fff;font-size:13px;font-weight:800;letter-spacing:.01em;text-shadow:0 1px 2px rgb(0 0 0 / .35);box-shadow:0 6px 16px color-mix(in srgb,var(--b) 38%,transparent);transition:transform .15s,filter .15s}
+.pp-vs-meta .pp-versus:hover{transform:translateY(-1px);filter:brightness(1.12)}
+.pp-vs-meta .pp-versus:active{transform:scale(.97)}
+
+/* Account button shows the Google profile photo when there is one. */
+.account-photo{width:32px;height:32px;border-radius:50%;object-fit:cover;display:block}
+
+/* MVP and rookie ladders: two panels of six mini performance cards, with moves in green and red. */
+.ladder-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:14px}
+@media(max-width:900px){.ladder-pair{grid-template-columns:minmax(0,1fr)}}
+.ladder .front-panel-head{align-items:baseline}.ld-note{color:var(--text-3);font-size:12px;font-weight:600}
+.ld-list{list-style:none;margin:0;padding:0}
+.ld-list li+li{border-top:1px solid var(--line)}
+.ld-row{display:grid;grid-template-columns:22px 48px minmax(0,1fr) auto;align-items:center;gap:12px;width:100%;padding:10px 4px;border:0;border-radius:12px;background:transparent;color:inherit;text-align:left;cursor:pointer;transition:background .15s}
+.ld-row:hover{background:var(--ink-2)}
+.ld-rank{font-size:17px;font-weight:800;color:var(--text-3);text-align:center;font-variant-numeric:tabular-nums}
+.ld-list li:first-child .ld-rank{color:var(--text-1)}
+.ld-face{position:relative;width:48px;height:48px}
+.ld-face>img:first-child{width:48px;height:48px;border-radius:50%;object-fit:cover;object-position:50% 14%;background:var(--ink-2);display:block}
+.ld-team{position:absolute;right:-5px;bottom:-3px;width:20px;height:20px;padding:2px;border-radius:50%;background:#fff;object-fit:contain}
+.ld-main{display:grid;gap:2px;min-width:0}
+.ld-name{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ld-main .rp-trio{gap:0 12px;font-size:12px}.ld-main .rp-trio b{font-size:24px}
+.ld-move{display:inline-flex;align-items:center;justify-content:center;gap:3px;min-width:46px;padding:5px 9px;border-radius:999px;font-size:13px;font-weight:800;font-variant-numeric:tabular-nums}
+.ld-move i{font-style:normal;font-size:10px}
+.ld-move.up{color:#34d399;background:rgb(52 211 153 / .14)}
+.ld-move.down{color:#f87171;background:rgb(248 113 113 / .14)}
+.ld-move.flat{color:var(--text-3);background:var(--ink-2)}
+.ld-move.new{color:#60a5fa;background:rgb(96 165 250 / .14);font-size:11px;letter-spacing:.06em}
+@media(max-width:520px){.ld-row{grid-template-columns:18px 44px minmax(0,1fr) auto;gap:10px}.ld-face,.ld-face>img:first-child{width:44px;height:44px}.ld-main .rp-trio b{font-size:21px}.ld-note{display:none}}
+
+/* Photo maker: the share sheet opened from a performance card. */
+.rp-list>li,.gd-cards>li,.pp-recent .rp-list>li{position:relative}
+li:has(>.rp-card){position:relative}
+.rp-share{position:absolute;right:10px;bottom:10px;display:grid;place-items:center;width:30px;height:30px;padding:0;border:1px solid var(--line);border-radius:50%;background:var(--ink-1);color:var(--text-2);cursor:pointer;opacity:.85;transition:color .15s,border-color .15s,transform .15s}
+.rp-share:hover{color:var(--text-1);border-color:var(--text-3);transform:scale(1.06);opacity:1}
+.ss-back{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:12px;background:rgb(0 0 0 / .62);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.ss-sheet{position:relative;display:flex;flex-direction:column;width:min(440px,100%);height:min(920px,calc(100dvh - 24px));overflow:hidden;border:1px solid var(--line);border-radius:22px;background:#050506;color:#f2f2f0;animation:ssIn .28s cubic-bezier(.2,.8,.2,1) both}
+.ss-top{flex:none;z-index:2;display:flex;align-items:center;justify-content:center;padding:16px 16px 10px;background:#050506}
+.ss-top h3{margin:0;font-size:18px;font-weight:800}
+.ss-close{position:absolute;right:12px;top:12px;display:grid;place-items:center;width:34px;height:34px;border:0;border-radius:50%;background:#16171b;color:#f2f2f0;cursor:pointer}
+.ss-preview{flex:1;min-height:0;display:flex;justify-content:center;align-items:flex-start;overflow:hidden;padding:4px 16px 8px}
+.ss-scale{transform-origin:top center;flex:none}
+.ss-wait{display:grid;place-items:center;width:100%;min-height:300px;border:1px dashed #2a2c33;border-radius:16px;color:#9a9b96;font-weight:600}
+.ss-actions{flex:none;display:flex;justify-content:center;gap:26px;padding:6px 16px 12px}
+.ss-actions button{display:grid;justify-items:center;gap:8px;border:0;background:transparent;color:#f2f2f0;font-size:14px;font-weight:700;cursor:pointer}
+.ss-actions button:disabled{opacity:.45;cursor:default}
+.ss-actions i{display:grid;place-items:center;width:66px;height:66px;border-radius:50%;color:#fff;transition:transform .15s}
+.ss-actions button:not(:disabled):hover i{transform:translateY(-2px)}.ss-actions button:not(:disabled):active i{transform:scale(.94)}
+.ss-actions.small i{width:52px;height:52px}.ss-actions.small{gap:18px;padding-bottom:18px}.ss-actions.small button{font-size:12.5px}
+.ss-actions i.blue{background:#3b82d6}
+.ss-actions i.x{background:#000;border:2px solid #fff}
+.ss-actions i.gray{background:#1c1d22}
+.ss-actions i.ig{background:linear-gradient(135deg,#f9a03f,#e1306c 55%,#833ab4)}
+.ss-row{display:flex;align-items:center;gap:16px;width:100%;padding:16px 20px;border:0;border-top:1px solid #1b1c20;background:transparent;color:#f2f2f0;font-size:17px;font-weight:700;text-align:left;cursor:pointer}
+.ss-row:hover{background:#0f1013}
+.ss-note{position:absolute;left:50%;bottom:130px;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:7px;width:max-content;max-width:calc(100% - 32px);margin:0 auto 12px;padding:9px 14px;border-radius:999px;background:#f2f2f0;color:#111;font-size:13px;font-weight:700;box-shadow:0 8px 24px rgb(0 0 0 / .5)}
+@keyframes ssIn{from{opacity:0;transform:translateY(18px) scale(.98)}}
+@media(max-width:560px){.ss-back{align-items:flex-end;padding:0}.ss-sheet{width:100%;height:94dvh;border-radius:22px 22px 0 0}.ss-actions{gap:22px}.ss-actions.small{gap:12px}.ss-actions i{width:60px;height:60px}.ss-actions.small i{width:48px;height:48px}}
+/* The poster itself: fixed type sizes so the saved picture always looks the same. */
+.sp{width:340px;max-width:100%;padding:14px;border:1px solid #23252b;border-radius:16px;background:#000;color:#f2f2f0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,sans-serif}
+.sp-head{display:flex;align-items:center;gap:12px}
+.sp-face{position:relative;flex:none;width:58px;height:58px}
+.sp-face>img:first-child,.sp-face>i{display:block;width:58px;height:58px;border-radius:50%;object-fit:cover;object-position:50% 12%;background:#17181c}
+.sp-team{position:absolute;right:-4px;bottom:-3px;width:22px;height:22px;padding:2px;border-radius:50%;background:#fff;object-fit:contain}
+.sp-who{flex:1;min-width:0}
+.sp-name{margin:0;font-size:15px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sp-name b{font-weight:700}.sp-name small{color:#8e8f8a;font-size:13px}
+.sp-trio{display:flex;align-items:baseline;gap:12px;margin:4px 0 0;font-size:13px;color:#b8b9b4}
+.sp-trio b{margin-right:3px;font-size:34px;font-weight:700;line-height:1;color:#fff;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.sp-grade{align-self:flex-start;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;color:#fff}
+.sp-grade.great{color:#34d399}.sp-grade.good{color:#60a5fa}.sp-grade.fair{color:#fbbf24}.sp-grade.poor{color:#f87171}
+.sp-tags{display:flex;flex-wrap:wrap;gap:4px 10px;margin:12px 0 0;font-size:13px;font-weight:700;color:#4f9cf0}
+.sp-match{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 0 10px;font-size:14px;font-weight:700;color:#b8b9b4}
+.sp-score{display:inline-flex;align-items:center;gap:6px;font-size:17px;font-weight:800;color:#8e8f8a;font-variant-numeric:tabular-nums}
+.sp-score img{width:22px;height:22px;object-fit:contain}.sp-score b{font-weight:700;color:#8e8f8a}.sp-score b.lead{color:#fff;font-weight:900}
+.sp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 6px}
+.sp-grid div{display:grid;gap:1px}
+.sp-grid strong{font-size:18px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.sp-grid small{font-size:10px;font-weight:600;letter-spacing:.04em;color:#8e8f8a}
+.sp-tabs{display:flex;gap:16px;margin:12px 0 10px}
+.sp-tabs button{padding:0;border:0;background:transparent;color:#cfd0cb;font-size:15px;font-weight:700;cursor:pointer}
+.sp-tabs button.on{color:#4f9cf0}
+.sp-court small{display:block;margin-top:5px;font-size:11px;font-weight:600;color:#8e8f8a;text-align:center}
+.sp-chart{display:block;width:100%;height:auto;border-radius:10px}
+.sp-foot{display:flex;align-items:center;justify-content:space-between;margin:12px 0 0;padding-top:10px;border-top:1px solid #1b1c20;font-size:11px;color:#8e8f8a}.sp-foot b{color:#f2f2f0;font-size:13px}
+.sp-chart{width:80%;margin:0 auto}
+.sp-court small{margin-top:6px}
+li>button.rp-share{position:absolute!important;right:10px;bottom:10px;left:auto;top:auto}
+
+/* Poster v2: stats on the left, the shot chart as a rectangle on the right. */
+.sp{width:420px}
+.sp-body{display:grid;grid-template-columns:minmax(0,1fr) 172px;gap:16px;align-items:start;margin-top:2px}
+.sp-grid{grid-template-columns:repeat(3,1fr);gap:11px 6px}
+.sp-grid strong{font-size:17px}
+.sp-side{min-width:0}
+.sp-tabs{display:flex;justify-content:space-between;gap:0;margin:0 0 8px}
+.sp-tabs button{font-size:13px}
+.sp-chart{width:100%}
+.sp-court small{margin-top:6px;font-size:10.5px}
+
+/* Poster v3: the performance-card header on the left with its stats, the shot chart as a rectangle on the right. */
+.sp{width:520px}
+.sp-cols{display:grid;grid-template-columns:minmax(0,1fr) 196px;gap:18px;align-items:start}
+.sp-left{min-width:0}
+.sp-body{display:block}
+.sp-head{align-items:flex-start;gap:10px}
+.sp-face,.sp-face>img:first-child,.sp-face>i{width:54px;height:54px}
+.sp-name{font-size:14px}.sp-name small{font-size:12px}
+.sp-trio{gap:9px;margin:3px 0 0;font-size:12px}.sp-trio b{font-size:28px}
+.sp-score{display:flex;align-items:center;gap:5px;margin:5px 0 0;font-size:14px}.sp-score img{width:19px;height:19px}
+.sp-grade{font-size:18px}
+.sp-tags{margin:10px 0 0;font-size:12.5px}
+.sp-pos{margin:8px 0 10px;font-size:12px;font-weight:700;color:#8e8f8a}
+.sp-grid{grid-template-columns:repeat(4,1fr);gap:10px 4px}.sp-grid strong{font-size:16px}
+.sp-side{padding-top:2px}
+.sp-tabs{justify-content:space-between;margin:0 0 8px}
+.sp-tabs button{font-size:12.5px}

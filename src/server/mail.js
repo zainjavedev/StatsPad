@@ -12,6 +12,13 @@ export async function sendMail({to, subject, html}) {
   if (!response.ok) throw new Error(`Resend ${response.status}: ${await response.text()}`);
 }
 
+/* A heads-up to the site owner (NOTIFY_EMAIL). Best effort: a failed notice never breaks the request that caused it. */
+export async function notifyOwner(subject, lines) {
+  const to = process.env.NOTIFY_EMAIL;
+  if (!to) return;
+  try { await sendMail({to, subject, html: wrap(lines.map(line => `<p style="margin:0 0 8px">${esc(line)}</p>`).join(''))}); } catch (error) { console.error('owner notice failed', error.message); }
+}
+
 const esc = value => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const wrap = body => `<div style="font:16px/1.5 system-ui,sans-serif;max-width:480px;margin:0 auto;padding:24px;color:#14140f">${body}</div>`;
 

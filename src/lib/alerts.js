@@ -40,8 +40,10 @@ export async function enableBrowserAlerts(teams) {
 
 /* An account is the email row: signing in (Google or an emailed link) stores its token here and
    brings the account's teams into this browser's favorites. */
-const adopt = ({token, email, teams}) => {
-  writeAlerts({...readAlerts(), email: token, emailAddress: email});
+const adopt = ({token, email, teams, picture}) => {
+  const before = readAlerts();
+  /* A Google photo stays while the same account signs in another way; a different account never inherits it. */
+  writeAlerts({...before, email: token, emailAddress: email, picture: picture ?? (before.emailAddress === email ? before.picture ?? null : null)});
   setFavorites([...getFavorites(), ...teams]);
 };
 

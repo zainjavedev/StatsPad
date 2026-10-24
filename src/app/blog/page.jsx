@@ -1,14 +1,20 @@
 import BlogShell from '../../components/blog/BlogShell';
 import { published } from '../../content/blog/posts';
+import { SITE } from '../../lib/routes';
+import { socialTags } from '../../lib/social';
 
-export const metadata = {title: 'StatsPads blog: NBA stats, explained | StatsPads', description: 'Player comparisons and stat breakdowns with radar charts, built from the same numbers as the StatsPads compare tool.', alternates: {canonical: '/blog'}};
+const TITLE = 'StatsPads blog: NBA stats, explained | StatsPads', DESCRIPTION = 'Player comparisons and stat breakdowns with radar charts, built from the same numbers as the StatsPads compare tool.';
+export const metadata = {title: TITLE, description: DESCRIPTION, alternates: {canonical: '/blog'}, ...socialTags({title: TITLE, description: DESCRIPTION, route: '/blog'})};
 
 const dateFormat = new Intl.DateTimeFormat('en-US', {month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC'});
 
 const headshot = id => `https://a.espncdn.com/i/headshots/nba/players/full/${id}.png`;
 
 export default function BlogIndex() {
+  const schema = {'@context': 'https://schema.org', '@type': 'Blog', name: 'StatsPads blog', url: `${SITE}/blog`, description: DESCRIPTION, inLanguage: 'en-US', publisher: {'@type': 'Organization', name: 'StatsPads', url: SITE},
+    blogPost: published().map(post => ({'@type': 'BlogPosting', headline: post.title, url: `${SITE}/blog/${post.slug}`, datePublished: post.date}))};
   return <BlogShell>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(schema)}}/>
     <main className="blog-main wide">
       <h1>StatsPads blog</h1>
       <p className="blog-lede">Player comparisons and stat breakdowns, each one built on the same numbers and radar charts as the compare tool.</p>

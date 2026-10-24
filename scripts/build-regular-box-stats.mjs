@@ -23,14 +23,20 @@ const known = new Map(lastSeason.map(player => [plain(player.playerName), player
 const rosterInfo = new Map();
 for (const code of Object.keys(TEAMS)) for (const player of JSON.parse(fs.readFileSync(`${dir}/rosters/${code}.json`, 'utf8')).players) rosterInfo.set(String(player.espnId), player);
 
-const schedule = JSON.parse(fs.readFileSync(`${dir}/schedule.json`, 'utf8')).filter(row => row[9] !== 1 && row[6] === 'post');
+const schedule = JSON.parse(fs.readFileSync(`${dir}/schedule.json`, 'utf8')).filter(row => row[9] !== 1 && Date.parse(row[1]) < Date.now());
+/* schedule.json only learns a game is over when it is rebuilt, so every game that has tipped off is asked about and kept only if ESPN calls it final. */
 const blank = () => ({games: 0, started: 0, min: 0, pts: 0, ast: 0, reb: 0, oreb: 0, dreb: 0, stl: 0, blk: 0, tov: 0, pf: 0, fgm: 0, fga: 0, tpm: 0, tpa: 0, ftm: 0, fta: 0});
 const players = new Map(), teams = Object.fromEntries(Object.keys(TEAMS).map(code => [code, blank()]));
 
-for (const [id] of schedule) {
+/* Every player-game, with the (Eastern) day it was played, so the ladders can be ranked as of any night. */
+const dayOf = iso => new Date(iso).toLocaleDateString('en-CA', {timeZone: 'America/New_York'});
+const log = [];
+schedule.sort((a, b) => a[1].localeCompare(b[1]));
+for (const [id, date] of schedule) {
   const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=${id}`);
   if (!response.ok) continue;
   const data = await response.json();
+  if (data.header?.competitions?.[0]?.status?.type?.state !== 'post') continue;
   for (const entry of data.boxscore?.players ?? []) {
     const code = codeOf(entry.team.abbreviation);
     if (!code) continue;
@@ -44,6 +50,7 @@ for (const [id] of schedule) {
       const row = players.get(key) ?? {id: item.athlete.id, name: item.athlete.displayName, code, position: item.athlete.position?.abbreviation ?? '', ...blank()};
       const [fgm, fga] = pair(at(item, 'FG')), [tpm, tpa] = pair(at(item, '3PT')), [ftm, fta] = pair(at(item, 'FT'));
       const add = {games: 1, started: item.starter ? 1 : 0, min: minutes(at(item, 'MIN')), pts: +at(item, 'PTS') || 0, ast: +at(item, 'AST') || 0, reb: +at(item, 'REB') || 0, oreb: +at(item, 'OREB') || 0, dreb: +at(item, 'DREB') || 0, stl: +at(item, 'STL') || 0, blk: +at(item, 'BLK') || 0, tov: +at(item, 'TO') || 0, pf: +at(item, 'PF') || 0, fgm, fga, tpm, tpa, ftm, fta};
+      log.push({day: dayOf(date), id: String(item.athlete.id), name: item.athlete.displayName, code, team: code, ...add});
       for (const [field, value] of Object.entries(add)) { row[field] += value; teams[code][field] += field === 'games' || field === 'started' ? 0 : value; }
       players.set(key, row);
     }
@@ -75,9 +82,65 @@ const teamList = Object.entries(teams).filter(([, row]) => row.games > 0).map(([
   entityType: 'team', teamId: ids[code], team: code, playerName: TEAMS[code].name, rank: 0, gamesPlayed: row.games, position: 'Team', stats: stats(row, row.games),
 })).sort((a, b) => b.stats.points - a.stats.points).map((team, index) => ({...team, rank: index + 1}));
 
-let existing = 0;
-try { existing = JSON.parse(fs.readFileSync(teamsFile, 'utf8')).players.length; } catch { /* no file yet */ }
-if (teamList.length <= existing) { console.log(`regular-season stats: ESPN's files already cover ${existing} teams, box scores cover ${teamList.length}; leaving them`); process.exit(0); }
+
+/* ---------- MVP and rookie ladders ----------
+   Ranked on per-game game score (Hollinger's linear mix of the box score), among players with real minutes who have
+   played enough of their team's games. Ranked as of the end of every game day, so each player's move is the change
+   in his place since the previous night. */
+const days = [...new Set(log.map(entry => entry.day))].sort();
+const gameScore = row => (row.pts + 0.4 * row.fgm - 0.7 * row.fga - 0.4 * (row.fta - row.ftm) + 0.7 * row.oreb + 0.3 * row.dreb + row.stl + 0.7 * row.ast + 0.7 * row.blk - 0.4 * row.pf - row.tov);
+function rankAsOf(day) {
+  const upto = log.filter(entry => entry.day <= day);
+  const byPlayer = new Map();
+  for (const entry of upto) {
+    const row = byPlayer.get(entry.id) ?? {id: entry.id, name: entry.name, code: entry.code, games: 0, min: 0, pts: 0, reb: 0, ast: 0, gs: 0, fgm: 0, fga: 0, fta: 0, ftm: 0};
+    row.games += 1; row.min += entry.min; row.pts += entry.pts; row.reb += entry.reb; row.ast += entry.ast; row.gs += gameScore(entry);
+    row.fgm += entry.fgm; row.fga += entry.fga; row.fta += entry.fta; row.ftm += entry.ftm; row.code = entry.code;
+    byPlayer.set(entry.id, row);
+  }
+  const gamesOf = Math.max(1, ...[...byPlayer.values()].map(row => row.games));
+  const need = Math.max(1, Math.ceil(gamesOf * 0.6));
+  const eligible = [...byPlayer.values()].filter(row => row.games >= need && row.min / row.games >= 20);
+  const score = row => row.gs / row.games;
+  const mvp = [...eligible].sort((a, b) => score(b) - score(a) || a.name.localeCompare(b.name));
+  /* Rookies play fewer minutes, so they only need a short rotation role and half the games. */
+  const rookies = [...byPlayer.values()].filter(row => (rosterInfo.get(row.id)?.exp === 0 || rosterInfo.get(row.id)?.exp === '0') && row.games >= Math.max(1, Math.ceil(gamesOf * 0.5)) && row.min / row.games >= 12).sort((a, b) => score(b) - score(a) || a.name.localeCompare(b.name));
+  return {mvp, rookies};
+}
+const latest = days.at(-1), before = days.length > 1 ? days.at(-2) : null;
+if (latest) {
+  const now = rankAsOf(latest), then = before ? rankAsOf(before) : null;
+  const place = (list, id) => { const index = list.findIndex(row => row.id === id); return index < 0 ? null : index + 1; };
+  const entry = (row, rank, board, thenBoard) => {
+    const info = rosterInfo.get(row.id);
+    const prev = thenBoard ? place(thenBoard, row.id) : undefined;
+    return {rank, playerId: `espn-${row.id}`, espnId: row.id, name: row.name, team: row.code, position: known.get(plain(row.name)) || info?.pos || '', games: row.games,
+      pts: round(row.pts / row.games), reb: round(row.reb / row.games), ast: round(row.ast / row.games), min: round(row.min / row.games),
+      ts: row.fga + 0.44 * row.fta ? round(row.pts / (2 * (row.fga + 0.44 * row.fta)) * 100) : 0, score: round(row.gs / row.games),
+      /* positive = moved up; null = was not on the ladder the night before; undefined = no earlier night to compare with */
+      move: prev === undefined ? undefined : prev === null ? null : prev - rank};
+  };
+  const top = (list, thenList) => list.slice(0, 6).map((row, index) => entry(row, index + 1, list, thenList));
+  const out = {season: '2026-27', updated: new Date().toISOString().slice(0, 10), through: latest, compared: before, mvp: top(now.mvp, then?.mvp), rookie: top(now.rookies, then?.rookies)};
+  fs.writeFileSync(`${dir}/ladders.json`, `${JSON.stringify(out)}\n`);
+  console.log(`ladders: through ${latest}${before ? `, compared with ${before}` : ''}; MVP ${out.mvp.map(row => row.name).join(', ')}`);
+}
+
+/* Box scores win whenever they hold more games than the files already do: ESPN's season feed runs about a day
+   behind, so on its own it can list a player at one game when he has played two. Once the feed catches up the
+   totals are equal and ESPN's own numbers stay. */
+let existingTeams = 0, existingTeamGames = 0, existingPlayerGames = 0;
+try {
+  const teamsOnFile = JSON.parse(fs.readFileSync(teamsFile, 'utf8')).players;
+  existingTeams = teamsOnFile.length;
+  existingTeamGames = teamsOnFile.reduce((sum, team) => sum + (team.gamesPlayed || 0), 0);
+  existingPlayerGames = JSON.parse(fs.readFileSync(playersFile, 'utf8')).players.reduce((sum, player) => sum + (player.gamesPlayed || 0), 0);
+} catch { /* no file yet */ }
+const boxTeamGames = teamList.reduce((sum, team) => sum + team.gamesPlayed, 0), boxPlayerGames = list.reduce((sum, player) => sum + player.gamesPlayed, 0);
+if (teamList.length <= existingTeams && boxTeamGames <= existingTeamGames && boxPlayerGames <= existingPlayerGames) {
+  console.log(`regular-season stats: ESPN's files already cover ${existingTeamGames} team games and ${existingPlayerGames} player games, box scores cover ${boxTeamGames} and ${boxPlayerGames}; leaving them`);
+  process.exit(0);
+}
 const source = {name: 'ESPN box scores', url: 'https://www.espn.com/nba/schedule'};
 const stamp = new Date().toISOString().slice(0, 10);
 fs.mkdirSync(dir, {recursive: true});

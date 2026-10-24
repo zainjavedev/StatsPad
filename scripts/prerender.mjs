@@ -69,8 +69,8 @@ const teams = Object.entries(TEAMS).map(([code, info]) => {
 /* ---------- html ---------- */
 const pages = {};
 const written = [];
-function writePage({route, title, description, body, jsonLd}) {
-  pages[route] = {title, description, body, jsonLd: jsonLd ?? null};
+function writePage({route, title, description, body, jsonLd, og}) {
+  pages[route] = {title, description, body, jsonLd: jsonLd ?? null, og: og ?? null};
   if (route !== '/') written.push(route);
 }
 const table = (heads, rows, caption) => `<table>${caption ? `<caption>${esc(caption)}</caption>` : ''}<thead><tr>${heads.map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
@@ -123,8 +123,11 @@ const leaderList = ([name, abbr, get], pool = players) => `<h2>${esc(name)} per 
 const popular = pairs.slice(0, 8).map(([x, y]) => `<li>${link(compareUrl([x.playerName, y.playerName]), `${x.playerName} vs ${y.playerName}`)}</li>`).join('');
 const teamList = `<ul>${teams.map(team => `<li>${link(teamUrl(team.code), `${team.name} roster`)}</li>`).join('')}</ul>`;
 const crumbs = (...items) => ({'@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items.map(([name, route], index) => ({'@type': 'ListItem', position: index + 1, name, item: SITE + route}))});
-const organization = {'@context': 'https://schema.org', '@type': 'Organization', name: 'StatsPads', url: SITE, logo: `${SITE}/icon-512.png`, email: 'support@statspads.com', description: 'An independent NBA stats site: player and team comparisons, league leaders, standings and expected starting lineups.'};
-const website = {'@context': 'https://schema.org', '@type': 'WebSite', name: 'StatsPads', alternateName: 'Stats Pads', url: SITE, description: 'NBA player and team comparisons, rosters and stats.'};
+const ORG_ID = `${SITE}/#organization`, WEB_ID = `${SITE}/#website`;
+const organization = {'@context': 'https://schema.org', '@type': 'Organization', '@id': ORG_ID, name: 'StatsPads', url: SITE, logo: {'@type': 'ImageObject', url: `${SITE}/icon-512.png`, width: 512, height: 512}, image: `${SITE}/og-default.jpg`, email: 'support@statspads.com', description: 'An independent NBA stats site: player and team comparisons, league leaders, standings and expected starting lineups.'};
+const website = {'@context': 'https://schema.org', '@type': 'WebSite', '@id': WEB_ID, name: 'StatsPads', alternateName: 'Stats Pads', url: SITE, description: 'NBA player and team comparisons, rosters and stats.', inLanguage: 'en-US', publisher: {'@id': ORG_ID}};
+/* A page's own record: when its numbers were last refreshed, and the site it belongs to. */
+const webPage = (route, name, description, extra = {}) => ({'@context': 'https://schema.org', '@type': 'WebPage', '@id': `${SITE}${route}#webpage`, url: SITE + route, name, description, inLanguage: 'en-US', isPartOf: {'@id': WEB_ID}, publisher: {'@id': ORG_ID}, dateModified: season.lastUpdated, ...extra});
 
 writePage({route: '/', title: 'StatsPads: NBA player and team comparisons, rosters, stats', description: 'Compare any two NBA players or teams side by side with a skill radar, see every roster with its expected starting five, and browse the league leaders.', jsonLd: [website, organization],
   body: `<main class="seo"><h1>StatsPads: NBA player and team stats, comparisons and starting lineups</h1><p>StatsPads is a free NBA stats site. Compare any two players or teams side by side with a skill radar, browse every roster with its expected starting five, and see who leads the league in ${statsWord} points, rebounds, assists, steals and blocks. Pick a team, follow it, and get its game alerts.</p><h2>${yearLabel} scoring leaders</h2>${leaderList(LEADER_STATS[0])}<p>${link('/leaders', 'See all stat leaders')}</p><h2>Popular player comparisons</h2><ul>${popular}</ul><p>${link('/compare', 'Compare any two players or teams')}</p><h2>All 30 NBA teams</h2>${teamList}</main>`});
@@ -151,7 +154,8 @@ for (const entry of LEADERS) {
   const lower = entry.label.toLowerCase();
   writePage({route: statUrl(entry.slug), title: fitTitle(`NBA ${lower} leaders ${pretty(seasonKey)} | StatsPads`, `NBA ${lower} leaders ${pretty(seasonKey)}`),
     description: fitDescription(`Who leads the NBA in ${lower} (${entry.unit}) in ${yearLabel}: the top 25 players ranked, from ${ranked[0]?.playerName ?? 'the league leader'} down, with team and games played.`, `Who leads the NBA in ${lower} (${entry.unit}) in ${yearLabel}: the top 25 players ranked.`),
-    jsonLd: [crumbs(['Home', '/'], ['Leaders', '/stats/points'], [`${entry.label} leaders`, statUrl(entry.slug)])],
+    jsonLd: [crumbs(['Home', '/'], ['Leaders', '/stats/points'], [`${entry.label} leaders`, statUrl(entry.slug)]), webPage(statUrl(entry.slug), `NBA ${lower} leaders ${yearLabel}`, `Top 25 NBA players in ${lower} (${entry.unit}) for ${yearLabel}.`),
+      {'@context': 'https://schema.org', '@type': 'ItemList', name: `NBA ${lower} leaders, ${yearLabel}`, itemListOrder: 'https://schema.org/ItemListOrderDescending', numberOfItems: ranked.length, itemListElement: ranked.map((p, index) => ({'@type': 'ListItem', position: index + 1, name: p.playerName, url: SITE + playerUrl(p.playerName)}))}],
     body: `<main class="seo"><h1>NBA ${esc(lower)} leaders, ${yearLabel}</h1><p>The top 25 NBA players in ${esc(lower)} (${entry.unit}) for ${yearLabel}${entry.min ? `, among players with at least ${entry.min[1]} ${entry.min[0].replace(/([A-Z])/g, ' $1').toLowerCase()} per game` : ''}.</p>${table(['Rank', 'Player', 'Team', 'GP', entry.unit], ranked.map((p, index) => [index + 1, link(playerUrl(p.playerName), p.playerName), p.code ? esc(TEAMS[p.code].name) : '', p.gamesPlayed, fixed(p.stats[entry.key])]), `NBA ${lower} leaders, ${yearLabel}`)}<p>${link('/leaders', 'All stat leaders')} · ${LEADERS.filter(other => other.slug !== entry.slug).map(other => link(statUrl(other.slug), `${other.label} leaders`)).join(' · ')}</p></main>`});
 }
 writePage({route: '/performances', title: 'Top recent NBA performances | StatsPads', description: 'The best individual NBA game lines from the last few nights, ranked by game score, with points, rebounds and assists for each.', jsonLd: [crumbs(['Home', '/'], ['Performances', '/performances'])],
@@ -176,7 +180,13 @@ writePage({route: '/teams', title: 'NBA teams and rosters | StatsPads', descript
 
 for (const p of cap(players)) {
   const related = pairs.filter(pair => pair.includes(p)).slice(0, 4).map(([x, y]) => `<li>${link(compareUrl([x.playerName, y.playerName]), `${x.playerName} vs ${y.playerName}`)}</li>`).join('');
-  writePage({route: playerUrl(p.playerName), jsonLd: [crumbs(['Home', '/'], ['Players', '/stats/points'], [p.playerName, playerUrl(p.playerName)]), {'@context': 'https://schema.org', '@type': 'Person', name: p.playerName, jobTitle: 'Basketball player', url: SITE + playerUrl(p.playerName), ...(p.code ? {affiliation: {'@type': 'SportsTeam', name: TEAMS[p.code].name, sport: 'Basketball'}} : {})}],
+  const route = playerUrl(p.playerName), personId = `${SITE}${route}#player`;
+  const photo = p.espnId ? `https://a.espncdn.com/i/headshots/nba/players/full/${p.espnId}.png` : p.nbaId ? `https://cdn.nba.com/headshots/nba/latest/1040x760/${p.nbaId}.png` : null;
+  const [first, ...rest] = plain(p.playerName).split(' ');
+  writePage({route, og: {type: 'profile', fields: {firstName: first, lastName: rest.join(' ') || first}},
+    jsonLd: [crumbs(['Home', '/'], ['Players', '/stats/points'], [p.playerName, route]),
+      webPage(route, `${p.playerName} stats ${yearLabel}`, `${p.playerName} ${yearLabel} NBA stats: ${statLine(p)}.`, {mainEntity: {'@id': personId}}),
+      {'@context': 'https://schema.org', '@type': 'Person', '@id': personId, name: p.playerName, jobTitle: `Basketball player${p.position ? ` (${p.position})` : ''}`, description: `${p.playerName} averaged ${statLine(p)} in ${p.gamesPlayed} games in ${yearLabel}.`, url: SITE + route, mainEntityOfPage: {'@id': `${SITE}${route}#webpage`}, ...(photo ? {image: photo} : {}), ...(p.code ? {affiliation: {'@type': 'SportsTeam', name: TEAMS[p.code].name, sport: 'Basketball', url: SITE + teamUrl(p.code)}} : {})}],
     title: fitTitle(`${p.playerName} stats ${pretty(seasonKey)}: ${fixed(p.stats.points)} PPG, ${fixed(p.stats.totalRebounds)} RPG, ${fixed(p.stats.assists)} APG | StatsPads`, `${p.playerName} stats ${pretty(seasonKey)}: ${fixed(p.stats.points)} PPG, ${fixed(p.stats.totalRebounds)} RPG, ${fixed(p.stats.assists)} APG`, `${p.playerName} stats ${pretty(seasonKey)}: ${fixed(p.stats.points)} PPG, ${fixed(p.stats.totalRebounds)} RPG`, `${p.playerName} stats ${pretty(seasonKey)}`),
     description: fitDescription(`${p.playerName} ${yearLabel} NBA stats: ${statLine(p)}, ${fixed(p.stats.fieldGoalPercentage)}% FG, ${fixed(p.stats.threePointPercentage)}% 3P, ${fixed(p.ts)}% TS in ${p.gamesPlayed} games. Compare ${p.playerName} with any player.`, `${p.playerName} ${yearLabel} NBA stats: ${statLine(p)}, ${fixed(p.stats.fieldGoalPercentage)}% FG, ${fixed(p.stats.threePointPercentage)}% 3P in ${p.gamesPlayed} games.`),
     body: `<main class="seo"><h1>${esc(p.playerName)} stats, ${yearLabel}</h1>${updated()}${copy.playerProfile(p)}${copy.playerRankings(p)}${table(['Stat', 'Per game'], PLAYER_ROWS.map(([label, get, places]) => [esc(label), fixed(get(p), places ?? 1)]), `${p.playerName} per-game stats, ${yearLabel}`)}${p.code ? `<p>${link(teamUrl(p.code), `${TEAMS[p.code].name} roster`)}</p>` : ''}${careerHtml(p)}${copy.teammates(p)}${copy.neighbours(p)}${related ? `<h2>Compare</h2><ul>${related}</ul>` : ''}</main>`});
@@ -186,7 +196,11 @@ for (const team of cap(teams)) {
   const slug = name => bySlug.get(slugify(name));
   const line = player => slug(player.name) ? link(playerUrl(player.name), player.name) : esc(player.name);
   const starters = roster.filter(p => p.unit === 'starters');
-  writePage({route: teamUrl(team.code), jsonLd: [crumbs(['Home', '/'], ['Teams', '/teams'], [team.name, teamUrl(team.code)]), {'@context': 'https://schema.org', '@type': 'SportsTeam', name: team.name, sport: 'Basketball', url: SITE + teamUrl(team.code), memberOf: {'@type': 'SportsOrganization', name: 'NBA'}}],
+  const route = teamUrl(team.code), teamId = `${SITE}${route}#team`;
+  writePage({route, jsonLd: [crumbs(['Home', '/'], ['Teams', '/teams'], [team.name, route]),
+      webPage(route, `${team.name} roster 2026–27`, `${team.name} roster, expected starting five and per-game stats.`, {mainEntity: {'@id': teamId}}),
+      {'@context': 'https://schema.org', '@type': 'SportsTeam', '@id': teamId, name: team.name, sport: 'Basketball', url: SITE + route, logo: `https://cdn.nba.com/logos/nba/${team.id}/global/L/logo.svg`, memberOf: {'@type': 'SportsOrganization', name: 'NBA'}, mainEntityOfPage: {'@id': `${SITE}${route}#webpage`},
+        ...(roster.length ? {athlete: roster.slice(0, 20).map(player => ({'@type': 'Person', name: player.name, ...(slug(player.name) ? {url: SITE + playerUrl(player.name)} : {})}))} : {})}],
     title: fitTitle(`${team.name} roster 2026–27: expected starting five | StatsPads`, `${team.name} roster 2026–27 and starting five`, `${team.name} roster 2026–27`),
     description: fitDescription(`${team.name} 2026–27 roster with the expected starting five${starters.length ? ` (${starters.map(p => p.name).join(', ')})` : ''}, ${statsWord} per-game stats and recent results.`, `${team.name} 2026–27 roster with the expected starting five, ${statsWord} per-game stats and recent results.`),
     body: `<main class="seo"><h1>${esc(team.name)} roster, 2026–27</h1>${updated()}${copy.teamProfile(team)}${copy.teamRankings(team)}${starters.length ? `<h2>Expected starting five</h2><ol>${starters.map(p => `<li>${esc(p.slot)} ${line(p)}</li>`).join('')}</ol>` : ''}${roster.length ? `<h2>Full roster</h2><ul>${roster.map(p => `<li>${line(p)}</li>`).join('')}</ul>` : ''}<h2>${yearLabel} team stats</h2>${table(['Stat', 'Per game'], TEAM_ROWS.map(([label, get]) => [esc(label), fixed(get(team))]), `${team.name} per-game stats, ${yearLabel}`)}</main>`});

@@ -3,6 +3,7 @@ import BlogShell from '../../../components/blog/BlogShell';
 import { POSTS, published } from '../../../content/blog/posts';
 import { BODIES } from '../../../content/blog/bodies';
 import { SITE } from '../../../lib/routes';
+import { socialTags } from '../../../lib/social';
 
 /* Drafts are left out of the static params and dynamicParams is off, so a draft URL is a 404 even when it is committed. */
 export const dynamicParams = false;
@@ -19,8 +20,7 @@ export function generateMetadata({params}) {
     title: `${post.title} | StatsPads`.length <= 60 ? `${post.title} | StatsPads` : post.title,
     description: post.description,
     alternates: {canonical: route},
-    openGraph: {type: 'article', siteName: 'StatsPads', title: post.title, description: post.description, url: route, publishedTime: post.date, images: [{url: '/og-default.jpg', width: 1200, height: 630, alt: post.title}]},
-    twitter: {card: 'summary_large_image', title: post.title, description: post.description, images: ['/og-default.jpg']},
+    ...socialTags({title: post.title, description: post.description, route, type: 'article', og: {publishedTime: post.date, modifiedTime: post.updated ?? post.date, authors: ['StatsPads'], section: post.tag}}),
   };
 }
 
@@ -28,7 +28,7 @@ export default function BlogPost({params}) {
   const post = find(params.slug), Body = BODIES[params.slug];
   if (!post || !Body) notFound();
   const schema = [
-    {'@context': 'https://schema.org', '@type': 'BlogPosting', headline: post.title, description: post.description, datePublished: post.date, dateModified: post.date, mainEntityOfPage: `${SITE}/blog/${post.slug}`, image: `${SITE}/og-default.jpg`,
+    {'@context': 'https://schema.org', '@type': 'BlogPosting', headline: post.title, description: post.description, datePublished: post.date, dateModified: post.updated ?? post.date, inLanguage: 'en-US', isAccessibleForFree: true, articleSection: post.tag, mainEntityOfPage: `${SITE}/blog/${post.slug}`, image: `${SITE}/og-default.jpg`,
       author: {'@type': 'Organization', name: 'StatsPads', url: SITE}, publisher: {'@type': 'Organization', name: 'StatsPads', url: SITE, logo: {'@type': 'ImageObject', url: `${SITE}/icon-512.png`}}},
     {'@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [['Home', '/'], ['Blog', '/blog'], [post.title, `/blog/${post.slug}`]].map(([name, route], index) => ({'@type': 'ListItem', position: index + 1, name, item: SITE + route}))},
   ];

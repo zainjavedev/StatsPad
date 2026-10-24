@@ -1,7 +1,7 @@
 import { randomBytes } from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { sql } from '../../../../server/db';
-import { confirmMail, sendMail } from '../../../../server/mail';
+import { confirmMail, notifyOwner, sendMail } from '../../../../server/mail';
 import { MIN_PASSWORD, hashPassword } from '../../../../server/password';
 import { TEAMS } from '../../../../lib/teams';
 
@@ -26,5 +26,9 @@ export async function POST(request) {
   const [row] = await sql`insert into subscribers (token, channel, email, teams, password_hash) values (${randomBytes(24).toString('hex')}, 'email', ${email}, ${teams}, ${hashPassword(password)})
     on conflict (lower(email)) where email is not null do update set password_hash = excluded.password_hash, teams = excluded.teams returning token, email, teams`;
   try { await sendMail({to: email, ...confirmMail(row.token)}); } catch (error) { console.error('confirm mail failed', error.message); }
+  if (!existing) {
+    const [{count}] = await sql`select count(*)::int as count from subscribers where channel = 'email'`;
+    await notifyOwner(`New StatsPads account: ${row.email}`, [`${row.email} just created an account with email and password.`, `Teams followed: ${row.teams.length ? row.teams.join(', ') : 'none yet'}.`, `Accounts so far: ${count}.`]);
+  }
   return NextResponse.json({token: row.token, email: row.email, teams: row.teams, confirmed: false});
 }

@@ -1,4 +1,4 @@
-import AccountButton from './AccountButton';
+import SiteHeader from './SiteHeader';
 import AccountPage from './AccountPage';
 import SchedulePage from './SchedulePage';
 import PerformancesPage from './PerformancesPage';
@@ -6,8 +6,8 @@ import StatLeadersPage from './StatLeadersPage';
 import StandingsPage from './StandingsPage';
 import GamePage from './GamePage';
 import { isAppPath, navigate } from '../lib/nav';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, BarChart3, BookOpen, Check, Flame, Gamepad2, Home as HomeIcon, Moon, Search, Sun, Trophy, Users, X } from 'lucide-react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { ArrowLeft, BarChart3, Check, Search, X } from 'lucide-react';
 import TeamPage from './TeamPage';
 import TeamsIndex from './TeamsIndex';
 import Radar from './Radar';
@@ -161,24 +161,6 @@ function VsSlot({index,entity,options,playerIds,noun,onPick,onRemove,color}){
 }
 
 
-const NAV_ITEMS = [['home','Home',HomeIcon],['leaders','Leaders',Trophy],['performances','Performances',Flame],['compare','Compare',BarChart3],['teams','Teams',Users],['play','Games',Gamepad2],['blog','Blog',BookOpen]];
-
-/* A banner div, not <header>, so none of the old header rules apply. The tab
-   bar is a sibling because a blurred parent would trap a fixed child. */
-function SiteHeader({page,onHome,onLeaders,onCompare,onTeams,theme,onToggleTheme}){
-  const current=page==='team'?'teams':page,go={home:onHome,leaders:onLeaders,compare:onCompare,teams:onTeams,blog:()=>{window.location.href='/blog'},play:()=>{window.location.href='/play'},performances:()=>navigate('/performances')};
-  const TABBAR_KEYS=['home','performances','play'];
-  const tabs=(className,items=NAV_ITEMS)=><nav className={className} aria-label="Main">{items.map(([key,label,Icon])=><button key={key} className={current===key?'active':''} aria-current={current===key?'page':undefined} onClick={()=>go[key]()}><Icon size={19} className="nav-icon"/><span>{label}</span></button>)}</nav>;
-  return <>
-    <div className="site-header" role="banner"><div className="site-header-inner">
-      <button className="site-brand" onClick={()=>onHome()}><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 2.5v19M2.5 12h19M5.6 5.6c3.4 3.4 3.4 9.4 0 12.8M18.4 5.6c-3.4 3.4-3.4 9.4 0 12.8"/></svg>StatsPads</button>
-      {tabs('site-nav')}
-      <div className="site-header-end"><AccountButton/><button className="theme-toggle" onClick={onToggleTheme} aria-label={theme==='dark'?'Switch to light theme':'Switch to dark theme'} title={theme==='dark'?'Light theme':'Dark theme'}>{theme==='dark'?<Sun size={16}/>:<Moon size={16}/>}</button></div>
-    </div></div>
-    {tabs('tabbar',NAV_ITEMS.filter(([key])=>TABBAR_KEYS.includes(key)))}
-  </>;
-}
-
 function Discovery({players,playerIds,onOpen,seasonType,onSeasonTypeChange,seasonChanging,season}){
   const[listCard,setListCard]=useState(null),[cat,setCat]=useState('all');
   const leaderGroups=[['Scoring leader','points','PPG','scoring'],['Assist leader','assists','APG','playmaking'],['Rebound leader','totalRebounds','RPG','rebounding'],['Off. rebound leader','offensiveRebounds','ORB','rebounding'],['Def. rebound leader','defensiveRebounds','DRB','rebounding'],['Steal leader','steals','SPG','defense'],['Block leader','blocks','BPG','defense'],['Stocks leader','stocks','STK','defense'],['Field-goal leader','fieldGoalPercentage','FG%','shooting'],['Three-point leader','threePointPercentage','3P%','shooting'],['Free-throw leader','freeThrowPercentage','FT%','shooting'],['True-shooting leader','trueShootingPercentage','TS%','shooting'],['Turnover leader','turnovers','TOV','volume'],['Effective-FG leader','effectiveFieldGoalPercentage','eFG%','shooting'],['Field-goals-made leader','fieldGoalsMade','FGM','volume'],['Three-pointers-made leader','threePointersMade','3PM','volume'],['Free-throws-made leader','freeThrowsMade','FTM','volume'],['Minutes leader','minutesPerGame','MPG','volume'],['Field-goals-attempted leader','fieldGoalsAttempted','FGA','volume'],['Three-pointers-attempted leader','threePointersAttempted','3PA','volume'],['Free-throws-attempted leader','freeThrowsAttempted','FTA','volume'],['Foul leader','personalFouls','PF','defense']];
@@ -251,7 +233,9 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
   </section><SiteFooter/>{toast&&<div className="toast"><Check size={16}/>{toast}</div>}</main>
 }
 
-export default function Home(){
+export default function Home({onReady}){
+  /* Before the first paint, so the loading placeholder is swapped for the app without a flash. */
+  useLayoutEffect(()=>{onReady?.()},[onReady]);
   const paramsOnLoad=useMemo(()=>routeParams(location.pathname,location.search),[]);
   const[statSlug,setStatSlug]=useState(()=>paramsOnLoad.get('stat')||'points');
   const[seasonType,setSeasonType]=useState(()=>paramsOnLoad.get('type')==='playoffs'?'playoffs':'regular-season'),[seasonChanging,setSeasonChanging]=useState(false),[entityType,setEntityType]=useState(()=>paramsOnLoad.get('mode')||'player'),[data,setData]=useState(null),[,setSplits]=useState(null),[selected,setSelected]=useState([]),[toast]=useState(''),[playerIds,setPlayerIds]=useState({}),[catalog,setCatalog]=useState({players:[],teams:[]}),[gameId,setGameId]=useState(()=>paramsOnLoad.get('game')),[page,setPage]=useState(['account','schedule','standings','performances','stat','game'].includes(paramsOnLoad.get('view'))?paramsOnLoad.get('view'):paramsOnLoad.get('view')==='leaders'?'leaders':paramsOnLoad.get('view')==='teams'?'teams':paramsOnLoad.has('team')?'team':paramsOnLoad.has('players')?'compare':paramsOnLoad.has('profile')?'profile':'home'),[regularPlayers,setRegularPlayers]=useState(null),[regularSeason,setRegularSeason]=useState(null),[profileFrom,setProfileFrom]=useState(null),[profile,setProfile]=useState(null),[profileBundle,setProfileBundle]=useState(null),[,setYearsTick]=useState(0),[teamCode,setTeamCode]=useState(()=>TEAMS[paramsOnLoad.get('team')]?paramsOnLoad.get('team'):'PHI');

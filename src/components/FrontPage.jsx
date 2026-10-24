@@ -10,6 +10,7 @@ import { useFavorites } from '../lib/favorites';
 import GameTicker, { useGames } from './NextUp';
 import HeadToHead from './HeadToHead';
 import { StandingsPeek } from './Peeks';
+import Ladders from './Ladders';
 import RecentPerformances from './RecentPerformances';
 import { LEADERS, statUrl } from '../lib/statLeaders';
 import { navigate } from '../lib/nav';
@@ -74,6 +75,8 @@ export default function FrontPage({players, playerIds, Art, onCompare, onLeaders
       </div>
     </div>
 
+
+    <Ladders/>
 
     <div className="peek-pair">
       <StandingsPeek games={games}/>
