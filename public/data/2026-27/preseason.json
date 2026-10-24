@@ -2,7 +2,7 @@
   "season": "2026-27",
   "seasonType": "Preseason",
   "description": "NBA player per-game statistics for the 2026-27 preseason",
-  "lastUpdated": "2026-10-23",
+  "lastUpdated": "2026-10-24",
   "source": {
     "name": "ESPN preseason box scores",
     "url": "https://www.espn.com/nba/schedule"
@@ -7630,7 +7630,7 @@
       "playerName": "Nikola Vucevic",
       "team": "ORL",
       "position": "C",
-      "age": 35,
+      "age": 36,
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 15.3,
