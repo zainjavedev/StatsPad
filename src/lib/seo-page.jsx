@@ -21,15 +21,15 @@ export function seoMetadata(route) {
 }
 
 /* The same links on every static page, so the hub pages (home, compare, leaders...) get an incoming link from every other page. Stat rankings are linked from /leaders and from each other. */
-const HUBS = [['/', 'Home'], ['/compare', 'Compare players and teams'], ['/stats/points', 'Stat leaders'], ['/teams', 'Teams and rosters'], ['/lineups', 'Starting lineups'], ['/blog', 'Blog'], ['/standings', 'Standings'], ['/schedule', 'Schedule'], ['/performances', 'Top performances'], ['/about', 'About StatsPads'], ['/contact', 'Contact'], ['/terms', 'Terms of service'], ['/privacy', 'Privacy'], ['/llms.txt', 'llms.txt']];
+const HUBS = [['/', 'Home'], ['/compare', 'Compare players and teams'], ['/stats/points', 'Stat leaders'], ['/lineups', 'Starting lineups and teams'], ['/ladders/mvp', 'MVP ladder'], ['/ladders/roty', 'Rookie of the Year ladder'], ['/blog', 'Blog'], ['/standings', 'Standings'], ['/schedule', 'Schedule'], ['/performances', 'Top performances'], ['/about', 'About StatsPads'], ['/contact', 'Contact'], ['/terms', 'Terms of service'], ['/privacy', 'Privacy'], ['/llms.txt', 'llms.txt']];
 
-export function SeoPage({route}) {
+export function SeoPage({route, page = pages[route]}) {
   return <>
-    {(pages[route]?.jsonLd ?? []).map((data, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(data)}}/>)}
+    {(page?.jsonLd ?? []).map((data, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(data)}}/>)}
     <nav className="seo-static" aria-label="StatsPads">
       {HUBS.map(([href, label]) => <a key={href} href={href}>{label}</a>)}
     </nav>
-    <div className="seo-static" dangerouslySetInnerHTML={{__html: pages[route]?.body ?? ''}}/>
+    <div className="seo-static" dangerouslySetInnerHTML={{__html: page?.body ?? ''}}/>
     <ClientApp route={route}/>
   </>;
 }

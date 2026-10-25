@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Share2 } from 'lucide-react';
+import { ArrowRight, Share2 } from 'lucide-react';
 import { bestOfNight, newestFirst } from '../lib/performances';
 import { fps, rating } from '../lib/playerGame';
 import { trio } from '../lib/trio';
@@ -62,7 +62,7 @@ export default function RecentPerformances({results}) {
     return () => { live = false; };
   }, [results]);
   return <section className="front-panel recent-perf">
-    <div className="front-panel-head"><h2>Recent performances</h2></div>
+    <div className="front-panel-head"><h2>Recent performances</h2><a className="front-more" href="/performances">All performances <ArrowRight size={14}/></a></div>
     {lines === null ? <PerfSkeleton count={LIMIT}/> : lines.length === 0 ? <p className="rp-empty">No finished games yet. Performances show up here once games end.</p> : <ul className="rp-list">{lines.map(line => {
       return <li key={`${line.gameId}-${line.player.id}`}><PerfCard line={line}/></li>;
     })}</ul>}

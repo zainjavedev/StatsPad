@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowDown, ArrowUp, BarChart3, ChevronRight } from 'lucide-react';
-import { navigate } from '../lib/nav';
+import { ArrowDown, ArrowUp, ChevronRight } from 'lucide-react';
+import { playerUrl } from '../lib/routes';
 import { GameList } from './Feeds';
 import { useFeed } from '../lib/useFeed';
 import { teamResults, teamSchedule } from '../lib/espn';
@@ -59,7 +59,7 @@ const statLine = player => player.stats
 const perGame = (player, key) => player.stats ? player.stats[key].toFixed(1) : '—';
 
 function StarterCard({player, onOpen}) {
-  return <button className="starter-card" onClick={() => onOpen(player)} disabled={!player.profile}>
+  return <button className="starter-card" onClick={() => onOpen(player)}>
     <span className="starter-stage">
       <span className="slot-badge">{player.slot || player.pos}</span>
       <Headshot player={player} className="starter-art"/>
@@ -78,9 +78,7 @@ function UnitRow({player, onOpen}) {
     <Headshot player={player} className="unit-art"/>
     <span className="unit-who"><strong>{player.name}</strong><span>{player.pos} · {statLine(player)}</span></span>
   </>;
-  return <li>{player.profile
-    ? <button className="unit-row" onClick={() => onOpen(player)}>{body}<ChevronRight className="unit-go" size={16}/></button>
-    : <div className="unit-row">{body}</div>}</li>;
+  return <li><button className="unit-row" onClick={() => onOpen(player)}>{body}<ChevronRight className="unit-go" size={16}/></button></li>;
 }
 
 function StatTable({players, season, onOpen}) {
@@ -173,19 +171,19 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, season, onOpe
   if (!roster) return shell(<TeamSkeletonBody/>);
   const teamEntity = (teamPool || []).find(team => team.team === teamCode);
   const unit = key => players.filter(player => player.unit === key);
-  const open = player => player.profile && onOpen(player.profile);
+  /* A player with no stats in the current feed (a rookie with only preseason games) still has a page. */
+  const open = player => (player.profile ? onOpen(player.profile) : window.location.assign(playerUrl(player.name)));
 
   return shell(<section className="team-page">
     <div className="team-hero">
       <span className="team-hero-mark"><img className="team-hero-logo" src={logoUrl(teamCode)} alt="" onError={event => { event.currentTarget.style.display = 'none'; }}/></span>
       <div>
         <h1>{roster.teamName}</h1>
-        <p>{roster.season.replace('-', '–')} roster</p>
+        <p>{roster.season.replace('-', '–')} starting lineup and roster</p>
       </div>
       {teamEntity && teamPool.length > 10 && <div className="team-hero-radar" aria-label={`${roster.teamName} radar`}>
         <Radar axes={radarAxes(teamEntity, teamEntity, teamPool).map(axis => ({...axis, sides: [axis.sides[0]]}))} names={[roster.teamName]} colors={['#ffffff']} scope="all 30 teams"/>
       </div>}
-      <button className="team-hero-share" onClick={() => navigate(`/compare?mode=team&players=${encodeURIComponent(roster.teamName)}`)} title={`Compare the ${roster.teamName} with another team`}><BarChart3 size={15}/> Compare</button>
       <FavoriteStar code={teamCode} active={favorites.includes(teamCode)} className="on-hero"/>
     </div>
 

@@ -146,7 +146,7 @@ if (latest) {
       /* positive = moved up; null = was not on the ladder the night before; undefined = no earlier night to compare with */
       move: prev === undefined ? undefined : prev === null ? null : prev - rank};
   };
-  const top = (list, thenList) => list.slice(0, 6).map((row, index) => entry(row, index + 1, list, thenList));
+  const top = (list, thenList) => list.slice(0, 15).map((row, index) => entry(row, index + 1, list, thenList));
   const out = {season: '2026-27', updated: new Date().toISOString().slice(0, 10), through: latest, compared: before, mvp: top(now.mvp, then?.mvp), rookie: top(now.rookies, then?.rookies)};
   fs.writeFileSync(`${dir}/ladders.json`, `${JSON.stringify(out)}\n`);
   console.log(`ladders: through ${latest}${before ? `, compared with ${before}` : ''}; MVP ${out.mvp.map(row => row.name).join(', ')}`);

@@ -3194,7 +3194,7 @@ a.pk-row:hover{background:var(--ink-2)}
 .site-nav a:hover{color:var(--text-1)}
 .site-nav a.active{color:var(--text-1);font-weight:600}
 .site-nav a.active::after{content:"";position:absolute;left:15px;right:15px;bottom:-1px;height:3px;border-radius:3px 3px 0 0;background:var(--text-1)}
-.blog .site-header .account-btn{display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--line);border-radius:9px;background:var(--ink-1);color:var(--text-2)}
+.blog .site-header .account-btn.signed-out{display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--line);border-radius:9px;background:var(--ink-1);color:var(--text-2)}
 .blog-main.wide{max-width:1100px;padding:40px 28px 72px}
 .blog-main.wide h1{font-size:clamp(32px,5vw,48px);font-weight:900;letter-spacing:-.03em}
 .blog-grid{list-style:none;margin:32px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
@@ -4334,3 +4334,56 @@ li>button.rp-share{position:absolute!important;right:10px;bottom:10px;left:auto;
 .vp-foot{margin-top:20px;padding-top:14px}
 .vp-body{grid-template-columns:190px minmax(0,1fr) 190px;gap:8px}
 .vp .vs-radar svg{width:122%;margin:-6% -11% -8%}
+
+.lu-title{display:flex;align-items:center;gap:12px}.lu-title img{flex:none;object-fit:contain}
+.lu-main[style] .lu-card{border-top-color:var(--tc)}
+
+/* Ladder pages (/ladders/mvp, /ladders/roty) */
+.ldp-list{list-style:none;margin:20px 0 0;padding:0;display:grid;gap:8px}
+.ldp-list li{display:grid;grid-template-columns:28px 52px minmax(0,1fr) auto 52px;align-items:center;gap:12px;padding:10px 14px;background:var(--ink-1);border:1px solid var(--line);border-left:3px solid var(--tc);border-radius:12px}
+.ldp-rank{font:800 18px/1 'DM Sans',sans-serif;color:var(--text-3);text-align:center}
+.ldp-list li:nth-child(-n+3) .ldp-rank{color:var(--text-1)}
+.ldp-face{position:relative;display:block;width:52px;height:52px}.ldp-face img:first-child{width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:top;background:var(--ink-2)}
+.ldp-team{position:absolute;right:-4px;bottom:-2px;width:20px;height:20px;object-fit:contain}
+.ldp-main{display:flex;flex-direction:column;min-width:0}.ldp-name{font-weight:700;color:var(--text-1);text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}a.ldp-name:hover{text-decoration:underline}
+.ldp-sub{font-size:12.5px;color:var(--text-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ldp-line{font-size:13px;color:var(--text-3);white-space:nowrap}.ldp-line b{color:var(--text-1);font-size:16px;margin-left:6px}.ldp-line b:first-child{margin-left:0}
+.ldp-move{font-size:12px;font-weight:800;text-align:right}.ldp-move.up{color:#5ee08a}.ldp-move.down{color:#ef8a5a}.ldp-move.new{color:#f0c54a}.ldp-move.flat{color:var(--text-3)}
+@media(max-width:620px){.ldp-list li{grid-template-columns:24px 44px minmax(0,1fr) 44px;padding:10px}.ldp-line{grid-column:3 / 5;grid-row:2}.ldp-face,.ldp-face img:first-child{width:44px;height:44px}}
+
+/* Home: Top performers fills its column next to Recent performances, and the panel links sit on the right of the heading. */
+.home-side>.front-panel:first-child{display:flex;flex-direction:column}
+.home-side>.front-panel:first-child .perf-rest{flex:1;display:grid;grid-auto-rows:1fr;align-content:stretch}
+.front-panel-head a.front-more{text-decoration:none;margin-left:auto}
+.ladder .front-panel-head{flex-wrap:wrap}
+
+/* Team hero: the radar sits where the Compare button was. */
+.team-hero-radar+.fav-star.on-hero{margin-left:10px}
+
+/* Game player hero: the grade badge rides in the name row, at the top. */
+section.pg .pg-hero .pg-rating{align-self:flex-start!important;margin-top:8px}
+
+/* Phones: the server-rendered pages get the app's bottom tab bar instead of a clipped scrolling nav row. */
+@media(max-width:759px){
+  .blog .site-nav{display:none}
+  .blog .site-header-inner{height:56px;padding-top:0;row-gap:0}
+  .blog{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
+}
+
+/* Teams page: each tile lists the team's starting five. */
+.team-five{list-style:none;margin:2px 0 4px;padding:0;width:100%;display:grid;gap:3px;text-align:left}
+.team-five li{display:flex;align-items:baseline;gap:8px;font-size:12.5px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.team-five i{flex:none;width:22px;font-style:normal;font-size:10px;font-weight:800;letter-spacing:.04em;color:var(--text-3)}
+.teams-index-grid{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+
+/* Phones: the head-to-head actions are icon buttons, and the recent-games cards keep only their share button (no chevron). */
+@media(max-width:640px){
+  .h2h-actions{display:flex!important;justify-content:center;gap:14px!important;grid-template-columns:none!important}
+  .h2h-actions button{width:48px;min-height:48px!important;padding:0!important;border-radius:50%!important;justify-content:center}
+  .h2h-actions button svg{width:18px;height:18px}
+  .h2h-label{display:none}
+}
+.pp-recent .rp-list>li::after{content:none}
+
+.profile-copy .profile-season{margin:0 0 12px;max-width:100%}
+@media(max-width:640px){.profile-copy .profile-season{width:100%}}

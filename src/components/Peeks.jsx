@@ -13,7 +13,7 @@ const Head = ({title, to, label, onClick}) => <div className="front-panel-head">
   <button className="front-more" onClick={onClick ?? (() => navigate(to))}>{label} <ArrowRight size={14}/></button>
 </div>;
 
-const link = code => `/teams/${TEAMS[code].name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+const link = code => `/lineups/${TEAMS[code].name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 
 const clock = new Intl.DateTimeFormat(undefined, {weekday: 'short', hour: 'numeric', minute: '2-digit'});
 const pct = value => (Number(value) ? Number(value).toFixed(3).replace(/^0/, '') : '.000');

@@ -22,12 +22,16 @@ Run `npm run lint` before committing. The build fails on lint errors.
 - Stats are static JSON under `public/data/<season>/`. GitHub Actions (`refresh-stats.yml`) rebuilds them every 4 hours and the bot pushes "Refresh stats" commits to `master`. Always `git pull --rebase` before pushing.
 - The app is client-rendered. `scripts/prerender.mjs` writes static SEO copy for search engines before `next build`.
 
+## Postgres box scores
+
+`scripts/sync-espn-db.mjs` copies every finished 2026-27 game (preseason and regular season) from ESPN into Neon: `games`, `team_game_stats`, `player_game_stats`, plus the full ESPN summary in `game_raw`. Run `node --env-file=.env.local scripts/db-setup.mjs` first. It skips games already stored; `--refresh` re-fetches them. The refresh workflow runs it after each stats pull, using the `DATABASE_URL` secret (the step is skipped if the secret is missing).
+
 ## SEO and prerender
 
 `scripts/prerender.mjs` generates `src/seo/pages.json`, `public/sitemap.xml`, and `public/robots.txt`. All of these are gitignored, so never edit or commit them. Change the script instead.
 
 - Pages render from `pages.json` through `src/lib/seo-page.jsx`. A route that isn't in it opens the app with generic tags and is `noindex`.
-- Until the 2026-27 season has a player with `OPENING_WEEK_GAMES` games and 150+ players, the static pages use preseason stats. After that they switch to regular-season stats and the sitemap shrinks accordingly.
+- The static pages use 2026-27 regular-season stats as soon as `regular-season.json` and `teams-regular-season.json` have rows (no game-count threshold). Player pages keep a preseason section, and players with only preseason games keep a preseason-only page.
 - `SEO_LIMIT=n` builds n pages of each kind for quick tests. A limited run overwrites `pages.json` and the sitemap, so rerun the full prerender afterwards.
 - New indexable routes need an entry in `prerender.mjs` (title, description, body), not just a page file.
 

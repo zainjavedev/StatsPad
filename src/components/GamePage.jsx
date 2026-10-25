@@ -16,7 +16,7 @@ import { TEAMS, teamCodeOf } from '../lib/teams';
 /* A team's page from ESPN's abbreviation, so the game header can link to it. */
 const teamHref = abbr => {
   const code = Object.keys(TEAMS).find(key => TEAMS[key].espn === String(abbr).toLowerCase());
-  return code ? `/teams/${TEAMS[code].name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}` : null;
+  return code ? `/lineups/${TEAMS[code].name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}` : null;
 };
 const TeamLink = ({side}) => {
   const href = teamHref(side.abbr), logo = <img src={side.logo} alt={side.short}/>;

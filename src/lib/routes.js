@@ -1,7 +1,7 @@
 import { TEAMS } from './teams.js';
 
 /* Clean URLs for the app and the build step: /compare/luka-doncic-vs-nikola-jokic,
-   /teams/san-antonio-spurs, /players/luka-doncic. routeParams turns a path back
+   /lineups/san-antonio-spurs, /players/luka-doncic. routeParams turns a path back
    into the query parameters the app already understands, so old ?players=...
    links keep working. */
 
@@ -12,7 +12,7 @@ export const slugify = name => name.normalize('NFD').replace(/[̀-ͯ]/g, '').toL
 
 export const TEAM_SLUGS = Object.fromEntries(Object.entries(TEAMS).map(([code, team]) => [slugify(team.name), code]));
 
-export const teamUrl = code => `/teams/${slugify(TEAMS[code].name)}`;
+export const teamUrl = code => `/lineups/${slugify(TEAMS[code].name)}`;
 export const LEADER_TYPES = ['preseason', 'regular-season', 'playoffs'];
 export const leadersUrl = seasonType => `/leaders/${seasonType}`;
 export const playerUrl = name => `/players/${slugify(name)}`;
@@ -28,7 +28,7 @@ export function routeParams(pathname = '/', search = '') {
   const params = new URLSearchParams(search);
   const path = pathname.replace(/\/+$/, '') || '/';
   const compare = path.match(/^\/compare\/(.+?)-vs-(.+)$/);
-  const team = path.match(/^\/teams\/(.+)$/);
+  const team = path.match(/^\/lineups\/(.+)$/);
   const player = path.match(/^\/players\/(.+)$/);
   if (compare) {
     const slugs = [compare[1], compare[2]];
@@ -42,7 +42,7 @@ export function routeParams(pathname = '/', search = '') {
     if (!params.has('players')) params.set('players', '');
   } else if (team && TEAM_SLUGS[team[1]]) {
     params.set('team', TEAM_SLUGS[team[1]]);
-  } else if (path === '/teams') {
+  } else if (path === '/lineups') {
     params.set('view', 'teams');
   } else if (path === '/leaders' || LEADER_TYPES.some(type => path === leadersUrl(type))) {
     params.set('view', 'leaders');

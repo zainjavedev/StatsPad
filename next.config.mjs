@@ -20,6 +20,8 @@ export default {
   },
   async redirects() {
     return [
+      {source: '/teams', destination: '/lineups', permanent: true},
+      {source: '/teams/:slug', destination: '/lineups/:slug', permanent: true},
       {source: '/leaders', destination: '/stats/points', permanent: true},
       {source: '/leaders/:type', destination: '/stats/points', permanent: true},
       {source: '/:path*', has: [{type: 'host', value: 'stats-pad.vercel.app'}], destination: 'https://statspads.com/:path*', permanent: true},

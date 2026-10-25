@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { TEAMS } from '../lib/teams';
 import { favoritesFirst, useFavorites } from '../lib/favorites';
@@ -20,13 +20,15 @@ const inFilter = (code, filter) => filter === 'All' || DIVISIONS.some(([conf, na
 
 export default function TeamsIndex({onOpen}) {
   const favorites = useFavorites();
-  const [query, setQuery] = useState(''), [filter, setFilter] = useState('All');
+  const [query, setQuery] = useState(''), [filter, setFilter] = useState('All'), [fives, setFives] = useState({});
+  /* public/lineups.json: each team's expected starting five, written by the prerender step. */
+  useEffect(() => { fetch('/lineups.json').then(response => (response.ok ? response.json() : null)).then(data => data && setFives(data.teams ?? {})).catch(() => {}); }, []);
   const term = query.trim().toLowerCase();
   const shown = favoritesFirst(favorites).filter(code => TEAMS[code] && inFilter(code, filter) && (!term || TEAMS[code].name.toLowerCase().includes(term) || code.toLowerCase() === term));
   return <section className="teams-index">
     <div className="teams-index-head">
-      <h1>Teams</h1>
-      <p>All 30 clubs. Pick one to see its 2026–27 roster, expected rotation, last season&apos;s numbers and recent games. Tap the bell on a team to get its tip-off alerts.</p>
+      <h1>Teams and starting lineups</h1>
+      <p>The expected starting five for all 30 clubs. Pick one to see its bench rotation, 2026–27 roster, numbers and recent games. Tap the bell on a team to get its tip-off alerts.</p>
     </div>
     <AlertsBanner/>
     <div className="teams-filter">
@@ -38,7 +40,8 @@ export default function TeamsIndex({onOpen}) {
       <button className="team-tile" style={{'--team': TEAMS[code].color}} onClick={() => onOpen(code)}>
         <TeamLogo code={code} className="team-tile-logo"/>
         <b>{TEAMS[code].name}</b>
-        <span>View roster <ArrowRight size={14}/></span>
+        {fives[code]?.length > 0 && <ol className="team-five">{fives[code].map(([slot, name]) => <li key={slot + name}><i>{slot}</i>{name}</li>)}</ol>}
+        <span>Full lineup <ArrowRight size={14}/></span>
       </button>
       <FavoriteStar code={code} active={favorites.includes(code)} className="on-tile"/>
     </div>)}</div>

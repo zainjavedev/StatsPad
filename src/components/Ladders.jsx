@@ -1,4 +1,5 @@
 import React from 'react';
+import { ArrowRight } from 'lucide-react';
 import { useFeed } from '../lib/useFeed';
 import { CURRENT } from '../lib/season';
 import { navigate } from '../lib/nav';
@@ -21,11 +22,11 @@ function Move({value}) {
   return <span className={`ld-move ${up ? 'up' : 'down'}`} title={`${up ? 'Up' : 'Down'} ${places} ${places === 1 ? 'place' : 'places'}`}>{up ? '▲' : '▼'} {places}</span>;
 }
 
-function Ladder({title, note, rows}) {
+function Ladder({title, note, rows, href}) {
   return <section className="front-panel ladder" aria-label={title}>
-    <div className="front-panel-head"><h2>{title}</h2><small className="ld-note">{note}</small></div>
+    <div className="front-panel-head"><h2>{title}</h2><small className="ld-note">{note}</small><a className="front-more" href={href}>Full ladder <ArrowRight size={14}/></a></div>
     <ol className="ld-list">
-      {rows.map(row => <li key={row.playerId} style={{'--tc': TEAMS[row.team]?.color || '#8a8a8a'}}>
+      {rows.slice(0, 6).map(row => <li key={row.playerId} style={{'--tc': TEAMS[row.team]?.color || '#8a8a8a'}}>
         <button className="ld-row" onClick={() => navigate(playerUrl(row.name))}>
           <b className="ld-rank">{row.rank}</b>
           <span className="ld-face"><img src={photo(row.espnId)} alt="" loading="lazy"/>{TEAMS[row.team] && <img className="ld-team" src={espnLogoUrl(row.team)} alt=""/>}</span>
@@ -46,7 +47,7 @@ export default function Ladders() {
   const through = data.through ? day.format(new Date(`${data.through}T12:00:00`)) : '';
   const note = `Through ${through}`;
   return <div className="ladder-pair">
-    <Ladder title="MVP ladder" note={note} rows={data.mvp}/>
-    {data.rookie?.length > 0 && <Ladder title="ROTY ladder" note={note} rows={data.rookie}/>}
+    <Ladder title="MVP ladder" note={note} rows={data.mvp} href="/ladders/mvp"/>
+    {data.rookie?.length > 0 && <Ladder title="ROTY ladder" note={note} rows={data.rookie} href="/ladders/roty"/>}
   </div>;
 }

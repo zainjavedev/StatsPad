@@ -33,9 +33,9 @@ export default function HeadToHead({debates, stars, pool, Art, playerIds, onComp
     <div className="h2h-head">
       <h2>Head to head</h2>
       <div className="h2h-actions">
-        <button onClick={shuffle}><Shuffle size={14}/> Surprise me</button>
-        <button onClick={() => setSharing(true)} aria-label="Share this matchup as an image" title="Share as an image"><Share2 size={14}/> Share</button>
-        <button className="primary" onClick={() => onCompare([a, b])}>Full comparison <ArrowRight size={14}/></button>
+        <button onClick={shuffle} aria-label="Surprise me with another matchup" title="Surprise me"><Shuffle size={14}/><span className="h2h-label"> Surprise me</span></button>
+        <button onClick={() => setSharing(true)} aria-label="Share this matchup as an image" title="Share as an image"><Share2 size={14}/><span className="h2h-label"> Share</span></button>
+        <button className="primary" onClick={() => onCompare([a, b])} aria-label="Open the full comparison" title="Full comparison"><span className="h2h-label">Full comparison </span><ArrowRight size={14}/></button>
       </div>
     </div>
     <div className="h2h-body">
