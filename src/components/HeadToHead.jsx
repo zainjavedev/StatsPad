@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
-import { ArrowRight, Shuffle } from 'lucide-react';
+import { ArrowRight, Shuffle, Share2 } from 'lucide-react';
+import VersusShare from './VersusShare';
 import Radar from './Radar';
 import { radarAxes, radarTints } from '../lib/radarAxes';
 
@@ -9,7 +10,7 @@ import { radarAxes, radarTints } from '../lib/radarAxes';
 const pick = list => list[Math.floor(Math.random() * list.length)];
 
 export default function HeadToHead({debates, stars, pool, Art, playerIds, onCompare}) {
-  const [custom, setCustom] = useState(null);
+  const [custom, setCustom] = useState(null), [sharing, setSharing] = useState(false);
   const pair = custom ?? debates[0] ?? stars.slice(0, 2);
   const [a, b] = pair;
   const axes = useMemo(() => (a && b ? radarAxes(a, b, pool) : []), [a, b, pool]);
@@ -33,6 +34,7 @@ export default function HeadToHead({debates, stars, pool, Art, playerIds, onComp
       <h2>Head to head</h2>
       <div className="h2h-actions">
         <button onClick={shuffle}><Shuffle size={14}/> Surprise me</button>
+        <button onClick={() => setSharing(true)} aria-label="Share this matchup as an image" title="Share as an image"><Share2 size={14}/> Share</button>
         <button className="primary" onClick={() => onCompare([a, b])}>Full comparison <ArrowRight size={14}/></button>
       </div>
     </div>
@@ -41,5 +43,6 @@ export default function HeadToHead({debates, stars, pool, Art, playerIds, onComp
       <Radar axes={axes} names={[a.playerName, b.playerName]} colors={['var(--ra)', 'var(--rb)']} scope={`${pool.length} players`}/>
       <Side player={b} side="right"/>
     </div>
+    {sharing && <VersusShare a={a} b={b} pool={pool} onClose={() => setSharing(false)}/>}
   </section>;
 }

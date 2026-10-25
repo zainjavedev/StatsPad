@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Share2 } from 'lucide-react';
+import PerfShare from './PerfShare';
 import ShotChart from './ShotChart';
-import { PerfCard } from './RecentPerformances';
+import {PerfCard, PerfSkeleton} from './RecentPerformances';
 import { bestOfNight, performancesOf } from '../lib/performances';
 import { finished, loadSchedule } from '../lib/schedule';
 import { playerUrl } from '../lib/routes';
@@ -21,7 +22,7 @@ export default function PlayerGame({gameId, box, plays, team, player, onClose, o
   const own = box.away.abbr === team.abbr ? box.away : box.home, other = own === box.away ? box.home : box.away;
   const away = own === box.away;
   const game = {team: team.abbr, opp: other.abbr, home: !away, won: num(own.score) > num(other.score), score: `${own.score}–${other.score}`, date: box.date ? new Date(box.date) : null};
-  const [quarter, setQuarter] = useState(0), [metric, setMetric] = useState('PTS');
+  const [quarter, setQuarter] = useState(0), [metric, setMetric] = useState('PTS'), [sharing, setSharing] = useState(false);
   const [moreTab, setMoreTab] = useState('game'), [recent, setRecent] = useState(null);
   useEffect(() => {
     if (moreTab !== 'recent' || recent) return undefined;
@@ -43,7 +44,7 @@ export default function PlayerGame({gameId, box, plays, team, player, onClose, o
   const series = periods.map(period => [period, metric === 'PTS' ? total(quarters, period).PTS : fps(total(quarters, period))]);
   const top = Math.max(1, ...series.map(([, value]) => value));
   const assists = assisted.map(entry => ({...entry, name: nameOf(entry.id)})).filter(entry => entry.name);
-  const others = useMemo(() => performancesOf(box, gameId).filter(line => String(line.player.id) !== String(player.id)).sort((a, b) => b.rating - a.rating).slice(0, 4), [box, gameId, player.id]);
+  const others = useMemo(() => performancesOf(box, gameId).filter(line => String(line.player.id) !== String(player.id)).sort((a, b) => num(b.player.stats.PTS) - num(a.player.stats.PTS) || b.rating - a.rating).slice(0, 4), [box, gameId, player.id]);
   const assistPts = assisted.reduce((sum, entry) => sum + entry.pts, 0);
   const photo = id => team.players.find(entry => entry.id === id)?.photo;
   const cell = (name, value) => <div className={`pg-cell${name === '+/-' ? (num(value) > 0 ? ' pos' : num(value) < 0 ? ' neg' : '') : ''}`} key={name}><strong>{value}</strong><small>{name}</small></div>;
@@ -68,7 +69,9 @@ export default function PlayerGame({gameId, box, plays, team, player, onClose, o
         {game.date && <small>{dayFormat.format(game.date)}</small>}
       </div>
       <div className={`pg-rating ${tone(grade)}`}><strong>{grade.toFixed(1)}</strong><small>grade</small></div>
+      <button type="button" className="pg-share" onClick={() => setSharing(true)} aria-label={`Share ${player.name}'s night as an image`} title="Share as an image"><Share2 size={16}/></button>
     </div>
+    {sharing && <PerfShare line={{gameId, player, team: team.abbr, opp: other.abbr, score: game.score, won: game.won, date: game.date}} onClose={() => setSharing(false)}/>}
 
     {tags.length > 0 && <div className="pg-tags">{tags.map(tag => <span key={tag}>#{tag}</span>)}</div>}
 
@@ -121,7 +124,7 @@ export default function PlayerGame({gameId, box, plays, team, player, onClose, o
       </div>
       {moreTab === 'game'
         ? <ul className="rp-list">{others.map(line => <li key={line.player.id}><PerfCard line={line} onPick={onPick}/></li>)}</ul>
-        : recent === null ? <ul className="rp-list loading">{[0, 1, 2].map(index => <li key={index}/>)}</ul>
+        : recent === null ? <PerfSkeleton count={3}/>
           : <ul className="rp-list">{recent.filter(line => !(String(line.gameId) === String(gameId) && String(line.player.id) === String(player.id))).slice(0, 5).map(line => <li key={`${line.gameId}-${line.player.id}`}><PerfCard line={line}/></li>)}</ul>}
     </div>}
     </aside>

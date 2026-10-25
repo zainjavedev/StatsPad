@@ -67,7 +67,8 @@ export async function recentResults(days = 7, limit = 6) {
 /* A team's finished games, each marked W or L from that team's side. */
 export async function teamResults(team, limit = 5) {
   try {
-    const seasons = await Promise.all([1, 2].map(type => getJson(`${BASE}/teams/${team}/schedule?seasontype=${type}`).catch(() => null)));
+    /* seasontype 2 is the regular season and 3 the playoffs; 1 is preseason, which the team page leaves out. */
+    const seasons = await Promise.all([2, 3].map(type => getJson(`${BASE}/teams/${team}/schedule?seasontype=${type}`).catch(() => null)));
     return seasons.flatMap(season => (season?.events || []).map(event => ({game: toGame(event), abbr: season.team?.abbreviation})))
       .filter(({game}) => game.state === 'post')
       .map(({game, abbr}) => {
@@ -85,7 +86,7 @@ export async function teamResults(team, limit = 5) {
 
 export async function teamSchedule(team, limit = 5) {
   try {
-    const seasons = await Promise.all([1, 2].map(type => getJson(`${BASE}/teams/${team}/schedule?seasontype=${type}`).catch(() => null)));
+    const seasons = await Promise.all([2, 3].map(type => getJson(`${BASE}/teams/${team}/schedule?seasontype=${type}`).catch(() => null)));
     return seasons.flatMap(season => season?.events || []).map(toGame)
       .filter(game => game.state !== 'post')
       .sort((a, b) => a.date - b.date)

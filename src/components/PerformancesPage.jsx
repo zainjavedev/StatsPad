@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { PerfCard } from './RecentPerformances';
+import {PerfCard, PerfSkeleton} from './RecentPerformances';
 import { bestOfNight, newestFirst } from '../lib/performances';
 import { finished, loadSchedule } from '../lib/schedule';
 
@@ -42,7 +42,7 @@ export default function PerformancesPage() {
   return <section className="perfs-page">
     <h1>Top performances</h1>
     <p>The best line from every game, night by night</p>
-    {lines === null ? <ul className="rp-list loading">{[0, 1, 2, 3].map(index => <li key={index}/>)}</ul>
+    {lines === null ? <PerfSkeleton count={4}/>
       : lines.length === 0 ? <p className="perfs-empty">No finished games yet.</p>
         : nights(lines).map(night => <section key={night.key} className="perfs-night">
           <h2>{label(night.date)}<small>{night.lines.length} {night.lines.length === 1 ? 'game' : 'games'}</small></h2>

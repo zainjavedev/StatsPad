@@ -10,6 +10,8 @@ import TeamRail from './TeamRail';
 import FavoriteStar from './FavoriteStar';
 import { useFavorites } from '../lib/favorites';
 import { TeamSkeletonBody } from './Skeletons';
+import Radar from './Radar';
+import { radarAxes } from '../lib/radarAxes';
 
 /* Team roster page: who is on the team this season, how the rotation is
    expected to stack up, and each player's previous-season numbers. */
@@ -137,11 +139,15 @@ function StatTable({players, season, onOpen}) {
   </section>;
 }
 
+/* Every team's per-game line this season, which the radar scales a team against. */
+const loadTeamPool = () => fetch('/data/2026-27/teams-regular-season.json').then(response => (response.ok ? response.json() : null)).then(data => (Array.isArray(data?.players) ? data.players.filter(team => team.gamesPlayed > 0) : [])).catch(() => []);
+
 export default function TeamPage({teamCode = 'PHI', leaguePlayers, season, onOpen, onSwitchTeam}) {
   const [roster, setRoster] = useState(null), [error, setError] = useState(false);
   const favorites = useFavorites();
   const schedule = useCallback(() => teamSchedule(TEAMS[teamCode].espn, 5), [teamCode]);
   const games = useFeed(schedule);
+  const teamPool = useFeed(loadTeamPool);
   const finished = useFeed(useCallback(() => teamResults(TEAMS[teamCode].espn, 5), [teamCode]));
   useEffect(() => {
     let active = true;
@@ -165,6 +171,7 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, season, onOpe
   </div>;
   if (error) return shell(<section className="team-page"><p className="vs-empty">Couldn&apos;t load the roster. Try a refresh.</p></section>);
   if (!roster) return shell(<TeamSkeletonBody/>);
+  const teamEntity = (teamPool || []).find(team => team.team === teamCode);
   const unit = key => players.filter(player => player.unit === key);
   const open = player => player.profile && onOpen(player.profile);
 
@@ -175,6 +182,9 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, season, onOpe
         <h1>{roster.teamName}</h1>
         <p>{roster.season.replace('-', '–')} roster</p>
       </div>
+      {teamEntity && teamPool.length > 10 && <div className="team-hero-radar" aria-label={`${roster.teamName} radar`}>
+        <Radar axes={radarAxes(teamEntity, teamEntity, teamPool).map(axis => ({...axis, sides: [axis.sides[0]]}))} names={[roster.teamName]} colors={['#ffffff']} scope="all 30 teams"/>
+      </div>}
       <button className="team-hero-share" onClick={() => navigate(`/compare?mode=team&players=${encodeURIComponent(roster.teamName)}`)} title={`Compare the ${roster.teamName} with another team`}><BarChart3 size={15}/> Compare</button>
       <FavoriteStar code={teamCode} active={favorites.includes(teamCode)} className="on-hero"/>
     </div>

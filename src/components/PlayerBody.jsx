@@ -1,15 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { BarChart3 } from 'lucide-react';
-import ShareButton from './ShareButton';
-import { TEAMS, teamCodeOf } from '../lib/teams';
-import { playerUrl, slugify } from '../lib/routes';
+import { BarChart3, Share2 } from 'lucide-react';
+import PlayerShare from './PlayerShare';
+import { TEAMS, teamCodeOf, espnLogoUrl } from '../lib/teams';
+import { slugify } from '../lib/routes';
 import { careerOf, liveRow, seasonsOf, tsOf } from '../lib/career';
 import { pretty } from '../lib/season';
 import { performancesOf } from '../lib/performances';
 import { finished, loadSchedule } from '../lib/schedule';
 import { loadBoxscore } from '../lib/boxscore';
 import { navigate } from '../lib/nav';
-import { PerfCard } from './RecentPerformances';
+import {PerfCard, PerfSkeleton} from './RecentPerformances';
 import Radar from './Radar';
 import { radarAxes, teamHex as radarHex } from '../lib/radarAxes';
 
@@ -55,13 +55,16 @@ function RecentGames({ lines }) {
   if (lines && !lines.length) return null;
   return <section className="pp-recent" aria-label="Recent performances">
     <h2>Recent performances</h2>
-    {lines === null ? <ul className="rp-list loading">{[0, 1, 2].map(index => <li key={index}/>)}</ul>
+    {lines === null ? <PerfSkeleton count={3}/>
       : <ul className="rp-list">{lines.slice(0, 5).map(line => <li key={line.gameId}><PerfCard line={line} onPick={() => navigate(`/games/${line.gameId}?player=${line.player.id}`)}/></li>)}</ul>}
   </section>;
 }
 
 const espnPhoto = player => { const id = (/^espn-(\d+)$/.exec(player.playerId ?? '') || [])[1]; return id ? `https://a.espncdn.com/i/headshots/nba/players/full/${id}.png` : null; };
 const teamHex = player => TEAMS[teamCodeOf(player.team)]?.color || '#8a8a8a';
+
+const SEASON_LINE = ['PPG', 'RPG', 'APG', 'SPG', 'BPG', 'MPG', 'FG%', '3P%', 'FT%', 'TS%'];
+const split = name => { const parts = name.split(' '); return parts.length > 1 ? [parts[0], parts.slice(1).join(' ')] : ['', name]; };
 
 const teamText = row => (row.tot ? 'TOT' : row.t);
 
@@ -140,9 +143,10 @@ function CareerTable({ seasons, career, currentSeason }) {
   </table></div>;
 }
 
-export default function PlayerBody({ hero, entity, season, population, showCareer, onOpen, onCompare }) {
+export default function PlayerBody({ entity, season, population, showCareer, onOpen, onCompare }) {
   const enriched = useMemo(() => ({ ...entity, trueShooting: tsOf({ pts: entity.stats.points, fga: entity.stats.fieldGoalsAttempted, fta: entity.stats.freeThrowsAttempted }) }), [entity]);
   const pool = useMemo(() => population.map(player => ({ ...player, trueShooting: tsOf({ pts: player.stats.points, fga: player.stats.fieldGoalsAttempted, fta: player.stats.freeThrowsAttempted }) })), [population]);
+  const teamCode = teamCodeOf(entity.team), [first, last] = split(entity.playerName);
   const history = useCareer(entity.playerName), recent = useRecentLines(entity.playerName);
   const seasons = useMemo(() => seasonsOf(history?.rows || [], season ? liveRow(entity, season) : null), [history, entity, season]);
   const career = useMemo(() => careerOf(seasons), [seasons]);
@@ -155,51 +159,56 @@ export default function PlayerBody({ hero, entity, season, population, showCaree
     return [...(alike.length >= 5 ? alike : others)].sort((a, b) => gap(a) - gap(b)).slice(0, 5);
   }, [pool, entity]);
 
-  const shareLabels = ['PPG', 'RPG', 'APG', 'SPG', 'BPG', 'FG%', '3P%', 'FT%', 'TS%'];
-  const shareSpec = {
-    kind: 'tiles', eyebrow: `${season ? pretty(season) : ''} season`, title: entity.playerName, person: { name: entity.playerName, playerId: entity.playerId },
-    sub: `${/^\dTM$/.test(entity.team) ? `${entity.team[0]} teams` : entity.team} · ${entity.position} · ${entity.gamesPlayed} games · ${f1(entity.minutesPerGame)} MPG`,
-    color: TEAMS[teamCodeOf(entity.team)]?.color,
-    tiles: shareLabels.map(label => {
-      const tile = TILES.find(item => item[0] === label), ranking = rankOf(pool, enriched, tile);
-      return { label, value: `${f1(tile[1](enriched))}${label.endsWith('%') ? '%' : ''}`, note: ranking ? `${ord(ranking.rank)} of ${ranking.total}` : 'too few attempts' };
-    }),
-    foot: `${season ? pretty(season) : ''} per game, ranked among regulars`, path: playerUrl(entity.playerName),
-  };
+  const [sharing, setSharing] = useState(false);
 
   return <div className="pp-layout">
-    <div className="pp-top" style={{ '--team': teamHex(entity) }}>
-    {hero}
-    <div className="pp-share"><ShareButton spec={shareSpec} filename={`${slugify(entity.playerName)}-stats`} title={entity.playerName} text={`${entity.playerName}: ${f1(entity.stats.points)} PPG, ${f1(entity.stats.totalRebounds)} RPG, ${f1(entity.stats.assists)} APG`} path={playerUrl(entity.playerName)}/></div>
-    <section className="pp-tiles" aria-label="Season per-game stats">
-      {TILES.map(tile => {
-        const ranking = rankOf(pool, enriched, tile);
-        const value = tile[1](enriched);
-        return <article key={tile[0]} className="pp-tile">
-          <span>{tile[0]}</span><strong>{f1(value)}</strong>
-          <small>{ranking ? <>{ord(ranking.rank)}<i> of {ranking.total}</i></> : 'Too few attempts'}</small>
-        </article>;
-      })}
+    <div className="pf-top" style={{ '--team': teamHex(entity) }}>
+    <div className="pf-hero">
+      {teamCode && <img className="pf-logo" src={espnLogoUrl(teamCode)} alt=""/>}
+      <div className="pf-copy">
+        {first && <span className="pf-first">{first}</span>}
+        <h1 className="pf-last" style={{'--n': Math.max(last.length, 5)}}>{last}</h1>
+        <p className="pf-meta">{teamCode ? entity.team : ''} · {entity.position} · Age {entity.age} · {entity.gamesPlayed} {entity.gamesPlayed === 1 ? 'game' : 'games'} · {entity.gamesStarted} {entity.gamesStarted === 1 ? 'start' : 'starts'}</p>
+        <div className="pf-actions">
+          <button type="button" className="pf-compare" onClick={() => onCompare(entity)}><BarChart3 size={16}/> Compare</button>
+          <button type="button" className="ghost-button" onClick={() => setSharing(true)} title="Share this as an image"><Share2 size={15}/> Share</button>
+        </div>
+      </div>
+      {pool.length > 10 && <div className="pf-radar" aria-label={`${entity.playerName} skill radar`}>
+        <Radar axes={radarAxes(enriched, enriched, pool).map(axis => ({ ...axis, sides: [axis.sides[0]] }))} names={[entity.playerName]} colors={['#ffffff']}/>
+      </div>}
+      {espnPhoto(entity) && <img className="pf-photo" src={espnPhoto(entity)} alt=""/>}
+    </div>
+    <section className="pf-stats-wrap" aria-label={`${season ? pretty(season) : 'Season'} per-game stats`}>
+      {SEASON_LINE.map(name => {
+          const tile = TILES.find(item => item[0] === name), ranking = rankOf(pool, enriched, tile);
+          return <div key={name} className="pf-stat">
+            <strong>{f1(tile[1](enriched))}</strong>
+            <span>{name}</span>
+            <small className={ranking && ranking.rank <= 10 ? 'top' : ''}>{ranking ? <>{ord(ranking.rank)}<i> of {ranking.total}</i></> : 'Too few attempts'}</small>
+          </div>;
+        })}
     </section>
+    {sharing && <PlayerShare player={enriched} pool={pool} season={season ? pretty(season) : ''} onClose={() => setSharing(false)}/>}
     </div>
     <RecentGames lines={recent}/>
 
     <div className="pp-grid-2">
       {showCareer && <section className="pp-card">
-        <div className="pp-head"><small>CAREER TREND</small><h2>How {entity.playerName.split(' ')[0]}&apos;s numbers have moved</h2></div>
+        <div className="pp-head"><h2>How {entity.playerName.split(' ')[0]}&apos;s numbers have moved</h2></div>
         {history === undefined
           ? <div className="sk" style={{ height: 230, borderRadius: 12 }}/>
           : <TrendChart seasons={seasons} tint={radarHex(entity)}/>}
       </section>}
-      {pool.length > 10 && <aside className="pp-card pp-radar">
-        <div className="pp-head"><small>PLAYER PROFILE</small><h2>{entity.playerName.split(' ')[0]}&apos;s skill radar</h2></div>
+      {pool.length > 10 && <aside className="pp-card pp-radar pp-radar-card">
+        <div className="pp-head"><h2>{entity.playerName.split(' ')[0]}&apos;s skill radar</h2></div>
         <Radar axes={radarAxes(enriched, enriched, pool).map(axis => ({ ...axis, sides: [axis.sides[0]] }))} names={[entity.playerName]} colors={[radarHex(entity)]}/>
         <p className="pp-note">Each spoke runs from the league&apos;s lowest to highest rotation player.</p>
       </aside>}
     </div>
 
     {showCareer && <section className="pp-card">
-      <div className="pp-head"><small>SEASON BY SEASON</small><h2>Career stats per game</h2></div>
+      <div className="pp-head"><h2>Career stats per game</h2></div>
       {history === undefined
         ? <div className="sk" style={{ height: 180, borderRadius: 12 }}/>
         : <CareerTable seasons={seasons} career={seasons.length > 1 ? career : null} currentSeason={season}/>}
@@ -207,7 +216,7 @@ export default function PlayerBody({ hero, entity, season, population, showCaree
     </section>}
 
     {suggestions.length > 0 && <section className="pp-card">
-      <div className="pp-head"><small>COMPARE</small><h2>Put {entity.playerName.split(' ')[0]} head to head</h2></div>
+      <div className="pp-head"><h2>Put {entity.playerName.split(' ')[0]} head to head</h2></div>
       <div className="pp-vs-grid">
         {suggestions.map(player => <div key={player.playerId} className="pp-vs" style={{ '--a': teamHex(entity), '--b': teamHex(player) }}>
           <button className="pp-vs-faces" onClick={() => onCompare([entity, player])} aria-label={`Compare ${entity.playerName} with ${player.playerName}`}>

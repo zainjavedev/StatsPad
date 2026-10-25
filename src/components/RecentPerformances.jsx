@@ -33,6 +33,15 @@ export function PerfCard({line, onPick, showDate = true}) {
   </>;
 }
 
+/* Placeholder rows built from the card's own markup, so each page gets a skeleton the size of its cards. */
+export function PerfSkeleton({count = 3}) {
+  return <ul className="rp-list rp-skeleton" aria-hidden="true">{Array.from({length: count}, (_, index) => <li key={index}><div className="rp-card">
+    <span className="rp-face"><i/></span>
+    <span className="rp-main"><span className="rp-top"><b>Player Name</b></span><span className="rp-trio"><b>00</b><b>00</b><b>00</b></span><small className="rp-game">000–000</small></span>
+    <span className="rp-grade">0.0</span>
+  </div></li>)}</ul>;
+}
+
 const LIMIT = 6;
 
 /* The lines worked out for each results list, so a return visit shows them without reading the box scores again. */
@@ -41,19 +50,20 @@ const worked = new WeakMap();
 export default function RecentPerformances({results}) {
   const [lines, setLines] = useState(() => (results ? worked.get(results) ?? null : null));
   useEffect(() => {
-    if (!results?.length) return undefined;
+    if (!results) return undefined;
+    if (!results.length) { setLines([]); return undefined; }
     let live = true;
     bestOfNight(results, 400).then(found => {
       const seen = new Set();
       const unique = newestFirst(found).filter(line => (seen.has(line.gameId) ? false : seen.add(line.gameId)));
       worked.set(results, unique.slice(0, LIMIT));
       if (live) setLines(unique.slice(0, LIMIT));
-    });
+    }).catch(() => { if (live) setLines([]); });
     return () => { live = false; };
   }, [results]);
   return <section className="front-panel recent-perf">
     <div className="front-panel-head"><h2>Recent performances</h2></div>
-    {lines === null ? <ul className="rp-list loading">{[0, 1, 2].map(index => <li key={index}/>)}</ul> : <ul className="rp-list">{lines.map(line => {
+    {lines === null ? <PerfSkeleton count={LIMIT}/> : lines.length === 0 ? <p className="rp-empty">No finished games yet. Performances show up here once games end.</p> : <ul className="rp-list">{lines.map(line => {
       return <li key={`${line.gameId}-${line.player.id}`}><PerfCard line={line}/></li>;
     })}</ul>}
   </section>;

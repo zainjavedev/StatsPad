@@ -2743,8 +2743,7 @@ a.pk-row:hover{background:var(--ink-2)}
 .rp-trio b{font-size:38px;font-weight:600;line-height:1;margin-right:4px;color:var(--text-1);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 .rp-game{font-size:13px;color:var(--text-3)}
 .rp-grade{align-self:start;font-size:22px;font-weight:600;color:var(--text-1);font-variant-numeric:tabular-nums}
-.rp-list.loading li{height:108px}
-@media(max-width:520px){.rp-card{grid-template-columns:44px minmax(0,1fr) auto;gap:10px;padding:10px 2px}.rp-face,.rp-face>img:first-child,.rp-face>i{width:44px;height:44px}.rp-team{width:20px;height:20px;padding:2px}.rp-top{font-size:14px}.rp-top small{font-size:12px}.rp-trio{gap:2px 12px;font-size:12px}.rp-trio b{font-size:22px;margin-right:3px}.rp-game{font-size:11px}.rp-grade{font-size:16px}.rp-list.loading li{height:76px}}
+@media(max-width:520px){.rp-card{grid-template-columns:44px minmax(0,1fr) auto;gap:10px;padding:10px 2px}.rp-face,.rp-face>img:first-child,.rp-face>i{width:44px;height:44px}.rp-team{width:20px;height:20px;padding:2px}.rp-top{font-size:14px}.rp-top small{font-size:12px}.rp-trio{gap:2px 12px;font-size:12px}.rp-trio b{font-size:22px;margin-right:3px}.rp-game{font-size:11px}.rp-grade{font-size:16px}}
 
 /* Player report: black and white only, with green and red kept for plus-minus. */
 .pg-bars i{background:color-mix(in srgb,var(--text-1) 72%,transparent)!important}
@@ -3975,3 +3974,362 @@ li>button.rp-share{position:absolute!important;right:10px;bottom:10px;left:auto;
 .sp-side{padding-top:2px}
 .sp-tabs{justify-content:space-between;margin:0 0 8px}
 .sp-tabs button{font-size:12.5px}
+
+/* Poster v4: stats read like the performance card (value and label inline), no quarter tabs, sheet hugs the poster. */
+.ss-sheet{height:auto;max-height:calc(100dvh - 24px)}
+.ss-preview{flex:none;padding:4px 16px 14px}
+@media(max-width:560px){.ss-sheet{height:auto;max-height:94dvh}}
+.sp{width:480px;padding:16px}
+.sp-cols{grid-template-columns:minmax(0,1fr) 170px;gap:16px;align-items:center}
+.sp-stats{display:grid;gap:7px}
+.sp-stats p{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 14px;margin:0;font-size:12px;font-weight:600;color:#8e8f8a}
+.sp-stats b{margin-right:4px;font-size:20px;font-weight:600;line-height:1.1;color:#f2f2f0;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.sp-pos{margin:8px 0 8px}
+
+/* Poster v5: the top is the performance card itself at a fixed size, the rest of the night sits under it. */
+.sp{width:440px;padding:14px 16px 12px}
+.sp .rp-card{grid-template-columns:68px minmax(0,1fr) auto;gap:14px;padding:0}
+.sp .rp-face,.sp .rp-face>img:first-child,.sp .rp-face>i{width:68px;height:68px}
+.sp .rp-team{width:26px;height:26px;padding:3px;background:#fff}
+.sp .rp-main{gap:5px}
+.sp .rp-top{font-size:16px;color:#f2f2f0}.sp .rp-top small{font-size:13px;color:#8e8f8a}
+.sp .rp-trio{gap:2px 14px;font-size:14px;color:#b8b9b4}.sp .rp-trio b{margin-right:4px;font-size:34px;color:#fff}
+.sp .rp-game{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:600;color:#8e8f8a}.sp .rp-game img{width:20px;height:20px;object-fit:contain}.sp .rp-game b{font-weight:600}.sp .rp-game b.win{color:#fff;font-weight:800}
+.sp .rp-grade{font-size:22px;color:#fff}.sp .rp-grade.great{color:#34d399}.sp .rp-grade.good{color:#60a5fa}.sp .rp-grade.fair{color:#fbbf24}.sp .rp-grade.poor{color:#f87171}
+.sp-tags{margin:12px 0 0}
+.sp-cols{grid-template-columns:minmax(0,1fr) 168px;gap:16px;align-items:start;margin-top:12px;padding-top:12px;border-top:1px solid #1b1c20}
+.sp-pos{margin:0 0 8px}
+.sp-stats{gap:8px}
+.sp-stats b{font-size:19px}
+.sp-chart{width:100%;margin:0}
+.sp-foot{margin-top:12px}
+
+/* Loading rows reuse the card markup so every layout gets a skeleton of the right size. The blocks are still;
+   one soft sweep crosses each row, in step with the others. */
+.rp-list.rp-skeleton>li{position:relative;overflow:hidden}
+.rp-list.rp-skeleton>li::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgb(255 255 255 / .05) 50%,transparent 70%);transform:translateX(-100%);animation:rp-sweep 1.6s ease-in-out infinite;pointer-events:none}
+.rp-list.rp-skeleton .rp-top b,.rp-list.rp-skeleton .rp-trio b,.rp-list.rp-skeleton .rp-game,.rp-list.rp-skeleton .rp-grade{color:transparent;border-radius:6px;background:var(--ink-2)}
+.rp-list.rp-skeleton .rp-top b{display:inline-block;width:60%;max-width:150px}
+.rp-list.rp-skeleton .rp-trio{gap:2px 12px}.rp-list.rp-skeleton .rp-trio b{display:inline-block;width:1.6em;margin-right:0}
+.rp-list.rp-skeleton .rp-game{width:84px}
+@keyframes rp-sweep{to{transform:translateX(100%)}}
+@media(prefers-reduced-motion:reduce){.rp-list.rp-skeleton>li::after{animation:none;display:none}}
+.rp-empty{margin:8px 0 14px;color:var(--text-3);font-size:14px}
+
+/* Poster v6: stats the way the game page lays them out: number over label, flowing in rows, chart beside them. */
+.sp{width:520px}
+.sp-cols{grid-template-columns:minmax(0,1fr) 200px;gap:20px}
+.sp-stats{display:flex;flex-wrap:wrap;gap:12px 18px}
+.sp-stats div{display:grid;gap:2px}
+.sp-stats strong{font-size:22px;font-weight:600;line-height:1;color:#f2f2f0;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.sp-stats small{font-size:11px;font-weight:600;letter-spacing:.03em;color:#8e8f8a}
+.sp-stats .pos strong{color:#34d399}.sp-stats .neg strong{color:#f87171}
+.sp-pos{margin:0 0 12px}
+.sp-stats hr{flex:0 0 100%;height:0;margin:0;padding:0;border:0}
+.sp-stats{gap:14px 20px}
+.sp-stats{gap:0 20px}.sp-stats div{margin-bottom:14px}
+
+/* Poster v7: two columns. The photo, numbers and stats stack on the left; the shot chart is one tall block on the right. */
+.sp{width:780px}
+.sp-cols{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;align-items:stretch;margin:0;padding:0;border:0}
+.sp-left{display:flex;flex-direction:column;justify-content:space-between;min-width:0}
+.sp .rp-trio b{font-size:28px}
+.sp .rp-top{font-size:15px}
+.sp-tags{margin:12px 0 0}
+.sp-pos{margin:10px 0 10px}
+.sp-stats{gap:0 18px}
+.sp-stats div{margin-bottom:12px}
+.sp-stats div:last-child,.sp-stats hr+div:last-child{margin-bottom:0}
+.sp-chart{align-self:center;width:360px;height:auto;margin:0;border-radius:12px}
+.sp-foot{margin-top:14px}
+.sp-stats div:last-child,.sp-stats hr+div:last-child{margin-bottom:12px}
+.sp-stats{align-items:flex-start}
+.ss-sheet{width:min(660px,100%)}
+
+/* Poster v8: tighter. The chart is sized to the left column so nothing stretches apart. */
+.sp-cols{grid-template-columns:minmax(0,1fr) 320px;align-items:start}
+.sp-left{justify-content:flex-start}
+.sp-chart{width:320px;align-self:start}
+.sp-pos{margin:8px 0 8px}
+.sp-stats div{margin-bottom:10px}
+.sp-stats div:last-child,.sp-stats hr+div:last-child{margin-bottom:0}
+.sp-tags{margin:10px 0 0}
+.sp-foot{margin-top:12px;padding-top:10px}
+.sp-foot b{font-size:15px;letter-spacing:.01em;color:#fff}
+.sp{width:740px}
+.sp-stats{gap:0 16px}
+.sp-stats strong{font-size:21px}
+.sp{width:770px}
+.sp-cols{grid-template-columns:minmax(0,1fr) 370px}
+.sp-chart{width:370px}
+.sp-stats{gap:0 15px}
+.sp-stats div{margin-bottom:11px}
+.sp-stats div:last-child{margin-bottom:0}
+
+/* Poster v9: the rest of the night in the same type as the performance cards: big number, small label beside it. */
+.sp-stats{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px}
+.sp-stats>span{font-size:14px;font-weight:500;color:#b8b9b4}
+.sp-stats>span b{margin-right:4px;font-size:30px;font-weight:600;line-height:1.1;color:#f2f2f0;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.sp-stats>span.pos b{color:#34d399}.sp-stats>span.neg b{color:#f87171}
+.sp-stats>span:last-child{margin-bottom:0}
+
+/* Poster v10: label under the number. */
+.sp-stats{align-items:flex-start;gap:12px 16px}
+.sp-stats>span{display:grid;gap:2px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#8e8f8a}
+.sp-stats>span b{margin:0;font-size:26px;line-height:1}
+.sp-stats{row-gap:0}.sp-stats>span{margin-bottom:12px}.sp-stats>span:last-child{margin-bottom:0}
+
+/* Poster v11: smaller stat numbers, a key under the court. */
+.sp-stats>span b{font-size:22px}
+.sp-stats>span{font-size:10px}
+.sp-stats{column-gap:14px}
+.sp-stats>span{margin-bottom:10px}.sp-stats>span:last-child{margin-bottom:0}
+.sp-cols{grid-template-columns:minmax(0,1fr) 340px}
+.sp-court{width:340px}
+.sp-chart{width:340px}
+.sp .shot-key{justify-content:center;gap:14px;margin:8px 0 0;color:#8e8f8a;font-size:11px}
+.sp{width:740px}
+.sp-stats>span b{font-size:24px}
+.sp-stats>span{margin-bottom:22px}.sp-stats>span:last-child{margin-bottom:0}
+.sp-stats{column-gap:16px}
+.sp-stats>span b{font-size:22px}
+.sp-stats{column-gap:14px}
+.sp-stats>span{margin-bottom:30px}.sp-stats>span:last-child{margin-bottom:0}
+.sp-stats>span{margin-bottom:22px}.sp-stats>span:last-child{margin-bottom:0}
+.sp-pos{margin:12px 0 14px}
+.sp-tags{margin:14px 0 0}
+
+/* Poster v12: compact stat block, number over label, one flowing list. */
+.sp-stats{gap:0 14px}
+.sp-stats>span{margin-bottom:10px;font-size:10px}
+.sp-stats>span:last-child{margin-bottom:0}
+.sp-stats>span b{font-size:20px}
+.sp-pos{margin:10px 0 10px}
+.sp-tags{margin:12px 0 0}
+.sp-pos{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.sp-pos .rp-game{font-size:15px;color:#8e8f8a}.sp-pos .rp-game img{width:22px;height:22px}.sp-pos .rp-game b.win{color:#fff}
+.sp-stats{column-gap:16px}
+.sp-stats>span{font-size:11px;margin-bottom:14px}.sp-stats>span:last-child{margin-bottom:0}
+.sp-stats>span b{font-size:25px}
+
+/* Share button on a player's game report. */
+.pg-share{position:absolute;right:0;bottom:0;display:grid;place-items:center;width:36px;height:36px;padding:0;border:1px solid var(--line);border-radius:50%;background:var(--ink-1);color:var(--text-2);cursor:pointer;transition:color .15s,border-color .15s,transform .15s}
+.pg-share:hover{color:var(--text-1);border-color:var(--text-3);transform:scale(1.06)}
+.rp-list.rp-skeleton .rp-trio b{height:30px}
+
+/* (superseded) Ladders v3: one team-coloured card per place, after the NBA app ladder. */
+.ld-list li+li{border-top:0}
+.ld-list{display:grid;gap:8px}
+.lc{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 40px;align-items:center;width:100%;height:96px;padding:0 14px 0 100px;overflow:hidden;border:1px solid color-mix(in srgb,var(--tc) 55%,#fff 8%);border-radius:12px;background:linear-gradient(105deg,color-mix(in srgb,var(--tc) 78%,#000) 0%,color-mix(in srgb,var(--tc) 38%,#050506) 100%);color:#fff;font:inherit;text-align:left;cursor:pointer;transition:transform .15s,border-color .15s}
+.lc:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--tc) 80%,#fff 30%)}
+.lc-logo{position:absolute;left:12px;top:50%;width:74px;height:74px;object-fit:contain;transform:translateY(-50%);filter:drop-shadow(0 2px 8px rgb(0 0 0 / .35))}
+.lc-copy{position:relative;z-index:1;display:grid;gap:0;align-content:center;min-width:0;grid-column:1}
+.lc-rank{font-size:15px;font-weight:800;line-height:1;letter-spacing:.02em}
+.lc-first{margin-top:2px;font-size:13px;font-weight:700;line-height:1.05;text-transform:uppercase;letter-spacing:.02em;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lc-last{font-size:26px;font-weight:800;line-height:.98;text-transform:uppercase;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lc-line{margin-top:4px;font-size:12px;font-weight:600;opacity:.8;font-variant-numeric:tabular-nums}
+.lc-photo{position:absolute;right:52px;bottom:0;z-index:0;width:112px;height:92px;object-fit:contain;object-position:center bottom}
+.lc-move{position:relative;z-index:1;grid-column:2;justify-self:end;display:grid;justify-items:center;gap:0;color:#fff}
+.lc-move b{font-size:12px;font-weight:800;line-height:1;margin-top:-2px}
+.lc-move.up{color:#fff}.lc-move.down{color:#fff;opacity:.9}
+.lc-move.new{padding:4px 7px;border-radius:999px;background:rgb(0 0 0 / .35);font-size:10px;font-weight:800;letter-spacing:.08em}
+.lc-move.flat i{display:block;width:16px;height:3px;border-radius:2px;background:#fff;opacity:.7}
+@media(max-width:520px){.lc{height:84px;padding-left:76px}.lc-logo{left:8px;width:58px;height:58px}.lc-last{font-size:20px}.lc-first{font-size:11px}.lc-line{font-size:11px}.lc-photo{right:44px;width:92px;height:76px}}
+
+/* Player profile v2: a team-coloured header like the ladder cards, then the season line as plain numbers, no boxes. */
+.pf-hero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;min-height:260px;margin-top:6px;padding:26px 0 0 28px;overflow:hidden;border:1px solid color-mix(in srgb,var(--team) 55%,#fff 8%);border-radius:16px;background:linear-gradient(105deg,color-mix(in srgb,var(--team) 78%,#000) 0%,color-mix(in srgb,var(--team) 36%,#050506) 100%);color:#fff}
+.pf-logo{position:absolute;left:-40px;top:50%;width:300px;height:300px;object-fit:contain;transform:translateY(-50%);opacity:.16;pointer-events:none}
+.pf-copy{position:relative;z-index:1;display:grid;gap:0;align-self:stretch;align-content:end;min-width:0;padding-bottom:26px}
+.pf-first{font-size:18px;font-weight:700;line-height:1;text-transform:uppercase;letter-spacing:.03em;opacity:.9}
+.pf-last{margin:2px 0 0;font-size:clamp(44px,7vw,84px);font-weight:800;line-height:.92;text-transform:uppercase;letter-spacing:-.025em;overflow-wrap:anywhere}
+.pf-meta{margin:12px 0 18px;font-size:14px;font-weight:600;opacity:.82}
+.pf-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.pf-compare{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border:0;border-radius:999px;background:#fff;color:#0b0b0c;font-size:14px;font-weight:800;cursor:pointer}
+.pf-actions .ghost-button{height:40px;border-color:rgb(255 255 255 / .35);background:rgb(0 0 0 / .25);color:#fff}
+.pf-photo{position:relative;z-index:1;display:block;align-self:end;width:min(340px,38vw);height:auto;max-height:300px;object-fit:contain;object-position:center bottom}
+.pf-stats{display:grid;gap:22px;margin:26px 0 4px}
+.pf-group{display:flex;flex-wrap:wrap;gap:20px 34px}
+.pf-group+.pf-group{padding-top:22px;border-top:1px solid var(--line)}
+.pf-stat{display:grid;gap:1px;min-width:72px}
+.pf-stat strong{font-size:40px;font-weight:600;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--text-1)}
+.pf-stat span{margin-top:4px;font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--text-2)}
+.pf-stat small{font-size:12px;font-weight:600;color:var(--text-3)}.pf-stat small i{font-style:normal}
+.pf-stat small.top{color:var(--text-1)}
+.pp-head h2{margin:0}
+.pp-card{background:transparent;border-color:var(--line)}
+@media(max-width:700px){
+  .pf-hero{min-height:200px;padding:18px 0 0 18px}
+  .pf-logo{width:200px;height:200px;left:-30px}
+  .pf-first{font-size:14px}.pf-last{font-size:clamp(34px,11vw,52px)}
+  .pf-meta{margin:8px 0 12px;font-size:12px}
+  .pf-compare,.pf-actions .ghost-button{height:36px;font-size:13px}
+  .pf-copy{padding-bottom:18px}
+  .pf-photo{width:42vw;max-height:210px}
+  .pf-stats{gap:16px;margin-top:20px}
+  .pf-group{gap:16px 22px}.pf-group+.pf-group{padding-top:16px}
+  .pf-stat{min-width:56px}.pf-stat strong{font-size:30px}.pf-stat small i{display:none}
+}
+.pf-top{display:block;min-width:0}
+@media(min-width:1000px){
+  .pf-stats{display:flex;justify-content:space-between;gap:36px}
+  .pf-group{flex-wrap:nowrap;gap:0 30px}
+  .pf-group+.pf-group{padding:0 0 0 36px;border-top:0;border-left:1px solid var(--line)}
+  .pf-stat strong{font-size:36px}
+}
+@media(max-width:700px){
+  .pf-group{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 10px}
+  .pf-group+.pf-group{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .pf-group+.pf-group .pf-stat strong{font-size:26px}
+}
+@media(max-width:700px){.pf-actions{flex-wrap:nowrap;gap:8px}.pf-compare{padding:0 13px}.pf-meta{max-width:210px}}
+
+/* Profile v3: the skill radar sits in the header on wide screens; the season line goes back to cards with the ranks in blue. */
+.pf-hero{grid-template-columns:minmax(0,1fr) auto auto;min-height:300px}
+.pf-radar{position:relative;z-index:1;align-self:center;width:280px;margin:0 -10px 0 0;padding-bottom:14px}
+.pf-radar svg{display:block;width:100%;height:auto;overflow:visible}
+.pf-radar .radar{width:100%;margin:0}
+.pf-stats,.pf-group{display:contents}
+.pf-stats-wrap{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:14px 0 4px}
+.pf-stat{gap:3px;min-width:0;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--ink-1)}
+.pf-stat strong{order:1;font-size:32px;font-weight:600}
+.pf-stat span{order:0;margin:0 0 2px;font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--text-3)}
+.pf-stat small{order:2;margin-top:2px;font-size:12px;font-weight:700;color:#6aa6ff}
+.pf-stat small.top{color:#8fbcff}
+.pf-stat small i{color:var(--text-3);font-weight:600}
+@media(min-width:901px){.pp-radar-card{display:none}.pp-grid-2{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:900px){.pf-radar{display:none}.pf-hero{grid-template-columns:minmax(0,1fr) auto}.pf-stats-wrap{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:700px){
+  .pf-hero{min-height:200px}
+  .pf-stats-wrap{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .pf-stat{padding:10px 10px;border-radius:12px}.pf-stat strong{font-size:22px}.pf-stat small{font-size:11px}.pf-stat small i{display:none}
+}
+@media(min-width:901px){.pp-grid-2{display:block}.pf-radar{width:340px}.pf-hero{min-height:330px}.pf-radar .radar-legend,.pf-radar .legend{margin-top:0}}
+
+/* Head to head share picture. */
+.vp{width:760px;padding:22px 24px 16px;border:1px solid #23252b;border-radius:16px;background:#000;color:#f2f2f0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,sans-serif}
+.vp-body{display:grid;grid-template-columns:190px minmax(0,1fr) 190px;align-items:center;gap:8px}
+.vp-side{display:grid;justify-items:center;text-align:center;gap:0}
+.vp-face{display:block;width:132px;height:132px;margin-bottom:12px;overflow:hidden;border-radius:50%;background:#17181c}
+.vp-face img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 12%}
+.vp-first{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;opacity:.85}
+.vp-dot{display:inline-block;width:9px;height:9px;border-radius:50%}
+.vp-side.left .vp-dot{background:var(--ra)}.vp-side.right .vp-dot{background:var(--rb)}
+.vp-last{font-size:26px;font-weight:800;line-height:1;text-transform:uppercase;letter-spacing:-.01em}
+.vp-team{margin-top:4px;font-size:13px;font-weight:600;color:#8e8f8a}
+.vp-line{display:flex;gap:12px;margin-top:14px;font-size:12px;font-weight:600;color:#8e8f8a}
+.vp-line span{display:grid;gap:2px;justify-items:center}
+.vp-line b{font-size:24px;font-weight:600;line-height:1;color:#f2f2f0;font-variant-numeric:tabular-nums}
+.vp .vs-radar,.vp .radar-wrap{margin:0}
+.vp-foot{display:flex;align-items:center;justify-content:space-between;margin:12px 0 0;padding-top:12px;border-top:1px solid #1b1c20;font-size:12px;color:#8e8f8a}.vp-foot b{color:#fff;font-size:15px}
+.vp{--ra:color-mix(in srgb,var(--ta) 62%,#fff);--rb:color-mix(in srgb,var(--tb) 62%,#fff)}
+.vp .radar-shape{animation:none!important;stroke-dashoffset:0!important;fill-opacity:.2!important}
+.vp .radar-halo,.vp .radar-dot-g,.vp .radar-player-dot{animation:none!important;opacity:1!important;transform:none!important}
+.vp .radar-comet{display:none}
+.vp .radar-ring{stroke:#2a2c33}.vp .radar-spoke{stroke:#23252b}
+.vp .radar-halo{stroke:#000}.vp .radar-dot{stroke:#000}
+
+/* Head to head picture v2: bigger radar, no repeated legend, the better number in each pair stays bright. */
+.vp-body{grid-template-columns:180px minmax(0,1fr) 180px}
+.vp .vs-radar{border:0;padding:0;margin:0}
+.vp .vs-radar-head{display:none}
+.vp .vs-radar svg{display:block;width:128%;margin:-6% -14% -8%;max-width:none}
+.vp-line .behind b{color:#7d7e79}
+.vp-line .behind{opacity:.9}
+.vp .vs-radar svg{width:116%;margin:-4% -8% -6%}
+.sp,.vp{font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,sans-serif}
+.vp-line{margin-top:16px}
+
+/* Long surnames shrink to fit instead of breaking the layout (--n is the number of letters). */
+.vp-last{font-size:clamp(13px,calc(282px / var(--n,8)),26px);max-width:100%;white-space:nowrap}
+.vp-first{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pf-last{font-size:clamp(26px,calc(680px / var(--n,8)),84px);overflow-wrap:normal;white-space:nowrap;max-width:100%}
+@media(max-width:900px){.pf-last{font-size:clamp(24px,calc(520px / var(--n,8)),72px)}}
+@media(max-width:700px){.pf-last{font-size:clamp(22px,calc(300px / var(--n,8)),52px)}.pf-meta{max-width:none}}
+@media(min-width:901px){.pf-last{font-size:clamp(26px,calc(540px / var(--n,8)),84px)}}
+.vp-first,.vp-last{text-transform:none;letter-spacing:-.01em}
+.vp-first{font-size:15px;opacity:.85}
+.vp-last{font-size:clamp(14px,calc(330px / var(--n,8)),30px)}
+
+/* Hero radar v2: it has to read on a team-coloured card, so light rings and spokes, a firmer shape, no name legend. */
+.pf-radar .vs-radar{border:0;padding:0;margin:0}
+.pf-radar .vs-radar-head{display:none}
+.pf-radar .radar-ring{stroke:rgb(255 255 255 / .3)}
+.pf-radar .radar-ring:last-of-type{stroke:rgb(255 255 255 / .5)}
+.pf-radar .radar-spoke{stroke:rgb(255 255 255 / .22)}
+.pf-radar .radar-label{fill:#fff;font-size:15px;font-weight:700;opacity:.95}
+.pf-radar .radar-shape{stroke-width:3.5;fill-opacity:.38!important}
+.pf-radar .radar-halo{stroke:transparent}
+.pf-radar .radar-dot{r:6;stroke:#fff;stroke-width:2}
+@media(min-width:901px){.pf-radar{width:400px;margin:0 -30px 0 0;align-self:center}.pf-radar svg{width:112%;margin:-4% -6%}}
+
+/* Ladders v4: taller cards, a big faded team mark behind the player, a bigger name and the line as numbers. */
+.ld-list{gap:10px}
+.lc{height:128px;padding:0 14px 0 20px;grid-template-columns:minmax(0,1fr) 46px;border-radius:14px;background:radial-gradient(120% 140% at 85% 50%,color-mix(in srgb,var(--tc) 55%,#000) 0%,transparent 60%),linear-gradient(105deg,color-mix(in srgb,var(--tc) 88%,#000) 0%,color-mix(in srgb,var(--tc) 46%,#050506) 100%)}
+.lc-mark{position:absolute;right:70px;top:50%;z-index:0;width:170px;height:170px;object-fit:contain;transform:translateY(-50%);opacity:.18;filter:grayscale(.2)}
+.lc-logo{position:static;width:18px;height:18px;transform:none;filter:none}
+.lc-top{display:flex;align-items:center;gap:8px}
+.lc-rank{font-size:16px}
+.lc-first{margin-top:4px;font-size:13px}
+.lc-last{font-size:clamp(18px,calc(330px / var(--n,8)),40px);line-height:1}
+.lc-line{display:flex;gap:14px;margin-top:8px;font-size:12px;font-weight:600;opacity:1;color:rgb(255 255 255 / .78)}
+.lc-line b{margin-right:4px;font-size:20px;font-weight:700;line-height:1;color:#fff;font-variant-numeric:tabular-nums}
+.lc-photo{right:62px;bottom:0;width:150px;height:128px}
+.lc-move{justify-self:end}
+.lc-move svg{width:30px;height:30px}
+.lc-move b{font-size:13px}
+@media(max-width:520px){.lc{height:112px;padding-left:14px}.lc-mark{right:44px;width:130px;height:130px}.lc-photo{right:44px;width:104px;height:104px}.lc-last{font-size:clamp(16px,calc(250px / var(--n,8)),30px)}.lc-line b{font-size:17px}.lc-line{gap:10px}}
+.lc .lc-line{justify-content:flex-start}
+
+/* Ladders v5: plain rows. No coloured cards: rank, headshot, name, one muted stat line, a small move marker. */
+.ld-list{display:block}
+.ld-list li+li{border-top:1px solid var(--line)}
+.ld-row{display:grid;grid-template-columns:28px 52px minmax(0,1fr) auto;align-items:center;gap:14px;width:100%;padding:12px 4px;border:0;border-radius:12px;background:transparent;color:inherit;text-align:left;cursor:pointer}
+.ld-row:hover{background:var(--ink-2)}
+.ld-rank{font-size:20px;font-weight:700;color:var(--text-3);text-align:center;font-variant-numeric:tabular-nums}
+.ld-list li:first-child .ld-rank{color:var(--text-1)}
+.ld-face{position:relative;width:52px;height:52px}
+.ld-face>img:first-child{display:block;width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:50% 14%;background:var(--ink-2);box-shadow:none}
+.ld-team{position:absolute;right:-4px;bottom:-2px;width:20px;height:20px;padding:2px;border-radius:50%;background:#fff;object-fit:contain}
+.ld-main{display:grid;gap:2px;min-width:0}
+.ld-name{font-size:16px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ld-list li:first-child .ld-name{font-size:18px}
+.ld-line{font-size:13px;font-weight:500;color:var(--text-3);font-variant-numeric:tabular-nums}
+.ld-move{min-width:44px;padding:0;background:none;font-size:13px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.ld-move.up{color:#34d399}.ld-move.down{color:#f87171}.ld-move.flat{color:var(--text-3)}.ld-move.new{color:#60a5fa;font-size:12px;letter-spacing:.04em}
+@media(max-width:520px){.ld-row{grid-template-columns:22px 44px minmax(0,1fr) auto;gap:12px}.ld-face,.ld-face>img:first-child{width:44px;height:44px}.ld-name{font-size:15px}}
+.ld-move{border-radius:0;display:block}.ld-move.up,.ld-move.down,.ld-move.new,.ld-move.flat{background:none}
+.ss-actions{padding-bottom:20px}.ss-note{bottom:120px}
+
+/* Season share picture: the performance-card header and per-game line on the left, the radar on the right. */
+.pr{width:700px;padding:20px 22px 14px;border:1px solid #23252b;border-radius:16px;background:#000;color:#f2f2f0;font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,sans-serif;display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:6px 14px;align-items:center}
+.pr-left{display:grid;gap:22px}
+.pr .rp-card{grid-template-columns:76px minmax(0,1fr);gap:14px;padding:0}
+.pr .rp-face,.pr .rp-face>img:first-child,.pr .rp-face>i{width:76px;height:76px}
+.pr .rp-team{width:28px;height:28px;padding:3px;background:#fff}
+.pr .rp-top{font-size:17px;color:#f2f2f0}.pr .rp-top small{font-size:14px;color:#8e8f8a}
+.pr .rp-trio{gap:2px 14px;font-size:14px;color:#b8b9b4}.pr .rp-trio b{margin-right:4px;font-size:36px;color:#fff}
+.pr-sub{font-size:13px;font-weight:600;color:#8e8f8a}
+.pr-line{display:flex;flex-wrap:wrap;gap:16px 22px}
+.pr-line span{display:grid;gap:2px;font-size:11px;font-weight:600;letter-spacing:.04em;color:#8e8f8a}
+.pr-line b{font-size:24px;font-weight:600;line-height:1;letter-spacing:-.01em;color:#f2f2f0;font-variant-numeric:tabular-nums}
+.pr-radar .vs-radar{border:0;padding:0;margin:0}.pr-radar .vs-radar-head{display:none}
+.pr-radar .vs-radar svg{display:block;width:118%;max-width:none;margin:-6% -9% -8%}
+.pr-radar .radar-comet{display:none}
+.pr-radar .radar-shape{animation:none!important;stroke-dashoffset:0!important;fill-opacity:.28!important;stroke-width:3}
+.pr-radar .radar-halo,.pr-radar .radar-dot-g,.pr-radar .radar-player-dot{animation:none!important;opacity:1!important;transform:none!important}
+.pr-radar .radar-ring{stroke:#2a2c33}.pr-radar .radar-spoke{stroke:#23252b}.pr-radar .radar-halo{stroke:#000}.pr-radar .radar-dot{stroke:#000}
+.pr-foot{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;margin:6px 0 0;padding-top:12px;border-top:1px solid #1b1c20;font-size:12px;color:#8e8f8a}.pr-foot b{color:#fff;font-size:15px}
+.pr .rp-trio{flex-wrap:nowrap;gap:0 12px;white-space:nowrap}.pr .rp-trio b{font-size:31px}.pr{grid-template-columns:minmax(0,1fr) 280px}
+
+/* Team radar in the team header: light lines on the team colour, no name legend. */
+.team-hero-radar{position:relative;flex:none;width:300px;margin:-14px 0 -22px auto}
+.team-hero-radar+.team-hero-share{margin-left:0}
+.team-hero-radar .vs-radar{border:0;padding:0;margin:0}
+.team-hero-radar .vs-radar-head{display:none}
+.team-hero-radar .radar-ring{stroke:rgb(255 255 255 / .3)}.team-hero-radar .radar-ring:last-of-type{stroke:rgb(255 255 255 / .5)}
+.team-hero-radar .radar-spoke{stroke:rgb(255 255 255 / .22)}
+.team-hero-radar .radar-label{fill:#fff;font-size:15px;font-weight:700}
+.team-hero-radar .radar-shape{stroke-width:3.5;fill-opacity:.38!important}
+.team-hero-radar .radar-halo{stroke:transparent}.team-hero-radar .radar-dot{r:6;stroke:#fff;stroke-width:2}
+.team-hero-radar svg{display:block;width:112%;max-width:none;margin:-4% -6%}
+@media(max-width:900px){.team-hero-radar{display:none}}

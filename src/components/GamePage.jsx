@@ -248,7 +248,7 @@ export default function GamePage({id}) {
         {ordered.map((team, index) => <button key={team.abbr} className={side === index ? 'active' : ''} onClick={() => setSide(index)}>{team.logo && <img src={team.logo} alt=""/>}{team.name}</button>)}
       </div>
       <div className="gd-sides">{ordered.map((team, index) => {
-        const lines = performancesOf(box, id).filter(line => line.team === team.abbr).sort((a, b) => rating(b.player.stats) - rating(a.player.stats));
+        const lines = performancesOf(box, id).filter(line => line.team === team.abbr).sort((a, b) => Number(b.player.stats.PTS) - Number(a.player.stats.PTS) || rating(b.player.stats) - rating(a.player.stats));
         const out = team.players.filter(player => !player.starter && player.out);
         const shown = all ? lines : lines.slice(0, TOP);
         return <section key={team.abbr} className={`gd-team gd-cards${side === index ? ' on' : ''}`}>
