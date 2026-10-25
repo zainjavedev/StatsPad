@@ -15,5 +15,5 @@ export function generateMetadata({params}) {
 
 export default function Page({params}) {
   const page = pageFor(params.id);
-  return page ? <SeoPage route={page.route} page={page}/> : <ClientApp/>;
+  return page ? <SeoPage route={page.route} page={page}/> : <ClientApp route={`/games/${params.id}`}/>;
 }

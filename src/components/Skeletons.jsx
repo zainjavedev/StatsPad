@@ -75,3 +75,49 @@ export function PageSkeleton() {
     <div className="front-block"><Rows count={6}/></div>
   </section>;
 }
+
+/* A game: the two logos and the status, then the cards. */
+export function GameSkeleton() {
+  return <section className="gp" aria-busy="true" aria-label="Loading the game">
+    <Sk className="sk-title sk-small"/>
+    <div className="gd-head gp-head"><div><Sk className="sk-gp-logo"/></div><span><Sk className="sk-gp-mid"/></span><div><Sk className="sk-gp-logo"/></div></div>
+    <Sk className="sk-gp-card"/>
+    <Sk className="sk-gp-card"/>
+  </section>;
+}
+
+/* A player: the hero, the season tiles, then recent games. */
+export function ProfileSkeleton() {
+  return <section className="profile-page" aria-busy="true" aria-label="Loading the player">
+    <Sk className="sk-title sk-small"/>
+    <Sk className="sk-hero" style={{minHeight: 280}}/>
+    <div className="sk-tiles">{times(10, index => <Sk key={index} className="sk-tile"/>)}</div>
+    <Sk className="sk-title sk-small" style={{marginTop: 24}}/>
+    <div className="sk-tiles sk-tiles-wide">{times(4, index => <Sk key={index} className="sk-tile sk-tile-wide"/>)}</div>
+  </section>;
+}
+
+/* A table or list page (standings, schedule, stat leaders). */
+export function ListSkeleton() {
+  return <section className="front-page" aria-busy="true" aria-label="Loading">
+    <Sk className="sk-title sk-big"/>
+    <div className="front-block"><Rows count={14}/></div>
+  </section>;
+}
+
+/* The teams hub: a grid of team tiles. */
+export function TilesSkeleton() {
+  return <section className="front-page" aria-busy="true" aria-label="Loading the teams">
+    <Sk className="sk-title sk-big"/>
+    <div className="sk-tiles sk-tiles-teams" style={{marginTop: 24}}>{times(12, index => <Sk key={index} className="sk-tile sk-tile-team"/>)}</div>
+  </section>;
+}
+
+/* The placeholder for a path, so a page goes from one skeleton to its own content. */
+export function skeletonForPath(path) {
+  if (/^\/games\//.test(path)) return <GameSkeleton/>;
+  if (/^\/players\//.test(path)) return <ProfileSkeleton/>;
+  if (path === '/lineups') return <TilesSkeleton/>;
+  if (/^\/(standings|schedule|stats\/)/.test(path)) return <ListSkeleton/>;
+  return <PageSkeleton/>;
+}

@@ -90,7 +90,7 @@ export default function TeamLineups({teams, leaguePlayers, season, colors}) {
   const index = useMemo(() => indexPlayers(leaguePlayers), [leaguePlayers]);
   const fives = useMemo(() => [starters(first, index), starters(second, index)], [first, second, index]);
   if (codes.some(code => !TEAMS[code]) || first === false || second === false) return null;
-  if (first === null || second === null) return <section className="lineup" aria-busy="true"><div className="sk" style={{height: 330, borderRadius: 12}}/></section>;
+  if (first === null || second === null) return <section className="lineup" aria-busy="true" aria-label="Loading the lineups"><div className="sk sk-title sk-small"/><div className="meet-row">{[0, 1, 2].map(index => <div key={index} className="sk" style={{flex: '0 0 172px', height: 112, borderRadius: 12}}/>)}</div><div className="sk" style={{height: 330, borderRadius: 12, marginTop: 18}}/></section>;
 
   return <section className="lineup">
     <Meetings games={meetings}/>

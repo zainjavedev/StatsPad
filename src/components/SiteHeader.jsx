@@ -2,9 +2,8 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { BarChart3, BookOpen, Flame, Gamepad2, Home as HomeIcon, Moon, Sun, Trophy, Users } from 'lucide-react';
 import AccountButton from './AccountButton';
-import { navigate } from '../lib/nav';
 
-const NAV_ITEMS = [['home','Home',HomeIcon],['leaders','Leaders',Trophy],['performances','Performances',Flame],['compare','Compare',BarChart3],['teams','Teams',Users],['play','Games',Gamepad2],['blog','Blog',BookOpen]];
+const NAV_ITEMS = [['home','Home',HomeIcon],['leaders','Leaders',Trophy],['scores','Scores',Flame],['compare','Compare',BarChart3],['teams','Teams',Users],['play','Games',Gamepad2],['blog','Blog',BookOpen]];
 
 /* A banner div, not <header>, so none of the old header rules apply. The tab
    bar is a sibling because a blurred parent would trap a fixed child. */
@@ -12,8 +11,8 @@ export default function SiteHeader({page,onHome,onLeaders,onCompare,onTeams,them
   const router=useRouter();
   /* Games and the blog are their own pages; fetching them ahead and moving with the router keeps the page from reloading. */
   useEffect(()=>{router.prefetch('/play');router.prefetch('/blog')},[router]);
-  const current=page==='team'?'teams':page,go={home:onHome,leaders:onLeaders,compare:onCompare,teams:onTeams,blog:()=>router.push('/blog'),play:()=>router.push('/play'),performances:()=>navigate('/performances')};
-  const TABBAR_KEYS=['home','performances','play'];
+  const current=page==='team'?'teams':page,go={home:onHome,leaders:onLeaders,compare:onCompare,teams:onTeams,blog:()=>router.push('/blog'),play:()=>router.push('/play'),scores:()=>router.push('/scores')};
+  const TABBAR_KEYS=['home','scores','play'];
   const tabs=(className,items=NAV_ITEMS)=><nav className={className} aria-label="Main">{items.map(([key,label,Icon])=><button key={key} className={current===key?'active':''} aria-current={current===key?'page':undefined} onClick={()=>go[key]()}><Icon size={19} className="nav-icon"/><span>{label}</span></button>)}</nav>;
   return <>
     <div className="site-header" role="banner"><div className="site-header-inner">

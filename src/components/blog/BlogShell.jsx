@@ -7,10 +7,10 @@ import AccountButton from '../AccountButton';
 import ThemeToggle from './ThemeToggle';
 
 /* The same banner the stats app wears, as plain links so the page stays a server page. */
-const NAV = [['/', 'Home', Home], ['/leaders', 'Leaders', Trophy], ['/performances', 'Performances', Flame], ['/compare', 'Compare', BarChart3], ['/lineups', 'Teams', Users], ['/play', 'Games', Gamepad2], ['/blog', 'Blog', BookOpen]];
+const NAV = [['/', 'Home', Home], ['/leaders', 'Leaders', Trophy], ['/scores', 'Scores', Flame], ['/compare', 'Compare', BarChart3], ['/lineups', 'Teams', Users], ['/play', 'Games', Gamepad2], ['/blog', 'Blog', BookOpen]];
 
 /* The phone's bottom bar, the same three tabs the stats app shows. */
-const TABS = [['/', 'Home', Home], ['/performances', 'Performances', Flame], ['/play', 'Games', Gamepad2]];
+const TABS = [['/', 'Home', Home], ['/scores', 'Scores', Flame], ['/play', 'Games', Gamepad2]];
 
 export default function BlogShell({children, active = '/blog', className = '', tabs = true}) {
   return <div className={`blog ${className}`}>

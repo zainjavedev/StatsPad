@@ -50,7 +50,7 @@ export default function Ladder({params}) {
           </li>)}
         </ol>
       </section>
-      <p className="lu-links"><a href="/ladders/mvp">MVP ladder</a> · <a href="/ladders/roty">Rookie of the Year ladder</a> · <a href="/stats/points">Stat leaders</a> · <a href="/performances">Top performances</a> · <a href="/standings">Standings</a></p>
+      <p className="lu-links"><a href="/ladders/mvp">MVP ladder</a> · <a href="/ladders/roty">Rookie of the Year ladder</a> · <a href="/stats/points">Stat leaders</a> · <a href="/scores">Scores</a> · <a href="/standings">Standings</a></p>
     </main>
   </BlogShell>;
 }

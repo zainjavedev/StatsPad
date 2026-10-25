@@ -11,6 +11,7 @@ import { loadBoxscore } from '../lib/boxscore';
 import Radar from './Radar';
 import { Headshot } from './TeamPage';
 import { loadSchedule } from '../lib/schedule';
+import { GameSkeleton } from './Skeletons';
 import { TEAMS, teamCodeOf } from '../lib/teams';
 import { gameUrl } from '../lib/routes';
 import { useFeed } from '../lib/useFeed';
@@ -111,6 +112,7 @@ const loadMatchupPool = () => {
 function MatchupRadar({box}) {
   const pool = useFeed(loadMatchupPool);
   const [a, b] = [box.away, box.home].map(side => (pool || []).find(team => teamCodeOf(team.team) === codeOf(side.abbr)));
+  if (pool === null) return <div className="gp-radar" aria-hidden="true"><div className="sk" style={{aspectRatio: '560 / 400', borderRadius: 28}}/></div>;
   if (!a || !b || pool.length < 10) return null;
   return <div className="gp-radar" style={radarTints(a, b)} aria-label={`${box.away.short} and ${box.home.short} radar`}>
     <Radar axes={radarAxes(a, b, pool)} names={[box.away.short, box.home.short]} colors={['var(--ta)', 'var(--tb)']}/>
@@ -156,7 +158,7 @@ function Preview({box}) {
       }));
     }).catch(() => setData([]));
   }, [box]);
-  if (!data) return <p className="gd-note">Loading the starting fives…</p>;
+  if (!data) return <div className="gp-preview" aria-busy="true" aria-label="Loading the starting fives">{[0, 1].map(side => <section key={side} className="gp-side"><div className="sk sk-title"/><div className="starter-grid">{[0, 1, 2, 3, 4].map(index => <div key={index} className="sk sk-starter"/>)}</div></section>)}</div>;
   const per = (player, key) => Number.isFinite(player.line?.[key]) ? player.line[key].toFixed(1) : '—';
   return <div className="gp-preview">
     <p className="gd-note">No box score yet. Expected starters are who started the most preseason games, with this season&apos;s per-game numbers (preseason numbers until the regular season starts).</p>
@@ -236,7 +238,7 @@ export default function GamePage({id}) {
   }, [box, id]);
 
   /* Top three in each category across both teams; the leader (ties included) is what the box score highlights. */
-  if (box === undefined) return <section className="gp"><p className="gd-note">Loading the game…</p></section>;
+  if (box === undefined) return <GameSkeleton/>;
   if (!box?.away) return <section className="gp"><a className="gp-back" href="/schedule"><ArrowLeft size={15}/> Schedule</a><p className="gd-note">We couldn&apos;t load this game.</p></section>;
 
   const focusTeam = focus ? box.teams.find(team => team.players.some(entry => entry.id === focus && !entry.out)) : null;

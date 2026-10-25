@@ -27,6 +27,7 @@ export default {
   async redirects() {
     return [
       ...Object.entries(gameRedirects).map(([id, destination]) => ({source: `/games/${id}`, destination, permanent: true})),
+      {source: '/performances', destination: '/scores', permanent: true},
       {source: '/teams', destination: '/lineups', permanent: true},
       {source: '/teams/:slug', destination: '/lineups/:slug', permanent: true},
       {source: '/leaders', destination: '/stats/points', permanent: true},

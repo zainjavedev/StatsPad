@@ -33,21 +33,26 @@ const f1 = value => Number(value).toFixed(1);
 const plain = name => name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[.']/g, '').replace(/ (jr|sr|ii|iii|iv)$/, '').trim();
 
 /* The player's last few games this season, newest first, found in the box scores of recent finals. */
-function useRecentLines(name) {
+/* A player's latest games. The stored box scores answer in one request (/api/player-games). Only if they cannot (no database, or a player
+   without an ESPN id) are the last sixty games' box scores read from ESPN, the slow way. */
+const fromStored = playerId => {
+  const espnId = /^espn-(\d+)$/.exec(playerId || '')?.[1];
+  if (!espnId) return Promise.resolve(null);
+  return fetch(`/api/player-games?id=${espnId}&limit=8`).then(response => (response.ok ? response.json() : null))
+    .then(data => (Array.isArray(data?.lines) ? data.lines.map(line => ({...line, date: new Date(line.date)})) : null)).catch(() => null);
+};
+const fromEspn = name => loadSchedule().then(all => finished(all.filter(game => !game.preseason), 60))
+  .then(finals => Promise.all(finals.map(game => loadBoxscore(game.id).then(box => performancesOf(box, game.id)).catch(() => []))))
+  .then(groups => groups.flat().filter(line => plain(line.player.name) === plain(name)).sort((a, b) => (b.date || 0) - (a.date || 0)).slice(0, 8));
+
+function useRecentLines(name, playerId) {
   const [lines, setLines] = useState(null);
   useEffect(() => {
     let live = true;
     setLines(null);
-    loadSchedule().then(all => finished(all.filter(game => !game.preseason), 60))
-      .then(finals => Promise.all(finals.map(game => loadBoxscore(game.id).then(box => performancesOf(box, game.id)).catch(() => []))))
-      .then(groups => {
-        if (!live) return;
-        const mine = groups.flat().filter(line => plain(line.player.name) === plain(name));
-        setLines(mine.sort((a, b) => (b.date || 0) - (a.date || 0)).slice(0, 8));
-      })
-      .catch(() => { if (live) setLines([]); });
+    fromStored(playerId).then(found => found ?? fromEspn(name)).then(found => { if (live) setLines(found); }).catch(() => { if (live) setLines([]); });
     return () => { live = false; };
-  }, [name]);
+  }, [name, playerId]);
   return lines;
 }
 
@@ -147,7 +152,7 @@ export default function PlayerBody({ entity, season, population, showCareer, onO
   const enriched = useMemo(() => ({ ...entity, trueShooting: tsOf({ pts: entity.stats.points, fga: entity.stats.fieldGoalsAttempted, fta: entity.stats.freeThrowsAttempted }) }), [entity]);
   const pool = useMemo(() => population.map(player => ({ ...player, trueShooting: tsOf({ pts: player.stats.points, fga: player.stats.fieldGoalsAttempted, fta: player.stats.freeThrowsAttempted }) })), [population]);
   const teamCode = teamCodeOf(entity.team), [first, last] = split(entity.playerName);
-  const history = useCareer(entity.playerName), recent = useRecentLines(entity.playerName);
+  const history = useCareer(entity.playerName), recent = useRecentLines(entity.playerName, entity.playerId);
   const seasons = useMemo(() => seasonsOf(history?.rows || [], season ? liveRow(entity, season) : null), [history, entity, season]);
   const career = useMemo(() => careerOf(seasons), [seasons]);
   /* Head-to-head suggestions: players at the same kind of position, on other teams, who put up similar numbers. */

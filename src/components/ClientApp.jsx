@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { Analytics } from '@vercel/analytics/next';
 import SiteHeader from './SiteHeader';
-import { CompareSkeleton, HomeSkeleton, PageSkeleton, TeamLoading } from './Skeletons';
+import { CompareSkeleton, HomeSkeleton, TeamLoading, skeletonForPath } from './Skeletons';
 import { TEAMS } from '../lib/teams';
 import { teamUrl } from '../lib/routes';
 
@@ -18,7 +18,7 @@ const idle = () => {};
 
 function Boot({route}) {
   const teamCode = Object.keys(TEAMS).find(code => teamUrl(code) === route);
-  const skeleton = route === '/' ? <HomeSkeleton/> : /^\/compare(\/|$)/.test(route) ? <CompareSkeleton/> : teamCode ? <TeamLoading teamCode={teamCode} color={TEAMS[teamCode].color} onPick={idle}/> : <PageSkeleton/>;
+  const skeleton = route === '/' ? <HomeSkeleton/> : /^\/compare(\/|$)/.test(route) ? <CompareSkeleton/> : teamCode ? <TeamLoading teamCode={teamCode} color={TEAMS[teamCode].color} onPick={idle}/> : skeletonForPath(route);
   return <main aria-busy="true"><SiteHeader page={route === '/' ? 'home' : teamCode ? 'team' : ''} onHome={idle} onCompare={idle} onTeams={idle} onLeaders={idle} theme="dark" onToggleTheme={idle}/>{skeleton}</main>;
 }
 

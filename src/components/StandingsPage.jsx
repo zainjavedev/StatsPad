@@ -69,7 +69,7 @@ export default function StandingsPage() {
       </div>
     </div>
     {error && <p className="feed-empty">Standings are unavailable right now.</p>}
-    {!groups && !error && <div className="front-panel"><p className="feed-empty">Loading…</p></div>}
+    {!groups && !error && <div className="front-panel" aria-busy="true" aria-label="Loading the standings"><div className="sk sk-title"/><div className="sk-rows">{Array.from({length: 15}, (_, index) => <div key={index} className="sk sk-row" style={{height: 36}}/>)}</div></div>}
     <div className="stand-grid">{shown?.map(group => <Table key={group.name} group={group} favorites={favorites} ranked={ranked} numbered={played}/>)}</div>
   </section>;
 }

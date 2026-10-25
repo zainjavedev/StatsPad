@@ -57,8 +57,6 @@ export function routeParams(pathname = '/', search = '') {
   } else if (/^\/stats\/[a-z0-9-]+$/.test(path)) {
     params.set('view', 'stat');
     params.set('stat', path.split('/')[2]);
-  } else if (path === '/performances') {
-    params.set('view', 'performances');
   } else if (path === '/schedule' || path === '/standings') {
     params.set('view', path.slice(1));
   } else if (player) {

@@ -31,6 +31,15 @@ const players = new Map(), teams = Object.fromEntries(Object.keys(TEAMS).map(cod
 /* Every player-game, with the (Eastern) day it was played, so the ladders can be ranked as of any night. */
 const dayOf = iso => new Date(iso).toLocaleDateString('en-CA', {timeZone: 'America/New_York'});
 const log = [], results = [];
+/* The best line of every finished game, kept for the home page's "Recent performances" so it reads one small file instead of every box score from ESPN. */
+const num = value => Number(String(value ?? '').replace('+', '')) || 0;
+const made = value => String(value ?? '0-0').split('-').map(Number);
+const gameScoreOf = stats => {
+  const [fg, fga] = made(stats.FG), [ft, fta] = made(stats.FT);
+  const oreb = stats.OREB === undefined ? 0 : num(stats.OREB), dreb = stats.DREB === undefined ? num(stats.REB) : num(stats.DREB);
+  return num(stats.PTS) + .4 * fg - .7 * fga - .4 * (fta - ft) + .7 * oreb + .3 * dreb + num(stats.STL) + .7 * num(stats.AST) + .7 * num(stats.BLK) - .4 * num(stats.PF) - num(stats.TOV ?? stats.TO);
+};
+const bestLines = [];
 schedule.sort((a, b) => a[1].localeCompare(b[1]));
 for (const [id, date] of schedule) {
   const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=${id}`);
@@ -38,6 +47,25 @@ for (const [id, date] of schedule) {
   const data = await response.json();
   if (data.header?.competitions?.[0]?.status?.type?.state !== 'post') continue;
   for (const side of data.header.competitions[0].competitors ?? []) { const code = codeOf(side.team?.abbreviation); if (code) results.push({day: dayOf(date), code, won: Boolean(side.winner)}); }
+  {
+    const competition = data.header.competitions[0], sides = Object.fromEntries((competition.competitors ?? []).map(side => [side.homeAway, {abbr: side.team?.abbreviation, score: side.score, winner: Boolean(side.winner)}]));
+    let best = null;
+    for (const entry of data.boxscore?.players ?? []) {
+      const block = entry.statistics?.[0];
+      if (!block) continue;
+      for (const item of block.athletes) {
+        if (item.didNotPlay || !item.stats?.length) continue;
+        const stats = Object.fromEntries(block.labels.map((label, index) => [label, item.stats[index]]));
+        const rating = gameScoreOf(stats);
+        if (!best || rating > best.rating) best = {rating, abbr: entry.team.abbreviation, athlete: item.athlete, stats};
+      }
+    }
+    if (best && sides.home && sides.away) {
+      const mine = best.abbr === sides.home.abbr ? sides.home : sides.away, other = mine === sides.home ? sides.away : sides.home;
+      bestLines.push({gameId: String(id), day: dayOf(date), date: competition.date ?? date, rating: best.rating, team: best.abbr, opp: other.abbr, home: mine === sides.home, won: mine.winner, score: `${mine.score}–${other.score}`,
+        player: {id: String(best.athlete.id), name: best.athlete.displayName, photo: `https://a.espncdn.com/i/headshots/nba/players/full/${best.athlete.id}.png`, stats: best.stats}});
+    }
+  }
   for (const entry of data.boxscore?.players ?? []) {
     const code = codeOf(entry.team.abbreviation);
     if (!code) continue;
@@ -146,6 +174,9 @@ if (latest) {
   const top = (list, thenList, size = list.length, qualifiedCount = list.length) => { list.qualifiedCount = qualifiedCount; return list.slice(0, size).map((row, index) => entry(row, index + 1, list, thenList)); };
   const out = {season: '2026-27', updated: new Date().toISOString().slice(0, 10), through: latest, compared: before, mvp: top(now.mvp, then?.mvp, 30), rookie: top(now.rookies, then?.rookies, now.rookies.length, now.qualifiedRookies)};
   fs.writeFileSync(`${dir}/ladders.json`, `${JSON.stringify(out)}\n`);
+  /* The last three game days, enough for the home page's six cards with room to spare. */
+  const recentDays = new Set([...new Set(bestLines.map(line => line.day))].sort().slice(-3));
+  fs.writeFileSync(`${dir}/recent-performances.json`, `${JSON.stringify({updated: new Date().toISOString(), lines: bestLines.filter(line => recentDays.has(line.day))})}\n`);
   console.log(`ladders: through ${latest}${before ? `, compared with ${before}` : ''}; MVP ${out.mvp.map(row => row.name).join(', ')}`);
 }
 
