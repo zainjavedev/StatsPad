@@ -3,16 +3,17 @@ import games from '../../../seo/games.json';
 import { SeoPage } from '../../../lib/seo-page';
 import { socialTags } from '../../../lib/social';
 
-/* Finished games written by scripts/prerender.mjs are indexable pages; any other game (live, upcoming, unsynced) still opens the app and stays out of the index. */
-export const generateStaticParams = () => Object.keys(games).map(id => ({id}));
+/* Finished games written by scripts/prerender.mjs are indexable pages at /games/<away>-vs-<home>-<espn id>; any other game (live, upcoming, unsynced) still opens the app and stays out of the index. The bare id of a finished game is redirected to its slug in next.config.mjs. */
+const pageFor = param => games[param.match(/(\d+)$/)?.[1]];
+export const generateStaticParams = () => Object.values(games).map(page => ({id: page.route.split('/')[2]}));
 
 export function generateMetadata({params}) {
-  const page = games[params.id], route = `/games/${params.id}`;
+  const page = pageFor(params.id);
   if (!page) return {title: 'Game details | StatsPads', robots: {index: false}};
-  return {title: page.title, description: page.description, alternates: {canonical: route}, ...socialTags({title: page.title, description: page.description, route})};
+  return {title: page.title, description: page.description, alternates: {canonical: page.route}, ...socialTags({title: page.title, description: page.description, route: page.route})};
 }
 
 export default function Page({params}) {
-  const page = games[params.id];
-  return page ? <SeoPage route={`/games/${params.id}`} page={page}/> : <ClientApp/>;
+  const page = pageFor(params.id);
+  return page ? <SeoPage route={page.route} page={page}/> : <ClientApp/>;
 }

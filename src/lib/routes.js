@@ -12,6 +12,8 @@ export const slugify = name => name.normalize('NFD').replace(/[̀-ͯ]/g, '').toL
 
 export const TEAM_SLUGS = Object.fromEntries(Object.entries(TEAMS).map(([code, team]) => [slugify(team.name), code]));
 
+/* /games/boston-celtics-vs-detroit-pistons-401909088: the ESPN id stays at the end so the app can look the game up from the path. */
+export const gameUrl = (away, home, id) => `/games/${slugify(TEAMS[away]?.name ?? away)}-vs-${slugify(TEAMS[home]?.name ?? home)}-${id}`;
 export const teamUrl = code => `/lineups/${slugify(TEAMS[code].name)}`;
 export const LEADER_TYPES = ['preseason', 'regular-season', 'playoffs'];
 export const leadersUrl = seasonType => `/leaders/${seasonType}`;
@@ -49,9 +51,9 @@ export function routeParams(pathname = '/', search = '') {
     if (path !== '/leaders') params.set('type', path.split('/')[2]);
   } else if (path === '/signin' || path === '/account') {
     params.set('view', 'account');
-  } else if (/^\/games\/\d+$/.test(path)) {
+  } else if (/^\/games\/(?:[a-z0-9-]+-)?\d+$/.test(path)) {
     params.set('view', 'game');
-    params.set('game', path.split('/')[2]);
+    params.set('game', path.match(/(\d+)$/)[1]);
   } else if (/^\/stats\/[a-z0-9-]+$/.test(path)) {
     params.set('view', 'stat');
     params.set('stat', path.split('/')[2]);

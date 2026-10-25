@@ -1,3 +1,9 @@
+import fs from 'node:fs';
+
+/* scripts/prerender.mjs maps each finished game's id to its slug URL; the bare id then gets a permanent redirect (the query string, like ?player=, is kept). */
+let gameRedirects = {};
+try { gameRedirects = JSON.parse(fs.readFileSync(new URL('./src/seo/game-redirects.json', import.meta.url), 'utf8')); } catch { /* not generated yet */ }
+
 /** @type {import('next').NextConfig} */
 export default {
   // The app reads location and history directly and was never wrapped in StrictMode.
@@ -20,6 +26,7 @@ export default {
   },
   async redirects() {
     return [
+      ...Object.entries(gameRedirects).map(([id, destination]) => ({source: `/games/${id}`, destination, permanent: true})),
       {source: '/teams', destination: '/lineups', permanent: true},
       {source: '/teams/:slug', destination: '/lineups/:slug', permanent: true},
       {source: '/leaders', destination: '/stats/points', permanent: true},

@@ -36,3 +36,4 @@ public/robots.txt
 public/llms.txt
 src/seo/pages.json
 src/seo/games.json
+src/seo/game-redirects.json

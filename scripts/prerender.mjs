@@ -7,7 +7,7 @@ import { makeCopy } from './seo-copy.mjs';
 import { bestSeason, careerOf, liveRow, seasonsOf, tsOf } from '../src/lib/career.js';
 import { LEADERS, statUrl } from '../src/lib/statLeaders.js';
 import { published } from '../src/content/blog/posts.js';
-import { SITE, compareUrl, playerUrl, slugify, teamUrl } from '../src/lib/routes.js';
+import { SITE, compareUrl, gameUrl, playerUrl, slugify, teamUrl } from '../src/lib/routes.js';
 
 /* Runs before `next build`. Writes src/seo/pages.json (title, description and a
    readable stats body for every player, team and popular comparison, which the
@@ -93,7 +93,7 @@ const gameLog = p => {
   if (!rows.length) return '';
   const body = rows.map(({line, game}) => {
     const home = game.home === line.team, mine = home ? game.home_score : game.away_score, theirs = home ? game.away_score : game.home_score;
-    return [link(`/games/${game.id}`, shortDay(game.played_at)), esc(`${home ? 'vs' : '@'} ${TEAMS[line.opponent]?.name ?? line.opponent}`), esc(`${mine > theirs ? 'W' : 'L'} ${mine}-${theirs}`), line.minutes, line.pts, line.reb, line.ast];
+    return [link(gameUrl(game.away, game.home, game.id), shortDay(game.played_at)), esc(`${home ? 'vs' : '@'} ${TEAMS[line.opponent]?.name ?? line.opponent}`), esc(`${mine > theirs ? 'W' : 'L'} ${mine}-${theirs}`), line.minutes, line.pts, line.reb, line.ast];
   });
   return `<h2>${esc(p.playerName)} game log, ${pretty(SEASONS[0])}</h2>${table(['Date', 'Opponent', 'Result', 'MIN', 'PTS', 'REB', 'AST'], body, `${p.playerName} last ${rows.length} games`)}`;
 };
@@ -290,12 +290,13 @@ for (const [a, b] of cap(teamPairs)) {
 }
 
 /* One page per finished game: score, box score and a "player vs opponent" line for each team's top scorers. They live in games.json, apart from pages.json, which keeps the other routes' bundle small. */
-const gamePages = {};
+const gamePages = {}, gameRedirects = {};
 for (const game of cap(db?.games ?? [])) {
   const lines = (db.byGame.get(game.id) ?? []).sort((x, y) => Number(y.starter) - Number(x.starter) || y.minutes - x.minutes);
-  const route = `/games/${game.id}`;
   const away = TEAMS[game.away], home = TEAMS[game.home];
   if (!away || !home || !lines.length) continue;
+  const route = gameUrl(game.away, game.home, game.id);
+  gameRedirects[game.id] = route;
   const day = dayLabel(game.played_at), kind = game.season_type === 'preseason' ? 'preseason' : game.season_type === 'playoffs' ? 'playoff' : 'regular-season';
   const winner = game.home_score > game.away_score ? home : away, loser = winner === home ? away : home;
   const [winScore, loseScore] = [Math.max(game.home_score, game.away_score), Math.min(game.home_score, game.away_score)];
@@ -311,12 +312,13 @@ for (const game of cap(db?.games ?? [])) {
   const names = leaders.map(l => `${l.name} ${l.pts}`).join(', ');
   const name = `${away.name} vs ${home.name}`;
   gamePages[game.id] = {
-    title: fitTitle(`${name} box score: ${game.away_score}-${game.home_score} | StatsPads`, `${name} box score, ${shortDay(game.played_at)}`, `${game.away} vs ${game.home} box score, ${shortDay(game.played_at)}`),
+    title: fitTitle(`${name}: match player stats, ${shortDay(game.played_at)} | StatsPads`, `${name}: match player stats, ${shortDay(game.played_at)}`, `${name}: match player stats`, `${game.away} vs ${game.home}: match player stats`),
+    route,
     description: fitDescription(`${winner.name} beat ${loser.name} ${winScore}-${loseScore} on ${day}. Full box score and player stats: ${names}.`, `${winner.name} beat ${loser.name} ${winScore}-${loseScore} on ${day}. Full box score and player stats.`),
     jsonLd: [crumbs(['Home', '/'], ['Schedule', '/schedule'], [name, route]),
       {'@context': 'https://schema.org', '@type': 'SportsEvent', '@id': `${SITE}${route}#event`, name, url: SITE + route, sport: 'Basketball', startDate: new Date(game.played_at).toISOString(), eventStatus: 'https://schema.org/EventCompleted', ...(game.venue ? {location: {'@type': 'Place', name: game.venue}} : {}),
         awayTeam: {'@type': 'SportsTeam', name: away.name, url: SITE + teamUrl(game.away)}, homeTeam: {'@type': 'SportsTeam', name: home.name, url: SITE + teamUrl(game.home)}}],
-    body: `<main class="seo"><h1>${esc(name)}: box score and stats, ${day}</h1><p>The ${esc(winner.name)} beat the ${esc(loser.name)} ${winScore}-${loseScore} in a ${kind} game on ${day}${game.venue ? ` at ${esc(game.venue)}` : ''}. ${leaders.map(l => `${who(l)} led the ${esc(TEAMS[l.team].name)} with ${l.pts} points`).join('; ')}.</p>${sides.map(box).join('')}${sides.map(versus).join('')}<p>${link(teamUrl(game.away), `${away.name} roster`)} · ${link(teamUrl(game.home), `${home.name} roster`)} · ${link(teamUrl(game.away), `${away.name} starting lineup`)} · ${link(teamUrl(game.home), `${home.name} starting lineup`)} · ${link('/schedule', 'Schedule')}</p></main>`,
+    body: `<main class="seo"><h1>${esc(name)}: match player stats and box score, ${day}</h1><p>The ${esc(winner.name)} beat the ${esc(loser.name)} ${winScore}-${loseScore} in a ${kind} game on ${day}${game.venue ? ` at ${esc(game.venue)}` : ''}. ${leaders.map(l => `${who(l)} led the ${esc(TEAMS[l.team].name)} with ${l.pts} points`).join('; ')}.</p>${sides.map(box).join('')}${sides.map(versus).join('')}<p>${link(teamUrl(game.away), `${away.name} roster`)} · ${link(teamUrl(game.home), `${home.name} roster`)} · ${link(teamUrl(game.away), `${away.name} starting lineup`)} · ${link(teamUrl(game.home), `${home.name} starting lineup`)} · ${link('/schedule', 'Schedule')}</p></main>`,
   };
   written.push(route);
 }
@@ -333,3 +335,4 @@ console.log(`prerender: ${written.length} pages, in ${((Date.now() - started) / 
 fs.mkdirSync(path.dirname(manifestFile), {recursive: true});
 fs.writeFileSync(manifestFile, JSON.stringify(pages));
 fs.writeFileSync(path.join(root, 'src/seo/games.json'), JSON.stringify(gamePages));
+fs.writeFileSync(path.join(root, 'src/seo/game-redirects.json'), JSON.stringify(gameRedirects));
