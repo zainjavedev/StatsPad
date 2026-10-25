@@ -4390,3 +4390,15 @@ section.pg .pg-hero .pg-rating{align-self:flex-start!important;margin-top:8px}
 @media(max-width:640px){.profile-copy .profile-season,.pf-copy .profile-season{width:max-content;max-width:100%}.pf-copy .profile-season button{padding:8px 11px;min-height:40px}.pf-copy .profile-season small{display:none}}
 
 .ldp-h2{font-size:18px;margin:22px 0 10px}
+
+.sc-day{margin:22px 0}
+.sc-day h2{font-size:18px;margin:0 0 10px}
+.sc-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.sc-game{display:grid;gap:8px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--ink-1);color:inherit;text-decoration:none}
+.sc-game:hover{border-color:var(--text-3)}
+.sc-team{display:flex;align-items:center;gap:10px;color:var(--text-3)}
+.sc-team b{flex:1;font-weight:700}
+.sc-team strong{font-size:20px;font-variant-numeric:tabular-nums}
+.sc-team.won{color:var(--text-1)}
+.sc-game small{color:var(--text-3);font-size:12px}
+.sc-team img{background:#fff;border-radius:50%;padding:3px;box-sizing:content-box;object-fit:contain}
