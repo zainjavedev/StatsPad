@@ -246,7 +246,7 @@ export default function Home({onReady}){
   const paramsOnLoad=useMemo(()=>routeParams(location.pathname,location.search),[]);
   const[statSlug,setStatSlug]=useState(()=>paramsOnLoad.get('stat')||'points');
   const[seasonType,setSeasonType]=useState(()=>paramsOnLoad.get('type')==='playoffs'?'playoffs':'regular-season'),[seasonChanging,setSeasonChanging]=useState(false),[entityType,setEntityType]=useState(()=>paramsOnLoad.get('mode')||'player'),[data,setData]=useState(null),[,setSplits]=useState(null),[selected,setSelected]=useState([]),[toast]=useState(''),[playerIds,setPlayerIds]=useState({}),[catalog,setCatalog]=useState({players:[],teams:[]}),[gameId,setGameId]=useState(()=>paramsOnLoad.get('game')),[page,setPage]=useState(['account','schedule','standings','performances','stat','game'].includes(paramsOnLoad.get('view'))?paramsOnLoad.get('view'):paramsOnLoad.get('view')==='leaders'?'leaders':paramsOnLoad.get('view')==='teams'?'teams':paramsOnLoad.has('team')?'team':paramsOnLoad.has('players')?'compare':paramsOnLoad.has('profile')?'profile':'home'),[regularPlayers,setRegularPlayers]=useState(null),[regularSeason,setRegularSeason]=useState(null),[profileFrom,setProfileFrom]=useState(null),[profile,setProfile]=useState(null),[profileBundle,setProfileBundle]=useState(null),[profileType,setProfileType]=useState(null),[bundlePair,setBundlePair]=useState({}),[,setYearsTick]=useState(0),[teamCode,setTeamCode]=useState(()=>TEAMS[paramsOnLoad.get('team')]?paramsOnLoad.get('team'):'PHI');
-  const chartRef=useRef(null),seasonTransitionRef=useRef(0),preseasonTried=useRef(false);
+  const chartRef=useRef(null),seasonTransitionRef=useRef(0),preseasonTried=useRef(false),seoTitleRef=useRef(null);
   const[theme,setTheme]=useState(()=>{try{return localStorage.getItem('statspad-theme')||'dark'}catch{return 'dark'}});
   useEffect(()=>{document.documentElement.dataset.theme=theme;try{localStorage.setItem('statspad-theme',theme)}catch{/* private mode */}},[theme]);
   const toggleTheme=()=>setTheme(current=>current==='dark'?'light':'dark');
@@ -278,7 +278,9 @@ export default function Home({onReady}){
   useEffect(()=>{
     const names=enriched.slice(0,2).map(entity=>entity.playerName).join(' vs ');
     const titles={home:'StatsPads: NBA player and team comparisons, rosters and stats',leaders:'NBA stat leaders | StatsPads',teams:'NBA teams and rosters | StatsPads',compare:names?`${names}: stats comparison | StatsPads`:'Compare NBA players and teams | StatsPads',team:`${TEAMS[teamCode]?.name} roster and stats | StatsPads`,profile:profile?`${profile.playerName} stats | StatsPads`:'StatsPads'};
-    document.title=titles[page]||titles.home;
+    /* The server already sent a specific title for this URL (game, team, player pages): keep it until the visitor navigates elsewhere. */
+    if(!seoTitleRef.current)seoTitleRef.current={path:location.pathname,title:document.title};
+    document.title=location.pathname===seoTitleRef.current.path?seoTitleRef.current.title:(titles[page]||titles.home);
     let canonical=document.querySelector('link[rel="canonical"]');if(!canonical){canonical=document.createElement('link');canonical.rel='canonical';document.head.appendChild(canonical)}
     canonical.href=`${location.origin}${location.pathname}`;
   },[page,enriched,teamCode,profile]);
