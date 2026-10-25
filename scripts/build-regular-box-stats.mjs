@@ -107,31 +107,27 @@ function rankAsOf(day) {
   const gamesOf = Math.max(1, counts[Math.floor(counts.length / 2)] ?? 1);
   const need = Math.max(1, Math.ceil(gamesOf * 0.6));
   const eligible = [...byPlayer.values()].filter(row => row.games >= need && row.min / row.games >= 20);
-  /* How the NBA's own MVP ladder reads: the winner is almost always an elite scorer on a top team, and scoring tracks
-     the vote far better than rebounds or assists. So the rating is part box-score game score and part points, each
-     average pulled toward its pool's by six games' worth (it fades as the season fills in, and stops a one-game
-     fluke leapfrogging someone who has done it for several). MVPs also earn credit for their team's record, but it
-     counts only as the season fills in: negligible after three games, full weight from about twenty. */
-  const WEIGHT = 6, POINTS = 0.8;
+  /* The rating is per-game game score alone. Each average is pulled toward its pool's by six games' worth (it fades as the season
+     fills in, and stops a one-game fluke leapfrogging someone who has done it for several). */
+  const WEIGHT = 6;
   const meanOf = (list, get) => (list.length ? list.reduce((sum, row) => sum + get(row) / row.games, 0) / list.length : 0);
-  const record = new Map();
-  for (const result of results) if (result.day <= day) { const row = record.get(result.code) ?? {won: 0, played: 0}; row.won += result.won ? 1 : 0; row.played += 1; record.set(result.code, row); }
-  const teamGames = [...record.values()].map(row => row.played).sort((a, b) => a - b);
-  const trust = Math.min(1, (teamGames[Math.floor(teamGames.length / 2)] ?? 0) / 20);
-  const winning = code => (record.get(code)?.played ? record.get(code).won / record.get(code).played : 0.5);
-  const rank = (list, team) => {
-    const gsPrior = meanOf(list, row => row.gs), ptsPrior = meanOf(list, row => row.pts);
+  const rank = list => {
+    const gsPrior = meanOf(list, row => row.gs);
     return list.map(row => {
-      const gs = (row.gs + WEIGHT * gsPrior) / (row.games + WEIGHT), pts = (row.pts + WEIGHT * ptsPrior) / (row.games + WEIGHT);
-      return {...row, rate: gs + POINTS * (pts - ptsPrior) + (team ? 8 * trust * (winning(row.code) - 0.5) : 0)};
+      /* The rating is per-game game score alone, pulled toward the pool's average by six games' worth. */
+      const gs = (row.gs + WEIGHT * gsPrior) / (row.games + WEIGHT);
+      return {...row, rate: gs};
     }).sort((a, b) => b.rate - a.rate || a.name.localeCompare(b.name));
   };
-  const mvp = rank(eligible, true);
+  const mvp = rank(eligible);
   /* Rookies play fewer minutes, so they only need a short rotation role, but they still have to have played most of
-     their team's games to be on a ladder. Their teams are mostly losing, so team record is not counted for them. */
+     their team's games to be on a ladder. */
   const firstYear = [...byPlayer.values()].filter(row => (rosterInfo.get(row.id)?.exp === 0 || rosterInfo.get(row.id)?.exp === '0') && row.games >= need && row.min / row.games >= 12);
-  const rookies = rank(firstYear, false);
-  return {mvp, rookies};
+  const rookies = rank(firstYear);
+  /* Every other first-year player who has played comes after the ranked ones, ordered the same way, so the rookie page lists them all. */
+  const ranked = new Set(firstYear.map(row => row.id));
+  const others = rank([...byPlayer.values()].filter(row => (rosterInfo.get(row.id)?.exp === 0 || rosterInfo.get(row.id)?.exp === '0') && !ranked.has(row.id)));
+  return {mvp, rookies: [...rookies, ...others], qualifiedRookies: rookies.length};
 }
 const latest = days.at(-1), before = days.length > 1 ? days.at(-2) : null;
 if (latest) {
@@ -140,14 +136,15 @@ if (latest) {
   const entry = (row, rank, board, thenBoard) => {
     const info = rosterInfo.get(row.id);
     const prev = thenBoard ? place(thenBoard, row.id) : undefined;
-    return {rank, playerId: `espn-${row.id}`, espnId: row.id, name: row.name, team: row.code, position: known.get(plain(row.name)) || info?.pos || '', games: row.games,
+    return {rank, qualified: rank <= (board.qualifiedCount ?? board.length), playerId: `espn-${row.id}`, espnId: row.id, name: row.name, team: row.code, position: known.get(plain(row.name)) || info?.pos || '', games: row.games,
       pts: round(row.pts / row.games), reb: round(row.reb / row.games), ast: round(row.ast / row.games), min: round(row.min / row.games),
       ts: row.fga + 0.44 * row.fta ? round(row.pts / (2 * (row.fga + 0.44 * row.fta)) * 100) : 0, score: round(row.rate),
       /* positive = moved up; null = was not on the ladder the night before; undefined = no earlier night to compare with */
       move: prev === undefined ? undefined : prev === null ? null : prev - rank};
   };
-  const top = (list, thenList) => list.slice(0, 15).map((row, index) => entry(row, index + 1, list, thenList));
-  const out = {season: '2026-27', updated: new Date().toISOString().slice(0, 10), through: latest, compared: before, mvp: top(now.mvp, then?.mvp), rookie: top(now.rookies, then?.rookies)};
+  /* The MVP ladder lists 30; the rookie ladder lists every rookie who has played, with a flag for the ones who have not yet met the games and minutes bar. */
+  const top = (list, thenList, size = list.length, qualifiedCount = list.length) => { list.qualifiedCount = qualifiedCount; return list.slice(0, size).map((row, index) => entry(row, index + 1, list, thenList)); };
+  const out = {season: '2026-27', updated: new Date().toISOString().slice(0, 10), through: latest, compared: before, mvp: top(now.mvp, then?.mvp, 30), rookie: top(now.rookies, then?.rookies, now.rookies.length, now.qualifiedRookies)};
   fs.writeFileSync(`${dir}/ladders.json`, `${JSON.stringify(out)}\n`);
   console.log(`ladders: through ${latest}${before ? `, compared with ${before}` : ''}; MVP ${out.mvp.map(row => row.name).join(', ')}`);
 }

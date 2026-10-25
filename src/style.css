@@ -4402,3 +4402,66 @@ section.pg .pg-hero .pg-rating{align-self:flex-start!important;margin-top:8px}
 .sc-team.won{color:var(--text-1)}
 .sc-game small{color:var(--text-3);font-size:12px}
 .sc-team img{background:#fff;border-radius:50%;padding:3px;box-sizing:content-box;object-fit:contain}
+
+.meetings{margin-bottom:22px}
+.meet-row{display:flex;gap:10px;overflow-x:auto;padding:12px 0 4px;scroll-snap-type:x proximity}
+.meet{flex:0 0 172px;display:grid;gap:6px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--ink-1);color:inherit;text-decoration:none;scroll-snap-align:start}
+.meet:hover{border-color:var(--text-3)}
+.meet.live{border-color:#e5484d}
+.meet small{color:var(--text-3);font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.meet-team{display:flex;align-items:center;gap:8px;color:var(--text-3)}
+.meet-team b{flex:1;font-size:13px;font-weight:700}
+.meet-team strong{font-size:17px;font-variant-numeric:tabular-nums}
+.meet-team.won{color:var(--text-1)}
+.meet em{color:var(--text-3);font-size:12px;font-style:normal}
+
+.gp-head>.gp-mid{display:flex;flex-direction:column;align-items:center;gap:0;min-width:0}
+.gp-mid .gp-radar{width:min(380px,36vw);margin:2px 0 -8px;text-transform:none;letter-spacing:0}
+.gp-radar .vs-radar{border:0;padding:0;margin:0}
+.gp-radar svg{display:block;width:100%;height:auto}
+.gp-head:has(.gp-radar) img{width:84px;height:84px}
+@media(max-width:760px){.gp-head:has(.gp-radar){grid-template-columns:1fr 1fr;row-gap:0}.gp-head:has(.gp-radar)>.gp-mid{grid-column:1/-1;grid-row:2;order:3}.gp-mid .gp-radar{width:min(420px,100%)}.gp-head:has(.gp-radar) img{width:64px;height:64px}}
+.gp-radar .vs-radar{background:none;box-shadow:none}
+a.lc{display:block;color:inherit;text-decoration:none;transition:transform .15s,border-color .15s}
+a.lc:hover,a.lc:focus-visible{border-color:var(--text-3);transform:translateY(-2px)}
+.pp-recent .rp-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:760px){.pp-recent .rp-list{grid-template-columns:minmax(0,1fr)}}
+
+/* Share-card radar grid: the hairlines were about 1.4 to 1.5:1 against the black card, too faint to read the rings. */
+.vp .radar-ring,.pr-radar .radar-ring{stroke:rgb(255 255 255 / .28)}
+.vp .radar-ring:last-of-type,.pr-radar .radar-ring:last-of-type{stroke:rgb(255 255 255 / .45)}
+.vp .radar-spoke,.pr-radar .radar-spoke{stroke:rgb(255 255 255 / .2)}
+
+/* Home ladders: rows styled like the performance cards, with season averages in place of one night's line. */
+.ladder .ldc{grid-template-columns:28px 64px minmax(0,1fr) auto;gap:14px;padding:14px 4px}
+.ladder .ldc .rp-face,.ladder .ldc .rp-face>img:first-child{width:64px;height:64px}
+.ladder .ldc .rp-team{width:24px;height:24px;padding:3px}
+.ladder .ldc .rp-top{font-size:16px}.ladder .ldc .rp-top small{font-size:13px}
+.ladder .ldc .rp-trio{gap:0 14px;font-size:13px}.ladder .ldc .rp-trio b{font-size:28px;margin-right:3px}
+@media(max-width:520px){.ladder .ldc{grid-template-columns:18px 48px minmax(0,1fr) auto;gap:10px}.ladder .ldc .rp-face,.ladder .ldc .rp-face>img:first-child{width:48px;height:48px}.ladder .ldc .rp-team{width:20px;height:20px;padding:2px}.ladder .ldc .rp-trio{gap:0 10px}.ladder .ldc .rp-trio b{font-size:21px}}
+.ldp-cards .ld-list li{list-style:none}
+.ldp-cards a.ld-row{text-decoration:none}
+@media(max-width:520px){.ldp-gp{display:none}}
+
+/* The top three of each ladder: bigger, on a card tinted with the player's team colour (--tc). */
+.ladder .ld-list li.top3{margin:8px 0;border:1px solid color-mix(in srgb,var(--tc) 45%,var(--line));border-radius:16px;background:linear-gradient(115deg,color-mix(in srgb,var(--tc) 34%,var(--ink-1)),var(--ink-1) 78%);overflow:hidden}
+.ladder .ld-list li.top3+li{border-top:0}
+.ladder .ld-list li.top3 .ldc{grid-template-columns:34px 84px minmax(0,1fr) auto;gap:16px;padding:18px 14px}
+.ladder .ld-list li.top3 .ldc:hover{background:transparent}
+.ladder .ld-list li.top3 .ld-rank{font-size:26px;color:var(--text-1)}
+.ladder .ld-list li.top3 .ldc .rp-face,.ladder .ld-list li.top3 .ldc .rp-face>img:first-child{width:84px;height:84px}
+.ladder .ld-list li.top3 .ldc .rp-face>img:first-child{background:color-mix(in srgb,var(--tc) 30%,var(--ink-2))}
+.ladder .ld-list li.top3 .ldc .rp-team{width:30px;height:30px;padding:3px}
+.ladder .ld-list li.top3 .ldc .rp-top{font-size:19px}.ladder .ld-list li.top3 .ldc .rp-top small{font-size:14px}
+.ladder .ld-list li.top3 .ldc .rp-trio{font-size:14px}.ladder .ld-list li.top3 .ldc .rp-trio b{font-size:36px}
+@media(max-width:520px){.ladder .ld-list li.top3 .ldc{grid-template-columns:22px 64px minmax(0,1fr) auto;gap:12px;padding:14px 10px}.ladder .ld-list li.top3 .ld-rank{font-size:20px}.ladder .ld-list li.top3 .ldc .rp-face,.ladder .ld-list li.top3 .ldc .rp-face>img:first-child{width:64px;height:64px}.ladder .ld-list li.top3 .ldc .rp-team{width:24px;height:24px}.ladder .ld-list li.top3 .ldc .rp-top{font-size:17px}.ladder .ld-list li.top3 .ldc .rp-trio b{font-size:26px}}
+@media(max-width:520px){.ladder .ld-list li.top3 .ldc{grid-template-columns:20px 56px minmax(0,1fr) auto;gap:10px;padding:14px 10px}.ladder .ld-list li.top3 .ldc .rp-face,.ladder .ld-list li.top3 .ldc .rp-face>img:first-child{width:56px;height:56px}.ladder .ld-list li.top3 .ldc .rp-trio{gap:0 8px;font-size:12px;flex-wrap:nowrap}.ladder .ld-list li.top3 .ldc .rp-trio b{font-size:22px;margin-right:2px}}
+
+/* Full ladder pages: the game-score rating sits at the right, beside the move arrow. */
+.ldp-right{display:flex;align-items:center;gap:14px;justify-self:end}
+.ldp-score{display:grid;justify-items:end;line-height:1.05}
+.ldp-score b{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.ldp-score small{margin-top:3px;color:var(--text-3);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.ldp-right .ld-move{min-width:50px}
+.ladder .ld-list li.top3 .ldp-score b{font-size:32px}
+@media(max-width:520px){.ldp-right{gap:8px}.ldp-score b{font-size:19px}.ldp-score small{display:none}.ldp-right .ld-move{min-width:40px;padding:4px 7px;font-size:12px}.ladder .ld-list li.top3 .ldp-score b{font-size:22px}}

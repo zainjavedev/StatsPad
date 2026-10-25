@@ -40,7 +40,8 @@ for (const [id, start, away, home, venue, , , , , preseason] of due) {
   if (competition?.status?.type?.state !== 'post') continue;
   const sides = Object.fromEntries((competition.competitors ?? []).map(side => [side.homeAway, {code: codeOf(side.team?.abbreviation), score: whole(side.score), won: Boolean(side.winner)}]));
   if (!sides.home?.code || !sides.away?.code) continue;
-  const seasonType = preseason === 1 ? 'preseason' : competition.series ? 'playoffs' : 'regular';
+  /* ESPN's header carries the season type (1 preseason, 2 regular season, 3 playoffs). competition.series is also set on regular-season games (the season series between two teams), so it is not a playoff marker. */
+  const seasonType = preseason === 1 ? 'preseason' : data.header?.season?.type === 3 ? 'playoffs' : 'regular';
   const teams = [['home', 'away'], ['away', 'home']].map(([mine, theirs]) => ({team: sides[mine].code, opponent: sides[theirs].code, is_home: mine === 'home', score: sides[mine].score, opponent_score: sides[theirs].score, won: sides[mine].won}));
   const totalsOf = code => { const side = data.boxscore?.teams?.find(item => codeOf(item.team?.abbreviation) === code); return side ? Object.fromEntries(side.statistics.map(stat => [stat.label, stat.displayValue])) : null; };
   for (const team of teams) team.totals = totalsOf(team.team);

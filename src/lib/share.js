@@ -29,16 +29,43 @@ export function onDark(color = '#3b3b45') {
   return luminance(hex) < 0.14 ? mix(hex, '#ffffff', Math.min(0.7, 0.3 + (0.14 - luminance(hex)) * 3)) : hex;
 }
 
+/* Safari (iOS above all) leaves cross-origin pictures out of an exported card unless they are already inlined, and html-to-image
+   would otherwise download each one again while it draws. So every <img> is fetched once, turned into a data URL and decoded
+   before the capture. A picture that cannot be fetched is left as it was (its initials show instead). */
+const toDataUrl = blob => new Promise(resolve => { const reader = new FileReader(); reader.onload = () => resolve(reader.result); reader.onerror = () => resolve(null); reader.readAsDataURL(blob); });
+export async function inlineImages(node) {
+  await Promise.all([...node.querySelectorAll('img')].map(async image => {
+    const source = image.currentSrc || image.src;
+    if (!source || source.startsWith('data:')) return;
+    try {
+      const response = await fetch(source, {mode: 'cors', cache: 'force-cache'});
+      if (!response.ok) return;
+      const url = await toDataUrl(await response.blob());
+      if (!url) return;
+      image.removeAttribute('srcset');
+      image.src = url;
+      await image.decode?.().catch(() => {});
+    } catch { /* leave the original */ }
+  }));
+}
+
 export async function cardFile(node, filename) {
   if (document.fonts?.ready) await document.fonts.ready;
+  await inlineImages(node);
   const blob = await toBlob(node, {pixelRatio: 1, width: CARD_SIZE, height: CARD_SIZE, backgroundColor: '#0c0d10'});
   if (!blob) throw new Error('Could not render the card');
   return new File([blob], `${filename}.png`, {type: 'image/png'});
 }
 
-/* Resolves to 'shared', 'saved' or 'cancelled'. */
-export async function shareCard(node, {filename, title, text, url}) {
+/* Resolves to 'shared', 'saved', 'cancelled', or 'blocked': the phone refused the share sheet because making the picture took
+   longer than the tap stayed valid (iOS). onFile gets the finished picture either way, so a second tap can share it at once. */
+export async function shareCard(node, {filename, title, text, url, onFile}) {
   const file = await cardFile(node, filename);
+  onFile?.(file);
+  return shareFile(file, {title, text, url});
+}
+
+export async function shareFile(file, {title, text, url}) {
   const message = `${text}\n${url}`;
   if (navigator.canShare?.({files: [file]})) {
     try {
@@ -46,6 +73,7 @@ export async function shareCard(node, {filename, title, text, url}) {
       return 'shared';
     } catch (error) {
       if (error?.name === 'AbortError') return 'cancelled';
+      if (error?.name === 'NotAllowedError') return 'blocked';
       // any other failure: fall through to a download
     }
   }

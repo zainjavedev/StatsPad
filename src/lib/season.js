@@ -61,13 +61,10 @@ export const indexPlayers = list => ({
 });
 export const statsFor = (entry, {byId, byName}) => byId.get(`espn-${entry.espnId}`) || (entry.bbrefId && byId.get(entry.bbrefId)) || byName.get(plain(entry.name)) || null;
 
-/* "Qualified" players for rankings and the radar. In the preseason, and until teams have played about eight games, it
-   is raw stats: everyone who played, whoever is ahead leads. After that it is 15 games and 10 minutes, with the games
-   bar at half of what the busiest team has played until a team reaches 30. */
-const RAW_UNTIL = 8;
+/* "Qualified" players for rankings and the radar: 10 minutes a game, and a games bar of half of what the busiest player has
+   played (at least 1, at most 15). There is no raw-stats phase at the start of a season or in the preseason. */
 export const minGames = list => Math.min(15, Math.max(1, Math.floor(Math.max(0, ...list.map(player => player.gamesPlayed)) / 2)));
 export const qualified = list => {
-  if (Math.max(0, ...list.map(player => player.gamesPlayed)) <= RAW_UNTIL) return list.filter(player => player.gamesPlayed > 0);
   const games = minGames(list);
   return list.filter(player => player.gamesPlayed >= games && player.minutesPerGame >= 10);
 };

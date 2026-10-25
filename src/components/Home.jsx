@@ -13,6 +13,7 @@ import TeamPage from './TeamPage';
 import TeamsIndex from './TeamsIndex';
 import Radar from './Radar';
 import TeamLineups from './TeamLineups';
+import { radarCurve, radarRange as spokeRange } from '../lib/radarAxes';
 import { CompareSkeleton, HomeSkeleton, PageSkeleton, TeamLoading } from './Skeletons';
 import { TEAMS, espnLogoUrl, nickname, teamCodeOf } from '../lib/teams';
 import { CURRENT, loadLatest, pretty, qualified, setCurrentIsPreseason, stageOf } from '../lib/season';
@@ -54,15 +55,15 @@ const metricValue = (player,key) => key==='trueShootingPercentage' ? (player?.st
 const format = (value,key) => `${Number(value).toFixed(1)}${pctKeys.has(key)?'%':''}`;
 const initials = name => name.split(' ').map(part=>part[0]).slice(-2).join('');
 const ordinal = value => { const tens = value % 100, ones = value % 10; return `${value}${tens > 10 && tens < 14 ? 'th' : ones === 1 ? 'st' : ones === 2 ? 'nd' : ones === 3 ? 'rd' : 'th'}`; };
-function EntityArt({entity,playerIds,className=''}){
+function EntityArt({entity,playerIds,className='',minimal=false}){
   const[step,setStep]=useState(0);
   const sources=useMemo(()=>{
-    if(entity.entityType==='team'){const code=teamCodeOf(entity.team);return [`https://cdn.nba.com/logos/nba/${entity.teamId}/global/L/logo.svg`,TEAMS[code]&&espnLogoUrl(code)].filter(Boolean)}
+    if(entity.entityType==='team'){const code=teamCodeOf(entity.team);const full=`https://cdn.nba.com/logos/nba/${entity.teamId}/global/L/logo.svg`,mini=TEAMS[code]&&espnLogoUrl(code);return(minimal?[mini,full]:[full,mini]).filter(Boolean)}
     return [
       PLAYER_AVATARS[entity.playerName],
       ...headshotSources(entity,playerIds,EXTRA_PLAYER_IDS),
     ].filter(Boolean);
-  },[entity,playerIds]);
+  },[entity,playerIds,minimal]);
   useEffect(()=>{setStep(0)},[sources]);
   const src=sources[step];
   if(!src)return <img className={`${className} art-fallback-image`} alt={`${entity.playerName} avatar`}
@@ -145,7 +146,7 @@ function VsSlot({index,entity,options,playerIds,noun,onPick,onRemove,color}){
   return <div className={entity?'vs-person':'vs-person is-empty'} style={{'--player-color':COLORS[index],'--team':color}}>
     {entity?<>
       <button className="vs-remove" onClick={onRemove} aria-label={`Remove ${entity.playerName}`}><X size={12}/></button>
-      <EntityArt entity={entity} playerIds={playerIds} className={entity.entityType==='team'?'vs-art is-logo':'vs-art'}/>
+      <EntityArt entity={entity} playerIds={playerIds} minimal className={entity.entityType==='team'?'vs-art is-logo':'vs-art'}/>
       <strong>{entity.playerName}</strong>
       {entity.entityType!=='team'&&TEAMS[teamCodeOf(entity.team)]&&<img className="vs-team-logo" src={espnLogoUrl(teamCodeOf(entity.team))} alt={teamLabel(entity.team)} title={teamLabel(entity.team)}/>}
     </>:
@@ -201,13 +202,13 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
   const colors=[0,1].map(index=>sideColor(enriched[index]));
   const sections=entityType==='team'?TEAM_SECTIONS:VS_SECTIONS;
   /* Each axis runs from the league's lowest rotation player at the centre to its highest at the edge, so the gap between two stars shows (a percentile would put the top two scorers on the same dot). */
-  const radarRange=part=>{const values=enrichedPopulation.filter(entity=>volumeOk(entity,part)).map(entity=>valueOf(entity,part)).filter(Number.isFinite);return[Math.min(...values),Math.max(...values)]};
+  const radarRange=part=>{const values=enrichedPopulation.filter(entity=>volumeOk(entity,part)).map(entity=>valueOf(entity,part)).filter(Number.isFinite);return spokeRange(values)};
   const radar=ready?RADAR_AXES.map(({label,parts})=>({label,sides:[0,1].map(side=>{
     const entity=enriched[side],thin=parts.some(([key])=>!volumeOk(entity,key));
     const shares=parts.map(([key])=>{const[low,high]=radarRange(key);return high>low?Math.max(0,Math.min(1,(statValue(entity,key)-low)/(high-low))):.5});
-    const pct=thin?0:Math.round(shares.reduce((sum,share)=>sum+share,0)/shares.length*100);
+    const share=shares.reduce((sum,value)=>sum+value,0)/shares.length,pct=thin?0:Math.round(radarCurve(share)*100);
     const text=parts.map(([key,short])=>`${statText(statValue(entity,key),key)} ${short}`).join(' · ');
-    return{pct,text,rank:thin?'too few attempts to rank':`${pct}% of the league range`};
+    return{pct,text,rank:thin?'too few attempts to rank':`${Math.round(share*100)}% of the league range`};
   })})):[];
   const smallSample=entityType==='team'?[]:enriched.slice(0,2).filter(entity=>!(seasonType==='playoffs'?entity.gamesPlayed>=3&&entity.minutesPerGame>=10:qualified(data?.players||[]).some(other=>other.playerId===entity.playerId)));
   const radarNotes=['The centre is the lowest rotation player in the league and the edge is the highest, so distance shows how far apart two players really are. 3P% needs at least one attempt a game to count. Defense averages steals and blocks, a box-score stand-in for defending. Turnovers and fouls are in the stat rows below.',...smallSample.map(entity=>`Small sample: ${entity.playerName} played ${entity.gamesPlayed} game${entity.gamesPlayed===1?'':'s'} at ${entity.minutesPerGame} MPG, so these rankings can swing a lot.`)];

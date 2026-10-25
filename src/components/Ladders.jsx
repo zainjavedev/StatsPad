@@ -6,7 +6,7 @@ import { navigate } from '../lib/nav';
 import { playerUrl } from '../lib/routes';
 import { TEAMS, espnLogoUrl } from '../lib/teams';
 
-/* The MVP and rookie ladders: the six best players on per-game score, each with how far he moved since the night
+/* The MVP and rookie ladders, as performance-style cards with per-game averages: the six best players on per-game score, each with how far he moved since the night
    before (scripts/build-regular-box-stats.mjs ranks the league as of every game day). */
 
 const loadLadders = () => fetch(`/data/${CURRENT}/ladders.json`).then(response => (response.ok ? response.json() : null)).catch(() => null);
@@ -26,13 +26,13 @@ function Ladder({title, note, rows, href}) {
   return <section className="front-panel ladder" aria-label={title}>
     <div className="front-panel-head"><h2>{title}</h2><small className="ld-note">{note}</small><a className="front-more" href={href}>Full ladder <ArrowRight size={14}/></a></div>
     <ol className="ld-list">
-      {rows.slice(0, 6).map(row => <li key={row.playerId} style={{'--tc': TEAMS[row.team]?.color || '#8a8a8a'}}>
-        <button className="ld-row" onClick={() => navigate(playerUrl(row.name))}>
+      {rows.filter(row => row.qualified !== false).slice(0, 6).map((row, index) => <li key={row.playerId} className={index < 3 ? 'top3' : undefined} style={{'--tc': TEAMS[row.team]?.color || '#8a8a8a'}}>
+        <button className="ld-row ldc" onClick={() => navigate(playerUrl(row.name))}>
           <b className="ld-rank">{row.rank}</b>
-          <span className="ld-face"><img src={photo(row.espnId)} alt="" loading="lazy"/>{TEAMS[row.team] && <img className="ld-team" src={espnLogoUrl(row.team)} alt=""/>}</span>
-          <span className="ld-main">
-            <span className="ld-name">{row.name}</span>
-            <span className="ld-line">{row.pts} pts · {row.reb} reb · {row.ast} ast</span>
+          <span className="rp-face"><img src={photo(row.espnId)} alt="" loading="lazy"/>{TEAMS[row.team] && <img className="rp-team" src={espnLogoUrl(row.team)} alt=""/>}</span>
+          <span className="rp-main">
+            <span className="rp-top"><b>{row.name}</b><small> · {row.team} · avg</small></span>
+            <span className="rp-trio"><span><b>{row.pts}</b>pts</span><span><b>{row.reb}</b>reb</span><span><b>{row.ast}</b>ast</span></span>
           </span>
           <Move value={row.move}/>
         </button>

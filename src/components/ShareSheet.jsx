@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { toBlob } from 'html-to-image';
 import { shareFontCSS } from '../lib/shareFont';
+import { inlineImages } from '../lib/share';
 import { Check, Copy, Download, X as Close } from 'lucide-react';
 
 /* The sheet behind every "share as an image" button: a preview of the picture (the actual card on screen,
@@ -46,7 +47,7 @@ async function flattenSvgs(node) {
 
 export default function ShareSheet({ready, failed, unavailable = 'This is not available yet.', onClose, filename, text, url, children}) {
   const [note, setNote] = useState(''), [busy, setBusy] = useState(false);
-  const poster = useRef(null), frame = useRef(null), [scale, setScale] = useState(1), [posterHeight, setPosterHeight] = useState(0);
+  const poster = useRef(null), frame = useRef(null), built = useRef(null), [scale, setScale] = useState(1), [posterHeight, setPosterHeight] = useState(0);
 
   useEffect(() => { shareFontCSS(); }, []);
 
@@ -79,18 +80,28 @@ export default function ShareSheet({ready, failed, unavailable = 'This is not av
     return () => clearTimeout(timer);
   }, [note]);
 
-  const blob = async () => {
+  const make = async () => {
     const node = poster.current;
     const fontEmbedCSS = await shareFontCSS();
     if (fontEmbedCSS) await Promise.all([500, 600, 700, 800].map(weight => document.fonts.load(`${weight} 20px Inter`)));
     if (document.fonts?.ready) await document.fonts.ready;
     await Promise.race([Promise.all([...node.querySelectorAll('img')].filter(image => !image.complete).map(image => new Promise(resolve => { image.onload = resolve; image.onerror = resolve; }))), new Promise(resolve => setTimeout(resolve, 5000))]);
+    await inlineImages(node);
     const restore = await flattenSvgs(node);
     let made;
-    try { made = await toBlob(node, {pixelRatio: 1080 / node.offsetWidth, backgroundColor: '#000000', cacheBust: true, ...(fontEmbedCSS ? {fontEmbedCSS} : {})}); } finally { restore(); }
+    try { made = await toBlob(node, {pixelRatio: 1080 / node.offsetWidth, backgroundColor: '#000000', ...(fontEmbedCSS ? {fontEmbedCSS} : {})}); } finally { restore(); }
     if (!made) throw new Error('no image');
     return made;
   };
+  /* The picture is made once, in the background as soon as the card is on screen, so Copy, Save and Share only hand over a finished
+     file. That keeps the tap valid for the phone's share sheet, which iOS refuses after a few seconds of waiting. */
+  const blob = () => (built.current ??= make().catch(error => { built.current = null; throw error; }));
+  useEffect(() => {
+    if (!ready) return undefined;
+    const timer = setTimeout(() => { blob().catch(() => {}); }, 450);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready]);
   const file = async () => new File([await blob()], `${filename}.png`, {type: 'image/png'});
   const save = async picture => {
     const anchor = document.createElement('a');
@@ -101,7 +112,7 @@ export default function ShareSheet({ready, failed, unavailable = 'This is not av
   const act = work => async () => {
     if (busy || !ready) return;
     setBusy(true);
-    try { setNote(await work()); } catch (error) { if (error?.name !== 'AbortError') setNote('Could not make the image'); }
+    try { setNote(await work()); } catch (error) { if (error?.name === 'NotAllowedError') setNote('Image ready, tap again'); else if (error?.name !== 'AbortError') setNote('Could not make the image'); }
     setBusy(false);
   };
   const copy = act(async () => {
@@ -109,7 +120,13 @@ export default function ShareSheet({ready, failed, unavailable = 'This is not av
     await navigator.clipboard.write([new ClipboardItem({'image/png': blob()})]);
     return 'Image copied';
   });
-  const download = act(async () => { await save(await file()); return 'Image saved'; });
+  /* On a phone the share sheet has "Save Image" (Photos) and every app; a download link only reaches Files, or nothing on iOS. */
+  const download = act(async () => {
+    const picture = await file();
+    if (navigator.canShare?.({files: [picture]}) && window.matchMedia?.('(pointer: coarse)').matches) { await navigator.share({files: [picture], title: text}); return 'Saved or shared'; }
+    await save(picture);
+    return 'Image saved';
+  });
   const tweet = act(async () => {
     let copied = false;
     try { if (navigator.clipboard?.write && typeof ClipboardItem !== 'undefined') { await navigator.clipboard.write([new ClipboardItem({'image/png': blob()})]); copied = true; } } catch { /* the post still opens */ }

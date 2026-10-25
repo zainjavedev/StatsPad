@@ -41,12 +41,26 @@ export function radarTints(a, b) {
   return {'--ta': hexA, '--tb': apart(hexA, hexB) ? hexB : '#ff8a3d'};
 }
 
+/* Where a spoke starts and ends: the league's lowest value is the centre and its highest is the edge, so two stars never share a dot.
+   Stats like assists, steals and blocks are bunched near the bottom with a few stars far above, which left a typical player hugging the
+   centre. The shape is drawn on a gentle curve (share to the power of 0.7) that lifts the low and middle without moving the best off the
+   edge or the worst off the centre. The hover text keeps the true share. sessionStorage radarOld = 1 restores the straight scale. */
+export const radarRange = values => {
+  const finite = values.filter(Number.isFinite);
+  return [Math.min(...finite), Math.max(...finite)];
+};
+export const radarCurve = share => {
+  let plain = false;
+  try { plain = typeof window !== 'undefined' && window.sessionStorage.getItem('radarOld') === '1'; } catch { /* storage blocked */ }
+  return plain ? share : share ** 0.7;
+};
+
 /* One entry per spoke: the pct drives the shape, the text shows on hover. */
 export const radarAxes = (a, b, pool) => AXES.map(([label, parts]) => ({label, sides: [a, b].map(player => {
   const shares = parts.map(([get]) => {
-    const values = pool.map(get).filter(Number.isFinite), low = Math.min(...values), high = Math.max(...values);
+    const [low, high] = radarRange(pool.map(get));
     return high > low ? Math.max(0, Math.min(1, (get(player) - low) / (high - low))) : .5;
   });
-  const pct = Math.round(shares.reduce((sum, share) => sum + share, 0) / shares.length * 100);
-  return {pct, text: parts.map(([get, short]) => `${get(player).toFixed(1)} ${short}`).join(' · '), rank: `${pct}% of the league range`};
+  const share = shares.reduce((sum, value) => sum + value, 0) / shares.length;
+  return {pct: Math.round(radarCurve(share) * 100), text: parts.map(([get, short]) => `${get(player).toFixed(1)} ${short}`).join(' · '), rank: `${Math.round(share * 100)}% of the league range`};
 })}));

@@ -12,6 +12,9 @@ import Radar from './Radar';
 import { Headshot } from './TeamPage';
 import { loadSchedule } from '../lib/schedule';
 import { TEAMS, teamCodeOf } from '../lib/teams';
+import { gameUrl } from '../lib/routes';
+import { useFeed } from '../lib/useFeed';
+import { radarAxes, radarTints } from '../lib/radarAxes';
 
 /* A team's page from ESPN's abbreviation, so the game header can link to it. */
 const teamHref = abbr => {
@@ -84,12 +87,6 @@ const shapeAxes = (teams, scores) => SHAPE.map(([label, get, low, high, text]) =
 
 const plain = name => String(name).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[.']/g, '').replace(/\s+/g, ' ').trim();
 
-/* Team radar for the matchup: last season's team numbers, each scaled from the league's lowest to highest team. */
-const TEAM_AXES = [
-  ['Scoring', stats => stats.points, 'PPG'], ['Shooting', stats => stats.effectiveFieldGoalPercentage, 'eFG%'], ['3P%', stats => stats.threePointPercentage, '3P%'],
-  ['Playmaking', stats => stats.assists, 'APG'], ['Rebounding', stats => stats.totalRebounds, 'RPG'], ['Defense', stats => stats.steals + stats.blocks, 'STL+BLK'], ['Ball care', stats => -stats.turnovers, 'TOV'],
-];
-
 const SEASON_FETCH = year => code => fetch(`https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/${TEAMS[code].espn}/schedule?season=${year}`).then(response => response.json()).catch(() => ({events: []}));
 const dayFormat = new Intl.DateTimeFormat(undefined, {month: 'short', day: 'numeric', year: 'numeric'});
 
@@ -103,6 +100,21 @@ function formOf(games, code) {
   let streak = 0;
   for (const result of results) { if (result.win === results[0].win) streak += 1; else break; }
   return {results, streak: results.length ? `${results[0].win ? 'W' : 'L'}${streak}` : null};
+}
+
+/* The radar between the two logos of an upcoming game: the same seven skills and league scaling as the team pages and the compare page,
+   from this season's team numbers (the preseason's until the regular season has games). */
+const loadMatchupPool = () => {
+  const read = name => fetch(`/data/2026-27/${name}.json`).then(response => (response.ok ? response.json() : null)).then(data => (Array.isArray(data?.players) ? data.players.filter(team => team.gamesPlayed > 0) : [])).catch(() => []);
+  return read('teams-regular-season').then(pool => (pool.length > 10 ? pool : read('teams-preseason')));
+};
+function MatchupRadar({box}) {
+  const pool = useFeed(loadMatchupPool);
+  const [a, b] = [box.away, box.home].map(side => (pool || []).find(team => teamCodeOf(team.team) === codeOf(side.abbr)));
+  if (!a || !b || pool.length < 10) return null;
+  return <div className="gp-radar" style={radarTints(a, b)} aria-label={`${box.away.short} and ${box.home.short} radar`}>
+    <Radar axes={radarAxes(a, b, pool)} names={[box.away.short, box.home.short]} colors={['var(--ta)', 'var(--tb)']}/>
+  </div>;
 }
 
 /* Before tip-off: each side's expected starting five on the team page's cards, with last season's per-game
@@ -169,19 +181,12 @@ function Preview({box}) {
 /* The matchup context: how the two teams compare, how each is playing, and how past meetings went. */
 function Context({box, context}) {
   const spoilers = useSpoilers();
-  const {awayCode, homeCode, form, meetings, byCode} = context;
+  const {awayCode, homeCode, form, meetings} = context;
   const sides = [[awayCode, box.away], [homeCode, box.home]];
-  const league = [...byCode.values()];
-  const axes = league.length && byCode.get(awayCode) && byCode.get(homeCode) ? TEAM_AXES.map(([label, get, unit]) => ({label, sides: [awayCode, homeCode].map(code => {
-    const values = league.map(get), low = Math.min(...values), high = Math.max(...values), value = get(byCode.get(code));
-    const pct = Math.round(Math.max(0, Math.min(1, high > low ? (value - low) / (high - low) : .5)) * 100);
-    return {pct, text: `${Math.abs(value).toFixed(1)} ${unit}`, rank: `${pct}% of the league range`};
-  })})) : [];
   const wins = [0, 0];
   meetings.forEach(game => { const winner = game.home.score > game.away.score ? game.home.code : game.away.code; if (winner === awayCode) wins[0] += 1; else if (winner === homeCode) wins[1] += 1; });
   const open = meetings.every(game => spoilers.revealed(game.id));
   return <>
-    {axes.length > 0 && <Radar axes={axes} names={sides.map(([, side]) => side.short)} colors={['var(--accent)', 'var(--series-2)']} scope="all 30 teams" notes={["Last season's team numbers, each scaled from the league's lowest to highest team, so distance shows how far apart these two really are."]}/>}
     <section className="gp-form">
       <h3>Recent form</h3>
       <div className="gp-form-grid">{sides.map(([code, side], index) => <div key={code}>
@@ -221,6 +226,14 @@ export default function GamePage({id}) {
   const [box, setBox] = useState(undefined), [side, setSide] = useState(0), [all, setAll] = useState(false), spoilers = useSpoilers(), [focus, setFocus] = useState(() => (typeof location === 'undefined' ? null : new URLSearchParams(location.search).get('player')));
   const pick = playerId => { setFocus(playerId); const url = new URL(location.href); if (playerId) url.searchParams.set('player', playerId); else url.searchParams.delete('player'); history.replaceState(null, '', url); window.scrollTo(0, 0); };
   useEffect(() => { loadBoxscore(id).then(setBox); }, [id]);
+  /* Opened from a list by its bare id: show the readable /games/<away>-vs-<home>-<id> address, as the server does for a direct visit. */
+  useEffect(() => {
+    if (!box?.away) return;
+    const [away, home] = [box.away, box.home].map(side => codeOf(side.abbr));
+    if (!TEAMS[away] || !TEAMS[home]) return;
+    const path = gameUrl(away, home, id);
+    if (location.pathname !== path) history.replaceState(history.state, '', path + location.search + location.hash);
+  }, [box, id]);
 
   /* Top three in each category across both teams; the leader (ties included) is what the box score highlights. */
   if (box === undefined) return <section className="gp"><p className="gd-note">Loading the game…</p></section>;
@@ -236,7 +249,7 @@ export default function GamePage({id}) {
     {!focusTeam && <>
     <div className="gd-head gp-head">
       <div><TeamLink side={box.away}/>{scored && <strong className={Number(box.away.score) > Number(box.home.score) ? 'won' : ''}>{box.away.score}</strong>}</div>
-      <span>{box.state === 'post' ? (hidden ? 'Played' : 'Final') : box.state === 'in' ? (box.detail || 'Live') : 'Upcoming'}</span>
+      <span className={box.state === 'pre' ? 'gp-mid' : undefined}>{box.state === 'post' ? (hidden ? 'Played' : 'Final') : box.state === 'in' ? (box.detail || 'Live') : 'Upcoming'}{box.state === 'pre' && <MatchupRadar box={box}/>}</span>
       <div><TeamLink side={box.home}/>{scored && <strong className={Number(box.home.score) > Number(box.away.score) ? 'won' : ''}>{box.home.score}</strong>}</div>
     </div>
     <p className="gd-meta">{[box.venue].filter(Boolean).join(' · ')}</p>

@@ -50,7 +50,32 @@ function Comet({coords, delay, color}) {
 const anchorFor = x => x < SIZE.cx - 8 ? 'end' : x > SIZE.cx + 8 ? 'start' : 'middle';
 
 export default function Radar({axes, names, colors, views = [], view, onView, blurb}) {
-  const count = axes.length, [tip, setTip] = useState(null);
+  const count = axes.length, [tip, setTip] = useState(null), svgRef = useRef(null), tipText = useRef(null), [span, setSpan] = useState([0, SIZE.width]), [tipWidth, setTipWidth] = useState(112);
+  /* The tooltip box is sized to its text ("0.5 SPG · 0.0 BPG" is far wider than "28.0 PPG"). */
+  useEffect(() => {
+    if (tip && tipText.current) setTipWidth(Math.max(112, Math.ceil(tipText.current.getComputedTextLength()) + 26));
+  }, [tip]);
+  /* The labels on the left (Rebounding, Playmaking) are wider than the ones on the right, so with the chart centred they crowded
+     the left edge, or were cut off at larger sizes, with empty room on the right. The frame is centred on the labels and the
+     rings instead, so the margin is even on both sides. */
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg) return undefined;
+    const measure = () => {
+      let low = SIZE.cx - SIZE.radius, high = SIZE.cx + SIZE.radius, hidden = false;
+      svg.querySelectorAll('.radar-label').forEach(label => { const box = label.getBBox(); if (!box.width) hidden = true; low = Math.min(low, box.x); high = Math.max(high, box.x + box.width); });
+      if (hidden) return; // not on screen (display: none): nothing to measure
+      /* The same scale as before: a 560-wide frame centred on the labels and rings, widened only if they need more room. */
+      const width = Math.max(SIZE.width, high - low + 28), middle = (low + high) / 2;
+      const next = [Math.round(middle - width / 2), Math.round(middle + width / 2)];
+      setSpan(previous => (previous[0] === next[0] && previous[1] === next[1] ? previous : next));
+    };
+    measure();
+    document.fonts?.ready.then(measure);
+    const watch = new ResizeObserver(measure);
+    watch.observe(svg);
+    return () => watch.disconnect();
+  }, [count]);
   return <section className="vs-radar">
     <div className="vs-radar-head">
       <span className="vs-radar-key">{names.map((name, side) => <span key={name}><i style={{background: colors[side]}}/>{name}</span>)}</span>
@@ -59,7 +84,7 @@ export default function Radar({axes, names, colors, views = [], view, onView, bl
       <div className="radar-tabs" role="group" aria-label="Radar view">{views.map(item => <button key={item.key} className={item.key === view ? 'active' : ''} onClick={() => onView(item.key)}>{item.label}</button>)}</div>
       {blurb && <span>{blurb}</span>}
     </div>}
-    <svg viewBox={`0 0 ${SIZE.width} ${SIZE.height}`} role="img" aria-label={`Radar chart comparing ${names.join(' and ')} across ${axes.map(axis => axis.label).join(', ')}`}>
+    <svg ref={svgRef} viewBox={`${span[0]} 0 ${span[1] - span[0]} ${SIZE.height}`} role="img" aria-label={`Radar chart comparing ${names.join(' and ')} across ${axes.map(axis => axis.label).join(', ')}`}>
       {RINGS.map(ring => <polygon key={ring} className="radar-ring" points={path(count, () => ring / 100)}/>)}
       {axes.map((axis, index) => {
         const [x, y] = point(index, count, 1);
@@ -72,12 +97,18 @@ export default function Radar({axes, names, colors, views = [], view, onView, bl
       {names.map((name, side) => {
         const coords = axes.map((axis, index) => point(index, count, Math.max(axis.sides[side].pct, 3) / 100));
         const points = coords.map(pair => pair.map(value => value.toFixed(1)).join(',')).join(' ');
-        const begin = side * STAGGER, at = stops(coords);
-        return <g key={`${name}-${points}`} style={{'--begin': `${begin}s`}}>
+        const begin = side * STAGGER;
+        return <g key={`${name}-${points}`} style={{'--begin': `${begin}s`}} pointerEvents="none">
           <polygon className="radar-halo" points={points}/>
           <polygon className="radar-shape" pathLength="1" points={points} style={{fill: colors[side], stroke: colors[side]}}/>
           <Comet coords={coords} delay={begin} color={colors[side]}/>
-          {/* Dots go last so neither player's shape covers the other's points. */}
+        </g>;
+      })}
+      {/* Every dot sits above both shapes, so a point inside the other player's shape can still be hovered. */}
+      {names.map((name, side) => {
+        const coords = axes.map((axis, index) => point(index, count, Math.max(axis.sides[side].pct, 3) / 100));
+        const begin = side * STAGGER, at = stops(coords);
+        return <g key={`dots-${name}`}>
           {axes.map((axis, index) => {
             const [x, y] = coords[index];
             const show = () => setTip({x, y, color: colors[side], value: axis.sides[side].text});
@@ -89,10 +120,10 @@ export default function Radar({axes, names, colors, views = [], view, onView, bl
         </g>;
       })}
       {tip && (() => {
-        const width = 112, height = 38, left = Math.max(6, Math.min(SIZE.width - width - 6, tip.x - width / 2)), top = tip.y > SIZE.cy ? tip.y - height - 12 : tip.y + 12;
+        const width = tipWidth, height = 38, left = Math.max(span[0] + 6, Math.min(span[1] - width - 6, tip.x - width / 2)), top = tip.y > SIZE.cy ? tip.y - height - 12 : tip.y + 12;
         return <g className="radar-tip" pointerEvents="none">
           <rect x={left} y={top} width={width} height={height} rx="10"/>
-          <text x={left + 12} y={top + 25} className="radar-tip-value"><tspan fill={tip.color}>●</tspan> {tip.value}</text>
+          <text ref={tipText} x={left + 12} y={top + 25} className="radar-tip-value"><tspan fill={tip.color}>●</tspan> {tip.value}</text>
         </g>;
       })()}
     </svg>
