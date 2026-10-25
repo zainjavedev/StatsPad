@@ -4387,3 +4387,5 @@ section.pg .pg-hero .pg-rating{align-self:flex-start!important;margin-top:8px}
 
 .profile-copy .profile-season{margin:0 0 12px;max-width:100%}
 @media(max-width:640px){.profile-copy .profile-season{width:100%}}
+
+.ldp-h2{font-size:18px;margin:22px 0 10px}

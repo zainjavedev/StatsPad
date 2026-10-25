@@ -20,6 +20,7 @@ export default function Ladder({params}) {
       <h1>NBA {ladder.name} ladder, 2026–27</h1>
       <p className="lu-lede">{ladder.method}</p>
       <p className="lu-updated">Through <time dateTime={ladder.through}>{dateFormat.format(new Date(`${ladder.through}T12:00:00Z`))}</time>, from ESPN box scores. <a href="/about">How the numbers work</a></p>
+      <h2 className="ldp-h2">{ladder.name} ladder: top {ladder.rows.length}</h2>
       <ol className="ldp-list">
         {ladder.rows.map(row => <li key={row.playerId} style={{'--tc': TEAMS[row.team]?.color || '#8a8a8a'}}>
           <b className="ldp-rank">{row.rank}</b>
