@@ -4385,7 +4385,8 @@ section.pg .pg-hero .pg-rating{align-self:flex-start!important;margin-top:8px}
 }
 .pp-recent .rp-list>li::after{content:none}
 
-.profile-copy .profile-season{margin:0 0 12px;max-width:100%}
-@media(max-width:640px){.profile-copy .profile-season{width:100%}}
+.profile-copy .profile-season,.pf-copy .profile-season{margin:0 0 12px;max-width:100%}
+.pf-copy .profile-season{position:relative;z-index:2}
+@media(max-width:640px){.profile-copy .profile-season,.pf-copy .profile-season{width:max-content;max-width:100%}.pf-copy .profile-season button{padding:8px 11px;min-height:40px}.pf-copy .profile-season small{display:none}}
 
 .ldp-h2{font-size:18px;margin:22px 0 10px}

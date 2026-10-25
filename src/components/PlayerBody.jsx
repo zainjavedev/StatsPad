@@ -143,7 +143,7 @@ function CareerTable({ seasons, career, currentSeason }) {
   </table></div>;
 }
 
-export default function PlayerBody({ entity, season, population, showCareer, onOpen, onCompare }) {
+export default function PlayerBody({ entity, season, population, showCareer, onOpen, onCompare, seasonToggle }) {
   const enriched = useMemo(() => ({ ...entity, trueShooting: tsOf({ pts: entity.stats.points, fga: entity.stats.fieldGoalsAttempted, fta: entity.stats.freeThrowsAttempted }) }), [entity]);
   const pool = useMemo(() => population.map(player => ({ ...player, trueShooting: tsOf({ pts: player.stats.points, fga: player.stats.fieldGoalsAttempted, fta: player.stats.freeThrowsAttempted }) })), [population]);
   const teamCode = teamCodeOf(entity.team), [first, last] = split(entity.playerName);
@@ -169,6 +169,7 @@ export default function PlayerBody({ entity, season, population, showCareer, onO
         {first && <span className="pf-first">{first}</span>}
         <h1 className="pf-last" style={{'--n': Math.max(last.length, 5)}}>{last}</h1>
         <p className="pf-meta">{teamCode ? entity.team : ''} · {entity.position} · Age {entity.age} · {entity.gamesPlayed} {entity.gamesPlayed === 1 ? 'game' : 'games'} · {entity.gamesStarted} {entity.gamesStarted === 1 ? 'start' : 'starts'}</p>
+        {seasonToggle}
         <div className="pf-actions">
           <button type="button" className="pf-compare" onClick={() => onCompare(entity)}><BarChart3 size={16}/> Compare</button>
           <button type="button" className="ghost-button" onClick={() => setSharing(true)} title="Share this as an image"><Share2 size={15}/> Share</button>
