@@ -23,7 +23,4 @@ export function playerIn(season, slug) {
   return player;
 }
 
-export const fixed = (value, places = 1) => Number(value).toFixed(places);
-export const plays = stats => stats.fieldGoalsAttempted + .44 * stats.freeThrowsAttempted;
-export const trueShooting = stats => stats.points / (2 * plays(stats)) * 100;
-export const list = items => items.length < 2 ? items.join('') : `${items.slice(0, -1).join(', ')} and ${items.at(-1)}`;
+export { fixed, list, plays, trueShooting } from './blogStats';

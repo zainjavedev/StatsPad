@@ -10,7 +10,7 @@ import { TEAMS, espnLogoUrl } from '../lib/teams';
 
 const loadLadders = () => fetch(`/data/${CURRENT}/ladders.json`).then(response => (response.ok ? response.json() : null)).catch(() => null);
 const photo = id => `https://a.espncdn.com/i/headshots/nba/players/full/${id}.png`;
-const day = new Intl.DateTimeFormat(undefined, {month: 'short', day: 'numeric'});
+const day = new Intl.DateTimeFormat(undefined, {weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'});
 
 /* How far a player moved since the night before: an arrow and the places, or NEW, or a dash. */
 function Move({value}) {
@@ -47,6 +47,6 @@ export default function Ladders() {
   const note = `Through ${through}`;
   return <div className="ladder-pair">
     <Ladder title="MVP ladder" note={note} rows={data.mvp}/>
-    {data.rookie?.length > 0 && <Ladder title="Rookie ladder" note={note} rows={data.rookie}/>}
+    {data.rookie?.length > 0 && <Ladder title="ROTY ladder" note={note} rows={data.rookie}/>}
   </div>;
 }

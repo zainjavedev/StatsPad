@@ -893,7 +893,7 @@ header .brand small{margin-top:3px}
 .vs-head{border-bottom:0}
 .vs-person{min-height:300px;padding:18px 12px 18px}
 .vs-art{width:min(100%,300px);height:220px;filter:drop-shadow(0 8px 18px rgb(0 0 0 / .35))}
-.vs-art.is-logo{width:150px;height:150px;margin-bottom:4px;padding:16px;border-radius:50%;background:#fff;filter:none}
+.vs-art.is-logo{width:150px;height:150px;margin-bottom:4px;padding:12px;border-radius:0;background:none;object-fit:contain;filter:drop-shadow(0 6px 14px rgb(0 0 0 / .35))}
 .vs-art.art-fallback-image{width:150px;height:150px}
 .vs-person strong{margin-top:12px;color:#fff;font-size:21px}
 .vs-person strong:after{background:#fff;opacity:.7}
@@ -4118,23 +4118,6 @@ li>button.rp-share{position:absolute!important;right:10px;bottom:10px;left:auto;
 .rp-list.rp-skeleton .rp-trio b{height:30px}
 
 /* (superseded) Ladders v3: one team-coloured card per place, after the NBA app ladder. */
-.ld-list li+li{border-top:0}
-.ld-list{display:grid;gap:8px}
-.lc{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 40px;align-items:center;width:100%;height:96px;padding:0 14px 0 100px;overflow:hidden;border:1px solid color-mix(in srgb,var(--tc) 55%,#fff 8%);border-radius:12px;background:linear-gradient(105deg,color-mix(in srgb,var(--tc) 78%,#000) 0%,color-mix(in srgb,var(--tc) 38%,#050506) 100%);color:#fff;font:inherit;text-align:left;cursor:pointer;transition:transform .15s,border-color .15s}
-.lc:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--tc) 80%,#fff 30%)}
-.lc-logo{position:absolute;left:12px;top:50%;width:74px;height:74px;object-fit:contain;transform:translateY(-50%);filter:drop-shadow(0 2px 8px rgb(0 0 0 / .35))}
-.lc-copy{position:relative;z-index:1;display:grid;gap:0;align-content:center;min-width:0;grid-column:1}
-.lc-rank{font-size:15px;font-weight:800;line-height:1;letter-spacing:.02em}
-.lc-first{margin-top:2px;font-size:13px;font-weight:700;line-height:1.05;text-transform:uppercase;letter-spacing:.02em;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lc-last{font-size:26px;font-weight:800;line-height:.98;text-transform:uppercase;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lc-line{margin-top:4px;font-size:12px;font-weight:600;opacity:.8;font-variant-numeric:tabular-nums}
-.lc-photo{position:absolute;right:52px;bottom:0;z-index:0;width:112px;height:92px;object-fit:contain;object-position:center bottom}
-.lc-move{position:relative;z-index:1;grid-column:2;justify-self:end;display:grid;justify-items:center;gap:0;color:#fff}
-.lc-move b{font-size:12px;font-weight:800;line-height:1;margin-top:-2px}
-.lc-move.up{color:#fff}.lc-move.down{color:#fff;opacity:.9}
-.lc-move.new{padding:4px 7px;border-radius:999px;background:rgb(0 0 0 / .35);font-size:10px;font-weight:800;letter-spacing:.08em}
-.lc-move.flat i{display:block;width:16px;height:3px;border-radius:2px;background:#fff;opacity:.7}
-@media(max-width:520px){.lc{height:84px;padding-left:76px}.lc-logo{left:8px;width:58px;height:58px}.lc-last{font-size:20px}.lc-first{font-size:11px}.lc-line{font-size:11px}.lc-photo{right:44px;width:92px;height:76px}}
 
 /* Player profile v2: a team-coloured header like the ladder cards, then the season line as plain numbers, no boxes. */
 .pf-hero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;min-height:260px;margin-top:6px;padding:26px 0 0 28px;overflow:hidden;border:1px solid color-mix(in srgb,var(--team) 55%,#fff 8%);border-radius:16px;background:linear-gradient(105deg,color-mix(in srgb,var(--team) 78%,#000) 0%,color-mix(in srgb,var(--team) 36%,#050506) 100%);color:#fff}
@@ -4264,21 +4247,6 @@ li>button.rp-share{position:absolute!important;right:10px;bottom:10px;left:auto;
 
 /* Ladders v4: taller cards, a big faded team mark behind the player, a bigger name and the line as numbers. */
 .ld-list{gap:10px}
-.lc{height:128px;padding:0 14px 0 20px;grid-template-columns:minmax(0,1fr) 46px;border-radius:14px;background:radial-gradient(120% 140% at 85% 50%,color-mix(in srgb,var(--tc) 55%,#000) 0%,transparent 60%),linear-gradient(105deg,color-mix(in srgb,var(--tc) 88%,#000) 0%,color-mix(in srgb,var(--tc) 46%,#050506) 100%)}
-.lc-mark{position:absolute;right:70px;top:50%;z-index:0;width:170px;height:170px;object-fit:contain;transform:translateY(-50%);opacity:.18;filter:grayscale(.2)}
-.lc-logo{position:static;width:18px;height:18px;transform:none;filter:none}
-.lc-top{display:flex;align-items:center;gap:8px}
-.lc-rank{font-size:16px}
-.lc-first{margin-top:4px;font-size:13px}
-.lc-last{font-size:clamp(18px,calc(330px / var(--n,8)),40px);line-height:1}
-.lc-line{display:flex;gap:14px;margin-top:8px;font-size:12px;font-weight:600;opacity:1;color:rgb(255 255 255 / .78)}
-.lc-line b{margin-right:4px;font-size:20px;font-weight:700;line-height:1;color:#fff;font-variant-numeric:tabular-nums}
-.lc-photo{right:62px;bottom:0;width:150px;height:128px}
-.lc-move{justify-self:end}
-.lc-move svg{width:30px;height:30px}
-.lc-move b{font-size:13px}
-@media(max-width:520px){.lc{height:112px;padding-left:14px}.lc-mark{right:44px;width:130px;height:130px}.lc-photo{right:44px;width:104px;height:104px}.lc-last{font-size:clamp(16px,calc(250px / var(--n,8)),30px)}.lc-line b{font-size:17px}.lc-line{gap:10px}}
-.lc .lc-line{justify-content:flex-start}
 
 /* Ladders v5: plain rows. No coloured cards: rank, headshot, name, one muted stat line, a small move marker. */
 .ld-list{display:block}
@@ -4333,3 +4301,36 @@ li>button.rp-share{position:absolute!important;right:10px;bottom:10px;left:auto;
 .team-hero-radar .radar-halo{stroke:transparent}.team-hero-radar .radar-dot{r:6;stroke:#fff;stroke-width:2}
 .team-hero-radar svg{display:block;width:112%;max-width:none;margin:-4% -6%}
 @media(max-width:900px){.team-hero-radar{display:none}}
+
+/* Compare page: the two players either side of the radar, like Head to head on Home. */
+.vs-head.has-radar{grid-template-columns:minmax(0,1fr) minmax(0,1.8fr) minmax(0,1fr);align-items:stretch}
+.vs-head.has-radar .vs-radar{align-self:center;border:0;padding:0;margin:0}
+.vs-head.has-radar .vs-radar-head{display:none}
+.vs-head.has-radar .vs-radar svg{max-width:none;width:112%;margin:-4% -6%}
+@media(max-width:820px){
+  .vs-head.has-radar{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .vs-head.has-radar .vs-radar{grid-column:1/-1;order:3;border-top:1px solid var(--line)}
+  .vs-head.has-radar .vs-radar svg{width:100%;margin:6px auto 0}
+}
+.cmp-share{display:inline-flex;align-items:center;gap:7px;margin-left:auto;height:36px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:var(--ink-1);color:var(--text-1);font-size:13px;font-weight:700;cursor:pointer}
+.cmp-share:hover{border-color:var(--text-3)}
+.vp-face.is-logo{background:none;border-radius:0}.vp-face.is-logo img{object-fit:contain;padding:6px}
+.vs-head.has-radar .vs-person strong{white-space:normal;overflow:visible;text-wrap:balance}
+.cmp-surprise{display:inline-flex;align-items:center;gap:7px;margin-left:auto;height:36px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--text-1);font-size:13px;font-weight:700;cursor:pointer}
+.cmp-surprise:hover{border-color:var(--text-3)}
+.cmp-surprise+.cmp-share{margin-left:8px}
+.lineup .lc-line{gap:6px;padding:0 4px 11px;font-size:11.5px;white-space:nowrap}
+.lineup .lc-line small{margin-left:1px;font-size:8px}
+.vs-art.is-logo{filter:drop-shadow(0 0 10px rgb(255 255 255 / .22)) drop-shadow(0 6px 14px rgb(0 0 0 / .35))}
+
+/* Head to head picture v3: room to breathe, and the radar kept clear of the numbers either side. */
+.vp{width:800px;padding:30px 36px 22px}
+.vp-body{grid-template-columns:210px minmax(0,1fr) 210px;gap:20px}
+.vp .vs-radar svg{width:104%;margin:-2% -2% -4%}
+.vp-line{gap:14px;margin-top:20px}
+.vp-line b{font-size:22px}
+.vp-face{margin-bottom:16px}
+.vp-first{max-width:100%;text-align:center}
+.vp-foot{margin-top:20px;padding-top:14px}
+.vp-body{grid-template-columns:190px minmax(0,1fr) 190px;gap:8px}
+.vp .vs-radar svg{width:122%;margin:-6% -11% -8%}

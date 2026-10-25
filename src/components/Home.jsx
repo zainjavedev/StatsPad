@@ -7,7 +7,8 @@ import StandingsPage from './StandingsPage';
 import GamePage from './GamePage';
 import { isAppPath, navigate } from '../lib/nav';
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, BarChart3, Check, Search, X } from 'lucide-react';
+import { ArrowLeft, BarChart3, Check, Search, Share2, Shuffle, X } from 'lucide-react';
+import VersusShare from './VersusShare';
 import TeamPage from './TeamPage';
 import TeamsIndex from './TeamsIndex';
 import Radar from './Radar';
@@ -193,6 +194,9 @@ function Profile({entity,season,playoffs,allEntities,playerIds,onBack,backLabel=
 }
 
 function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEntityType,seasonType,switchSeason,enriched,setSelected,playerIds,enrichedPopulation,chartRef,onHome,toast,theme,onToggleTheme}){
+  const[sharing,setSharing]=useState(false);
+  /* Two random names from the top scorers (any two teams in team mode), never the pair already showing. */
+  const surprise=()=>{const pool=entityType==='team'?data.players:[...data.players].sort((a,b)=>b.stats.points-a.stats.points).slice(0,60);const now=enriched.map(entity=>entity.playerName).sort().join('|');let pair;for(let tries=0;tries<20;tries+=1){const a=pool[Math.floor(Math.random()*pool.length)],b=pool[Math.floor(Math.random()*pool.length)];if(a&&b&&a.playerName!==b.playerName){pair=[a,b];if([a.playerName,b.playerName].sort().join('|')!==now)break}}if(pair)setSelected(pair)};
   const ready=enriched.length>=2,noun=entityType==='team'?'teams':'players';
   const colors=[0,1].map(index=>sideColor(enriched[index]));
   const sections=entityType==='team'?TEAM_SECTIONS:VS_SECTIONS;
@@ -212,16 +216,19 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
     <div className="cmp-bar">
       <div className="pills"><button className={entityType==='player'?'active':''} onClick={()=>setEntityType('player')}>Players</button><button className={entityType==='team'?'active':''} onClick={()=>setEntityType('team')}>Teams</button></div>
       <SeasonTabs seasonType={seasonType} onChange={switchSeason}/>
+      <button className="cmp-surprise" onClick={surprise} title="Compare two random stars"><Shuffle size={15}/> Surprise me</button>
+      {ready&&<button className="cmp-share" onClick={()=>setSharing(true)} title="Share this matchup as an image"><Share2 size={15}/> Share</button>}
     </div>
+    {sharing&&ready&&<VersusShare a={enriched[0]} b={enriched[1]} pool={enrichedPopulation} onClose={()=>setSharing(false)}/>}
     <section className="vs-card" ref={chartRef}>
-      <div className="vs-head">
-        {[0,1].map(index=><VsSlot key={index} index={index} entity={enriched[index]} playerIds={playerIds} noun={entityType==='team'?'team':'player'} color={colors[index]}
+      <div className={ready?'vs-head has-radar':'vs-head'}>
+        {[0,1].map(index=>{const slot=<VsSlot key={index} index={index} entity={enriched[index]} playerIds={playerIds} noun={entityType==='team'?'team':'player'} color={colors[index]}
           options={data.players.filter(option=>!enriched.some(selected=>selected.playerName===option.playerName))}
           onPick={option=>setSelected([...enriched,option].slice(0,2))}
-          onRemove={()=>setSelected(enriched.filter((_,position)=>position!==index))}/>)}
+          onRemove={()=>setSelected(enriched.filter((_,position)=>position!==index))}/>;return index===1&&ready?<React.Fragment key="radar"><Radar axes={radar} names={enriched.slice(0,2).map(entity=>entity.playerName)} colors={COLORS} scope={radarScope} notes={radarNotes}/>{slot}</React.Fragment>:slot})}
         {!ready&&<span className="vs-badge">VS</span>}
       </div>
-      {ready?<>{entityType==='team'&&<TeamLineups teams={enriched.slice(0,2)} leaguePlayers={leaguePlayers} season={data.season} colors={COLORS}/>}<Radar axes={radar} names={enriched.slice(0,2).map(entity=>entity.playerName)} colors={COLORS} scope={radarScope} notes={radarNotes}/><div className="vs-table" key={enriched.map(player=>player.playerName).join('|')}>
+      {ready?<>{entityType==='team'&&<TeamLineups teams={enriched.slice(0,2)} leaguePlayers={leaguePlayers} season={data.season} colors={COLORS}/>}<div className="vs-table" key={enriched.map(player=>player.playerName).join('|')}>
         {sections.map(([title,metrics])=><React.Fragment key={title}>
           <div className="vs-section">{title}</div>
           {metrics.map((metric,row)=><VsRow key={metric[0]} players={enriched} population={enrichedPopulation} metric={metric} row={row} colors={COLORS}/>)}
