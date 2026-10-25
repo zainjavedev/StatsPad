@@ -7004,7 +7004,7 @@
         "steals": 0.3,
         "blocks": 0.7,
         "turnovers": 1.7,
-        "personalFouls": 2,
+        "personalFouls": 2.3,
         "fieldGoalsMade": 2.7,
         "fieldGoalsAttempted": 6,
         "fieldGoalPercentage": 44.4,
