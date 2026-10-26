@@ -11,7 +11,7 @@ const gameScore = line => line.pts + .4 * line.fgm - .7 * line.fga - .4 * (line.
 
 export async function GET(request) {
   const params = new URL(request.url).searchParams;
-  const id = (params.get('id') || '').replace(/\D/g, ''), limit = Math.min(20, Number(params.get('limit')) || 8);
+  const id = (params.get('id') || '').replace(/\D/g, ''), limit = Math.min(100, Number(params.get('limit')) || 8);
   if (!id) return NextResponse.json({error: 'Missing player id'}, {status: 400});
   try {
     const rows = await sql`select p.game_id, p.team, p.opponent, p.name, p.minutes, p.pts, p.fgm, p.fga, p.tpm, p.tpa, p.ftm, p.fta, p.oreb, p.dreb, p.reb, p.ast, p.stl, p.blk, p.tov, p.pf,
@@ -28,7 +28,7 @@ export async function GET(request) {
         }},
       };
     });
-    return NextResponse.json({lines}, {headers: {'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=600'}});
+    return NextResponse.json({lines}, {headers: {'Cache-Control': 'public, s-maxage=60'}});
   } catch {
     return NextResponse.json({error: 'Could not read the games'}, {status: 502});
   }

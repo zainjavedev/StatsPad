@@ -38,12 +38,12 @@ const plain = name => name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLo
 const fromStored = playerId => {
   const espnId = /^espn-(\d+)$/.exec(playerId || '')?.[1];
   if (!espnId) return Promise.resolve(null);
-  return fetch(`/api/player-games?id=${espnId}&limit=8`).then(response => (response.ok ? response.json() : null))
+  return fetch(`/api/player-games?id=${espnId}&limit=100`).then(response => (response.ok ? response.json() : null))
     .then(data => (Array.isArray(data?.lines) ? data.lines.map(line => ({...line, date: new Date(line.date)})) : null)).catch(() => null);
 };
 const fromEspn = name => loadSchedule().then(all => finished(all.filter(game => !game.preseason), 60))
   .then(finals => Promise.all(finals.map(game => loadBoxscore(game.id).then(box => performancesOf(box, game.id)).catch(() => []))))
-  .then(groups => groups.flat().filter(line => plain(line.player.name) === plain(name)).sort((a, b) => (b.date || 0) - (a.date || 0)).slice(0, 8));
+  .then(groups => groups.flat().filter(line => plain(line.player.name) === plain(name)).sort((a, b) => (b.date || 0) - (a.date || 0)));
 
 function useRecentLines(name, playerId) {
   const [lines, setLines] = useState(null);
@@ -57,11 +57,14 @@ function useRecentLines(name, playerId) {
 }
 
 function RecentGames({ lines }) {
+  const [all, setAll] = useState(false);
   if (lines && !lines.length) return null;
+  const shown = all ? lines : lines?.slice(0, 6);
   return <section className="pp-recent" aria-label="Recent performances">
     <h2>Recent performances</h2>
     {lines === null ? <PerfSkeleton count={3}/>
-      : <ul className="rp-list">{lines.slice(0, 5).map(line => <li key={line.gameId}><PerfCard line={line} onPick={() => navigate(`/games/${line.gameId}?player=${line.player.id}`)}/></li>)}</ul>}
+      : <ul className="rp-list">{shown.map(line => <li key={line.gameId}><PerfCard line={line} onPick={() => navigate(`/games/${line.gameId}?player=${line.player.id}`)}/></li>)}</ul>}
+    {lines && lines.length > 6 && <button type="button" className="pp-more" onClick={() => setAll(value => !value)}>{all ? 'Show fewer games' : `Show all ${lines.length} games`}</button>}
   </section>;
 }
 

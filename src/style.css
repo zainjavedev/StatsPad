@@ -4507,3 +4507,5 @@ a.lc:hover,a.lc:focus-visible{border-color:var(--text-3);transform:translateY(-2
 .sk-tiles:not(.sk-tiles-wide):not(.sk-tiles-teams){grid-template-columns:repeat(5,minmax(0,1fr))}
 .sk-tiles-wide{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(max-width:700px){.sk-tiles:not(.sk-tiles-wide):not(.sk-tiles-teams){grid-template-columns:repeat(3,minmax(0,1fr))}.sk-tiles-wide{grid-template-columns:minmax(0,1fr)}.sk-tile{height:84px}}
+.pp-more{display:block;margin:10px auto 0;padding:9px 16px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--text-2);font-size:12px;font-weight:700}
+.pp-more:hover{color:var(--text-1);border-color:var(--text-3)}
