@@ -5,6 +5,7 @@ import { favoritesFirst, useFavorites } from '../lib/favorites';
 import { TeamLogo } from './TeamRail';
 import FavoriteStar from './FavoriteStar';
 import AlertsBanner from './AlertsBanner';
+import TonightLineups from './TonightLineups';
 
 /* Divisions in the order the league lists them; a team belongs to exactly one. */
 const DIVISIONS = [
@@ -27,9 +28,10 @@ export default function TeamsIndex({onOpen}) {
   const shown = favoritesFirst(favorites).filter(code => TEAMS[code] && inFilter(code, filter) && (!term || TEAMS[code].name.toLowerCase().includes(term) || code.toLowerCase() === term));
   return <section className="teams-index">
     <div className="teams-index-head">
-      <h1>Teams and starting lineups</h1>
+      <h1>NBA starting lineups today and for every team</h1>
       <p>The expected starting five for all 30 clubs. Pick one to see its bench rotation, 2026–27 roster, numbers and recent games. Tap the bell on a team to get its tip-off alerts.</p>
     </div>
+    <TonightLineups fives={fives}/>
     <AlertsBanner/>
     <div className="teams-filter">
       <input className="teams-search" type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Search teams" aria-label="Search teams"/>
