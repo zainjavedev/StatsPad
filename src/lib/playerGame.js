@@ -53,7 +53,7 @@ export const rating = line => Math.max(0, Math.min(10, +(2.5 + gameScore(line) /
 export function tagsOf(row, minutes) {
   const tags = [], cats = [row.PTS, row.REB, row.AST, row.STL, row.BLK].filter(value => value >= 10).length, mins = num(minutes);
   if (cats >= 3) tags.push('tripledouble'); else if (cats >= 2) tags.push('doubledouble');
-  if (row.PTS >= 40) tags.push('40bomb'); else if (row.PTS >= 30) tags.push('30bomb'); else if (row.PTS >= 20) tags.push('20pointer');
+  if (row.PTS >= 60) tags.push('60bomb'); else if (row.PTS >= 50) tags.push('50bomb'); else if (row.PTS >= 40) tags.push('40bomb'); else if (row.PTS >= 30) tags.push('30bomb'); else if (row.PTS >= 20) tags.push('20pointer');
   if (row.FGA >= 5 && row.FGM === row.FGA) tags.push('automatic');
   else if (row.FGA >= 8 && tsPct(row) >= 65) tags.push('efficient');
   else if (row.FGA >= 6 && fgPct(row) >= 70) tags.push('sniper');
