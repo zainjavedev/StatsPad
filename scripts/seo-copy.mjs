@@ -152,5 +152,11 @@ export function makeCopy({players, teams, esc, link, nameOf, playerHref, pairRou
   const comparisonRankings = (a, b) => rankings(players, PLAYER_CATS, [{name: a.playerName, item: a}, {name: b.playerName, item: b}], 'qualified players');
   const teamComparisonRankings = (a, b) => rankings(teams, TEAM_CATS, [{name: a.name, item: a}, {name: b.name, item: b}], 'NBA teams');
 
-  return {playerProfile, neighbours, teammates, playerComparison, moreComparisons, teamProfile, teamComparison, playerRankings, teamRankings, comparisonRankings, teamComparisonRankings};
+  /* The same ten-category count the comparison paragraph uses, so the FAQ answer can quote it without disagreeing. */
+  function tally(a, b) {
+    const split = splitCategories(PLAYER_CATS, a, b);
+    const led = who => split.filter(entry => entry.leader === who).map(entry => entry.label);
+    return {total: PLAYER_CATS.length, a: led(a), b: led(b)};
+  }
+  return {tally, playerProfile, neighbours, teammates, playerComparison, moreComparisons, teamProfile, teamComparison, playerRankings, teamRankings, comparisonRankings, teamComparisonRankings};
 }

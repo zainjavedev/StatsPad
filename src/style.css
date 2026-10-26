@@ -4587,3 +4587,19 @@ a.lc:hover,a.lc:focus-visible{border-color:var(--text-3);transform:translateY(-2
 .tn-team p{margin:0;color:var(--text-3);font-size:13px}
 .tn-card-sk{height:200px;border-radius:16px}
 @media(max-width:520px){.tn-grid{grid-template-columns:minmax(0,1fr)}.tonight h2{font-size:19px}.tonight h2 small{display:block;margin:2px 0 0}}
+/* Written copy kept visible under the app on compare, player, team and game pages. */
+.app-ready .seo-static.seo-copy{display:block;position:static;width:auto;height:auto;overflow:visible;clip:auto;clip-path:none;white-space:normal;order:2}
+body:has(.seo-copy){display:flex;flex-direction:column}
+body:has(.seo-copy)>main{order:1}
+.seo-copy article{min-height:0;width:min(860px,100%);margin:0 auto;padding:34px 22px 110px;color:var(--text-2);font-size:15px;line-height:1.65}
+.seo-copy h1{margin:0 0 12px;color:var(--text-1);font-size:22px;letter-spacing:-.02em;line-height:1.25}
+.seo-copy h2{margin:30px 0 10px;color:var(--text-1);font-size:18px;letter-spacing:-.01em}
+.seo-copy h3{margin:20px 0 6px;color:var(--text-1);font-size:15px}
+.seo-copy p{margin:0 0 12px}
+.seo-copy a{color:var(--text-1);text-decoration:underline;text-decoration-color:var(--text-3);text-underline-offset:3px}
+.seo-copy ul,.seo-copy ol{margin:0 0 14px;padding-left:20px}
+.seo-copy table{width:100%;border-collapse:collapse;margin:8px 0 18px;font-size:14px}
+.seo-copy th,.seo-copy td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;font-variant-numeric:tabular-nums}
+.seo-copy th{color:var(--text-3);font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.seo-copy .table-wrap,.seo-copy div:has(>table){overflow-x:auto}
+@media(max-width:520px){.seo-copy article{padding:26px 16px 120px}.seo-copy table{font-size:13px}}

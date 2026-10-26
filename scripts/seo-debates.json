@@ -1,0 +1,14 @@
+{
+  "stars": ["Luka Dončić", "Nikola Jokić", "Shai Gilgeous-Alexander", "Giannis Antetokounmpo", "Victor Wembanyama", "Anthony Edwards", "Jayson Tatum", "Jaylen Brown", "Stephen Curry", "LeBron James", "Kevin Durant", "Devin Booker", "Jalen Brunson", "Tyrese Maxey", "Donovan Mitchell", "Cade Cunningham", "Cooper Flagg", "Paolo Banchero", "Chet Holmgren", "Trae Young", "Ja Morant", "Tyrese Haliburton", "Kawhi Leonard", "Joel Embiid", "Anthony Davis", "Karl-Anthony Towns", "Jalen Williams", "Damian Lillard", "Domantas Sabonis", "Scottie Barnes", "Evan Mobley", "Jalen Johnson", "De'Aaron Fox", "LaMelo Ball", "James Harden", "Kyrie Irving", "Alperen Şengün", "Austin Reaves", "Amen Thompson", "Franz Wagner"],
+  "rookies": ["AJ Dybantsa", "Darryn Peterson", "Cameron Boozer", "Caleb Wilson", "Darius Acuff Jr.", "Kingston Flemings", "Mikel Brown Jr.", "Nate Ament", "Keaton Wagler", "Meleek Thomas"],
+  "featured": [
+    ["Luka Dončić", "Shai Gilgeous-Alexander"],
+    ["Nikola Jokić", "Shai Gilgeous-Alexander"],
+    ["Victor Wembanyama", "Chet Holmgren"],
+    ["Anthony Edwards", "Devin Booker"],
+    ["Jayson Tatum", "Jaylen Brown"],
+    ["Jalen Brunson", "Tyrese Maxey"],
+    ["AJ Dybantsa", "Darryn Peterson"],
+    ["Cooper Flagg", "Cameron Boozer"]
+  ]
+}
