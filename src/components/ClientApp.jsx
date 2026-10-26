@@ -28,9 +28,12 @@ export default function ClientApp({route = ''}) {
   const [ready, setReady] = useState(false);
   const onReady = useCallback(() => setReady(true), []);
   useEffect(() => { document.documentElement.classList.add('app-ready'); }, []);
+  /* data-nosnippet keeps the app's own labels ("Anthony EdwardsMIN · SG") out of Google's result snippet, so it uses the page description instead. */
   return <>
-    {!ready && <Boot route={route}/>}
-    <Home onReady={onReady}/>
+    <div data-nosnippet="" style={{display: 'contents'}}>
+      {!ready && <Boot route={route}/>}
+      <Home onReady={onReady}/>
+    </div>
     <Analytics/>
   </>;
 }
