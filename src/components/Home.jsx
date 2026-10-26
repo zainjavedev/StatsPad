@@ -13,7 +13,7 @@ import TeamsIndex from './TeamsIndex';
 import Radar from './Radar';
 import TeamLineups from './TeamLineups';
 import { radarCurve, radarRange as spokeRange } from '../lib/radarAxes';
-import { CompareSkeleton, GameSkeleton, HomeSkeleton, ListSkeleton, PageSkeleton, ProfileSkeleton, TeamLoading, TilesSkeleton } from './Skeletons';
+import { CompareSkeleton, GameSkeleton, HomeSkeleton, ProfileSkeleton, TeamLoading, TilesSkeleton, skeletonForPath } from './Skeletons';
 import { TEAMS, espnLogoUrl, nickname, teamCodeOf } from '../lib/teams';
 import { CURRENT, loadLatest, pretty, qualified, setCurrentIsPreseason, stageOf } from '../lib/season';
 import { compareUrl, leadersUrl, matchesName, playerUrl, routeParams, teamUrl } from '../lib/routes';
@@ -324,7 +324,7 @@ export default function Home({onReady}){
   if(page==='account')return <main><SiteHeader page={page} onHome={goHomeEarly} onCompare={()=>navigate('/compare')} onTeams={()=>navigate('/lineups')} onLeaders={()=>navigate('/stats/points')} theme={theme} onToggleTheme={toggleTheme}/><AccountPage onTeams={()=>navigate('/lineups')}/><SiteFooter/></main>;
   if(!data){
     const idle=()=>{};
-    const skeleton=page==='home'?<HomeSkeleton/>:page==='compare'?<CompareSkeleton/>:page==='team'?<TeamLoading teamCode={teamCode} color={TEAMS[teamCode].color} onPick={idle}/>:page==='game'?<GameSkeleton/>:page==='profile'?<ProfileSkeleton/>:page==='teams'?<TilesSkeleton/>:page==='schedule'||page==='standings'||page==='stat'?<ListSkeleton/>:<PageSkeleton/>;
+    const skeleton=page==='home'?<HomeSkeleton/>:page==='compare'?<CompareSkeleton/>:page==='team'?<TeamLoading teamCode={teamCode} color={TEAMS[teamCode].color} onPick={idle}/>:page==='game'?<GameSkeleton/>:page==='profile'?<ProfileSkeleton/>:page==='teams'?<TilesSkeleton/>:skeletonForPath(location.pathname);
     return <main><SiteHeader page={page} onHome={idle} onCompare={idle} onTeams={idle} onLeaders={idle} theme={theme} onToggleTheme={toggleTheme}/>{skeleton}</main>;
   }
   const goHome=()=>{setPage('home');setProfile(null);history.pushState({},'','/');scrollTo({top:0,behavior:'smooth'})};

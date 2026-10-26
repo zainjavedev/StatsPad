@@ -4509,3 +4509,59 @@ a.lc:hover,a.lc:focus-visible{border-color:var(--text-3);transform:translateY(-2
 @media(max-width:700px){.sk-tiles:not(.sk-tiles-wide):not(.sk-tiles-teams){grid-template-columns:repeat(3,minmax(0,1fr))}.sk-tiles-wide{grid-template-columns:minmax(0,1fr)}.sk-tile{height:84px}}
 .pp-more{display:block;margin:10px auto 0;padding:9px 16px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--text-2);font-size:12px;font-weight:700}
 .pp-more:hover{color:var(--text-1);border-color:var(--text-3)}
+@media(max-width:520px){
+  .ladder .ld-list li.top3 .ldc{grid-template-columns:18px 52px minmax(0,1fr) auto;gap:8px;padding:12px 10px}
+  .ladder .ld-list li.top3 .ldc>*{min-width:0}
+  .ladder .ld-list li.top3 .ldc .rp-face,.ladder .ld-list li.top3 .ldc .rp-face>img:first-child{width:52px;height:52px}
+  .ladder .ld-list li.top3 .ldc .rp-top{font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ladder .ld-list li.top3 .ldc .rp-trio{flex-wrap:wrap;gap:0 6px;font-size:11px}
+  .ladder .ld-list li.top3 .ldc .rp-trio b{font-size:17px;margin-right:1px}
+  .ladder .ld-list li.top3 .ldp-right{gap:6px}
+  .ladder .ld-list li.top3 .ldp-score b{font-size:19px}
+  .ladder .ld-list li.top3 .ldp-right .ld-move{min-width:34px;padding:3px 5px;font-size:11px}
+}
+/* Phone tap targets: widen the hit area of small links and icon buttons without moving anything. */
+@media(pointer:coarse){
+  .back-button,.front-more,.rp-share{position:relative}
+  .back-button::after,.front-more::after,.rp-share::after{content:'';position:absolute;inset:-9px -6px}
+}
+/* Placeholders shaped like stat leaders, standings, schedule and the lineup page. */
+.sk-tabs{display:flex;gap:8px;margin:18px 0 16px;overflow:hidden}
+.sk-tab{flex:0 0 auto;width:86px;height:40px;border-radius:999px}
+.sk-stat-top{height:92px;border-radius:16px}
+.sk-stat-rows{display:grid;gap:8px;margin-top:10px}
+.sk-stat-row{height:64px;border-radius:14px}
+.sk-switch{height:52px;margin:16px 0;border-radius:999px}
+.sk-table{padding:16px;border:1px solid var(--line);border-radius:18px;background:var(--ink-1)}
+.sk-table-row{height:40px;margin-bottom:6px;border-radius:8px}
+.sk-pickers{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
+.sk-picker{height:48px;border-radius:12px}
+.sk-game-row{height:52px;margin-bottom:7px;border-radius:10px}
+.sk-lineup .sk-rail{display:flex;gap:22px;overflow:hidden;padding:14px 0 18px}
+.sk-rail>div{display:grid;justify-items:center;gap:8px;flex:0 0 auto;width:52px}
+.sk-rail-logo{width:34px;height:34px;border-radius:50%}
+.sk-rail-name{width:42px;height:10px;border-radius:5px}
+.sk-lu-hero{height:215px;border-radius:22px}
+.sk-lu-cards{display:grid;gap:8px}
+.sk-lu-card{height:86px;border-radius:14px}
+@media(min-width:760px){.sk-lu-cards{grid-template-columns:repeat(5,minmax(0,1fr))}.sk-lu-card{height:280px}.sk-stat-row{height:72px}}
+.sk-ticker{display:flex;gap:10px;overflow:hidden;margin-bottom:16px}
+.sk-ticker-pill{flex:0 0 min(46%,260px);height:48px;border-radius:14px}
+.sk-h2h{height:477px;margin-bottom:24px;border-radius:22px}
+.sk-cmp-bar{display:flex;gap:8px}.sk-cmp-bar .sk-pill{flex:1;height:40px;border-radius:999px}
+.sk-vs-half{height:230px}
+.sk-gp-score{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:16px}.sk-gp-score .sk-gp-mid{width:52px}
+.sk-gp-score>*{flex:0 0 auto}
+.sk-gp-num{width:min(70px,17vw);height:50px;border-radius:10px}
+.sk-gp-tabs{display:flex;gap:8px;margin-bottom:26px}
+.sk-gp-tab{height:44px;border-radius:999px}
+.sk-gp-rows{display:grid}
+.sk-gp-row{display:grid;grid-template-columns:72px minmax(0,1fr) 40px;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
+.sk-gp-face{width:72px;height:72px;border-radius:50%}
+.sk-gp-row>div{display:grid;gap:10px}
+.sk-gp-line{height:14px;border-radius:6px}
+.sk-gp-grade{width:34px;height:22px;border-radius:6px;align-self:start}
+.sk-alert{height:110px;margin-bottom:16px;border-radius:16px}
+.sk-search{height:46px;margin-bottom:12px;border-radius:999px}
+.sk-tile-team{height:290px}
+@media(min-width:760px){.sk-h2h{height:420px}.sk-vs-half{height:300px}}
