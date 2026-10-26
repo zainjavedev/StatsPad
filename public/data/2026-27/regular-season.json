@@ -2,12 +2,12 @@
   "season": "2026-27",
   "seasonType": "Regular Season",
   "description": "NBA player per-game statistics for the 2026-27 regular season",
-  "lastUpdated": "2026-10-25",
+  "lastUpdated": "2026-10-26",
   "source": {
     "name": "ESPN box scores",
     "url": "https://www.espn.com/nba/schedule"
   },
-  "totalPlayers": 389,
+  "totalPlayers": 390,
   "players": [
     {
       "playerId": "espn-4065733",
@@ -42,6 +42,38 @@
       }
     },
     {
+      "playerId": "espn-3945274",
+      "playerName": "Luka Doncic",
+      "team": "LAL",
+      "position": "PG",
+      "age": 27,
+      "gamesPlayed": 3,
+      "gamesStarted": 3,
+      "minutesPerGame": 35,
+      "rank": 2,
+      "stats": {
+        "points": 34.3,
+        "assists": 8,
+        "totalRebounds": 7.3,
+        "offensiveRebounds": 0.3,
+        "defensiveRebounds": 7,
+        "steals": 1.7,
+        "blocks": 0.3,
+        "turnovers": 7,
+        "personalFouls": 2.3,
+        "fieldGoalsMade": 10.7,
+        "fieldGoalsAttempted": 23,
+        "fieldGoalPercentage": 46.4,
+        "threePointersMade": 5,
+        "threePointersAttempted": 12.7,
+        "threePointPercentage": 39.5,
+        "freeThrowsMade": 8,
+        "freeThrowsAttempted": 9,
+        "freeThrowPercentage": 88.9,
+        "effectiveFieldGoalPercentage": 57.2
+      }
+    },
+    {
       "playerId": "espn-3136193",
       "playerName": "Devin Booker",
       "team": "PHX",
@@ -50,7 +82,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 32.5,
-      "rank": 2,
+      "rank": 3,
       "stats": {
         "points": 33,
         "assists": 4.5,
@@ -82,7 +114,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 33,
-      "rank": 3,
+      "rank": 4,
       "stats": {
         "points": 30,
         "assists": 3.5,
@@ -114,7 +146,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 3,
       "minutesPerGame": 39.3,
-      "rank": 4,
+      "rank": 5,
       "stats": {
         "points": 28.7,
         "assists": 5,
@@ -146,7 +178,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 3,
       "minutesPerGame": 29.3,
-      "rank": 5,
+      "rank": 6,
       "stats": {
         "points": 28.3,
         "assists": 3,
@@ -178,7 +210,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 34.5,
-      "rank": 6,
+      "rank": 7,
       "stats": {
         "points": 28,
         "assists": 5,
@@ -210,7 +242,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 36.5,
-      "rank": 7,
+      "rank": 8,
       "stats": {
         "points": 28,
         "assists": 6,
@@ -242,7 +274,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 35,
-      "rank": 8,
+      "rank": 9,
       "stats": {
         "points": 27,
         "assists": 3.5,
@@ -274,7 +306,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 33.5,
-      "rank": 9,
+      "rank": 10,
       "stats": {
         "points": 27,
         "assists": 1,
@@ -298,6 +330,38 @@
       }
     },
     {
+      "playerId": "espn-4066457",
+      "playerName": "Austin Reaves",
+      "team": "LAL",
+      "position": "SG",
+      "age": 28,
+      "gamesPlayed": 3,
+      "gamesStarted": 3,
+      "minutesPerGame": 35.3,
+      "rank": 11,
+      "stats": {
+        "points": 26.7,
+        "assists": 6.3,
+        "totalRebounds": 2.3,
+        "offensiveRebounds": 0.3,
+        "defensiveRebounds": 2,
+        "steals": 1.7,
+        "blocks": 1,
+        "turnovers": 4.3,
+        "personalFouls": 3.7,
+        "fieldGoalsMade": 7.7,
+        "fieldGoalsAttempted": 12,
+        "fieldGoalPercentage": 63.9,
+        "threePointersMade": 2.7,
+        "threePointersAttempted": 4.3,
+        "threePointPercentage": 61.5,
+        "freeThrowsMade": 8.7,
+        "freeThrowsAttempted": 9.7,
+        "freeThrowPercentage": 89.7,
+        "effectiveFieldGoalPercentage": 75
+      }
+    },
+    {
       "playerId": "espn-3149673",
       "playerName": "Pascal Siakam",
       "team": "IND",
@@ -306,7 +370,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 32,
-      "rank": 10,
+      "rank": 12,
       "stats": {
         "points": 26.5,
         "assists": 2,
@@ -338,7 +402,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 32.5,
-      "rank": 11,
+      "rank": 13,
       "stats": {
         "points": 26.5,
         "assists": 2.5,
@@ -359,70 +423,6 @@
         "freeThrowsAttempted": 4,
         "freeThrowPercentage": 87.5,
         "effectiveFieldGoalPercentage": 63.9
-      }
-    },
-    {
-      "playerId": "espn-4066457",
-      "playerName": "Austin Reaves",
-      "team": "LAL",
-      "position": "SG",
-      "age": 28,
-      "gamesPlayed": 2,
-      "gamesStarted": 2,
-      "minutesPerGame": 35,
-      "rank": 12,
-      "stats": {
-        "points": 25.5,
-        "assists": 7.5,
-        "totalRebounds": 3,
-        "offensiveRebounds": 0.5,
-        "defensiveRebounds": 2.5,
-        "steals": 2,
-        "blocks": 0.5,
-        "turnovers": 5,
-        "personalFouls": 3,
-        "fieldGoalsMade": 8,
-        "fieldGoalsAttempted": 12,
-        "fieldGoalPercentage": 66.7,
-        "threePointersMade": 2,
-        "threePointersAttempted": 4,
-        "threePointPercentage": 50,
-        "freeThrowsMade": 7.5,
-        "freeThrowsAttempted": 8,
-        "freeThrowPercentage": 93.8,
-        "effectiveFieldGoalPercentage": 75
-      }
-    },
-    {
-      "playerId": "espn-3945274",
-      "playerName": "Luka Doncic",
-      "team": "LAL",
-      "position": "PG",
-      "age": 27,
-      "gamesPlayed": 2,
-      "gamesStarted": 2,
-      "minutesPerGame": 33.5,
-      "rank": 13,
-      "stats": {
-        "points": 25.5,
-        "assists": 7,
-        "totalRebounds": 7,
-        "offensiveRebounds": 0,
-        "defensiveRebounds": 7,
-        "steals": 1.5,
-        "blocks": 0.5,
-        "turnovers": 8.5,
-        "personalFouls": 1.5,
-        "fieldGoalsMade": 7.5,
-        "fieldGoalsAttempted": 19.5,
-        "fieldGoalPercentage": 38.5,
-        "threePointersMade": 3.5,
-        "threePointersAttempted": 10,
-        "threePointPercentage": 35,
-        "freeThrowsMade": 7,
-        "freeThrowsAttempted": 8,
-        "freeThrowPercentage": 87.5,
-        "effectiveFieldGoalPercentage": 47.4
       }
     },
     {
@@ -682,38 +682,6 @@
       }
     },
     {
-      "playerId": "espn-4433136",
-      "playerName": "Walker Kessler",
-      "team": "LAL",
-      "position": "C",
-      "age": 25,
-      "gamesPlayed": 2,
-      "gamesStarted": 2,
-      "minutesPerGame": 32.5,
-      "rank": 22,
-      "stats": {
-        "points": 24,
-        "assists": 2,
-        "totalRebounds": 8.5,
-        "offensiveRebounds": 3,
-        "defensiveRebounds": 5.5,
-        "steals": 1.5,
-        "blocks": 4,
-        "turnovers": 1.5,
-        "personalFouls": 1.5,
-        "fieldGoalsMade": 11,
-        "fieldGoalsAttempted": 13,
-        "fieldGoalPercentage": 84.6,
-        "threePointersMade": 0,
-        "threePointersAttempted": 0,
-        "threePointPercentage": 0,
-        "freeThrowsMade": 2,
-        "freeThrowsAttempted": 4.5,
-        "freeThrowPercentage": 44.4,
-        "effectiveFieldGoalPercentage": 84.6
-      }
-    },
-    {
       "playerId": "espn-4395725",
       "playerName": "Tyler Herro",
       "team": "MIL",
@@ -722,7 +690,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 3,
       "minutesPerGame": 31.7,
-      "rank": 23,
+      "rank": 22,
       "stats": {
         "points": 23.7,
         "assists": 5.3,
@@ -754,7 +722,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 25.5,
-      "rank": 24,
+      "rank": 23,
       "stats": {
         "points": 23.5,
         "assists": 2.5,
@@ -786,7 +754,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 3,
       "minutesPerGame": 33,
-      "rank": 25,
+      "rank": 24,
       "stats": {
         "points": 23,
         "assists": 6.3,
@@ -818,7 +786,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 25,
-      "rank": 26,
+      "rank": 25,
       "stats": {
         "points": 23,
         "assists": 4,
@@ -850,7 +818,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 36,
-      "rank": 27,
+      "rank": 26,
       "stats": {
         "points": 22.5,
         "assists": 3.5,
@@ -882,7 +850,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 3,
       "minutesPerGame": 34.3,
-      "rank": 28,
+      "rank": 27,
       "stats": {
         "points": 22.3,
         "assists": 1.3,
@@ -914,7 +882,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 3,
       "minutesPerGame": 36,
-      "rank": 29,
+      "rank": 28,
       "stats": {
         "points": 22.3,
         "assists": 5,
@@ -946,7 +914,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 3,
       "minutesPerGame": 36.3,
-      "rank": 30,
+      "rank": 29,
       "stats": {
         "points": 22.3,
         "assists": 11.3,
@@ -978,7 +946,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 28.5,
-      "rank": 31,
+      "rank": 30,
       "stats": {
         "points": 22,
         "assists": 4,
@@ -1010,7 +978,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 30.5,
-      "rank": 32,
+      "rank": 31,
       "stats": {
         "points": 22,
         "assists": 5,
@@ -1042,7 +1010,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 3,
       "minutesPerGame": 31.7,
-      "rank": 33,
+      "rank": 32,
       "stats": {
         "points": 21.7,
         "assists": 10,
@@ -1074,7 +1042,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 3,
       "minutesPerGame": 34.3,
-      "rank": 34,
+      "rank": 33,
       "stats": {
         "points": 21.7,
         "assists": 5.7,
@@ -1095,6 +1063,38 @@
         "freeThrowsAttempted": 9,
         "freeThrowPercentage": 81.5,
         "effectiveFieldGoalPercentage": 42.2
+      }
+    },
+    {
+      "playerId": "espn-4433627",
+      "playerName": "Keyonte George",
+      "team": "UTA",
+      "position": "PG",
+      "age": 22,
+      "gamesPlayed": 3,
+      "gamesStarted": 3,
+      "minutesPerGame": 31.3,
+      "rank": 34,
+      "stats": {
+        "points": 21.7,
+        "assists": 8.3,
+        "totalRebounds": 4.3,
+        "offensiveRebounds": 0.3,
+        "defensiveRebounds": 4,
+        "steals": 1,
+        "blocks": 0,
+        "turnovers": 4.7,
+        "personalFouls": 3.3,
+        "fieldGoalsMade": 6.7,
+        "fieldGoalsAttempted": 12.3,
+        "fieldGoalPercentage": 54.1,
+        "threePointersMade": 3,
+        "threePointersAttempted": 6.3,
+        "threePointPercentage": 47.4,
+        "freeThrowsMade": 5.3,
+        "freeThrowsAttempted": 7.7,
+        "freeThrowPercentage": 69.6,
+        "effectiveFieldGoalPercentage": 66.2
       }
     },
     {
@@ -1258,6 +1258,38 @@
       }
     },
     {
+      "playerId": "espn-4066336",
+      "playerName": "Lauri Markkanen",
+      "team": "UTA",
+      "position": "PF",
+      "age": 29,
+      "gamesPlayed": 3,
+      "gamesStarted": 3,
+      "minutesPerGame": 36,
+      "rank": 40,
+      "stats": {
+        "points": 20.7,
+        "assists": 2.3,
+        "totalRebounds": 7,
+        "offensiveRebounds": 1.7,
+        "defensiveRebounds": 5.3,
+        "steals": 0.3,
+        "blocks": 0.3,
+        "turnovers": 1.7,
+        "personalFouls": 1,
+        "fieldGoalsMade": 6.3,
+        "fieldGoalsAttempted": 15,
+        "fieldGoalPercentage": 42.2,
+        "threePointersMade": 3.3,
+        "threePointersAttempted": 9,
+        "threePointPercentage": 37,
+        "freeThrowsMade": 4.7,
+        "freeThrowsAttempted": 5.3,
+        "freeThrowPercentage": 87.5,
+        "effectiveFieldGoalPercentage": 53.3
+      }
+    },
+    {
       "playerId": "espn-4395628",
       "playerName": "Zion Williamson",
       "team": "NOP",
@@ -1266,7 +1298,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 3,
       "minutesPerGame": 32.7,
-      "rank": 40,
+      "rank": 41,
       "stats": {
         "points": 20.7,
         "assists": 2.3,
@@ -1298,7 +1330,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 36.5,
-      "rank": 41,
+      "rank": 42,
       "stats": {
         "points": 20.5,
         "assists": 9,
@@ -1330,7 +1362,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 30.5,
-      "rank": 42,
+      "rank": 43,
       "stats": {
         "points": 20.5,
         "assists": 2,
@@ -1351,38 +1383,6 @@
         "freeThrowsAttempted": 5,
         "freeThrowPercentage": 60,
         "effectiveFieldGoalPercentage": 79.5
-      }
-    },
-    {
-      "playerId": "espn-4433627",
-      "playerName": "Keyonte George",
-      "team": "UTA",
-      "position": "PG",
-      "age": 22,
-      "gamesPlayed": 2,
-      "gamesStarted": 2,
-      "minutesPerGame": 30.5,
-      "rank": 43,
-      "stats": {
-        "points": 20.5,
-        "assists": 7.5,
-        "totalRebounds": 2,
-        "offensiveRebounds": 0.5,
-        "defensiveRebounds": 1.5,
-        "steals": 1,
-        "blocks": 0,
-        "turnovers": 4,
-        "personalFouls": 3,
-        "fieldGoalsMade": 6.5,
-        "fieldGoalsAttempted": 12,
-        "fieldGoalPercentage": 54.2,
-        "threePointersMade": 3.5,
-        "threePointersAttempted": 6.5,
-        "threePointPercentage": 53.8,
-        "freeThrowsMade": 4,
-        "freeThrowsAttempted": 6.5,
-        "freeThrowPercentage": 61.5,
-        "effectiveFieldGoalPercentage": 68.8
       }
     },
     {
@@ -1610,6 +1610,38 @@
       }
     },
     {
+      "playerId": "espn-4277961",
+      "playerName": "Jaren Jackson Jr.",
+      "team": "UTA",
+      "position": "C",
+      "age": 27,
+      "gamesPlayed": 3,
+      "gamesStarted": 3,
+      "minutesPerGame": 31.3,
+      "rank": 51,
+      "stats": {
+        "points": 19.7,
+        "assists": 2,
+        "totalRebounds": 5.7,
+        "offensiveRebounds": 1.3,
+        "defensiveRebounds": 4.3,
+        "steals": 0.3,
+        "blocks": 1.7,
+        "turnovers": 4,
+        "personalFouls": 5,
+        "fieldGoalsMade": 6.7,
+        "fieldGoalsAttempted": 13,
+        "fieldGoalPercentage": 51.3,
+        "threePointersMade": 1.7,
+        "threePointersAttempted": 4,
+        "threePointPercentage": 41.7,
+        "freeThrowsMade": 4.7,
+        "freeThrowsAttempted": 6,
+        "freeThrowPercentage": 77.8,
+        "effectiveFieldGoalPercentage": 57.7
+      }
+    },
+    {
       "playerId": "espn-3448",
       "playerName": "Brook Lopez",
       "team": "LAC",
@@ -1618,7 +1650,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 23.5,
-      "rank": 51,
+      "rank": 52,
       "stats": {
         "points": 19.5,
         "assists": 0.5,
@@ -1639,38 +1671,6 @@
         "freeThrowsAttempted": 3.5,
         "freeThrowPercentage": 85.7,
         "effectiveFieldGoalPercentage": 78.6
-      }
-    },
-    {
-      "playerId": "espn-4277961",
-      "playerName": "Jaren Jackson Jr.",
-      "team": "UTA",
-      "position": "C",
-      "age": 27,
-      "gamesPlayed": 2,
-      "gamesStarted": 2,
-      "minutesPerGame": 30.5,
-      "rank": 52,
-      "stats": {
-        "points": 19.5,
-        "assists": 2.5,
-        "totalRebounds": 7.5,
-        "offensiveRebounds": 2,
-        "defensiveRebounds": 5.5,
-        "steals": 0.5,
-        "blocks": 2.5,
-        "turnovers": 4,
-        "personalFouls": 5,
-        "fieldGoalsMade": 6.5,
-        "fieldGoalsAttempted": 12.5,
-        "fieldGoalPercentage": 52,
-        "threePointersMade": 2,
-        "threePointersAttempted": 4,
-        "threePointPercentage": 50,
-        "freeThrowsMade": 4.5,
-        "freeThrowsAttempted": 6,
-        "freeThrowPercentage": 75,
-        "effectiveFieldGoalPercentage": 60
       }
     },
     {
@@ -2346,35 +2346,35 @@
       }
     },
     {
-      "playerId": "espn-4066336",
-      "playerName": "Lauri Markkanen",
-      "team": "UTA",
-      "position": "PF",
-      "age": 29,
-      "gamesPlayed": 2,
-      "gamesStarted": 2,
-      "minutesPerGame": 35,
+      "playerId": "espn-4433136",
+      "playerName": "Walker Kessler",
+      "team": "LAL",
+      "position": "C",
+      "age": 25,
+      "gamesPlayed": 3,
+      "gamesStarted": 3,
+      "minutesPerGame": 31,
       "rank": 74,
       "stats": {
-        "points": 17,
-        "assists": 3,
-        "totalRebounds": 7.5,
-        "offensiveRebounds": 1,
-        "defensiveRebounds": 6.5,
-        "steals": 0.5,
-        "blocks": 0.5,
-        "turnovers": 2,
-        "personalFouls": 0.5,
-        "fieldGoalsMade": 5,
-        "fieldGoalsAttempted": 13,
-        "fieldGoalPercentage": 38.5,
-        "threePointersMade": 2.5,
-        "threePointersAttempted": 8,
-        "threePointPercentage": 31.3,
-        "freeThrowsMade": 4.5,
-        "freeThrowsAttempted": 5,
-        "freeThrowPercentage": 90,
-        "effectiveFieldGoalPercentage": 48.1
+        "points": 16.7,
+        "assists": 1.3,
+        "totalRebounds": 8,
+        "offensiveRebounds": 2.3,
+        "defensiveRebounds": 5.7,
+        "steals": 1,
+        "blocks": 3,
+        "turnovers": 1.3,
+        "personalFouls": 2.3,
+        "fieldGoalsMade": 7.7,
+        "fieldGoalsAttempted": 9.3,
+        "fieldGoalPercentage": 82.1,
+        "threePointersMade": 0,
+        "threePointersAttempted": 0,
+        "threePointPercentage": 0,
+        "freeThrowsMade": 1.3,
+        "freeThrowsAttempted": 3,
+        "freeThrowPercentage": 44.4,
+        "effectiveFieldGoalPercentage": 82.1
       }
     },
     {
@@ -3626,38 +3626,6 @@
       }
     },
     {
-      "playerId": "espn-5041955",
-      "playerName": "Darryn Peterson",
-      "team": "UTA",
-      "position": "G",
-      "age": 19,
-      "gamesPlayed": 2,
-      "gamesStarted": 2,
-      "minutesPerGame": 30.5,
-      "rank": 114,
-      "stats": {
-        "points": 12,
-        "assists": 2,
-        "totalRebounds": 3.5,
-        "offensiveRebounds": 1.5,
-        "defensiveRebounds": 2,
-        "steals": 0,
-        "blocks": 0,
-        "turnovers": 0.5,
-        "personalFouls": 2.5,
-        "fieldGoalsMade": 4.5,
-        "fieldGoalsAttempted": 9.5,
-        "fieldGoalPercentage": 47.4,
-        "threePointersMade": 0.5,
-        "threePointersAttempted": 1.5,
-        "threePointPercentage": 33.3,
-        "freeThrowsMade": 2.5,
-        "freeThrowsAttempted": 3,
-        "freeThrowPercentage": 83.3,
-        "effectiveFieldGoalPercentage": 50
-      }
-    },
-    {
       "playerId": "espn-3936099",
       "playerName": "Derrick Jones Jr.",
       "team": "LAC",
@@ -3666,7 +3634,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 30.5,
-      "rank": 115,
+      "rank": 114,
       "stats": {
         "points": 12,
         "assists": 3,
@@ -3698,7 +3666,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 20,
-      "rank": 116,
+      "rank": 115,
       "stats": {
         "points": 12,
         "assists": 1.5,
@@ -3730,7 +3698,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 15.5,
-      "rank": 117,
+      "rank": 116,
       "stats": {
         "points": 12,
         "assists": 0,
@@ -3762,7 +3730,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 33,
-      "rank": 118,
+      "rank": 117,
       "stats": {
         "points": 12,
         "assists": 4,
@@ -3794,7 +3762,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 31,
-      "rank": 119,
+      "rank": 118,
       "stats": {
         "points": 12,
         "assists": 1.5,
@@ -3815,6 +3783,38 @@
         "freeThrowsAttempted": 2,
         "freeThrowPercentage": 100,
         "effectiveFieldGoalPercentage": 45.5
+      }
+    },
+    {
+      "playerId": "espn-4873138",
+      "playerName": "Ace Bailey",
+      "team": "UTA",
+      "position": "SF",
+      "age": 20,
+      "gamesPlayed": 3,
+      "gamesStarted": 2,
+      "minutesPerGame": 25,
+      "rank": 119,
+      "stats": {
+        "points": 11.7,
+        "assists": 3,
+        "totalRebounds": 8,
+        "offensiveRebounds": 3,
+        "defensiveRebounds": 5,
+        "steals": 0,
+        "blocks": 1.3,
+        "turnovers": 1.3,
+        "personalFouls": 2,
+        "fieldGoalsMade": 5,
+        "fieldGoalsAttempted": 10,
+        "fieldGoalPercentage": 50,
+        "threePointersMade": 1.3,
+        "threePointersAttempted": 4.3,
+        "threePointPercentage": 30.8,
+        "freeThrowsMade": 0.3,
+        "freeThrowsAttempted": 0.7,
+        "freeThrowPercentage": 50,
+        "effectiveFieldGoalPercentage": 56.7
       }
     },
     {
@@ -4010,38 +4010,6 @@
       }
     },
     {
-      "playerId": "espn-4397014",
-      "playerName": "Quentin Grimes",
-      "team": "LAL",
-      "position": "SG",
-      "age": 26,
-      "gamesPlayed": 2,
-      "gamesStarted": 0,
-      "minutesPerGame": 29,
-      "rank": 126,
-      "stats": {
-        "points": 11.5,
-        "assists": 4,
-        "totalRebounds": 5,
-        "offensiveRebounds": 0.5,
-        "defensiveRebounds": 4.5,
-        "steals": 1,
-        "blocks": 0.5,
-        "turnovers": 1,
-        "personalFouls": 2,
-        "fieldGoalsMade": 3.5,
-        "fieldGoalsAttempted": 6.5,
-        "fieldGoalPercentage": 53.8,
-        "threePointersMade": 1.5,
-        "threePointersAttempted": 3.5,
-        "threePointPercentage": 42.9,
-        "freeThrowsMade": 3,
-        "freeThrowsAttempted": 3,
-        "freeThrowPercentage": 100,
-        "effectiveFieldGoalPercentage": 65.4
-      }
-    },
-    {
       "playerId": "espn-4432847",
       "playerName": "Terrence Shannon Jr.",
       "team": "MIN",
@@ -4050,7 +4018,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 21,
-      "rank": 127,
+      "rank": 126,
       "stats": {
         "points": 11.5,
         "assists": 1,
@@ -4074,38 +4042,6 @@
       }
     },
     {
-      "playerId": "espn-4433137",
-      "playerName": "Ziaire Williams",
-      "team": "LAL",
-      "position": "SF",
-      "age": 25,
-      "gamesPlayed": 2,
-      "gamesStarted": 2,
-      "minutesPerGame": 27.5,
-      "rank": 128,
-      "stats": {
-        "points": 11.5,
-        "assists": 2,
-        "totalRebounds": 4,
-        "offensiveRebounds": 1.5,
-        "defensiveRebounds": 2.5,
-        "steals": 1.5,
-        "blocks": 0.5,
-        "turnovers": 1,
-        "personalFouls": 3.5,
-        "fieldGoalsMade": 4.5,
-        "fieldGoalsAttempted": 7,
-        "fieldGoalPercentage": 64.3,
-        "threePointersMade": 1,
-        "threePointersAttempted": 2.5,
-        "threePointPercentage": 40,
-        "freeThrowsMade": 1.5,
-        "freeThrowsAttempted": 1.5,
-        "freeThrowPercentage": 100,
-        "effectiveFieldGoalPercentage": 71.4
-      }
-    },
-    {
       "playerId": "espn-5214640",
       "playerName": "Kasparas Jakucionis",
       "team": "MIL",
@@ -4114,7 +4050,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 24.7,
-      "rank": 129,
+      "rank": 127,
       "stats": {
         "points": 11.3,
         "assists": 3.3,
@@ -4146,7 +4082,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 18.3,
-      "rank": 130,
+      "rank": 128,
       "stats": {
         "points": 11.3,
         "assists": 3.7,
@@ -4170,6 +4106,38 @@
       }
     },
     {
+      "playerId": "espn-4433137",
+      "playerName": "Ziaire Williams",
+      "team": "LAL",
+      "position": "SF",
+      "age": 25,
+      "gamesPlayed": 3,
+      "gamesStarted": 3,
+      "minutesPerGame": 28.3,
+      "rank": 129,
+      "stats": {
+        "points": 11.3,
+        "assists": 1.7,
+        "totalRebounds": 3.3,
+        "offensiveRebounds": 1.3,
+        "defensiveRebounds": 2,
+        "steals": 1.3,
+        "blocks": 0.3,
+        "turnovers": 0.7,
+        "personalFouls": 3,
+        "fieldGoalsMade": 4,
+        "fieldGoalsAttempted": 7.7,
+        "fieldGoalPercentage": 52.2,
+        "threePointersMade": 1.7,
+        "threePointersAttempted": 4,
+        "threePointPercentage": 41.7,
+        "freeThrowsMade": 1.7,
+        "freeThrowsAttempted": 1.7,
+        "freeThrowPercentage": 100,
+        "effectiveFieldGoalPercentage": 63
+      }
+    },
+    {
       "playerId": "espn-4431767",
       "playerName": "Christian Braun",
       "team": "DEN",
@@ -4178,7 +4146,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 36.5,
-      "rank": 131,
+      "rank": 130,
       "stats": {
         "points": 11,
         "assists": 1.5,
@@ -4210,7 +4178,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 10,
-      "rank": 132,
+      "rank": 131,
       "stats": {
         "points": 11,
         "assists": 1,
@@ -4242,7 +4210,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 25.5,
-      "rank": 133,
+      "rank": 132,
       "stats": {
         "points": 11,
         "assists": 2,
@@ -4266,38 +4234,6 @@
       }
     },
     {
-      "playerId": "espn-4397077",
-      "playerName": "Jaxson Hayes",
-      "team": "UTA",
-      "position": "C",
-      "age": 26,
-      "gamesPlayed": 2,
-      "gamesStarted": 1,
-      "minutesPerGame": 26,
-      "rank": 134,
-      "stats": {
-        "points": 11,
-        "assists": 2.5,
-        "totalRebounds": 5,
-        "offensiveRebounds": 1.5,
-        "defensiveRebounds": 3.5,
-        "steals": 1,
-        "blocks": 3.5,
-        "turnovers": 0.5,
-        "personalFouls": 3.5,
-        "fieldGoalsMade": 4.5,
-        "fieldGoalsAttempted": 5.5,
-        "fieldGoalPercentage": 81.8,
-        "threePointersMade": 0,
-        "threePointersAttempted": 0.5,
-        "threePointPercentage": 0,
-        "freeThrowsMade": 2,
-        "freeThrowsAttempted": 3.5,
-        "freeThrowPercentage": 57.1,
-        "effectiveFieldGoalPercentage": 81.8
-      }
-    },
-    {
       "playerId": "espn-3134907",
       "playerName": "Kyle Kuzma",
       "team": "MIL",
@@ -4306,7 +4242,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 3,
       "minutesPerGame": 30.7,
-      "rank": 135,
+      "rank": 133,
       "stats": {
         "points": 11,
         "assists": 3.3,
@@ -4338,7 +4274,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 18,
-      "rank": 136,
+      "rank": 134,
       "stats": {
         "points": 11,
         "assists": 1,
@@ -4370,7 +4306,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 1,
       "minutesPerGame": 23,
-      "rank": 137,
+      "rank": 135,
       "stats": {
         "points": 11,
         "assists": 5.5,
@@ -4402,7 +4338,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 20.3,
-      "rank": 138,
+      "rank": 136,
       "stats": {
         "points": 11,
         "assists": 0,
@@ -4426,6 +4362,38 @@
       }
     },
     {
+      "playerId": "espn-5041955",
+      "playerName": "Darryn Peterson",
+      "team": "UTA",
+      "position": "G",
+      "age": 19,
+      "gamesPlayed": 3,
+      "gamesStarted": 3,
+      "minutesPerGame": 30.3,
+      "rank": 137,
+      "stats": {
+        "points": 10.7,
+        "assists": 2,
+        "totalRebounds": 3.3,
+        "offensiveRebounds": 1.7,
+        "defensiveRebounds": 1.7,
+        "steals": 1,
+        "blocks": 0.3,
+        "turnovers": 0.7,
+        "personalFouls": 3.3,
+        "fieldGoalsMade": 4.3,
+        "fieldGoalsAttempted": 10.7,
+        "fieldGoalPercentage": 40.6,
+        "threePointersMade": 0.3,
+        "threePointersAttempted": 2.3,
+        "threePointPercentage": 14.3,
+        "freeThrowsMade": 1.7,
+        "freeThrowsAttempted": 2,
+        "freeThrowPercentage": 83.3,
+        "effectiveFieldGoalPercentage": 42.2
+      }
+    },
+    {
       "playerId": "espn-2991070",
       "playerName": "Jerami Grant",
       "team": "MEM",
@@ -4434,7 +4402,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 25,
-      "rank": 139,
+      "rank": 138,
       "stats": {
         "points": 10.5,
         "assists": 3,
@@ -4466,7 +4434,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 29,
-      "rank": 140,
+      "rank": 139,
       "stats": {
         "points": 10.5,
         "assists": 2.5,
@@ -4498,7 +4466,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 23,
-      "rank": 141,
+      "rank": 140,
       "stats": {
         "points": 10.5,
         "assists": 0,
@@ -4530,7 +4498,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 24.3,
-      "rank": 142,
+      "rank": 141,
       "stats": {
         "points": 10.3,
         "assists": 1,
@@ -4551,6 +4519,38 @@
         "freeThrowsAttempted": 1,
         "freeThrowPercentage": 100,
         "effectiveFieldGoalPercentage": 56
+      }
+    },
+    {
+      "playerId": "espn-4397077",
+      "playerName": "Jaxson Hayes",
+      "team": "UTA",
+      "position": "C",
+      "age": 26,
+      "gamesPlayed": 3,
+      "gamesStarted": 1,
+      "minutesPerGame": 23.7,
+      "rank": 142,
+      "stats": {
+        "points": 10.3,
+        "assists": 2,
+        "totalRebounds": 5,
+        "offensiveRebounds": 1.7,
+        "defensiveRebounds": 3.3,
+        "steals": 1,
+        "blocks": 2.3,
+        "turnovers": 0.3,
+        "personalFouls": 3,
+        "fieldGoalsMade": 4.3,
+        "fieldGoalsAttempted": 5.3,
+        "fieldGoalPercentage": 81.3,
+        "threePointersMade": 0,
+        "threePointersAttempted": 0.3,
+        "threePointPercentage": 0,
+        "freeThrowsMade": 1.7,
+        "freeThrowsAttempted": 3,
+        "freeThrowPercentage": 55.6,
+        "effectiveFieldGoalPercentage": 81.3
       }
     },
     {
@@ -4682,38 +4682,6 @@
       }
     },
     {
-      "playerId": "espn-4592691",
-      "playerName": "Jake LaRavia",
-      "team": "LAL",
-      "position": "PF",
-      "age": 24,
-      "gamesPlayed": 1,
-      "gamesStarted": 0,
-      "minutesPerGame": 18,
-      "rank": 147,
-      "stats": {
-        "points": 10,
-        "assists": 2,
-        "totalRebounds": 2,
-        "offensiveRebounds": 0,
-        "defensiveRebounds": 2,
-        "steals": 1,
-        "blocks": 0,
-        "turnovers": 1,
-        "personalFouls": 3,
-        "fieldGoalsMade": 4,
-        "fieldGoalsAttempted": 5,
-        "fieldGoalPercentage": 80,
-        "threePointersMade": 2,
-        "threePointersAttempted": 3,
-        "threePointPercentage": 66.7,
-        "freeThrowsMade": 0,
-        "freeThrowsAttempted": 0,
-        "freeThrowPercentage": 0,
-        "effectiveFieldGoalPercentage": 100
-      }
-    },
-    {
       "playerId": "espn-4432165",
       "playerName": "Jalen Suggs",
       "team": "ORL",
@@ -4722,7 +4690,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 33,
-      "rank": 148,
+      "rank": 147,
       "stats": {
         "points": 10,
         "assists": 5.5,
@@ -4754,7 +4722,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 23.5,
-      "rank": 149,
+      "rank": 148,
       "stats": {
         "points": 10,
         "assists": 4.5,
@@ -4786,7 +4754,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 3,
       "minutesPerGame": 22.3,
-      "rank": 150,
+      "rank": 149,
       "stats": {
         "points": 10,
         "assists": 0.7,
@@ -4818,7 +4786,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 23.7,
-      "rank": 151,
+      "rank": 150,
       "stats": {
         "points": 10,
         "assists": 1,
@@ -4850,7 +4818,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 3,
       "minutesPerGame": 26.7,
-      "rank": 152,
+      "rank": 151,
       "stats": {
         "points": 9.7,
         "assists": 0.3,
@@ -4882,7 +4850,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 21,
-      "rank": 153,
+      "rank": 152,
       "stats": {
         "points": 9.5,
         "assists": 2.5,
@@ -4914,7 +4882,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 21.5,
-      "rank": 154,
+      "rank": 153,
       "stats": {
         "points": 9.5,
         "assists": 1.5,
@@ -4946,7 +4914,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 19.5,
-      "rank": 155,
+      "rank": 154,
       "stats": {
         "points": 9.5,
         "assists": 1.5,
@@ -4978,7 +4946,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 30.5,
-      "rank": 156,
+      "rank": 155,
       "stats": {
         "points": 9.5,
         "assists": 3,
@@ -5010,7 +4978,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 31.5,
-      "rank": 157,
+      "rank": 156,
       "stats": {
         "points": 9.5,
         "assists": 1,
@@ -5042,7 +5010,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 20,
-      "rank": 158,
+      "rank": 157,
       "stats": {
         "points": 9.5,
         "assists": 1.5,
@@ -5074,7 +5042,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 28.5,
-      "rank": 159,
+      "rank": 158,
       "stats": {
         "points": 9.5,
         "assists": 2,
@@ -5106,7 +5074,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 19.5,
-      "rank": 160,
+      "rank": 159,
       "stats": {
         "points": 9.5,
         "assists": 2.5,
@@ -5138,7 +5106,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 17,
-      "rank": 161,
+      "rank": 160,
       "stats": {
         "points": 9.3,
         "assists": 0.3,
@@ -5170,7 +5138,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 3,
       "minutesPerGame": 33,
-      "rank": 162,
+      "rank": 161,
       "stats": {
         "points": 9.3,
         "assists": 3,
@@ -5202,7 +5170,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 20,
-      "rank": 163,
+      "rank": 162,
       "stats": {
         "points": 9,
         "assists": 1,
@@ -5226,35 +5194,35 @@
       }
     },
     {
-      "playerId": "espn-4873138",
-      "playerName": "Ace Bailey",
-      "team": "UTA",
-      "position": "SF",
-      "age": 20,
+      "playerId": "espn-4277811",
+      "playerName": "Collin Sexton",
+      "team": "LAL",
+      "position": "SG",
+      "age": 27,
       "gamesPlayed": 2,
-      "gamesStarted": 1,
-      "minutesPerGame": 23,
-      "rank": 164,
+      "gamesStarted": 0,
+      "minutesPerGame": 18,
+      "rank": 163,
       "stats": {
         "points": 9,
-        "assists": 2.5,
-        "totalRebounds": 6,
-        "offensiveRebounds": 1.5,
-        "defensiveRebounds": 4.5,
-        "steals": 0,
-        "blocks": 1.5,
-        "turnovers": 1,
-        "personalFouls": 2.5,
+        "assists": 1.5,
+        "totalRebounds": 1.5,
+        "offensiveRebounds": 0,
+        "defensiveRebounds": 1.5,
+        "steals": 1.5,
+        "blocks": 0,
+        "turnovers": 1.5,
+        "personalFouls": 2,
         "fieldGoalsMade": 3.5,
-        "fieldGoalsAttempted": 9.5,
-        "fieldGoalPercentage": 36.8,
-        "threePointersMade": 1.5,
-        "threePointersAttempted": 5.5,
-        "threePointPercentage": 27.3,
-        "freeThrowsMade": 0.5,
+        "fieldGoalsAttempted": 8.5,
+        "fieldGoalPercentage": 41.2,
+        "threePointersMade": 1,
+        "threePointersAttempted": 4,
+        "threePointPercentage": 25,
+        "freeThrowsMade": 1,
         "freeThrowsAttempted": 1,
-        "freeThrowPercentage": 50,
-        "effectiveFieldGoalPercentage": 44.7
+        "freeThrowPercentage": 100,
+        "effectiveFieldGoalPercentage": 47.1
       }
     },
     {
@@ -5266,7 +5234,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 18.5,
-      "rank": 165,
+      "rank": 164,
       "stats": {
         "points": 9,
         "assists": 4,
@@ -5298,7 +5266,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 1,
       "minutesPerGame": 20,
-      "rank": 166,
+      "rank": 165,
       "stats": {
         "points": 9,
         "assists": 2,
@@ -5330,7 +5298,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 15.5,
-      "rank": 167,
+      "rank": 166,
       "stats": {
         "points": 9,
         "assists": 0,
@@ -5362,7 +5330,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 22.5,
-      "rank": 168,
+      "rank": 167,
       "stats": {
         "points": 9,
         "assists": 3,
@@ -5394,7 +5362,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 23.3,
-      "rank": 169,
+      "rank": 168,
       "stats": {
         "points": 9,
         "assists": 1.7,
@@ -5415,6 +5383,38 @@
         "freeThrowsAttempted": 1,
         "freeThrowPercentage": 100,
         "effectiveFieldGoalPercentage": 63.2
+      }
+    },
+    {
+      "playerId": "espn-3907498",
+      "playerName": "Matisse Thybulle",
+      "team": "LAL",
+      "position": "SG",
+      "age": 29,
+      "gamesPlayed": 3,
+      "gamesStarted": 3,
+      "minutesPerGame": 24.3,
+      "rank": 169,
+      "stats": {
+        "points": 9,
+        "assists": 1.3,
+        "totalRebounds": 1.7,
+        "offensiveRebounds": 0.3,
+        "defensiveRebounds": 1.3,
+        "steals": 2,
+        "blocks": 1,
+        "turnovers": 0.3,
+        "personalFouls": 2,
+        "fieldGoalsMade": 3.3,
+        "fieldGoalsAttempted": 6.7,
+        "fieldGoalPercentage": 50,
+        "threePointersMade": 2.3,
+        "threePointersAttempted": 5,
+        "threePointPercentage": 46.7,
+        "freeThrowsMade": 0,
+        "freeThrowsAttempted": 0,
+        "freeThrowPercentage": 0,
+        "effectiveFieldGoalPercentage": 67.5
       }
     },
     {
@@ -5610,6 +5610,38 @@
       }
     },
     {
+      "playerId": "espn-4397014",
+      "playerName": "Quentin Grimes",
+      "team": "LAL",
+      "position": "SG",
+      "age": 26,
+      "gamesPlayed": 3,
+      "gamesStarted": 0,
+      "minutesPerGame": 26,
+      "rank": 176,
+      "stats": {
+        "points": 8.7,
+        "assists": 3,
+        "totalRebounds": 3.7,
+        "offensiveRebounds": 0.3,
+        "defensiveRebounds": 3.3,
+        "steals": 0.7,
+        "blocks": 0.3,
+        "turnovers": 0.7,
+        "personalFouls": 2,
+        "fieldGoalsMade": 2.7,
+        "fieldGoalsAttempted": 5,
+        "fieldGoalPercentage": 53.3,
+        "threePointersMade": 1,
+        "threePointersAttempted": 2.7,
+        "threePointPercentage": 37.5,
+        "freeThrowsMade": 2.3,
+        "freeThrowsAttempted": 2.7,
+        "freeThrowPercentage": 87.5,
+        "effectiveFieldGoalPercentage": 63.3
+      }
+    },
+    {
       "playerId": "espn-5211175",
       "playerName": "Zaccharie Risacher",
       "team": "DAL",
@@ -5618,7 +5650,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 1,
       "minutesPerGame": 30.3,
-      "rank": 176,
+      "rank": 177,
       "stats": {
         "points": 8.7,
         "assists": 1.7,
@@ -5639,38 +5671,6 @@
         "freeThrowsAttempted": 1.3,
         "freeThrowPercentage": 100,
         "effectiveFieldGoalPercentage": 42.3
-      }
-    },
-    {
-      "playerId": "espn-4683766",
-      "playerName": "Isaiah Collier",
-      "team": "UTA",
-      "position": "PG",
-      "age": 22,
-      "gamesPlayed": 2,
-      "gamesStarted": 0,
-      "minutesPerGame": 17,
-      "rank": 177,
-      "stats": {
-        "points": 8.5,
-        "assists": 5,
-        "totalRebounds": 2.5,
-        "offensiveRebounds": 0.5,
-        "defensiveRebounds": 2,
-        "steals": 0.5,
-        "blocks": 0,
-        "turnovers": 2.5,
-        "personalFouls": 1.5,
-        "fieldGoalsMade": 2.5,
-        "fieldGoalsAttempted": 6,
-        "fieldGoalPercentage": 41.7,
-        "threePointersMade": 0,
-        "threePointersAttempted": 1,
-        "threePointPercentage": 0,
-        "freeThrowsMade": 3.5,
-        "freeThrowsAttempted": 5.5,
-        "freeThrowPercentage": 63.6,
-        "effectiveFieldGoalPercentage": 41.7
       }
     },
     {
@@ -6058,38 +6058,6 @@
       }
     },
     {
-      "playerId": "espn-3907498",
-      "playerName": "Matisse Thybulle",
-      "team": "LAL",
-      "position": "SG",
-      "age": 29,
-      "gamesPlayed": 2,
-      "gamesStarted": 2,
-      "minutesPerGame": 23.5,
-      "rank": 190,
-      "stats": {
-        "points": 8,
-        "assists": 1.5,
-        "totalRebounds": 2,
-        "offensiveRebounds": 0.5,
-        "defensiveRebounds": 1.5,
-        "steals": 1.5,
-        "blocks": 1,
-        "turnovers": 0.5,
-        "personalFouls": 2.5,
-        "fieldGoalsMade": 3,
-        "fieldGoalsAttempted": 6,
-        "fieldGoalPercentage": 50,
-        "threePointersMade": 2,
-        "threePointersAttempted": 4,
-        "threePointPercentage": 50,
-        "freeThrowsMade": 0,
-        "freeThrowsAttempted": 0,
-        "freeThrowPercentage": 0,
-        "effectiveFieldGoalPercentage": 66.7
-      }
-    },
-    {
       "playerId": "espn-4601023",
       "playerName": "Oso Ighodaro",
       "team": "PHX",
@@ -6098,7 +6066,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 15,
-      "rank": 191,
+      "rank": 190,
       "stats": {
         "points": 8,
         "assists": 3,
@@ -6130,7 +6098,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 29.7,
-      "rank": 192,
+      "rank": 191,
       "stats": {
         "points": 8,
         "assists": 3,
@@ -6162,7 +6130,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 3,
       "minutesPerGame": 24,
-      "rank": 193,
+      "rank": 192,
       "stats": {
         "points": 7.7,
         "assists": 3.3,
@@ -6194,7 +6162,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 3,
       "minutesPerGame": 23.7,
-      "rank": 194,
+      "rank": 193,
       "stats": {
         "points": 7.7,
         "assists": 1.3,
@@ -6215,6 +6183,38 @@
         "freeThrowsAttempted": 0.3,
         "freeThrowPercentage": 100,
         "effectiveFieldGoalPercentage": 39.3
+      }
+    },
+    {
+      "playerId": "espn-4683766",
+      "playerName": "Isaiah Collier",
+      "team": "UTA",
+      "position": "PG",
+      "age": 22,
+      "gamesPlayed": 3,
+      "gamesStarted": 0,
+      "minutesPerGame": 15.7,
+      "rank": 194,
+      "stats": {
+        "points": 7.7,
+        "assists": 5.3,
+        "totalRebounds": 2.7,
+        "offensiveRebounds": 0.7,
+        "defensiveRebounds": 2,
+        "steals": 0.3,
+        "blocks": 0,
+        "turnovers": 2,
+        "personalFouls": 2.3,
+        "fieldGoalsMade": 2.3,
+        "fieldGoalsAttempted": 6,
+        "fieldGoalPercentage": 38.9,
+        "threePointersMade": 0,
+        "threePointersAttempted": 1.3,
+        "threePointPercentage": 0,
+        "freeThrowsMade": 3,
+        "freeThrowsAttempted": 4.7,
+        "freeThrowPercentage": 64.3,
+        "effectiveFieldGoalPercentage": 38.9
       }
     },
     {
@@ -6890,6 +6890,38 @@
       }
     },
     {
+      "playerId": "espn-4278580",
+      "playerName": "Sandro Mamukelashvili",
+      "team": "LAL",
+      "position": "C",
+      "age": 27,
+      "gamesPlayed": 3,
+      "gamesStarted": 0,
+      "minutesPerGame": 22.3,
+      "rank": 216,
+      "stats": {
+        "points": 7,
+        "assists": 1.3,
+        "totalRebounds": 4,
+        "offensiveRebounds": 0.7,
+        "defensiveRebounds": 3.3,
+        "steals": 0.7,
+        "blocks": 0.3,
+        "turnovers": 0,
+        "personalFouls": 2.3,
+        "fieldGoalsMade": 2.3,
+        "fieldGoalsAttempted": 4.3,
+        "fieldGoalPercentage": 53.8,
+        "threePointersMade": 0.7,
+        "threePointersAttempted": 1.7,
+        "threePointPercentage": 40,
+        "freeThrowsMade": 1.7,
+        "freeThrowsAttempted": 2.7,
+        "freeThrowPercentage": 62.5,
+        "effectiveFieldGoalPercentage": 61.5
+      }
+    },
+    {
       "playerId": "espn-5279129",
       "playerName": "Sergio de Larrea",
       "team": "DAL",
@@ -6898,7 +6930,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 13.7,
-      "rank": 216,
+      "rank": 217,
       "stats": {
         "points": 7,
         "assists": 1.7,
@@ -6930,7 +6962,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 16.5,
-      "rank": 217,
+      "rank": 218,
       "stats": {
         "points": 7,
         "assists": 0.5,
@@ -6962,7 +6994,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 21.5,
-      "rank": 218,
+      "rank": 219,
       "stats": {
         "points": 7,
         "assists": 1.5,
@@ -6994,7 +7026,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 18.7,
-      "rank": 219,
+      "rank": 220,
       "stats": {
         "points": 6.7,
         "assists": 3,
@@ -7026,7 +7058,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 14.3,
-      "rank": 220,
+      "rank": 221,
       "stats": {
         "points": 6.7,
         "assists": 1,
@@ -7058,7 +7090,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 15.5,
-      "rank": 221,
+      "rank": 222,
       "stats": {
         "points": 6.5,
         "assists": 0.5,
@@ -7090,7 +7122,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 11.5,
-      "rank": 222,
+      "rank": 223,
       "stats": {
         "points": 6.5,
         "assists": 0,
@@ -7122,7 +7154,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 28,
-      "rank": 223,
+      "rank": 224,
       "stats": {
         "points": 6.5,
         "assists": 2.5,
@@ -7154,7 +7186,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 23,
-      "rank": 224,
+      "rank": 225,
       "stats": {
         "points": 6.5,
         "assists": 2,
@@ -7186,7 +7218,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 15,
-      "rank": 225,
+      "rank": 226,
       "stats": {
         "points": 6.5,
         "assists": 1,
@@ -7218,7 +7250,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 21,
-      "rank": 226,
+      "rank": 227,
       "stats": {
         "points": 6.5,
         "assists": 0.5,
@@ -7239,38 +7271,6 @@
         "freeThrowsAttempted": 2,
         "freeThrowPercentage": 75,
         "effectiveFieldGoalPercentage": 55.6
-      }
-    },
-    {
-      "playerId": "espn-3133602",
-      "playerName": "Svi Mykhailiuk",
-      "team": "UTA",
-      "position": "SF",
-      "age": 29,
-      "gamesPlayed": 2,
-      "gamesStarted": 0,
-      "minutesPerGame": 20,
-      "rank": 227,
-      "stats": {
-        "points": 6.5,
-        "assists": 1.5,
-        "totalRebounds": 2.5,
-        "offensiveRebounds": 0.5,
-        "defensiveRebounds": 2,
-        "steals": 2,
-        "blocks": 0,
-        "turnovers": 0.5,
-        "personalFouls": 1.5,
-        "fieldGoalsMade": 2.5,
-        "fieldGoalsAttempted": 4.5,
-        "fieldGoalPercentage": 55.6,
-        "threePointersMade": 1,
-        "threePointersAttempted": 2.5,
-        "threePointPercentage": 40,
-        "freeThrowsMade": 0.5,
-        "freeThrowsAttempted": 1,
-        "freeThrowPercentage": 50,
-        "effectiveFieldGoalPercentage": 66.7
       }
     },
     {
@@ -7338,6 +7338,38 @@
       }
     },
     {
+      "playerId": "espn-5105839",
+      "playerName": "Brice Sensabaugh",
+      "team": "UTA",
+      "position": "SF",
+      "age": 22,
+      "gamesPlayed": 3,
+      "gamesStarted": 0,
+      "minutesPerGame": 15.7,
+      "rank": 230,
+      "stats": {
+        "points": 6.3,
+        "assists": 1.3,
+        "totalRebounds": 3.7,
+        "offensiveRebounds": 1.3,
+        "defensiveRebounds": 2.3,
+        "steals": 0,
+        "blocks": 0.3,
+        "turnovers": 1,
+        "personalFouls": 1.7,
+        "fieldGoalsMade": 2.3,
+        "fieldGoalsAttempted": 5.7,
+        "fieldGoalPercentage": 41.2,
+        "threePointersMade": 1,
+        "threePointersAttempted": 3.3,
+        "threePointPercentage": 30,
+        "freeThrowsMade": 0.7,
+        "freeThrowsAttempted": 0.7,
+        "freeThrowPercentage": 100,
+        "effectiveFieldGoalPercentage": 50
+      }
+    },
+    {
       "playerId": "espn-3134903",
       "playerName": "Gary Payton II",
       "team": "GSW",
@@ -7346,7 +7378,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 15.3,
-      "rank": 230,
+      "rank": 231,
       "stats": {
         "points": 6.3,
         "assists": 0,
@@ -7378,7 +7410,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 1,
       "minutesPerGame": 18,
-      "rank": 231,
+      "rank": 232,
       "stats": {
         "points": 6.3,
         "assists": 0.7,
@@ -7399,38 +7431,6 @@
         "freeThrowsAttempted": 0.3,
         "freeThrowPercentage": 0,
         "effectiveFieldGoalPercentage": 63.3
-      }
-    },
-    {
-      "playerId": "espn-5105839",
-      "playerName": "Brice Sensabaugh",
-      "team": "UTA",
-      "position": "SF",
-      "age": 22,
-      "gamesPlayed": 2,
-      "gamesStarted": 0,
-      "minutesPerGame": 15,
-      "rank": 232,
-      "stats": {
-        "points": 6,
-        "assists": 1.5,
-        "totalRebounds": 2.5,
-        "offensiveRebounds": 0.5,
-        "defensiveRebounds": 2,
-        "steals": 0,
-        "blocks": 0.5,
-        "turnovers": 1.5,
-        "personalFouls": 1.5,
-        "fieldGoalsMade": 2,
-        "fieldGoalsAttempted": 5,
-        "fieldGoalPercentage": 40,
-        "threePointersMade": 1,
-        "threePointersAttempted": 3,
-        "threePointPercentage": 33.3,
-        "freeThrowsMade": 1,
-        "freeThrowsAttempted": 1,
-        "freeThrowPercentage": 100,
-        "effectiveFieldGoalPercentage": 50
       }
     },
     {
@@ -7594,38 +7594,6 @@
       }
     },
     {
-      "playerId": "espn-4278580",
-      "playerName": "Sandro Mamukelashvili",
-      "team": "LAL",
-      "position": "C",
-      "age": 27,
-      "gamesPlayed": 2,
-      "gamesStarted": 0,
-      "minutesPerGame": 23,
-      "rank": 238,
-      "stats": {
-        "points": 6,
-        "assists": 2,
-        "totalRebounds": 4.5,
-        "offensiveRebounds": 1,
-        "defensiveRebounds": 3.5,
-        "steals": 1,
-        "blocks": 0,
-        "turnovers": 0,
-        "personalFouls": 3.5,
-        "fieldGoalsMade": 2.5,
-        "fieldGoalsAttempted": 4.5,
-        "fieldGoalPercentage": 55.6,
-        "threePointersMade": 0.5,
-        "threePointersAttempted": 1.5,
-        "threePointPercentage": 33.3,
-        "freeThrowsMade": 0.5,
-        "freeThrowsAttempted": 1,
-        "freeThrowPercentage": 50,
-        "effectiveFieldGoalPercentage": 61.1
-      }
-    },
-    {
       "playerId": "espn-4871145",
       "playerName": "Josh Giddey",
       "team": "CHI",
@@ -7634,7 +7602,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 3,
       "minutesPerGame": 26.3,
-      "rank": 239,
+      "rank": 238,
       "stats": {
         "points": 5.7,
         "assists": 8.3,
@@ -7666,7 +7634,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 24.5,
-      "rank": 240,
+      "rank": 239,
       "stats": {
         "points": 5.5,
         "assists": 5.5,
@@ -7698,7 +7666,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 22.5,
-      "rank": 241,
+      "rank": 240,
       "stats": {
         "points": 5.5,
         "assists": 2,
@@ -7730,7 +7698,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 20,
-      "rank": 242,
+      "rank": 241,
       "stats": {
         "points": 5.3,
         "assists": 0.7,
@@ -7762,7 +7730,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 18.7,
-      "rank": 243,
+      "rank": 242,
       "stats": {
         "points": 5.3,
         "assists": 2,
@@ -7794,7 +7762,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 20,
-      "rank": 244,
+      "rank": 243,
       "stats": {
         "points": 5.3,
         "assists": 0.7,
@@ -7826,7 +7794,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 14.5,
-      "rank": 245,
+      "rank": 244,
       "stats": {
         "points": 5,
         "assists": 0,
@@ -7858,7 +7826,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 1,
       "minutesPerGame": 11,
-      "rank": 246,
+      "rank": 245,
       "stats": {
         "points": 5,
         "assists": 1,
@@ -7890,7 +7858,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 16,
-      "rank": 247,
+      "rank": 246,
       "stats": {
         "points": 5,
         "assists": 1.5,
@@ -7914,38 +7882,6 @@
       }
     },
     {
-      "playerId": "espn-4277811",
-      "playerName": "Collin Sexton",
-      "team": "LAL",
-      "position": "SG",
-      "age": 27,
-      "gamesPlayed": 1,
-      "gamesStarted": 0,
-      "minutesPerGame": 16,
-      "rank": 248,
-      "stats": {
-        "points": 5,
-        "assists": 2,
-        "totalRebounds": 1,
-        "offensiveRebounds": 0,
-        "defensiveRebounds": 1,
-        "steals": 3,
-        "blocks": 0,
-        "turnovers": 1,
-        "personalFouls": 2,
-        "fieldGoalsMade": 2,
-        "fieldGoalsAttempted": 6,
-        "fieldGoalPercentage": 33.3,
-        "threePointersMade": 1,
-        "threePointersAttempted": 3,
-        "threePointPercentage": 33.3,
-        "freeThrowsMade": 0,
-        "freeThrowsAttempted": 0,
-        "freeThrowPercentage": 0,
-        "effectiveFieldGoalPercentage": 41.7
-      }
-    },
-    {
       "playerId": "espn-4065732",
       "playerName": "De'Andre Hunter",
       "team": "SAC",
@@ -7954,7 +7890,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 22.5,
-      "rank": 249,
+      "rank": 247,
       "stats": {
         "points": 5,
         "assists": 1,
@@ -7986,7 +7922,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 18.7,
-      "rank": 250,
+      "rank": 248,
       "stats": {
         "points": 5,
         "assists": 1.3,
@@ -8018,7 +7954,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 12,
-      "rank": 251,
+      "rank": 249,
       "stats": {
         "points": 5,
         "assists": 0.5,
@@ -8050,7 +7986,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 2,
       "minutesPerGame": 20,
-      "rank": 252,
+      "rank": 250,
       "stats": {
         "points": 5,
         "assists": 2.5,
@@ -8074,6 +8010,38 @@
       }
     },
     {
+      "playerId": "espn-4592691",
+      "playerName": "Jake LaRavia",
+      "team": "LAL",
+      "position": "PF",
+      "age": 24,
+      "gamesPlayed": 2,
+      "gamesStarted": 0,
+      "minutesPerGame": 16.5,
+      "rank": 251,
+      "stats": {
+        "points": 5,
+        "assists": 1.5,
+        "totalRebounds": 3,
+        "offensiveRebounds": 0.5,
+        "defensiveRebounds": 2.5,
+        "steals": 1.5,
+        "blocks": 0.5,
+        "turnovers": 0.5,
+        "personalFouls": 2.5,
+        "fieldGoalsMade": 2,
+        "fieldGoalsAttempted": 4,
+        "fieldGoalPercentage": 50,
+        "threePointersMade": 1,
+        "threePointersAttempted": 2.5,
+        "threePointPercentage": 40,
+        "freeThrowsMade": 0,
+        "freeThrowsAttempted": 0,
+        "freeThrowPercentage": 0,
+        "effectiveFieldGoalPercentage": 62.5
+      }
+    },
+    {
       "playerId": "espn-5105806",
       "playerName": "Jett Howard",
       "team": "DAL",
@@ -8082,7 +8050,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 4,
-      "rank": 253,
+      "rank": 252,
       "stats": {
         "points": 5,
         "assists": 0,
@@ -8114,7 +8082,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 13.5,
-      "rank": 254,
+      "rank": 253,
       "stats": {
         "points": 5,
         "assists": 2.5,
@@ -8146,7 +8114,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 8.5,
-      "rank": 255,
+      "rank": 254,
       "stats": {
         "points": 5,
         "assists": 0.5,
@@ -8178,7 +8146,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 6,
-      "rank": 256,
+      "rank": 255,
       "stats": {
         "points": 5,
         "assists": 0,
@@ -8210,7 +8178,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 2,
-      "rank": 257,
+      "rank": 256,
       "stats": {
         "points": 5,
         "assists": 1,
@@ -8231,6 +8199,38 @@
         "freeThrowsAttempted": 0,
         "freeThrowPercentage": 0,
         "effectiveFieldGoalPercentage": 83.3
+      }
+    },
+    {
+      "playerId": "espn-3133602",
+      "playerName": "Svi Mykhailiuk",
+      "team": "UTA",
+      "position": "SF",
+      "age": 29,
+      "gamesPlayed": 3,
+      "gamesStarted": 0,
+      "minutesPerGame": 18,
+      "rank": 257,
+      "stats": {
+        "points": 5,
+        "assists": 1,
+        "totalRebounds": 2.7,
+        "offensiveRebounds": 0.7,
+        "defensiveRebounds": 2,
+        "steals": 1.3,
+        "blocks": 0,
+        "turnovers": 0.3,
+        "personalFouls": 2,
+        "fieldGoalsMade": 2,
+        "fieldGoalsAttempted": 4.3,
+        "fieldGoalPercentage": 46.2,
+        "threePointersMade": 0.7,
+        "threePointersAttempted": 2.3,
+        "threePointPercentage": 28.6,
+        "freeThrowsMade": 0.3,
+        "freeThrowsAttempted": 0.7,
+        "freeThrowPercentage": 50,
+        "effectiveFieldGoalPercentage": 53.8
       }
     },
     {
@@ -9738,38 +9738,6 @@
       }
     },
     {
-      "playerId": "espn-3155535",
-      "playerName": "Kevon Looney",
-      "team": "LAL",
-      "position": "C",
-      "age": 30,
-      "gamesPlayed": 2,
-      "gamesStarted": 0,
-      "minutesPerGame": 10,
-      "rank": 305,
-      "stats": {
-        "points": 3,
-        "assists": 0.5,
-        "totalRebounds": 3,
-        "offensiveRebounds": 1.5,
-        "defensiveRebounds": 1.5,
-        "steals": 0,
-        "blocks": 0,
-        "turnovers": 0,
-        "personalFouls": 1.5,
-        "fieldGoalsMade": 1.5,
-        "fieldGoalsAttempted": 2.5,
-        "fieldGoalPercentage": 60,
-        "threePointersMade": 0,
-        "threePointersAttempted": 0,
-        "threePointPercentage": 0,
-        "freeThrowsMade": 0,
-        "freeThrowsAttempted": 0,
-        "freeThrowPercentage": 0,
-        "effectiveFieldGoalPercentage": 60
-      }
-    },
-    {
       "playerId": "espn-4997528",
       "playerName": "Nikola Jovic",
       "team": "MIA",
@@ -9778,7 +9746,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 14.3,
-      "rank": 306,
+      "rank": 305,
       "stats": {
         "points": 3,
         "assists": 1,
@@ -9810,7 +9778,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 9.5,
-      "rank": 307,
+      "rank": 306,
       "stats": {
         "points": 3,
         "assists": 1.5,
@@ -9842,7 +9810,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 10.5,
-      "rank": 308,
+      "rank": 307,
       "stats": {
         "points": 3,
         "assists": 0,
@@ -9874,7 +9842,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 7,
-      "rank": 309,
+      "rank": 308,
       "stats": {
         "points": 3,
         "assists": 1,
@@ -9906,7 +9874,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 8,
-      "rank": 310,
+      "rank": 309,
       "stats": {
         "points": 3,
         "assists": 0,
@@ -9938,7 +9906,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 6.3,
-      "rank": 311,
+      "rank": 310,
       "stats": {
         "points": 2.7,
         "assists": 0.7,
@@ -9959,6 +9927,38 @@
         "freeThrowsAttempted": 1,
         "freeThrowPercentage": 66.7,
         "effectiveFieldGoalPercentage": 75
+      }
+    },
+    {
+      "playerId": "espn-3155535",
+      "playerName": "Kevon Looney",
+      "team": "LAL",
+      "position": "C",
+      "age": 30,
+      "gamesPlayed": 3,
+      "gamesStarted": 0,
+      "minutesPerGame": 8.3,
+      "rank": 311,
+      "stats": {
+        "points": 2.7,
+        "assists": 0.3,
+        "totalRebounds": 2.7,
+        "offensiveRebounds": 1.3,
+        "defensiveRebounds": 1.3,
+        "steals": 0,
+        "blocks": 0,
+        "turnovers": 0,
+        "personalFouls": 1.7,
+        "fieldGoalsMade": 1,
+        "fieldGoalsAttempted": 2,
+        "fieldGoalPercentage": 50,
+        "threePointersMade": 0,
+        "threePointersAttempted": 0,
+        "threePointPercentage": 0,
+        "freeThrowsMade": 0.7,
+        "freeThrowsAttempted": 0.7,
+        "freeThrowPercentage": 100,
+        "effectiveFieldGoalPercentage": 50
       }
     },
     {
@@ -10954,6 +10954,38 @@
       }
     },
     {
+      "playerId": "espn-4065663",
+      "playerName": "Josh Okogie",
+      "team": "UTA",
+      "position": "SG",
+      "age": 28,
+      "gamesPlayed": 2,
+      "gamesStarted": 0,
+      "minutesPerGame": 9,
+      "rank": 343,
+      "stats": {
+        "points": 1,
+        "assists": 1,
+        "totalRebounds": 1.5,
+        "offensiveRebounds": 0.5,
+        "defensiveRebounds": 1,
+        "steals": 0.5,
+        "blocks": 0,
+        "turnovers": 1,
+        "personalFouls": 3,
+        "fieldGoalsMade": 0.5,
+        "fieldGoalsAttempted": 1.5,
+        "fieldGoalPercentage": 33.3,
+        "threePointersMade": 0,
+        "threePointersAttempted": 0.5,
+        "threePointPercentage": 0,
+        "freeThrowsMade": 0,
+        "freeThrowsAttempted": 0,
+        "freeThrowPercentage": 0,
+        "effectiveFieldGoalPercentage": 33.3
+      }
+    },
+    {
       "playerId": "espn-4897449",
       "playerName": "Malevy Leons",
       "team": "GSW",
@@ -10962,7 +10994,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 6.5,
-      "rank": 343,
+      "rank": 344,
       "stats": {
         "points": 1,
         "assists": 0,
@@ -10994,7 +11026,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 11,
-      "rank": 344,
+      "rank": 345,
       "stats": {
         "points": 1,
         "assists": 0,
@@ -11026,7 +11058,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 12,
-      "rank": 345,
+      "rank": 346,
       "stats": {
         "points": 1,
         "assists": 0,
@@ -11058,7 +11090,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 4,
-      "rank": 346,
+      "rank": 347,
       "stats": {
         "points": 1,
         "assists": 0,
@@ -11090,7 +11122,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 3,
-      "rank": 347,
+      "rank": 348,
       "stats": {
         "points": 1,
         "assists": 0,
@@ -11122,7 +11154,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 10,
-      "rank": 348,
+      "rank": 349,
       "stats": {
         "points": 1,
         "assists": 0.5,
@@ -11154,7 +11186,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 11.3,
-      "rank": 349,
+      "rank": 350,
       "stats": {
         "points": 0.7,
         "assists": 0.7,
@@ -11186,7 +11218,7 @@
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 10.7,
-      "rank": 350,
+      "rank": 351,
       "stats": {
         "points": 0.7,
         "assists": 1.3,
@@ -11218,7 +11250,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 3,
-      "rank": 351,
+      "rank": 352,
       "stats": {
         "points": 0.5,
         "assists": 1,
@@ -11250,7 +11282,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 9,
-      "rank": 352,
+      "rank": 353,
       "stats": {
         "points": 0.5,
         "assists": 1.5,
@@ -11282,7 +11314,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 4,
-      "rank": 353,
+      "rank": 354,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -11314,7 +11346,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 1,
-      "rank": 354,
+      "rank": 355,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -11346,7 +11378,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 1.5,
-      "rank": 355,
+      "rank": 356,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -11378,7 +11410,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 1.5,
-      "rank": 356,
+      "rank": 357,
       "stats": {
         "points": 0,
         "assists": 0.5,
@@ -11410,7 +11442,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 3.5,
-      "rank": 357,
+      "rank": 358,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -11442,7 +11474,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 1,
-      "rank": 358,
+      "rank": 359,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -11474,7 +11506,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 2,
-      "rank": 359,
+      "rank": 360,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -11506,7 +11538,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 3,
-      "rank": 360,
+      "rank": 361,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -11538,7 +11570,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 7,
-      "rank": 361,
+      "rank": 362,
       "stats": {
         "points": 0,
         "assists": 0.5,
@@ -11570,7 +11602,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 2,
-      "rank": 362,
+      "rank": 363,
       "stats": {
         "points": 0,
         "assists": 0.5,
@@ -11602,7 +11634,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 3,
-      "rank": 363,
+      "rank": 364,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -11634,7 +11666,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 1.5,
-      "rank": 364,
+      "rank": 365,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -11666,7 +11698,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 12.5,
-      "rank": 365,
+      "rank": 366,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -11698,7 +11730,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 2,
-      "rank": 366,
+      "rank": 367,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -11730,7 +11762,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 5,
-      "rank": 367,
+      "rank": 368,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -11762,7 +11794,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 7,
-      "rank": 368,
+      "rank": 369,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -11794,7 +11826,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 2,
-      "rank": 369,
+      "rank": 370,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -11826,7 +11858,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 13,
-      "rank": 370,
+      "rank": 371,
       "stats": {
         "points": 0,
         "assists": 1,
@@ -11858,7 +11890,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 8,
-      "rank": 371,
+      "rank": 372,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -11890,7 +11922,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 3,
-      "rank": 372,
+      "rank": 373,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -11914,30 +11946,30 @@
       }
     },
     {
-      "playerId": "espn-4065663",
-      "playerName": "Josh Okogie",
+      "playerId": "espn-4432811",
+      "playerName": "Josh Green",
       "team": "UTA",
       "position": "SG",
-      "age": 28,
+      "age": 25,
       "gamesPlayed": 1,
       "gamesStarted": 0,
-      "minutesPerGame": 8,
-      "rank": 373,
+      "minutesPerGame": 3,
+      "rank": 374,
       "stats": {
         "points": 0,
-        "assists": 0,
-        "totalRebounds": 1,
+        "assists": 1,
+        "totalRebounds": 0,
         "offensiveRebounds": 0,
-        "defensiveRebounds": 1,
+        "defensiveRebounds": 0,
         "steals": 0,
         "blocks": 0,
         "turnovers": 0,
-        "personalFouls": 1,
+        "personalFouls": 0,
         "fieldGoalsMade": 0,
-        "fieldGoalsAttempted": 1,
+        "fieldGoalsAttempted": 0,
         "fieldGoalPercentage": 0,
         "threePointersMade": 0,
-        "threePointersAttempted": 1,
+        "threePointersAttempted": 0,
         "threePointPercentage": 0,
         "freeThrowsMade": 0,
         "freeThrowsAttempted": 0,
@@ -11954,7 +11986,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 1,
-      "rank": 374,
+      "rank": 375,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -11986,7 +12018,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 1,
-      "rank": 375,
+      "rank": 376,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -12018,7 +12050,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 13,
-      "rank": 376,
+      "rank": 377,
       "stats": {
         "points": 0,
         "assists": 1,
@@ -12050,7 +12082,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 5,
-      "rank": 377,
+      "rank": 378,
       "stats": {
         "points": 0,
         "assists": 2,
@@ -12082,7 +12114,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 4,
-      "rank": 378,
+      "rank": 379,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -12114,7 +12146,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 3,
-      "rank": 379,
+      "rank": 380,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -12146,7 +12178,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 12,
-      "rank": 380,
+      "rank": 381,
       "stats": {
         "points": 0,
         "assists": 2,
@@ -12178,7 +12210,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 1,
-      "rank": 381,
+      "rank": 382,
       "stats": {
         "points": 0,
         "assists": 1,
@@ -12210,7 +12242,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 2,
-      "rank": 382,
+      "rank": 383,
       "stats": {
         "points": 0,
         "assists": 1,
@@ -12242,7 +12274,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 4.5,
-      "rank": 383,
+      "rank": 384,
       "stats": {
         "points": 0,
         "assists": 0.5,
@@ -12274,7 +12306,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 0,
-      "rank": 384,
+      "rank": 385,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -12306,7 +12338,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 10,
-      "rank": 385,
+      "rank": 386,
       "stats": {
         "points": 0,
         "assists": 3,
@@ -12338,7 +12370,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 1,
-      "rank": 386,
+      "rank": 387,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -12370,7 +12402,7 @@
       "gamesPlayed": 2,
       "gamesStarted": 0,
       "minutesPerGame": 3,
-      "rank": 387,
+      "rank": 388,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -12402,7 +12434,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 2,
-      "rank": 388,
+      "rank": 389,
       "stats": {
         "points": 0,
         "assists": 0,
@@ -12434,7 +12466,7 @@
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 1,
-      "rank": 389,
+      "rank": 390,
       "stats": {
         "points": 0,
         "assists": 0,

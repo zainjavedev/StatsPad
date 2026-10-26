@@ -2,7 +2,7 @@
   "season": "2026-27",
   "seasonType": "Preseason",
   "description": "NBA player per-game statistics for the 2026-27 preseason",
-  "lastUpdated": "2026-10-25",
+  "lastUpdated": "2026-10-26",
   "source": {
     "name": "ESPN preseason box scores",
     "url": "https://www.espn.com/nba/schedule"
@@ -9806,7 +9806,7 @@
       "playerName": "Cormac Ryan",
       "team": "MIL",
       "position": "SG",
-      "age": 27,
+      "age": 28,
       "gamesPlayed": 3,
       "gamesStarted": 0,
       "minutesPerGame": 15.7,
