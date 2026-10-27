@@ -45,12 +45,18 @@ export default function PlayerGame({gameId, box, plays, team, player, onClose, o
   const top = Math.max(1, ...series.map(([, value]) => value));
   const assists = assisted.map(entry => ({...entry, name: nameOf(entry.id)})).filter(entry => entry.name);
   const others = useMemo(() => performancesOf(box, gameId).filter(line => String(line.player.id) !== String(player.id)).sort((a, b) => num(b.player.stats.PTS) - num(a.player.stats.PTS) || b.rating - a.rating).slice(0, 4), [box, gameId, player.id]);
+  const strip = useMemo(() => performancesOf(box, gameId).sort((a, b) => rating(b.player.stats) - rating(a.player.stats)).slice(0, 12), [box, gameId]);
   const assistPts = assisted.reduce((sum, entry) => sum + entry.pts, 0);
   const photo = id => team.players.find(entry => entry.id === id)?.photo;
   const cell = (name, value) => <div className={`pg-cell${name === '+/-' ? (num(value) > 0 ? ' pos' : num(value) < 0 ? ' neg' : '') : ''}`} key={name}><strong>{value}</strong><small>{name}</small></div>;
   const done = (made, tried) => `${made}/${tried}`;
 
   return <section className="pg" style={{'--pg': accent, '--pgraw': '#3a3a3d'}}>
+    <div className="pg-strip" role="tablist" aria-label="Players in this game">
+      {strip.map(line => <button type="button" role="tab" key={line.player.id} aria-selected={String(line.player.id) === String(player.id)} className={String(line.player.id) === String(player.id) ? 'on' : ''} onClick={() => onPick(line.player.id)} title={line.player.name}>
+        {line.player.photo ? <img src={line.player.photo} alt=""/> : <i/>}<b>{rating(line.player.stats).toFixed(1)}</b>
+      </button>)}
+    </div>
     <nav className="pg-crumbs" aria-label="Breadcrumb">
       <a href="/schedule">Schedule</a><ChevronRight size={14} aria-hidden="true"/>
       <button type="button" onClick={onClose}>{team.abbr} {game.home ? 'vs' : '@'} {other.abbr}</button><ChevronRight size={14} aria-hidden="true"/>
