@@ -42,6 +42,9 @@ jobs:
       - run: node scripts/build-preseason-stats.mjs
       - run: node scripts/build-regular-box-stats.mjs
       - run: node scripts/prune-rosters.mjs
+      - name: Install dependencies for the Postgres sync
+        if: env.DATABASE_URL != ''
+        run: npm ci --omit=dev --ignore-scripts
       - name: Sync finished games to Postgres
         if: env.DATABASE_URL != ''
         continue-on-error: true
