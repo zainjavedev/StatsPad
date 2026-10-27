@@ -4603,3 +4603,31 @@ body:has(.seo-copy)>main{order:1}
 .seo-copy th{color:var(--text-3);font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
 .seo-copy .table-wrap,.seo-copy div:has(>table){overflow-x:auto}
 @media(max-width:520px){.seo-copy article{padding:26px 16px 120px}.seo-copy table{font-size:13px}}
+
+/* iPhone-width pass (390px): season tiles on the player page sit five across in two full rows, ladder stat lines stay on one line, long names in the leader lists wrap instead of cutting off. */
+@media(max-width:700px){
+  .pf-stats-wrap{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+  .pf-stat{padding:9px 6px 8px;gap:2px;border-radius:11px;text-align:center}
+  .pf-stat strong{font-size:19px;letter-spacing:-.03em}
+  .pf-stat span{font-size:9.5px;letter-spacing:.05em}
+  .pf-stat small{font-size:10px}
+}
+@media(max-width:520px){
+  .ladder .ld-list li .ldc .rp-top,.ladder .ld-list li.top3 .ldc .rp-top{display:flex;flex-direction:column;gap:1px;overflow:visible;white-space:normal;text-overflow:clip;line-height:1.2}
+  .ladder .ld-list li .ldc .rp-top small,.ladder .ld-list li.top3 .ldc .rp-top small{font-size:11px;color:var(--text-3)}
+  .ladder .ld-list li .ldc .rp-trio,.ladder .ld-list li.top3 .ldc .rp-trio{flex-wrap:nowrap;gap:0 8px;font-size:11px;white-space:nowrap}
+  .ladder .ld-list li .ldc .rp-trio b,.ladder .ld-list li.top3 .ldc .rp-trio b{font-size:16px;margin-right:1px}
+  .statpage-who b{display:block;white-space:normal;overflow:visible;text-overflow:clip;line-height:1.2}
+}
+@media(max-width:520px){
+  .gd-cards .rp-trio{flex-wrap:nowrap;gap:2px 11px;font-size:13px;white-space:nowrap}
+  .gd-cards .rp-trio b{font-size:26px;margin-right:3px}
+  .team-games .game-list li{grid-template-columns:minmax(0,1fr) 30px;gap:3px 10px;padding:9px 0}
+  .team-games .game-list li>.game-when{grid-column:1/-1;grid-row:1;white-space:nowrap}
+  .team-games .game-list li>.game-line{grid-column:1;grid-row:2}
+  .team-games .game-list li>.game-result{grid-column:2;grid-row:2}
+}
+@media(max-width:520px){
+  .perf-name b{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.2}
+  .rp-card .rp-top{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.2}
+}
