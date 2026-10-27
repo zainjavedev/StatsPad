@@ -5,6 +5,8 @@ import ShotChart from './ShotChart';
 import {PerfCard, PerfSkeleton} from './RecentPerformances';
 import { bestOfNight, performancesOf } from '../lib/performances';
 import { finished, loadSchedule } from '../lib/schedule';
+import { loadBoxscore } from '../lib/boxscore';
+import { navigate } from '../lib/nav';
 import { playerUrl } from '../lib/routes';
 import { assistShotsOf, fps, quarterStats, rating, shotsOf, tagsOf, total, tsPct, fgPct } from '../lib/playerGame';
 
@@ -45,17 +47,33 @@ export default function PlayerGame({gameId, box, plays, team, player, onClose, o
   const top = Math.max(1, ...series.map(([, value]) => value));
   const assists = assisted.map(entry => ({...entry, name: nameOf(entry.id)})).filter(entry => entry.name);
   const others = useMemo(() => performancesOf(box, gameId).filter(line => String(line.player.id) !== String(player.id)).sort((a, b) => num(b.player.stats.PTS) - num(a.player.stats.PTS) || b.rating - a.rating).slice(0, 4), [box, gameId, player.id]);
-  const strip = useMemo(() => performancesOf(box, gameId).sort((a, b) => rating(b.player.stats) - rating(a.player.stats)).slice(0, 12), [box, gameId]);
+  const [history, setHistory] = useState(null);
+  useEffect(() => {
+    let live = true;
+    setHistory(null);
+    loadSchedule().then(async all => {
+      const games = all.filter(entry => entry.state === 'post' && !entry.preseason && String(entry.id) !== String(gameId) && (entry.away.abbr === team.abbr || entry.home.abbr === team.abbr)).slice(-8).reverse();
+      const boxes = await Promise.all(games.map(entry => loadBoxscore(entry.id).catch(() => null)));
+      const found = boxes.map((past, index) => {
+        const mine = past?.teams?.flatMap(side => side.players.map(entry => ({entry, abbr: side.abbr}))).find(({entry}) => String(entry.id) === String(player.id) && !entry.out);
+        return mine && {gameId: games[index].id, grade: rating(mine.entry.stats), opp: mine.abbr === past.away.abbr ? past.home.abbr : past.away.abbr, home: mine.abbr === past.home.abbr, date: games[index].date};
+      }).filter(Boolean);
+      if (live) setHistory(found);
+    }).catch(() => { if (live) setHistory([]); });
+    return () => { live = false; };
+  }, [gameId, player.id, team.abbr]);
   const assistPts = assisted.reduce((sum, entry) => sum + entry.pts, 0);
   const photo = id => team.players.find(entry => entry.id === id)?.photo;
   const cell = (name, value) => <div className={`pg-cell${name === '+/-' ? (num(value) > 0 ? ' pos' : num(value) < 0 ? ' neg' : '') : ''}`} key={name}><strong>{value}</strong><small>{name}</small></div>;
   const done = (made, tried) => `${made}/${tried}`;
 
   return <section className="pg" style={{'--pg': accent, '--pgraw': '#3a3a3d'}}>
-    <div className="pg-strip" role="tablist" aria-label="Players in this game">
-      {strip.map(line => <button type="button" role="tab" key={line.player.id} aria-selected={String(line.player.id) === String(player.id)} className={String(line.player.id) === String(player.id) ? 'on' : ''} onClick={() => onPick(line.player.id)} title={line.player.name}>
-        {line.player.photo ? <img src={line.player.photo} alt=""/> : <i/>}<b>{rating(line.player.stats).toFixed(1)}</b>
-      </button>)}
+    <div className="pg-strip" aria-label={`${player.name}'s recent games`}>
+      <span className="pg-chip on" aria-current="true">{player.photo ? <img src={player.photo} alt=""/> : <i/>}<b>{grade.toFixed(1)}</b><small>{game.home ? 'vs' : '@'} {other.abbr}</small></span>
+      {history === null && [0, 1, 2, 3].map(index => <span key={index} className="pg-chip ghost"><i/></span>)}
+      {history?.map(past => <a key={past.gameId} className="pg-chip" href={`/games/${past.gameId}?player=${player.id}`} onClick={event => { event.preventDefault(); navigate(`/games/${past.gameId}?player=${player.id}`); }} title={`${past.home ? 'vs' : '@'} ${past.opp}`}>
+        {player.photo ? <img src={player.photo} alt=""/> : <i/>}<b>{past.grade.toFixed(1)}</b><small>{past.home ? 'vs' : '@'} {past.opp}</small>
+      </a>)}
     </div>
     <nav className="pg-crumbs" aria-label="Breadcrumb">
       <a href="/schedule">Schedule</a><ChevronRight size={14} aria-hidden="true"/>
