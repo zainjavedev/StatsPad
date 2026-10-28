@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 
 /* One footer for every page: where to go, where the numbers come from, and that this is a fan project. */
-const LINKS = [['Home', '/'], ['Schedule', '/schedule'], ['Scores', '/scores'], ['Standings', '/standings'], ['Injuries', '/injuries'], ['Leaders', '/stats/points'], ['Compare', '/compare'], ['Lineups', '/lineups'], ['Blog', '/blog'], ['About', '/about'], ['Contact', '/contact'], ['Terms', '/terms'], ['Privacy', '/privacy']];
+const LINKS = [['Home', '/'], ['Schedule', '/schedule'], ['Scores', '/scores'], ['Standings', '/standings'], ['Injuries', '/injuries'], ['Leaders', '/stats/points'], ['Team leaders', '/stats/teams'], ['Compare', '/compare'], ['Lineups', '/lineups'], ['Blog', '/blog'], ['About', '/about'], ['Contact', '/contact'], ['Terms', '/terms'], ['Privacy', '/privacy']];
 
 export default function SiteFooter() {
   return <footer className="site-footer">

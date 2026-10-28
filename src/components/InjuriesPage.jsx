@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { REFRESH, TIERS, loadInjuries, loadStatLines } from '../lib/injuries';
 import { TierIcon } from './InjuryMark';
 import { InjuryRowsSkeleton } from './Skeletons';
-import { espnLogoUrl } from '../lib/teams';
+import { TEAMS, espnLogoUrl } from '../lib/teams';
 
 /* Everyone on the league's injury report, a bandage for the small ones, a first aid box for the
    real absences, an ambulance for the season-enders, each with a mini card of what they average. */
@@ -65,6 +65,14 @@ export default function InjuriesPage() {
       .sort((a, b) => (lines.get(b.slug)?.points ?? -1) - (lines.get(a.slug)?.points ?? -1) || a.name.localeCompare(b.name));
   }, [items, lines, tier]);
 
+  /* One section per club, the most hurt first; players inside keep the scoring order. */
+  const groups = useMemo(() => {
+    if (!shown) return null;
+    const byTeam = new Map();
+    shown.forEach(item => byTeam.set(item.team, [...(byTeam.get(item.team) ?? []), item]));
+    return [...byTeam].sort((a, b) => b[1].length - a[1].length || TEAMS[a[0]].name.localeCompare(TEAMS[b[0]].name));
+  }, [shown]);
+
   return <section className="inj">
     <div className="sched-head">
       <h1>NBA injury report</h1>
@@ -77,7 +85,10 @@ export default function InjuriesPage() {
     </div>
     {failed && <p className="inj-empty">Couldn&rsquo;t load the injury report.</p>}
     {shown && !failed && !shown.length && <p className="inj-empty">No injuries listed.</p>}
-    <div className="inj-flat">{shown ? <ul className="rp-list inj-list">{shown.map(item => <Card key={item.id} item={item} line={lines.get(item.slug)}/>)}</ul> : <InjuryRowsSkeleton/>}</div>
+    <div className="inj-flat">{groups ? groups.map(([code, members]) => <section key={code} className="inj-team">
+      <h2><img src={espnLogoUrl(code)} alt=""/>{TEAMS[code].name}<small>{members.length} hurt</small></h2>
+      <ul className="rp-list inj-list">{members.map(item => <Card key={item.id} item={item} line={lines.get(item.slug)}/>)}</ul>
+    </section>) : <InjuryRowsSkeleton/>}</div>
     <p className="inj-source">ESPN injury report. Return dates are estimates.</p>
   </section>;
 }

@@ -8,7 +8,6 @@ export const dynamicParams = false;
 export const generateStaticParams = () => routesUnder('/ladders').map(slug => ({slug}));
 export const generateMetadata = ({params}) => seoMetadata(`/ladders/${params.slug}`);
 
-const dateFormat = new Intl.DateTimeFormat('en-US', {month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC'});
 const photo = id => `https://a.espncdn.com/i/headshots/nba/players/full/${id}.png`;
 
 /* How far a player moved since the night before: an arrow and the places, or NEW, or a dash. */
@@ -30,7 +29,6 @@ export default function Ladder({params}) {
     <main className="lu-main">
       <h1>NBA {ladder.name} ladder, 2026–27</h1>
       <p className="lu-lede">{ladder.method}</p>
-      <p className="lu-updated">Through <time dateTime={ladder.through}>{dateFormat.format(new Date(`${ladder.through}T12:00:00Z`))}</time>, from ESPN box scores. <a href="/about">How the numbers work</a></p>
       <section className="ladder ldp-cards" aria-label={`${ladder.name} ladder`}>
         <h2 className="ldp-h2">{ladder.name} ladder: {ladder.key === 'mvp' ? `top ${rows.length}` : `all ${rows.length} rookies`}</h2>
         <ol className="ld-list">

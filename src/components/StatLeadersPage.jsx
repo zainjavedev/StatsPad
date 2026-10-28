@@ -4,6 +4,7 @@ import { LEADERS } from '../lib/statLeaders';
 import { qualified } from '../lib/season';
 import { navigate } from '../lib/nav';
 import { TEAMS, espnLogoUrl, teamCodeOf } from '../lib/teams';
+import { LeadersSwitch } from './TeamLeadersPage';
 
 /* Everyone ranked on one stat: a long list of cards, the top three set apart. */
 
@@ -20,6 +21,7 @@ export default function StatLeadersPage({slug, players, playerIds, Art, onOpen})
   const rank = ranked.map((_, index) => index + 1); // ties run in alphabetical order, each with its own number
   return <section className="statpage">
     <button className="statpage-back" onClick={() => navigate('/')}><ArrowLeft size={15}/> Home</button>
+    <LeadersSwitch active="players"/>
     <h1>{entry.label} leaders</h1>
     <p>{entry.unit} · top {ranked.length}</p>
     <div className="statpage-tabs" role="group" aria-label="Stat">{LEADERS.map(item => <button key={item.slug} className={item.slug === entry.slug ? 'active' : ''} onClick={() => navigate(`/stats/${item.slug}`)}>{item.label}</button>)}</div>

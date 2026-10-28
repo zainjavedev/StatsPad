@@ -4820,3 +4820,13 @@ section.pg .pg-hero .pg-share{margin:0!important}
 .inj-list.rp-skeleton .rp-face>i{display:block;background:var(--ink-2)}
 .inj-tabs i{margin-left:5px;font-style:normal;font-weight:600;font-variant-numeric:tabular-nums;opacity:.6}
 .inj-peek .inj-news{display:none}
+.inj-team{margin-top:18px}
+.inj-team h2{display:flex;align-items:center;gap:10px;margin:0;padding:0 2px 8px;border-bottom:1px solid var(--line);font-size:16px;font-weight:800}
+.inj-team h2 img{width:26px;height:26px;object-fit:contain}
+.inj-team h2 small{margin-left:auto;color:var(--text-3);font-size:12.5px;font-weight:700}
+.inj-team .rp-list>li:last-child{border-bottom:0}
+@media(max-width:600px){.inj-team{margin-top:10px}.inj-team h2{font-size:15px;padding-bottom:6px}.inj-team h2 img{width:22px;height:22px}}
+.lead-switch{margin:0 0 14px}
+.lead-switch button{font-size:15px}
+.statpage-art.team-logo{border-radius:0;object-fit:contain;background:none;padding:6px}
+.lead-switch{justify-content:flex-start!important;gap:26px!important}

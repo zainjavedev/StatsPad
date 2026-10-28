@@ -12,7 +12,6 @@ import { TEAMS, espnLogoUrl } from '../lib/teams';
 /* false when the file is missing, so the skeleton (shown while the answer is null) goes away instead of staying. */
 const loadLadders = () => fetch(`/data/${CURRENT}/ladders.json`).then(response => (response.ok ? response.json() : false)).catch(() => false);
 const photo = id => `https://a.espncdn.com/i/headshots/nba/players/full/${id}.png`;
-const day = new Intl.DateTimeFormat(undefined, {weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'});
 
 /* How far a player moved since the night before: an arrow and the places, or NEW, or a dash. */
 function Move({value}) {
@@ -23,9 +22,9 @@ function Move({value}) {
   return <span className={`ld-move ${up ? 'up' : 'down'}`} title={`${up ? 'Up' : 'Down'} ${places} ${places === 1 ? 'place' : 'places'}`}>{up ? '▲' : '▼'} {places}</span>;
 }
 
-function Ladder({title, note, rows, href}) {
+function Ladder({title, rows, href}) {
   return <section className="front-panel ladder" aria-label={title}>
-    <div className="front-panel-head"><h2>{title}</h2><small className="ld-note">{note}</small><a className="front-more" href={href}>Full ladder <ArrowRight size={14}/></a></div>
+    <div className="front-panel-head"><h2>{title}</h2><a className="front-more" href={href}>Full ladder <ArrowRight size={14}/></a></div>
     <ol className="ld-list">
       {rows.filter(row => row.qualified !== false).slice(0, 6).map((row, index) => <li key={row.playerId} className={index < 3 ? 'top3' : undefined} style={{'--tc': TEAMS[row.team]?.color || '#8a8a8a'}}>
         <button className="ld-row ldc" onClick={() => navigate(playerUrl(row.name))}>
@@ -54,10 +53,8 @@ export default function Ladders() {
   const data = useFeed(loadLadders);
   if (data === null) return <LadderSkeleton/>;
   if (!data || !data.mvp?.length) return null;
-  const through = data.through ? day.format(new Date(`${data.through}T12:00:00`)) : '';
-  const note = `Through ${through}`;
   return <div className="ladder-pair">
-    <Ladder title="MVP ladder" note={note} rows={data.mvp} href="/ladders/mvp"/>
-    {data.rookie?.length > 0 && <Ladder title="ROTY ladder" note={note} rows={data.rookie} href="/ladders/roty"/>}
+    <Ladder title="MVP ladder" rows={data.mvp} href="/ladders/mvp"/>
+    {data.rookie?.length > 0 && <Ladder title="ROTY ladder" rows={data.rookie} href="/ladders/roty"/>}
   </div>;
 }
