@@ -17,7 +17,8 @@ export function gameScore(stats) {
 
 /* Every player who played in one finished game, with the context a card needs. */
 export function performancesOf(box, gameId) {
-  if (!box?.away || box.state !== 'post') return [];
+  /* Finished and live games: a game still on has lines too, and the score beside each one is how it stands now. */
+  if (!box?.away || box.state === 'pre') return [];
   return box.teams.flatMap(team => {
     const mine = team.abbr === box.away.abbr ? box.away : box.home, other = mine === box.away ? box.home : box.away;
     const won = num(mine.score) > num(other.score);

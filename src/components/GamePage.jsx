@@ -249,7 +249,7 @@ export default function GamePage({id}) {
   return <section className="gp">
     {!focusTeam && <a className="gp-back" href="/schedule"><ArrowLeft size={15}/> Schedule</a>}
     {!focusTeam && <>
-    <div className="gd-head gp-head">
+    <div className={box.state === 'in' ? 'gd-head gp-head is-live' : 'gd-head gp-head'}>
       <div><TeamLink side={box.away}/>{scored && <strong className={Number(box.away.score) > Number(box.home.score) ? 'won' : ''}>{box.away.score}</strong>}</div>
       <span className={box.state === 'pre' ? 'gp-mid' : undefined}>{box.state === 'post' ? (hidden ? 'Played' : 'Final') : box.state === 'in' ? (box.detail || 'Live') : 'Upcoming'}{box.state === 'pre' && <MatchupRadar box={box}/>}</span>
       <div><TeamLink side={box.home}/>{scored && <strong className={Number(box.home.score) > Number(box.away.score) ? 'won' : ''}>{box.home.score}</strong>}</div>
