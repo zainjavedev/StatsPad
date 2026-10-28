@@ -21,7 +21,7 @@ export function seoMetadata(route) {
 }
 
 /* The same links on every static page, so the hub pages (home, compare, leaders...) get an incoming link from every other page. Stat rankings are linked from /leaders and from each other. */
-const HUBS = [['/', 'Home'], ['/compare', 'Compare players and teams'], ['/stats/points', 'Stat leaders'], ['/lineups', 'Starting lineups and teams'], ['/ladders/mvp', 'MVP ladder'], ['/ladders/roty', 'Rookie of the Year ladder'], ['/blog', 'Blog'], ['/standings', 'Standings'], ['/schedule', 'Schedule'], ['/scores', 'Scores'], ['/about', 'About StatsPads'], ['/contact', 'Contact'], ['/terms', 'Terms of service'], ['/privacy', 'Privacy'], ['/llms.txt', 'llms.txt']];
+const HUBS = [['/', 'Home'], ['/compare', 'Compare players and teams'], ['/stats/points', 'Stat leaders'], ['/lineups', 'Starting lineups and teams'], ['/ladders/mvp', 'MVP ladder'], ['/ladders/roty', 'Rookie of the Year ladder'], ['/blog', 'Blog'], ['/standings', 'Standings'], ['/injuries', 'Injury report'], ['/schedule', 'Schedule'], ['/scores', 'Scores'], ['/about', 'About StatsPads'], ['/contact', 'Contact'], ['/terms', 'Terms of service'], ['/privacy', 'Privacy'], ['/llms.txt', 'llms.txt']];
 
 /* Pages whose written copy stays on screen under the app (the app hides the rest once it loads): the copy is what search engines read for these routes, and a reader gets the summary, FAQ and career table too. */
 const VISIBLE = /^\/(compare\/|players\/|lineups\/|games\/)/;

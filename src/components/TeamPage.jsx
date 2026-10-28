@@ -12,6 +12,7 @@ import { useFavorites } from '../lib/favorites';
 import { TeamSkeletonBody } from './Skeletons';
 import Radar from './Radar';
 import { radarAxes } from '../lib/radarAxes';
+import InjuryMark from './InjuryMark';
 
 /* Team roster page: who is on the team this season, how the rotation is
    expected to stack up, and each player's previous-season numbers. */
@@ -62,6 +63,7 @@ function StarterCard({player, onOpen}) {
   return <button className="starter-card" onClick={() => onOpen(player)}>
     <span className="starter-stage">
       <span className="slot-badge">{player.slot || player.pos}</span>
+      <InjuryMark name={player.name} stage/>
       <Headshot player={player} className="starter-art"/>
     </span>
     <h3>{player.name}</h3>

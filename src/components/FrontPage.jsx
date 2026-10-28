@@ -9,7 +9,7 @@ import { qualified } from '../lib/season';
 import { useFavorites } from '../lib/favorites';
 import GameTicker, { useGames } from './NextUp';
 import HeadToHead from './HeadToHead';
-import { StandingsPeek } from './Peeks';
+import { InjuriesPeek, StandingsPeek } from './Peeks';
 import Ladders from './Ladders';
 import RecentPerformances from './RecentPerformances';
 import { LEADERS, statUrl } from '../lib/statLeaders';
@@ -79,6 +79,7 @@ export default function FrontPage({players, playerIds, Art, onCompare, onLeaders
     <Ladders/>
 
     <div className="peek-pair">
+      <InjuriesPeek/>
       <StandingsPeek games={games}/>
     </div>
 

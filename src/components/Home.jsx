@@ -2,6 +2,7 @@ import SiteHeader from './SiteHeader';
 import AccountPage from './AccountPage';
 import SchedulePage from './SchedulePage';
 import StatLeadersPage from './StatLeadersPage';
+import InjuriesPage from './InjuriesPage';
 import StandingsPage from './StandingsPage';
 import GamePage from './GamePage';
 import { isAppPath, navigate } from '../lib/nav';
@@ -245,7 +246,7 @@ export default function Home({onReady}){
   useLayoutEffect(()=>{onReady?.()},[onReady]);
   const paramsOnLoad=useMemo(()=>routeParams(location.pathname,location.search),[]);
   const[statSlug,setStatSlug]=useState(()=>paramsOnLoad.get('stat')||'points');
-  const[seasonType,setSeasonType]=useState(()=>paramsOnLoad.get('type')==='playoffs'?'playoffs':'regular-season'),[seasonChanging,setSeasonChanging]=useState(false),[entityType,setEntityType]=useState(()=>paramsOnLoad.get('mode')||'player'),[data,setData]=useState(null),[,setSplits]=useState(null),[selected,setSelected]=useState([]),[toast]=useState(''),[playerIds,setPlayerIds]=useState({}),[catalog,setCatalog]=useState({players:[],teams:[]}),[gameId,setGameId]=useState(()=>paramsOnLoad.get('game')),[page,setPage]=useState(['account','schedule','standings','stat','game'].includes(paramsOnLoad.get('view'))?paramsOnLoad.get('view'):paramsOnLoad.get('view')==='leaders'?'leaders':paramsOnLoad.get('view')==='teams'?'teams':paramsOnLoad.has('team')?'team':paramsOnLoad.has('players')?'compare':paramsOnLoad.has('profile')?'profile':'home'),[regularPlayers,setRegularPlayers]=useState(null),[regularSeason,setRegularSeason]=useState(null),[profileFrom,setProfileFrom]=useState(null),[profile,setProfile]=useState(null),[profileBundle,setProfileBundle]=useState(null),[profileType,setProfileType]=useState(null),[bundlePair,setBundlePair]=useState({}),[,setYearsTick]=useState(0),[teamCode,setTeamCode]=useState(()=>TEAMS[paramsOnLoad.get('team')]?paramsOnLoad.get('team'):'PHI');
+  const[seasonType,setSeasonType]=useState(()=>paramsOnLoad.get('type')==='playoffs'?'playoffs':'regular-season'),[seasonChanging,setSeasonChanging]=useState(false),[entityType,setEntityType]=useState(()=>paramsOnLoad.get('mode')||'player'),[data,setData]=useState(null),[,setSplits]=useState(null),[selected,setSelected]=useState([]),[toast]=useState(''),[playerIds,setPlayerIds]=useState({}),[catalog,setCatalog]=useState({players:[],teams:[]}),[gameId,setGameId]=useState(()=>paramsOnLoad.get('game')),[page,setPage]=useState(['account','schedule','standings','injuries','stat','game'].includes(paramsOnLoad.get('view'))?paramsOnLoad.get('view'):paramsOnLoad.get('view')==='leaders'?'leaders':paramsOnLoad.get('view')==='teams'?'teams':paramsOnLoad.has('team')?'team':paramsOnLoad.has('players')?'compare':paramsOnLoad.has('profile')?'profile':'home'),[regularPlayers,setRegularPlayers]=useState(null),[regularSeason,setRegularSeason]=useState(null),[profileFrom,setProfileFrom]=useState(null),[profile,setProfile]=useState(null),[profileBundle,setProfileBundle]=useState(null),[profileType,setProfileType]=useState(null),[bundlePair,setBundlePair]=useState({}),[,setYearsTick]=useState(0),[teamCode,setTeamCode]=useState(()=>TEAMS[paramsOnLoad.get('team')]?paramsOnLoad.get('team'):'PHI');
   const chartRef=useRef(null),seasonTransitionRef=useRef(0),preseasonTried=useRef(false),seoTitleRef=useRef(null);
   const[theme,setTheme]=useState(()=>{try{return localStorage.getItem('statspad-theme')||'dark'}catch{return 'dark'}});
   useEffect(()=>{document.documentElement.dataset.theme=theme;try{localStorage.setItem('statspad-theme',theme)}catch{/* private mode */}},[theme]);
@@ -277,7 +278,7 @@ export default function Home({onReady}){
   },[page,enriched,entityType,seasonType]);
   useEffect(()=>{
     const names=enriched.slice(0,2).map(entity=>entity.playerName).join(' vs ');
-    const titles={home:'StatsPads: NBA player and team comparisons, rosters and stats',leaders:'NBA stat leaders | StatsPads',teams:'NBA teams and rosters | StatsPads',compare:names?`${names}: stats comparison | StatsPads`:'Compare NBA players and teams | StatsPads',team:`${TEAMS[teamCode]?.name} roster and stats | StatsPads`,profile:profile?`${profile.playerName} stats | StatsPads`:'StatsPads'};
+    const titles={injuries:'NBA Injury Report 2026-27: Who Is Out Today | StatsPads',home:'StatsPads: NBA player and team comparisons, rosters and stats',leaders:'NBA stat leaders | StatsPads',teams:'NBA teams and rosters | StatsPads',compare:names?`${names}: stats comparison | StatsPads`:'Compare NBA players and teams | StatsPads',team:`${TEAMS[teamCode]?.name} roster and stats | StatsPads`,profile:profile?`${profile.playerName} stats | StatsPads`:'StatsPads'};
     /* The server already sent a specific title for this URL (game, team, player pages): keep it until the visitor navigates elsewhere. */
     if(!seoTitleRef.current)seoTitleRef.current={path:location.pathname,title:document.title};
     document.title=location.pathname===seoTitleRef.current.path?seoTitleRef.current.title:(titles[page]||titles.home);
@@ -288,7 +289,7 @@ export default function Home({onReady}){
   const routeTo=(path,push=true)=>{
     const url=new URL(path,location.origin),params=routeParams(url.pathname,url.search),view=params.get('view');
     const plainCompare=url.pathname.replace(/\/+$/,'')==='/compare'&&!url.search;
-    const simple=plainCompare||['account','schedule','standings','stat','game','leaders','teams'].includes(view)||params.has('team')||(!view&&!params.has('players')&&!params.has('profile'));
+    const simple=plainCompare||['account','schedule','standings','injuries','stat','game','leaders','teams'].includes(view)||params.has('team')||(!view&&!params.has('players')&&!params.has('profile'));
     if(!simple){location.assign(url.pathname+url.search);return}
     if(push&&url.pathname+url.search!==location.pathname+location.search)history.pushState({},'',url.pathname+url.search);
     setProfile(null);
@@ -296,7 +297,7 @@ export default function Home({onReady}){
     if(plainCompare)setPage('compare');
     else if(view==='game'){setGameId(params.get('game'));setPage('game')}
     else if(view==='stat'){setStatSlug(params.get('stat'));setPage('stat')}
-    else if(['account','schedule','standings','leaders','teams'].includes(view))setPage(view);
+    else if(['account','schedule','standings','injuries','leaders','teams'].includes(view))setPage(view);
     else if(params.has('team')){setTeamCode(params.get('team'));setPage('team')}
     else setPage('home');
     scrollTo({top:0});
@@ -320,6 +321,7 @@ export default function Home({onReady}){
   const switchSeason=async next=>{if(next===seasonType||seasonChanging)return;const transition=++seasonTransitionRef.current;setSeasonChanging(true);try{const[bundle]=await Promise.all([loadSeasonBundle(next),new Promise(resolve=>window.setTimeout(resolve,180))]);if(transition!==seasonTransitionRef.current)return;setCatalog({players:bundle.players.players,teams:bundle.teams.players});setSplits(bundle.splits);setData(entityType==='team'?bundle.teams:bundle.players);setSeasonType(next);if(page==='leaders')history.pushState({},'',leadersUrl(next));window.requestAnimationFrame(()=>window.requestAnimationFrame(()=>setSeasonChanging(false)))}catch{setSeasonChanging(false)}};
   const goHomeEarly=()=>navigate('/');
   if(page==='game')return <main><SiteHeader page='schedule' onHome={goHomeEarly} onCompare={()=>navigate('/compare')} onTeams={()=>navigate('/lineups')} onLeaders={()=>navigate('/stats/points')} theme={theme} onToggleTheme={toggleTheme}/><GamePage key={gameId} id={gameId}/><SiteFooter/></main>;
+  if(page==='injuries')return <main><SiteHeader page={page} onHome={goHomeEarly} onCompare={()=>navigate('/compare')} onTeams={()=>navigate('/lineups')} onLeaders={()=>navigate('/stats/points')} theme={theme} onToggleTheme={toggleTheme}/><InjuriesPage/><SiteFooter/></main>;
   if(page==='schedule'||page==='standings')return <main><SiteHeader page={page} onHome={goHomeEarly} onCompare={()=>navigate('/compare')} onTeams={()=>navigate('/lineups')} onLeaders={()=>navigate('/stats/points')} theme={theme} onToggleTheme={toggleTheme}/>{page==='schedule'?<SchedulePage/>:<StandingsPage/>}<SiteFooter/></main>;
   if(page==='account')return <main><SiteHeader page={page} onHome={goHomeEarly} onCompare={()=>navigate('/compare')} onTeams={()=>navigate('/lineups')} onLeaders={()=>navigate('/stats/points')} theme={theme} onToggleTheme={toggleTheme}/><AccountPage onTeams={()=>navigate('/lineups')}/><SiteFooter/></main>;
   if(!data){

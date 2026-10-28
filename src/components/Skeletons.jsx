@@ -9,6 +9,21 @@ const Sk = ({className = '', style}) => <div className={`sk ${className}`} style
 const times = (count, render) => Array.from({length: count}, (_, index) => render(index));
 const Rows = ({count = 5}) => <div className="sk-rows">{times(count, index => <Sk key={index} className="sk-row"/>)}</div>;
 
+/* The injury list's rows, built from the real row markup (rp-card) so the loading list is the size of the loaded one. */
+export function InjuryRowsSkeleton({count = 9}) {
+  return <ul className="rp-list rp-skeleton inj-list" aria-hidden="true">{times(count, index => <li key={index} className="inj-row"><div className="rp-card">
+    <span className="rp-face"><i/></span>
+    <span className="rp-main"><span className="rp-top"><b>Player Name</b></span><span className="rp-trio"><b>00</b><b>00</b><b>00</b></span><small className="rp-game">Injury</small></span>
+  </div></li>)}</ul>;
+}
+
+export function InjuriesSkeleton() {
+  return <section className="inj" aria-busy="true" aria-label="Loading the injury report">
+    <div className="sched-head"><h1>NBA injury report</h1></div>
+    <div className="inj-flat"><InjuryRowsSkeleton/></div>
+  </section>;
+}
+
 export function HomeSkeleton() {
   return <section className="front-page" aria-busy="true" aria-label="Loading">
     <div className="sk-ticker"><Sk className="sk-ticker-pill"/><Sk className="sk-ticker-pill"/></div>
@@ -161,6 +176,7 @@ export function skeletonForPath(path) {
   if (/^\/lineups\//.test(path)) return <LineupSkeleton/>;
   if (path === '/standings') return <StandingsSkeleton/>;
   if (path === '/schedule') return <ScheduleSkeleton/>;
+  if (path === '/injuries') return <InjuriesSkeleton/>;
   if (/^\/stats\//.test(path) || path === '/leaders') return <StatSkeleton/>;
   return <PageSkeleton/>;
 }

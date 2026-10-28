@@ -16,6 +16,7 @@ import { TEAMS, teamCodeOf } from '../lib/teams';
 import { gameUrl } from '../lib/routes';
 import { useFeed } from '../lib/useFeed';
 import { radarAxes, radarTints } from '../lib/radarAxes';
+import InjuryMark from './InjuryMark';
 
 /* A team's page from ESPN's abbreviation, so the game header can link to it. */
 const teamHref = abbr => {
@@ -169,7 +170,7 @@ function Preview({box}) {
     {data.map(({roster, code, side, five}) => <section key={code} className="gp-side" style={{'--team': TEAMS[code].color}}>
       <h3>{side.logo && <img src={side.logo} alt=""/>}<span>{roster.teamName}<small>Expected starting five</small></span></h3>
       <div className="starter-grid">{five.map(player => <div key={player.name} className="starter-card">
-        <span className="starter-stage"><span className="slot-badge">{player.slot ?? player.pos}</span><Headshot player={player} className="starter-art"/></span>
+        <span className="starter-stage"><span className="slot-badge">{player.slot ?? player.pos}</span><InjuryMark name={player.name} stage/><Headshot player={player} className="starter-art"/></span>
         <h3>{player.name}</h3>
         <dl className="starter-line">
           <div><dt>PPG</dt><dd>{per(player, 'ppg')}</dd></div>

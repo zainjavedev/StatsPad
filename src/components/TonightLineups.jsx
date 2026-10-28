@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { espnLogoUrl, nickname } from '../lib/teams';
 import { gameUrl, playerUrl } from '../lib/routes';
 import { loadSchedule } from '../lib/schedule';
+import InjuryMark from './InjuryMark';
 
 /* The expected starting fives for the next game day's games, one card per game. The lineups are each team's
    most recent starters (public/lineups.json), not announcements, and the card says so. */
@@ -34,7 +35,7 @@ function Five({code, fives}) {
   const five = fives[code] ?? [];
   return <div className="tn-team">
     <b><img src={espnLogoUrl(code)} alt="" width="22" height="22" loading="lazy"/>{nickname(code)}</b>
-    {five.length ? <ol>{five.map(([slot, name]) => <li key={slot + name}><i>{slot}</i><a href={playerUrl(name)}>{name}</a></li>)}</ol> : <p>To be announced</p>}
+    {five.length ? <ol>{five.map(([slot, name]) => <li key={slot + name}><i>{slot}</i><a href={playerUrl(name)}>{name}</a><InjuryMark name={name}/></li>)}</ol> : <p>To be announced</p>}
   </div>;
 }
 

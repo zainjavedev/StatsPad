@@ -4780,3 +4780,43 @@ section.pg .pg-hero .pg-share{margin:0!important}
 }
 .gp-retry{display:grid;gap:10px;justify-items:start;padding:14px 0;color:var(--text-2)}
 .gp-retry p{margin:0}
+
+/* Injury report: the rows are performance cards (rp-card, in .perfs-night); only the pieces they lack are here. */
+.inj{display:flex;flex-direction:column;gap:14px;width:min(1100px,100%);margin:0 auto;padding:36px 28px 48px;color:var(--text-1);min-width:0}
+.inj .sched-head p{margin:6px 0 0;color:var(--text-2)}
+.tier-minor{--tier:#d9a21b}.tier-major{--tier:#e0742c}.tier-season{--tier:#d64045}
+.inj .sched-filters{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px}
+.inj-tabs{display:flex;gap:22px;border-bottom:1px solid var(--line)}
+.inj-tabs button{margin-bottom:-1px;padding:8px 0;border:0;border-bottom:2px solid transparent;background:none;color:var(--text-3);font-size:14px;font-weight:700;cursor:pointer}
+.inj-tabs button:hover{color:var(--text-1)}
+.inj-tabs button.active{color:var(--text-1);border-bottom-color:var(--text-1)}
+.inj-row{display:flex;flex-direction:column}
+.inj-badge{align-self:start;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;color:var(--tier);background:color-mix(in srgb,var(--tier) 14%,transparent)}
+.inj-row .rp-top small{color:var(--tier);font-weight:700}
+.inj-row .rp-trio.none{font-size:13px;color:var(--text-3)}
+.inj-news{margin:0;padding:0 2px 14px;color:var(--text-2);font-size:12.5px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.inj-empty,.inj-source{margin:0;color:var(--text-3);font-size:13px}
+@media(max-width:600px){
+  .inj{gap:10px;padding:14px 12px 32px}
+  .inj .sched-head h1{font-size:26px}
+  .inj .sched-head p{margin-top:4px;font-size:13.5px;line-height:1.35}
+  .inj .sched-filters{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .inj .sched-filters label{font-size:11px}
+  .inj .sched-filters select{padding:7px 10px;font-size:13px}
+  .inj .sched-filters .front-tabs{grid-column:1/-1;display:flex}
+  .inj-tabs{gap:0;justify-content:space-between}
+  .inj-tabs button{padding:8px 4px;font-size:13px}
+  .inj-badge{width:30px;height:30px}
+  .inj-badge svg{width:17px;height:17px}
+  .inj-news{display:none}
+  .inj-flat .rp-card{padding:11px 2px}
+}
+/* Injury marker next to a player in a lineup. */
+.inj-mark{display:inline-grid;place-items:center;flex:none;width:20px;height:20px;border-radius:50%;color:var(--tier);background:color-mix(in srgb,var(--tier) 16%,transparent);align-self:center}
+.inj-mark.on-stage{position:absolute;top:8px;right:8px;z-index:2;width:26px;height:26px;background:#fff;box-shadow:0 1px 4px rgb(0 0 0 / .3)}
+.tn-team li .inj-mark{margin-left:auto}
+.inj .sched-filters{display:block}
+.inj-tabs button{white-space:nowrap}
+.inj-list.rp-skeleton .rp-face>i{display:block;background:var(--ink-2)}
+.inj-tabs i{margin-left:5px;font-style:normal;font-weight:600;font-variant-numeric:tabular-nums;opacity:.6}
+.inj-peek .inj-news{display:none}

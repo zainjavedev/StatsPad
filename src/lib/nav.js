@@ -2,4 +2,4 @@
 export const navigate = path => window.dispatchEvent(new CustomEvent('statspad:navigate', {detail: path}));
 
 /* Paths the app renders itself; everything else (APIs, files) is left to the browser. */
-export const isAppPath = path => /^\/(?:|schedule|standings|stats\/[a-z0-9-]+|account|signin|lineups|leaders|leaders\/(?:preseason|regular-season|playoffs)|compare|lineups\/[a-z0-9-]+|games\/(?:[a-z0-9-]+-)?\d+)\/?$/.test(path);
+export const isAppPath = path => /^\/(?:|schedule|standings|injuries|stats\/[a-z0-9-]+|account|signin|lineups|leaders|leaders\/(?:preseason|regular-season|playoffs)|compare|lineups\/[a-z0-9-]+|games\/(?:[a-z0-9-]+-)?\d+)\/?$/.test(path);

@@ -4,6 +4,7 @@ import { playerUrl } from '../lib/routes';
 import { indexPlayers, isCurrent, isPreseason, statsFor } from '../lib/season';
 import { loadSchedule } from '../lib/schedule';
 import { Headshot } from './TeamPage';
+import InjuryMark from './InjuryMark';
 
 /* The two expected starting fives under a team-vs-team header, one row per
    team with the positions lined up, so each card sits over its opposite. */
@@ -71,6 +72,7 @@ function Card({slot, player, other, color}) {
   return <a className="lc" href={playerUrl(player.name)} aria-label={`${player.name} stats`} style={{'--team': color}}>
     <span className="lc-stage">
       <span className="lc-badge">{player.slot ?? player.pos ?? slot}</span>
+      <InjuryMark name={player.name} stage/>
       <Headshot player={player} className="lc-art"/>
     </span>
     <b className="lc-name" title={player.name}>{player.name}</b>

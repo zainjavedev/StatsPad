@@ -5,6 +5,9 @@ import { useFeed } from '../lib/useFeed';
 import { byRecord, loadStandings } from './StandingsPage';
 import { navigate } from '../lib/nav';
 import { useFavorites } from '../lib/favorites';
+import { loadInjuries, loadStatLines } from '../lib/injuries';
+import { Card as InjuryCard } from './InjuriesPage';
+import { InjuryRowsSkeleton } from './Skeletons';
 
 /* Small previews of the other pages, each ending in a link to the full thing. */
 
@@ -58,5 +61,16 @@ export function StandingsPeek({games}) {
         </React.Fragment>;
       })}
     </div> : <div className="pk-table skeleton-block" style={{minHeight: 320}}/>}
+  </section>;
+}
+
+/* The five most-watched names on the injury report, by scoring; the rest is on /injuries. */
+export function InjuriesPeek() {
+  const items = useFeed(loadInjuries), lines = useFeed(loadStatLines);
+  const top = useMemo(() => (items && lines ? [...items].filter(item => lines.get(item.slug)).sort((a, b) => lines.get(b.slug).points - lines.get(a.slug).points).slice(0, 5) : null), [items, lines]);
+  if (top && !top.length) return null;
+  return <section className="front-panel peek inj-peek">
+    <Head title="Injuries" to="/injuries" label="Full report"/>
+    <div className="inj-flat">{top ? <ul className="rp-list inj-list">{top.map(item => <InjuryCard key={item.id} item={item} line={lines.get(item.slug)}/>)}</ul> : <InjuryRowsSkeleton count={5}/>}</div>
   </section>;
 }
