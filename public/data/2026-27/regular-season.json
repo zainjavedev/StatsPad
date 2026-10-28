@@ -1941,7 +1941,7 @@
       "rank": 61,
       "stats": {
         "points": 17.8,
-        "assists": 3.3,
+        "assists": 3,
         "totalRebounds": 5.3,
         "offensiveRebounds": 1,
         "defensiveRebounds": 4.3,
@@ -2005,7 +2005,7 @@
       "rank": 63,
       "stats": {
         "points": 17.3,
-        "assists": 2.3,
+        "assists": 2,
         "totalRebounds": 1.5,
         "offensiveRebounds": 0.3,
         "defensiveRebounds": 1.3,
@@ -2326,8 +2326,8 @@
       "stats": {
         "points": 16.3,
         "assists": 1.7,
-        "totalRebounds": 2,
-        "offensiveRebounds": 0.7,
+        "totalRebounds": 1.7,
+        "offensiveRebounds": 0.3,
         "defensiveRebounds": 1.3,
         "steals": 1,
         "blocks": 0,
@@ -3349,7 +3349,7 @@
       "rank": 105,
       "stats": {
         "points": 13.3,
-        "assists": 3.5,
+        "assists": 3.8,
         "totalRebounds": 5.3,
         "offensiveRebounds": 2.5,
         "defensiveRebounds": 2.8,
@@ -4566,9 +4566,9 @@
       "stats": {
         "points": 10.3,
         "assists": 1.3,
-        "totalRebounds": 5.5,
+        "totalRebounds": 5.3,
         "offensiveRebounds": 1.3,
-        "defensiveRebounds": 4.3,
+        "defensiveRebounds": 4,
         "steals": 0.3,
         "blocks": 0.3,
         "turnovers": 1,
@@ -5206,8 +5206,8 @@
       "stats": {
         "points": 9.3,
         "assists": 2,
-        "totalRebounds": 9,
-        "offensiveRebounds": 2.3,
+        "totalRebounds": 9.3,
+        "offensiveRebounds": 2.7,
         "defensiveRebounds": 6.7,
         "steals": 0,
         "blocks": 1.3,
@@ -8030,15 +8030,15 @@
         "turnovers": 0.7,
         "personalFouls": 2,
         "fieldGoalsMade": 2.3,
-        "fieldGoalsAttempted": 3.3,
-        "fieldGoalPercentage": 70,
+        "fieldGoalsAttempted": 3,
+        "fieldGoalPercentage": 77.8,
         "threePointersMade": 1,
         "threePointersAttempted": 1,
         "threePointPercentage": 100,
         "freeThrowsMade": 0.3,
         "freeThrowsAttempted": 0.3,
         "freeThrowPercentage": 100,
-        "effectiveFieldGoalPercentage": 85
+        "effectiveFieldGoalPercentage": 94.4
       }
     },
     {
@@ -8950,9 +8950,9 @@
       "stats": {
         "points": 4.7,
         "assists": 0.3,
-        "totalRebounds": 3,
+        "totalRebounds": 3.3,
         "offensiveRebounds": 0.7,
-        "defensiveRebounds": 2.3,
+        "defensiveRebounds": 2.7,
         "steals": 0.3,
         "blocks": 1,
         "turnovers": 0.7,
@@ -10486,9 +10486,9 @@
       "stats": {
         "points": 2.5,
         "assists": 1.5,
-        "totalRebounds": 1,
+        "totalRebounds": 0.5,
         "offensiveRebounds": 0,
-        "defensiveRebounds": 1,
+        "defensiveRebounds": 0.5,
         "steals": 0,
         "blocks": 0,
         "turnovers": 0,
@@ -11409,7 +11409,7 @@
       "age": 26,
       "gamesPlayed": 3,
       "gamesStarted": 0,
-      "minutesPerGame": 8.3,
+      "minutesPerGame": 8.7,
       "rank": 357,
       "stats": {
         "points": 1.7,

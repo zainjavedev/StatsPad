@@ -439,7 +439,7 @@
       "position": "Team",
       "stats": {
         "points": 114.3,
-        "assists": 24.8,
+        "assists": 24.5,
         "totalRebounds": 43.3,
         "offensiveRebounds": 9.8,
         "defensiveRebounds": 33.5,
@@ -628,15 +628,15 @@
         "turnovers": 17.3,
         "personalFouls": 23.5,
         "fieldGoalsMade": 43.3,
-        "fieldGoalsAttempted": 87.5,
-        "fieldGoalPercentage": 49.4,
+        "fieldGoalsAttempted": 87.3,
+        "fieldGoalPercentage": 49.6,
         "threePointersMade": 12.5,
         "threePointersAttempted": 36.5,
         "threePointPercentage": 34.2,
         "freeThrowsMade": 13.5,
         "freeThrowsAttempted": 17.8,
         "freeThrowPercentage": 76.1,
-        "effectiveFieldGoalPercentage": 56.6
+        "effectiveFieldGoalPercentage": 56.7
       }
     },
     {
@@ -830,9 +830,9 @@
       "stats": {
         "points": 107.8,
         "assists": 22.8,
-        "totalRebounds": 41.8,
+        "totalRebounds": 41.5,
         "offensiveRebounds": 12.5,
-        "defensiveRebounds": 29.3,
+        "defensiveRebounds": 29,
         "steals": 6.8,
         "blocks": 2.5,
         "turnovers": 14.3,
