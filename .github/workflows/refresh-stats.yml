@@ -2,14 +2,15 @@ name: Refresh stats
 
 # Pulls the in-progress season's per-game stats from ESPN and commits them when
 # something changed; Vercel redeploys on that push. Games run roughly 12am to
-# 10am Pakistan time, so it runs hourly from 2am to 12pm PKT (21:00 to 07:00 UTC), plus at :37 from
-# 7am to 11am PKT, when most games finish. GitHub often starts scheduled runs
-# late. Until the first game has been played the script writes nothing, so the
-# site stays on last season.
+# 10am Pakistan time (21:00 to 07:00 UTC). GitHub drops or delays many scheduled
+# runs (an hourly schedule produced only about five runs a day, up to eleven hours apart), so
+# during game hours it asks every fifteen minutes and a run takes under a minute; a
+# lighter every-three-hours check covers the rest of the day. Until the first game
+# has been played the script writes nothing, so the site stays on last season.
 on:
   schedule:
-    - cron: '7 21-23,0-7 * * *'
-    - cron: '37 2-6 * * *'
+    - cron: '3,18,33,48 21-23,0-7 * * *'
+    - cron: '23 8-20/3 * * *'
   workflow_dispatch:
 
 permissions:

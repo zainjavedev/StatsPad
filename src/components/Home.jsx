@@ -136,17 +136,18 @@ function VsRow({players,population,metric,row,colors}){
   return <div className="vs-row" style={{'--row':row}}>{cell(0)}<span className="vs-cat">{label}</span>{cell(1)}</div>
 }
 
-/* Each side of the card header is also its own picker: a cross to clear the
-   slot, an add button and search popover when it is empty. */
-function VsSlot({index,entity,options,playerIds,noun,onPick,onRemove,color}){
+/* Each side of the card header is also its own picker: tap the player to swap them,
+   or the add button when the slot is empty. */
+function VsSlot({index,entity,options,playerIds,noun,onPick,color}){
   const[open,setOpen]=useState(false),[query,setQuery]=useState('');
   const results=options.filter(option=>`${option.playerName} ${option.team}`.toLowerCase().includes(query.toLowerCase())).slice(0,8);
   const choose=option=>{onPick(option);setOpen(false);setQuery('')};
   return <div className={entity?'vs-person':'vs-person is-empty'} style={{'--player-color':COLORS[index],'--team':color}}>
     {entity?<>
-      <button className="vs-remove" onClick={onRemove} aria-label={`Remove ${entity.playerName}`}><X size={12}/></button>
-      <EntityArt entity={entity} playerIds={playerIds} minimal className={entity.entityType==='team'?'vs-art is-logo':'vs-art'}/>
-      <strong>{entity.playerName}</strong>
+      <button className="vs-change" onClick={()=>setOpen(!open)} aria-label={`Change ${entity.playerName}`} aria-expanded={open}>
+        <EntityArt entity={entity} playerIds={playerIds} minimal className={entity.entityType==='team'?'vs-art is-logo':'vs-art'}/>
+        <strong>{entity.playerName}</strong>
+      </button>
       {entity.entityType!=='team'&&TEAMS[teamCodeOf(entity.team)]&&<img className="vs-team-logo" src={espnLogoUrl(teamCodeOf(entity.team))} alt={teamLabel(entity.team)} title={teamLabel(entity.team)}/>}
     </>:
       <button className="vs-add" onClick={()=>setOpen(!open)}><span>+</span> Add {noun}</button>
@@ -224,8 +225,7 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
       <div className={ready?'vs-head has-radar':'vs-head'}>
         {[0,1].map(index=>{const slot=<VsSlot key={index} index={index} entity={enriched[index]} playerIds={playerIds} noun={entityType==='team'?'team':'player'} color={colors[index]}
           options={data.players.filter(option=>!enriched.some(selected=>selected.playerName===option.playerName))}
-          onPick={option=>setSelected([...enriched,option].slice(0,2))}
-          onRemove={()=>setSelected(enriched.filter((_,position)=>position!==index))}/>;return index===1&&ready?<React.Fragment key="radar"><Radar axes={radar} names={enriched.slice(0,2).map(entity=>entity.playerName)} colors={COLORS} scope={radarScope} notes={radarNotes}/>{slot}</React.Fragment>:slot})}
+          onPick={option=>setSelected(index<enriched.length?enriched.map((entity,position)=>position===index?option:entity):[...enriched,option].slice(0,2))}/>;return index===1&&ready?<React.Fragment key="radar"><Radar axes={radar} names={enriched.slice(0,2).map(entity=>entity.playerName)} colors={COLORS} scope={radarScope} notes={radarNotes}/>{slot}</React.Fragment>:slot})}
         {!ready&&<span className="vs-badge">VS</span>}
       </div>
       {ready?<>{entityType==='team'&&<TeamLineups teams={enriched.slice(0,2)} leaguePlayers={leaguePlayers} season={data.season} colors={COLORS}/>}<div className="vs-table" key={enriched.map(player=>player.playerName).join('|')}>

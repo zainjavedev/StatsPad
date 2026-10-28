@@ -92,8 +92,10 @@ export default function PlayerGame({gameId, box, plays, team, player, onClose, o
         <p className="pg-big"><span><b>{all.PTS}</b><small>pts</small></span><span><b>{all.REB}</b><small>reb</small></span><span><b>{all.AST}</b><small>ast</small></span></p>
         {game.date && <small>{dayFormat.format(game.date)}</small>}
       </div>
+      <div className="pg-actions">
       <div className={`pg-rating ${tone(grade)}`}><strong>{grade.toFixed(1)}</strong><small>grade</small></div>
       <button type="button" className="pg-share" onClick={() => setSharing(true)} aria-label={`Share ${player.name}'s night as an image`} title="Share as an image"><Share2 size={16}/></button>
+      </div>
     </div>
     {sharing && <PerfShare line={{gameId, player, team: team.abbr, opp: other.abbr, score: game.score, won: game.won, date: game.date}} onClose={() => setSharing(false)}/>}
 

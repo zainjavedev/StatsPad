@@ -4663,3 +4663,50 @@ section.pg .pg-fps::before{content:none}
   .pg-crumbs{padding:0!important;min-height:0!important;margin:0!important}
   .pg-strip{margin:0}
 }
+
+/* Game player page, flat: no boxes, no gradients. Sections sit straight on the page, one accent, bars are solid. */
+section.pg .pg-card{padding:0!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important}
+section.pg .pg-card-head h3{font-size:15px;font-weight:700;color:var(--text-3);letter-spacing:0}
+section.pg .pg-card-head{margin-bottom:10px}
+section.pg .pg-bars button{background:none!important;border-radius:0!important;padding:0 6px!important}
+section.pg .pg-bars i{background:var(--accent)!important;background-image:none!important;border-radius:5px 5px 2px 2px!important;opacity:.55}
+section.pg .pg-bars button.on i,section.pg .pg-bars button:hover i{opacity:1}
+section.pg .pg-bars b{font-size:13px;color:var(--text-2)}
+section.pg .pg-assists li{padding:0}
+section.pg .pg-assists strong{color:var(--accent)}
+section.pg .pg-pills button.active{background:var(--text-1);color:var(--ink-1);border-color:var(--text-1)}
+section.pg .pg-tags span{background:none!important;padding:0!important;color:var(--accent)!important}
+section.pg .pg-shots{padding:0!important}
+section.pg .pg-bars i{opacity:.3}
+section.pg .pg-bars button.on i,section.pg .pg-bars button:hover i{opacity:.95}
+section.pg .pg-tags span{color:#6ea8ff!important}
+section.pg .pg-assists strong{color:var(--text-1)}
+section.pg .pg-bars i{opacity:.3!important}
+section.pg .pg-bars button.on i,section.pg .pg-bars button:hover i{opacity:.95!important}
+section.pg .pg-bars button.on,section.pg .pg-bars button:hover{box-shadow:none!important;background:none!important}
+
+/* Stats block like realapp's: 22px numbers, 11px labels hugging them, rows ~43px apart, columns sized to their content. */
+@media(max-width:520px){
+  section.pg .pg-grid{display:flex!important;flex-wrap:wrap;gap:8px 18px!important;margin:10px 0 0!important}
+  section.pg .pg-cell{padding:0!important;text-align:left}
+  section.pg .pg-cell strong{display:block;font-size:22px!important;font-weight:600;line-height:1.05;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+  section.pg .pg-cell small{display:block;margin-top:1px;font-size:11px!important;line-height:1.2;letter-spacing:.02em;font-weight:500}
+}
+
+/* Hashtags big enough to wrap onto two lines like realapp's; share is a bare icon, not a floating circle. */
+section.pg .pg-tags{gap:6px 22px!important;margin:16px 0 0!important}
+section.pg .pg-tags span{font-size:17px!important;font-weight:600;line-height:1.35}
+section.pg .pg-share{width:40px;height:40px;border:0!important;border-radius:10px;background:none!important;color:var(--text-2);box-shadow:none!important;transform:none!important}
+section.pg .pg-share svg{width:22px;height:22px}
+section.pg .pg-share:hover,section.pg .pg-share:active{color:var(--text-1);background:var(--ink-2)!important}
+
+/* Game score above the share button, in one column on the right of the header. */
+section.pg .pg-hero .pg-actions{margin-left:auto;align-self:flex-start;display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:6px}
+section.pg .pg-hero .pg-rating{position:static!important;align-self:center!important;margin:0!important}
+section.pg .pg-hero .pg-share{position:static!important}
+section.pg .pg-hero .pg-actions{align-self:center;justify-content:center;margin-top:0;gap:2px}
+section.pg .pg-hero .pg-share{margin:0!important}
+
+/* Compare header: the player is the button (tap to swap them); there is no cross in the corner. */
+.vs-change{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;width:100%;padding:0;border:0;background:none;color:inherit;font:inherit;cursor:pointer}
+.vs-change:focus-visible{outline:2px solid var(--text-1);outline-offset:4px;border-radius:12px}
