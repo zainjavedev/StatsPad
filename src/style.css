@@ -4764,3 +4764,7 @@ section.pg .pg-hero .pg-share{margin:0!important}
 .gp-head.is-live{grid-template-columns:1fr 1fr!important;row-gap:6px}
 .gp-head.is-live>span{grid-column:1/-1;grid-row:2;order:0;margin:0;text-align:center;font-size:12.5px;letter-spacing:.1em}
 .gp-head.is-live{padding-right:0!important}
+
+/* Share poster stats: a touch smaller and tighter so a wide system font never pushes TS% off the edge, and a row wraps instead of clipping if it ever must. */
+.sp-st p{flex-wrap:wrap!important;gap:6px 10px!important}
+.sp-st span b{font-size:18px!important}
