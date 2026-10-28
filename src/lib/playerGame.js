@@ -50,24 +50,60 @@ export const fgPct = row => (row.FGA ? Math.round(1000 * row.FGM / row.FGA) / 10
 /* 0-10 from Hollinger's game score off the box score line. */
 export const rating = line => Math.max(0, Math.min(10, +(2.5 + gameScore(line) / 6.5).toFixed(1)));
 
-export function tagsOf(row, minutes) {
-  const tags = [], cats = [row.PTS, row.REB, row.AST, row.STL, row.BLK].filter(value => value >= 10).length, mins = num(minutes);
-  if (cats >= 3) tags.push('tripledouble'); else if (cats >= 2) tags.push('doubledouble');
-  if (row.PTS >= 60) tags.push('60bomb'); else if (row.PTS >= 50) tags.push('50bomb'); else if (row.PTS >= 40) tags.push('40bomb'); else if (row.PTS >= 30) tags.push('30bomb'); else if (row.PTS >= 20) tags.push('20pointer');
-  if (row.FGA >= 5 && row.FGM === row.FGA) tags.push('automatic');
-  else if (row.FGA >= 8 && tsPct(row) >= 65) tags.push('efficient');
-  else if (row.FGA >= 6 && fgPct(row) >= 70) tags.push('sniper');
-  if (row.TPM >= 5) tags.push('rainmaker'); else if (row.TPM >= 3) tags.push('splashbro');
-  if (row.AST >= 8) tags.push('generous'); else if (row.AST >= 6 && row.TO <= 1) tags.push('cleandimes');
-  if (row.REB >= 12) tags.push('glasseater'); else if (row.OREB >= 4) tags.push('putbackking');
-  if (row.STL + row.BLK >= 5) tags.push('lockdown'); else if (row.STL >= 4) tags.push('pickpocket'); else if (row.BLK >= 3) tags.push('swatter');
-  if (row.FTA >= 8 && row.FTM === row.FTA) tags.push('perfectfts'); else if (row.FTA >= 10) tags.push('livesattheline');
-  if (row.FGA >= 12 && fgPct(row) < 35) tags.push('brickfest');
-  if (row.TO >= 5) tags.push('sloppy'); else if (row.TO === 0 && mins >= 24) tags.push('cleanhands');
-  if (row.PF >= 5) tags.push('foultrouble');
-  if (mins >= 42) tags.push('ironman'); else if (mins >= 38) tags.push('workhorse');
-  if (row.PTS <= 2 && mins >= 20) tags.push('ghostmode');
-  return tags.slice(0, 5);
+/* Did he score his team's last eight-plus points of a win that was tied, or one possession away, when the run began? */
+function closedItOut(game) {
+  if (!game?.won || !game.plays?.length || !game.teamId) return false;
+  const scoring = game.plays.filter(play => play.scoring && play.pts > 0 && play.t !== undefined);
+  const mine = scoring.filter(play => String(play.team) === String(game.teamId));
+  let run = 0, index = mine.length - 1;
+  while (index >= 0 && mine[index].who[0] === game.id) { run += mine[index].pts; index -= 1; }
+  if (run < 8) return false;
+  const first = mine[index + 1];
+  const before = scoring.filter(play => play.t < first.t).pop();
+  if (!before || before.as === undefined) return true;
+  const lead = game.away ? before.as - before.hs : before.hs - before.as;
+  return Math.abs(lead) <= 3;
+}
+
+/* The tags on a performance, mostly for fun. Each rule is a name, how rare it is (rarer wins a slot) and a test.
+   The card shows the three rarest that apply. `game` is optional context: {won, margin, quarters, plays, id, teamId, away}. */
+const TAGS = [
+  ['tripleDouble', 100, row => [row.PTS, row.REB, row.AST, row.STL, row.BLK].filter(value => value >= 10).length >= 3],
+  ['him', 96, (row, mins, game) => closedItOut(game)],
+  ['forNoReason', 92, (row, mins, game) => game?.won === false && row.PTS >= 30],
+  ['fiftyBurger', 99, row => row.PTS >= 50],
+  ['fortyBurger', 90, row => row.PTS >= 40 && row.PTS < 50],
+  ['lateBoomer', 86, (row, mins, game) => {
+    if (!game?.quarters) return false;
+    let first = 0, second = 0;
+    for (const [quarter, value] of game.quarters) { if (quarter <= 2) first += value.PTS; else second += value.PTS; }
+    return first === 0 && second >= 15;
+  }],
+  ['automatic', 84, row => row.FGA >= 6 && row.FGM === row.FGA],
+  ['stockBroker', 80, row => row.STL + row.BLK >= 6],
+  ['splashZone', 76, row => row.TPM >= 6],
+  ['brickedUp', 74, row => row.FGA >= 15 && fgPct(row) <= 25],
+  ['butterFingers', 72, row => row.TO >= 7],
+  ['perfectFts', 66, row => row.FTA >= 8 && row.FTM === row.FTA],
+  ['thirtyBomb', 62, row => row.PTS >= 30 && row.PTS < 40],
+  ['bucketGetter', 60, row => row.PTS >= 25 && row.FGA <= 17],
+  ['dimeDealer', 58, row => row.AST >= 10],
+  ['glassCleaner', 56, row => row.REB >= 14],
+  ['splashBro', 52, row => row.TPM >= 4 && row.TPM < 6],
+  ['thatGuy', 88, row => row.PTS >= 25 && row.TPA >= 5 && row.TPM / row.TPA >= .8 && row.FTA >= 4 && row.FTM === row.FTA],
+  ['putHimInTheStartingFive', 82, (row, mins, game) => game?.starter === false && mins <= 22 && row.PTS >= 18],
+  ['statsPads', 78, (row, mins, game) => game?.won === false && game.margin >= 25 && row.PTS >= 25],
+  ['glueGuy', 54, row => row.REB >= 12 && row.AST >= 5 && row.PTS <= 8],
+  ['lowKey', 50, (row, mins, game) => game?.won && game.margin >= 20 && row.PTS >= 8 && row.PTS <= 15 && row.FGA >= 3 && row.FGM / row.FGA >= .5 && row.AST >= 3 && row.TO === 0],
+  ['foulTrouble', 48, row => row.PF >= 5],
+  ['doubleDouble', 44, row => [row.PTS, row.REB, row.AST, row.STL, row.BLK].filter(value => value >= 10).length === 2],
+  ['ironMan', 42, (row, mins) => mins >= 42],
+  ['ghostMode', 40, (row, mins) => row.PTS <= 2 && mins >= 20],
+];
+
+export function tagsOf(row, minutes, game) {
+  const mins = num(minutes);
+  return TAGS.filter(([, , test]) => test(row, mins, game)).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([name]) => name);
 }
 
 /* Every field-goal attempt by the player, with where it was taken (feet from the basket: x across, y up the floor). */

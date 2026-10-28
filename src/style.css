@@ -4710,3 +4710,52 @@ section.pg .pg-hero .pg-share{margin:0!important}
 /* Compare header: the player is the button (tap to swap them); there is no cross in the corner. */
 .vs-change{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;width:100%;padding:0;border:0;background:none;color:inherit;font:inherit;cursor:pointer}
 .vs-change:focus-visible{outline:2px solid var(--text-1);outline-offset:4px;border-radius:12px}
+
+/* Share sheet like the stat apps': three big actions, a smaller row of destinations, then plain list rows. */
+.ss-sheet{height:min(94dvh,880px)!important;max-height:none!important}
+.ss-preview{flex:1 1 auto!important;min-height:0;padding:0 16px 10px!important}
+.ss-actions{gap:30px;padding:4px 16px 12px!important}
+.ss-actions.small{gap:26px;padding:4px 16px 14px!important}
+.ss-list{flex:none;border-top:1px solid #1b1c20}
+.ss-list button{display:flex;align-items:center;gap:16px;width:100%;padding:15px 22px;border:0;border-bottom:1px solid #131417;background:none;color:#f2f2f0;font-size:17px;font-weight:700;text-align:left;cursor:pointer}
+.ss-list button:disabled{opacity:.45;cursor:default}
+.ss-list svg{color:#d9dad6}
+.ss-note{bottom:150px!important}
+.ss-actions i{width:56px!important;height:56px!important}
+.ss-actions.small i{width:46px!important;height:46px!important}
+.ss-actions button{font-size:13.5px!important;gap:6px!important}
+.ss-list button{padding:12px 22px;font-size:16px}
+
+/* Share poster, final: the width of the card on screen (so nothing is shrunk in the preview), stats like the reference app: three left-aligned rows
+   of content-sized numbers with the label tucked under each. The shot chart is off unless chosen. */
+.sp{width:360px!important;padding:14px 14px 12px!important}
+.sp .rp-card{grid-template-columns:62px minmax(0,1fr) auto!important;gap:12px!important}
+.sp .rp-face,.sp .rp-face>img:first-child,.sp .rp-face>i{width:62px!important;height:62px!important}
+.sp .rp-trio b{font-size:30px!important}
+.sp .rp-top{font-size:15px!important}.sp .rp-top small{font-size:12px!important}
+.sp-tags{margin:10px 0 0!important;font-size:13px!important;gap:3px 12px!important}
+.sp-cols{display:block!important;margin-top:10px!important;padding-top:10px!important}
+.sp-pos{margin:0 0 8px!important;font-size:12px}
+.sp-st{display:grid;gap:8px}
+.sp-st p{display:flex;flex-wrap:nowrap;align-items:flex-start;gap:0 12px;margin:0}
+.sp-st span{display:flex;flex-direction:column;gap:1px;font-size:10px;font-weight:600;letter-spacing:.03em;line-height:1.15;color:#8e8f8a;white-space:nowrap}
+.sp-st span b{display:block;margin:0;font-size:20px;font-weight:600;line-height:1.05;letter-spacing:-.01em;color:#f2f2f0;font-variant-numeric:tabular-nums}
+.sp-st span.pos b{color:#34d399}.sp-st span.neg b{color:#f87171}
+.sp-court{display:flex;flex-direction:column;align-items:center;margin-top:12px;width:100%!important}
+.sp-court .sp-chart{width:92%!important;margin:0 auto!important;display:block}
+.sp-foot{margin-top:10px!important}
+.ss-options{flex:none;display:flex;justify-content:center;padding:0 16px 10px}
+.ss-chip{padding:7px 16px;border:1px solid #2a2c33;border-radius:999px;background:transparent;color:#cfd0cb;font-size:13.5px;font-weight:700;cursor:pointer}
+.ss-chip[aria-pressed="true"]{background:#f2f2f0;border-color:#f2f2f0;color:#0a0a0b}
+.ss-sheet{height:auto!important;max-height:94dvh!important}
+.ss-preview{flex:0 1 auto!important;min-height:0}
+.sp-tags{margin-bottom:12px!important}
+
+/* Shot chart on: the card widens and the chart sits on the right of the header and stats. */
+.sp.has-chart{width:580px!important}
+.sp.has-chart .sp-cols{display:grid!important;grid-template-columns:minmax(0,332px) minmax(0,1fr);gap:18px;align-items:center}
+.sp.has-chart .sp-court{margin-top:0;width:100%!important}
+.sp.has-chart .sp-court .sp-chart{width:100%!important}
+/* Equal halves: stats and chart each take half of the card. */
+.sp.has-chart{width:704px!important}
+.sp.has-chart .sp-cols{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:20px!important;align-items:center}

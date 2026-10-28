@@ -40,7 +40,7 @@ export default function PlayerGame({gameId, box, plays, team, player, onClose, o
   const allAssists = useMemo(() => assistShotsOf(plays, player.id), [plays, player.id]);
   const periods = [...quarters.keys()].sort((a, b) => a - b);
   const all = total(quarters), shown = quarter ? total(quarters, quarter) : all;
-  const s = player.stats, grade = rating(s), tags = tagsOf(all, s.MIN);
+  const s = player.stats, grade = rating(s), tags = tagsOf(all, s.MIN, {won: game.won, margin: Math.abs(num(own.score) - num(other.score)), quarters, plays, id: player.id, teamId: own.id, away, starter: player.starter});
   const shots = quarter ? allShots.filter(shot => shot.q === quarter) : allShots;
   const assistShots = quarter ? allAssists.filter(shot => shot.q === quarter) : allAssists;
   const series = periods.map(period => [period, metric === 'PTS' ? total(quarters, period).PTS : fps(total(quarters, period))]);

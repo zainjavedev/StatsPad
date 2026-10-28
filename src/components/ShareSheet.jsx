@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { toBlob } from 'html-to-image';
 import { shareFontCSS } from '../lib/shareFont';
 import { inlineImages } from '../lib/share';
-import { Check, Copy, Download, X as Close } from 'lucide-react';
+import { Check, Copy, Download, Link as LinkIcon, Send, X as Close } from 'lucide-react';
 
 /* The sheet behind every "share as an image" button: a preview of the picture (the actual card on screen,
    captured at 1080 pixels wide) and the ways to send it. `children` is a function that receives the ref to put on
@@ -45,7 +45,7 @@ async function flattenSvgs(node) {
   return () => { swaps.forEach(([svg, image]) => { image.remove(); svg.style.visibility = ''; }); node.style.position = position; };
 }
 
-export default function ShareSheet({ready, failed, unavailable = 'This is not available yet.', onClose, filename, text, url, children}) {
+export default function ShareSheet({ready, failed, unavailable = 'This is not available yet.', onClose, options, filename, text, url, children}) {
   const [note, setNote] = useState(''), [busy, setBusy] = useState(false);
   const poster = useRef(null), frame = useRef(null), built = useRef(null), [scale, setScale] = useState(1), [posterHeight, setPosterHeight] = useState(0);
 
@@ -134,14 +134,26 @@ export default function ShareSheet({ready, failed, unavailable = 'This is not av
     return copied ? 'Image copied, paste it into your post' : 'Save the image and attach it to your post';
   });
 
+  const copyLink = act(async () => { await navigator.clipboard.writeText(url); return 'Link copied'; });
+  const message = act(async () => {
+    if (navigator.share) { await navigator.share({title: text, text, url}); return 'Shared'; }
+    window.location.href = `sms:?&body=${encodeURIComponent(`${text} ${url}`)}`;
+    return '';
+  });
+
   return createPortal(<div className="ss-back" role="presentation" onClick={onClose}>
     <div className="ss-sheet" role="dialog" aria-modal="true" aria-label="Share image" onClick={event => event.stopPropagation()}>
       <div className="ss-top"><h3>Share image</h3><button type="button" className="ss-close" onClick={onClose} aria-label="Close"><Close size={18}/></button></div>
       <div className="ss-preview" ref={frame}>{ready ? <div className="ss-scale" style={{transform: `scale(${scale})`, height: posterHeight ? posterHeight * scale : undefined}}>{children(poster)}</div> : <div className="ss-wait">{failed ? unavailable : 'Building your image…'}</div>}</div>
+      {options && <div className="ss-options">{options}</div>}
       <div className="ss-actions">
         <button type="button" onClick={copy} disabled={!ready || busy}><i className="blue"><Copy size={26}/></i>Copy</button>
         <button type="button" onClick={download} disabled={!ready || busy}><i className="blue"><Download size={26}/></i>Save</button>
-        <button type="button" onClick={tweet} disabled={!ready || busy}><i className="x"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></i>Post on X</button>
+        <button type="button" onClick={tweet} disabled={!ready || busy}><i className="x"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></i>X</button>
+      </div>
+      <div className="ss-list">
+        <button type="button" onClick={copyLink} disabled={!ready || busy}><LinkIcon size={22}/>Copy link</button>
+        <button type="button" onClick={message} disabled={!ready || busy}><Send size={22}/>Direct message</button>
       </div>
       {note && <div className="ss-note" role="status"><Check size={15}/>{note}</div>}
     </div>

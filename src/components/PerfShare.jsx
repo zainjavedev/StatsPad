@@ -14,18 +14,18 @@ const num = value => Number(String(value ?? '').replace('+', '')) || 0;
 const done = (made, tried) => `${made}/${tried}`;
 const tone = grade => (grade >= 7.5 ? 'great' : grade >= 5.5 ? 'good' : grade >= 4 ? 'fair' : 'poor');
 
-const Poster = forwardRef(function Poster({line, box}, ref) {
+const Poster = forwardRef(function Poster({line, box, chart}, ref) {
   const {player} = line, id = player.id;
   const {quarters} = useMemo(() => quarterStats(box.plays, id), [box, id]);
   const all = total(quarters);
   const shots = useMemo(() => shotsOf(box.plays, id), [box, id]);
   const assists = useMemo(() => assistShotsOf(box.plays, id), [box, id]);
-  const s = player.stats, grade = rating(s), tags = tagsOf(all, s.MIN);
+  const s = player.stats, grade = rating(s), tags = tagsOf(all, s.MIN, {won: num(box.away.abbr === line.team ? box.away.score : box.home.score) > num(box.away.abbr === line.team ? box.home.score : box.away.score), margin: Math.abs(num(box.away.score) - num(box.home.score)), quarters, plays: box.plays, id, teamId: (box.away.abbr === line.team ? box.away : box.home).id, away: box.away.abbr === line.team, starter: player.starter});
   const own = line.team === box.away.abbr ? box.away : box.home, other = own === box.away ? box.home : box.away;
   const won = num(own.score) > num(other.score);
   const cell = (label, value) => <span key={label} className={label === '+/-' ? (num(value) > 0 ? 'pos' : num(value) < 0 ? 'neg' : '') : ''}><b>{value}</b>{label}</span>;
   const name = player.name.replace(/^(\S)\S*\s+/, '$1. ');
-  return <div className="sp" ref={ref}>
+  return <div className={chart ? 'sp has-chart' : 'sp'} ref={ref}>
     <div className="sp-cols">
       <div className="sp-left">
         <div className="rp-card sp-card">
@@ -38,24 +38,23 @@ const Poster = forwardRef(function Poster({line, box}, ref) {
         </div>
         {tags.length > 0 && <p className="sp-tags">{tags.map(tag => <span key={tag}>#{tag}</span>)}</p>}
         <div className="sp-pos"><span>{player.pos || 'Player'} · {s.MIN} min</span><small className="rp-game"><img src={own.logo} alt="" crossOrigin="anonymous"/><b className={won ? 'win' : ''}>{own.score}</b>–<b className={won ? '' : 'win'}>{other.score}</b><img src={other.logo} alt="" crossOrigin="anonymous"/></small></div>
-        <div className="sp-stats">
-          {cell('MIN', s.MIN)}{cell('PTS', all.PTS)}{cell('REB', all.REB)}{cell('AST', all.AST)}{cell('STL', all.STL)}{cell('BLK', all.BLK)}{cell('+/-', s['+/-'])}
-          {cell('FG%', all.FGA ? fgPct(all).toFixed(1) : '–')}{cell('FG', done(all.FGM, all.FGA))}{cell('3PT', done(all.TPM, all.TPA))}{cell('FT', done(all.FTM, all.FTA))}
-          {cell('TO', all.TO)}{cell('PF', all.PF)}{cell('OREB', all.OREB)}{cell('DREB', all.DREB)}
-          {cell('TS%', all.FGA || all.FTA ? tsPct(all).toFixed(1) : '–')}{cell('FPS', fps(all))}
+        <div className="sp-st">
+          <p>{cell('MIN', s.MIN)}{cell('PTS', all.PTS)}{cell('REB', all.REB)}{cell('AST', all.AST)}{cell('STL', all.STL)}{cell('BLK', all.BLK)}{cell('+/-', s['+/-'])}{cell('FG%', all.FGA ? fgPct(all).toFixed(1) : '–')}</p>
+          <p>{cell('FG', done(all.FGM, all.FGA))}{cell('3PT', done(all.TPM, all.TPA))}{cell('FT', done(all.FTM, all.FTA))}{cell('TO', all.TO)}{cell('PF', all.PF)}{cell('OREB', all.OREB)}{cell('DREB', all.DREB)}{cell('TS%', all.FGA || all.FTA ? tsPct(all).toFixed(1) : '–')}</p>
+          <p>{cell('FPS', fps(all))}</p>
         </div>
       </div>
-      <div className="sp-court">
+      {chart && <div className="sp-court">
         <ShotChart shots={shots} assists={assists} className="sp-chart"/>
         <p className="pg-legend shot-key"><span><i className="made"/>Made</span><span><i className="missed"/>Missed</span>{assists.length > 0 && <span><i className="assist"/>Assisted</span>}</p>
-      </div>
+      </div>}
     </div>
     <p className="sp-foot"><b>statspads.com</b><span>{line.date ? day.format(line.date) : ''}</span></p>
   </div>;
 });
 
 export default function PerfShare({line, onClose}) {
-  const [box, setBox] = useState(null);
+  const [box, setBox] = useState(null), [chart, setChart] = useState(false);
   useEffect(() => {
     let live = true;
     loadBoxscore(line.gameId).then(found => { if (live) setBox(found); }).catch(() => { if (live) setBox(false); });
@@ -64,7 +63,8 @@ export default function PerfShare({line, onClose}) {
   return <ShareSheet ready={Boolean(box)} failed={box === false} unavailable="This game is not available yet." onClose={onClose}
     filename={`${line.player.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${line.gameId}`} title={line.player.name}
     text={`${line.player.name}: ${trio(line.player.stats).map(([value, label]) => `${value} ${label}`).join(', ')} (${line.team} ${line.score})`}
-    url={`${siteOrigin()}/games/${line.gameId}?player=${line.player.id}`}>
-    {ref => <Poster ref={ref} line={line} box={box}/>}
+    url={`${siteOrigin()}/games/${line.gameId}?player=${line.player.id}`}
+    options={<button type="button" className="ss-chip" aria-pressed={chart} onClick={() => setChart(on => !on)}>Shot chart</button>}>
+    {ref => <Poster ref={ref} line={line} box={box} chart={chart}/>}
   </ShareSheet>;
 }
