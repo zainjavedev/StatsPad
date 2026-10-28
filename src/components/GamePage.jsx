@@ -122,7 +122,7 @@ function MatchupRadar({box}) {
 /* Before tip-off: each side's expected starting five on the team page's cards, with last season's per-game
    numbers and how often the player started in the preseason. */
 function Preview({box}) {
-  const [data, setData] = useState(null), [context, setContext] = useState(null);
+  const [data, setData] = useState(null), [context, setContext] = useState(null), [attempt, setAttempt] = useState(0);
   useEffect(() => {
     const [awayCode, homeCode] = [box.away, box.home].map(side => codeOf(side.abbr));
     Promise.all([
@@ -139,7 +139,10 @@ function Preview({box}) {
       setContext({awayCode, homeCode, form: [formOf(games, awayCode), formOf(games, homeCode)], meetings, byCode});
     }).catch(() => setContext({awayCode, homeCode, form: [], meetings: [], byCode: new Map()}));
     const codes = [awayCode, homeCode];
-    Promise.all(codes.map(code => fetch(`/data/2026-27/rosters/${code}.json`).then(response => response.json()))).then(async rosters => {
+    /* A phone on a weak connection can drop one of these files; each is asked for twice (the second time past the cache) before giving up. */
+    const getRoster = code => fetch(`/data/2026-27/rosters/${code}.json`).then(response => { if (!response.ok) throw new Error(response.status); return response.json(); })
+      .catch(() => fetch(`/data/2026-27/rosters/${code}.json`, {cache: 'reload'}).then(response => { if (!response.ok) throw new Error(response.status); return response.json(); }));
+    Promise.all(codes.map(getRoster)).then(async rosters => {
       /* Numbers on the cards: this season's regular-season averages once a player has played one, otherwise his
          preseason averages. Last season's numbers are not used here. */
       const [live, pre] = await Promise.all([
@@ -157,11 +160,12 @@ function Preview({box}) {
         return {roster, code, side: [box.away, box.home][index], five, source: five.some(player => player.line?.source === 'season') ? 'season' : 'preseason'};
       }));
     }).catch(() => setData([]));
-  }, [box]);
+  }, [box, attempt]);
   if (!data) return <div className="gp-preview" aria-busy="true" aria-label="Loading the starting fives">{[0, 1].map(side => <section key={side} className="gp-side"><div className="sk sk-title"/><div className="starter-grid">{[0, 1, 2, 3, 4].map(index => <div key={index} className="sk sk-starter"/>)}</div></section>)}</div>;
   const per = (player, key) => Number.isFinite(player.line?.[key]) ? player.line[key].toFixed(1) : '—';
   return <div className="gp-preview">
     <p className="gd-note">No box score yet. Expected starters are who started the most preseason games, with this season&apos;s per-game numbers (preseason numbers until the regular season starts).</p>
+    {data.length === 0 && <div className="gp-retry"><p>The starting fives did not load. This is usually a weak connection.</p><button type="button" className="spoiler-toggle" onClick={() => { setData(null); setAttempt(count => count + 1); }}>Try again</button></div>}
     {data.map(({roster, code, side, five}) => <section key={code} className="gp-side" style={{'--team': TEAMS[code].color}}>
       <h3>{side.logo && <img src={side.logo} alt=""/>}<span>{roster.teamName}<small>Expected starting five</small></span></h3>
       <div className="starter-grid">{five.map(player => <div key={player.name} className="starter-card">

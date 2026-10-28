@@ -4768,3 +4768,15 @@ section.pg .pg-hero .pg-share{margin:0!important}
 /* Share poster stats: a touch smaller and tighter so a wide system font never pushes TS% off the edge, and a row wraps instead of clipping if it ever must. */
 .sp-st p{flex-wrap:wrap!important;gap:6px 10px!important}
 .sp-st span b{font-size:18px!important}
+
+/* Past matchups on phones: both teams share the row evenly so the home logo stays inside the card, and a failed lineup load says so. */
+@media(max-width:640px){
+  .gp-meet li{grid-template-columns:minmax(0,1fr) 22px minmax(0,1fr)!important;gap:6px 6px;padding:12px 14px}
+  .gp-meet-date{grid-column:1/-1}
+  .gp-meet-team{min-width:0;gap:8px}
+  .gp-meet-team b{font-size:21px}
+  .gp-meet-team img{width:26px;height:26px;flex:none}
+  .gp-meet li>.gp-meet-team:last-child{justify-content:flex-end}
+}
+.gp-retry{display:grid;gap:10px;justify-items:start;padding:14px 0;color:var(--text-2)}
+.gp-retry p{margin:0}
