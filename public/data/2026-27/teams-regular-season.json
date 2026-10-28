@@ -2,7 +2,7 @@
   "season": "2026-27",
   "seasonType": "Regular Season",
   "description": "NBA team per-game statistics for the 2026-27 regular season",
-  "lastUpdated": "2026-10-27",
+  "lastUpdated": "2026-10-28",
   "source": {
     "name": "ESPN box scores",
     "url": "https://www.espn.com/nba/schedule"
@@ -234,7 +234,7 @@
         "offensiveRebounds": 13.7,
         "defensiveRebounds": 38.3,
         "steals": 6.3,
-        "blocks": 7.7,
+        "blocks": 7.3,
         "turnovers": 17,
         "personalFouls": 21.7,
         "fieldGoalsMade": 41.3,

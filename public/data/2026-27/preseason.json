@@ -2,7 +2,7 @@
   "season": "2026-27",
   "seasonType": "Preseason",
   "description": "NBA player per-game statistics for the 2026-27 preseason",
-  "lastUpdated": "2026-10-27",
+  "lastUpdated": "2026-10-28",
   "source": {
     "name": "ESPN preseason box scores",
     "url": "https://www.espn.com/nba/schedule"
@@ -14094,7 +14094,7 @@
       "playerName": "Jae'Sean Tate",
       "team": "HOU",
       "position": "SF",
-      "age": 30,
+      "age": 31,
       "gamesPlayed": 1,
       "gamesStarted": 0,
       "minutesPerGame": 8,
