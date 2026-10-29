@@ -4830,3 +4830,8 @@ section.pg .pg-hero .pg-share{margin:0!important}
 .lead-switch button{font-size:15px}
 .statpage-art.team-logo{border-radius:0;object-fit:contain;background:none;padding:6px}
 .lead-switch{justify-content:flex-start!important;gap:26px!important}
+
+/* Share card header: the three headline numbers stay on one line however wide the font. */
+.sp .rp-trio{flex-wrap:nowrap!important;white-space:nowrap;gap:0 12px!important}
+.sp .rp-trio b{font-size:27px!important}
+.sp .rp-trio>span{flex:none}

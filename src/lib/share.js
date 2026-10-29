@@ -33,19 +33,24 @@ export function onDark(color = '#3b3b45') {
    would otherwise download each one again while it draws. So every <img> is fetched once, turned into a data URL and decoded
    before the capture. A picture that cannot be fetched is left as it was (its initials show instead). */
 const toDataUrl = blob => new Promise(resolve => { const reader = new FileReader(); reader.onload = () => resolve(reader.result); reader.onerror = () => resolve(null); reader.readAsDataURL(blob); });
+/* Safari keeps a picture it first loaded without CORS and then answers a CORS fetch for the same address from that cached copy, which has no
+   permission header, so the fetch failed and the picture came out blank. Other sites' pictures are therefore read through this site's own
+   /api/img first (same origin, no permission needed); a direct fetch is the fallback. */
+const grab = async source => {
+  const attempt = async (url, cache) => { const response = await fetch(url, {cache}); return response.ok ? toDataUrl(await response.blob()) : null; };
+  const external = new URL(source, location.href).origin !== location.origin;
+  if (external) { try { const viaSite = await attempt(`/api/img?u=${encodeURIComponent(source)}`, 'force-cache'); if (viaSite) return viaSite; } catch { /* try direct */ } }
+  try { return await attempt(source, external ? 'no-store' : 'force-cache'); } catch { return null; }
+};
 export async function inlineImages(node) {
   await Promise.all([...node.querySelectorAll('img')].map(async image => {
     const source = image.currentSrc || image.src;
     if (!source || source.startsWith('data:')) return;
-    try {
-      const response = await fetch(source, {mode: 'cors', cache: 'force-cache'});
-      if (!response.ok) return;
-      const url = await toDataUrl(await response.blob());
-      if (!url) return;
-      image.removeAttribute('srcset');
-      image.src = url;
-      await image.decode?.().catch(() => {});
-    } catch { /* leave the original */ }
+    const url = await grab(source);
+    if (!url) return;
+    image.removeAttribute('srcset');
+    image.src = url;
+    await image.decode?.().catch(() => {});
   }));
 }
 

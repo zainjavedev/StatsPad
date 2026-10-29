@@ -130,7 +130,12 @@ export default function ShareSheet({ready, failed, unavailable = 'This is not av
   const tweet = act(async () => {
     let copied = false;
     try { if (navigator.clipboard?.write && typeof ClipboardItem !== 'undefined') { await navigator.clipboard.write([new ClipboardItem({'image/png': blob()})]); copied = true; } } catch { /* the post still opens */ }
-    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank', 'noopener');
+    const web = `https://x.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+    if (window.matchMedia?.('(pointer: coarse)').matches) {
+      /* On a phone the X app opens straight to a new post; if it is not installed the page stays visible and the web composer opens instead. */
+      window.location.href = `twitter://post?message=${encodeURIComponent(`${text} ${url}`)}`;
+      setTimeout(() => { if (!document.hidden) window.location.href = web; }, 1400);
+    } else window.open(web, '_blank', 'noopener');
     return copied ? 'Image copied, paste it into your post' : 'Save the image and attach it to your post';
   });
 
