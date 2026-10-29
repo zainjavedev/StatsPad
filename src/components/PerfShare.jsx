@@ -39,9 +39,8 @@ const Poster = forwardRef(function Poster({line, box, chart}, ref) {
         {tags.length > 0 && <p className="sp-tags">{tags.map(tag => <span key={tag}>#{tag}</span>)}</p>}
         <div className="sp-pos"><span>{player.pos || 'Player'} · {s.MIN} min</span><small className="rp-game"><img src={own.logo} alt="" crossOrigin="anonymous"/><b className={won ? 'win' : ''}>{own.score}</b>–<b className={won ? '' : 'win'}>{other.score}</b><img src={other.logo} alt="" crossOrigin="anonymous"/></small></div>
         <div className="sp-st">
-          <p>{cell('MIN', s.MIN)}{cell('PTS', all.PTS)}{cell('REB', all.REB)}{cell('AST', all.AST)}{cell('STL', all.STL)}{cell('BLK', all.BLK)}{cell('+/-', s['+/-'])}{cell('FG%', all.FGA ? fgPct(all).toFixed(1) : '–')}</p>
+          <p>{cell('PTS', all.PTS)}{cell('REB', all.REB)}{cell('AST', all.AST)}{cell('STL', all.STL)}{cell('BLK', all.BLK)}{cell('+/-', s['+/-'])}{cell('FG%', all.FGA ? fgPct(all).toFixed(1) : '–')}{cell('FPS', fps(all))}</p>
           <p>{cell('FG', done(all.FGM, all.FGA))}{cell('3PT', done(all.TPM, all.TPA))}{cell('FT', done(all.FTM, all.FTA))}{cell('TO', all.TO)}{cell('PF', all.PF)}{cell('OREB', all.OREB)}{cell('DREB', all.DREB)}{cell('TS%', all.FGA || all.FTA ? tsPct(all).toFixed(1) : '–')}</p>
-          <p>{cell('FPS', fps(all))}</p>
         </div>
       </div>
       {chart && <div className="sp-court">
