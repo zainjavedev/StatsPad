@@ -47,6 +47,9 @@ export const fps = row => +(row.PTS + 1.2 * row.REB + 1.5 * row.AST + 3 * row.ST
 export const tsPct = row => (row.FGA + .44 * row.FTA ? Math.round(1000 * row.PTS / (2 * (row.FGA + .44 * row.FTA))) / 10 : 0);
 export const fgPct = row => (row.FGA ? Math.round(1000 * row.FGM / row.FGA) / 10 : 0);
 
+/* The colour band for a grade, shared by the game page and the share card so the same night reads the same everywhere. */
+export const gradeTone = value => (value >= 8 ? 'great' : value >= 6 ? 'good' : value >= 4.5 ? 'ok' : 'poor');
+
 /* 0-10 from Hollinger's game score off the box score line. */
 export const rating = line => Math.max(0, Math.min(10, +(2.5 + gameScore(line) / 6.5).toFixed(1)));
 

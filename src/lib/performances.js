@@ -23,7 +23,7 @@ export function performancesOf(box, gameId) {
     const mine = team.abbr === box.away.abbr ? box.away : box.home, other = mine === box.away ? box.home : box.away;
     const won = num(mine.score) > num(other.score);
     return team.players.filter(player => !player.out).map(player => ({
-      gameId, player, team: team.abbr, opp: other.abbr, home: mine === box.home, won, score: `${mine.score}–${other.score}`,
+      gameId, live: box.state === 'in', player, team: team.abbr, opp: other.abbr, home: mine === box.home, won, score: `${mine.score}–${other.score}`,
       date: box.date ? new Date(box.date) : null, rating: gameScore(player.stats),
     }));
   });

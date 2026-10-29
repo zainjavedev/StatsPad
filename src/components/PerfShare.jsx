@@ -2,7 +2,7 @@ import React, { forwardRef, useEffect, useMemo, useState } from 'react';
 import ShareSheet from './ShareSheet';
 import ShotChart from './ShotChart';
 import { loadBoxscore } from '../lib/boxscore';
-import { assistShotsOf, fgPct, fps, quarterStats, rating, shotsOf, tagsOf, total, tsPct } from '../lib/playerGame';
+import { gradeTone, assistShotsOf, fgPct, fps, quarterStats, rating, shotsOf, tagsOf, total, tsPct } from '../lib/playerGame';
 import { trio } from '../lib/trio';
 import { siteOrigin } from '../lib/share';
 
@@ -12,7 +12,7 @@ import { siteOrigin } from '../lib/share';
 const day = new Intl.DateTimeFormat(undefined, {month: 'short', day: 'numeric', year: 'numeric'}), shortDay = new Intl.DateTimeFormat(undefined, {month: 'short', day: 'numeric'});
 const num = value => Number(String(value ?? '').replace('+', '')) || 0;
 const done = (made, tried) => `${made}/${tried}`;
-const tone = grade => (grade >= 7.5 ? 'great' : grade >= 5.5 ? 'good' : grade >= 4 ? 'fair' : 'poor');
+const tone = gradeTone;
 
 const Poster = forwardRef(function Poster({line, box, chart}, ref) {
   const {player} = line, id = player.id;

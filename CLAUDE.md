@@ -55,6 +55,8 @@ When the Claude in Chrome tools aren't available, drive the owner's already-open
 
 Follow `PRODUCT.md` and `DESIGN.md` if present. Mobile first, since many visitors are on a phone. The look is part of the product, so don't ship plain default-styled UI.
 
+- Card photo rule: a card's photo (player face or team logo beside a block of text) is exactly as tall as that text block, never a fixed size that leaves a gap or overhangs. `PerfCard` in `src/components/RecentPerformances.jsx` measures its text and sets `--face`; reuse that pattern for new cards.
+
 ## Git commits
 
 - Do not add `Co-Authored-By: Claude ...`, `Claude-Session: ...`, or any other Claude/AI attribution lines to commit messages.

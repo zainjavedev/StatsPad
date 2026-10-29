@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ArrowRight, Share2 } from 'lucide-react';
 import { bestOfNight, newestFirst } from '../lib/performances';
 import { fps, rating } from '../lib/playerGame';
@@ -15,17 +15,34 @@ const short = name => name.replace(/^(\S)\S*\s+/, '$1. ');
 const codeOf = abbr => Object.keys(TEAMS).find(code => TEAMS[code].espn === String(abbr).toLowerCase());
 
 /* One performance card; used on Home and beside a player's game report. */
+/* Design rule: the photo is exactly as tall as the text beside it. The text block is measured and the face follows it,
+   so a card with a wrapped name or a bigger font gets a bigger face instead of a gap. */
+const useFaceSize = () => {
+  const main = useRef(null), [size, setSize] = useState(null);
+  useLayoutEffect(() => {
+    const node = main.current;
+    if (!node || typeof ResizeObserver === 'undefined') return undefined;
+    const measure = () => setSize(Math.round(node.getBoundingClientRect().height));
+    measure();
+    const watch = new ResizeObserver(measure);
+    watch.observe(node);
+    return () => watch.disconnect();
+  }, []);
+  return [main, size];
+};
+
 export function PerfCard({line, onPick, showDate = true}) {
-  const [sharing, setSharing] = useState(false);
+  const [sharing, setSharing] = useState(false), [main, face] = useFaceSize();
   const s = line.player.stats, code = codeOf(line.team), oppCode = codeOf(line.opp);
   const row = {PTS: num(s.PTS), REB: num(s.REB), AST: num(s.AST), STL: num(s.STL), BLK: num(s.BLK), TO: num(s.TO)};
   return <>
-    <a className="rp-card" href={`/games/${line.gameId}?player=${line.player.id}`} onClick={onPick ? event => { event.preventDefault(); onPick(line.player.id); } : undefined}>
+    <a className="rp-card" style={face ? {'--face': `${face}px`} : undefined} href={`/games/${line.gameId}?player=${line.player.id}`} onClick={onPick ? event => { event.preventDefault(); onPick(line.player.id); } : undefined}>
       <span className="rp-face">{line.player.photo ? <img src={line.player.photo} alt="" loading="lazy"/> : <i/>}{code && <img className="rp-team" src={espnLogoUrl(code)} alt=""/>}</span>
-      <span className="rp-main">
+      <span className="rp-main" ref={main}>
         <span className="rp-top"><b>{short(line.player.name)}</b><small> · {fps(row)} fps{showDate && line.date ? ` · ${day.format(line.date)}` : ''}</small></span>
         <span className="rp-trio">{trio(s).map(([value, label]) => <span key={label}><b>{value}</b>{label}</span>)}</span>
-        <small className="rp-game">{code && <img src={espnLogoUrl(code)} alt={line.team}/>}<b className={line.won ? 'win' : ''}>{line.score.split('–')[0]}</b>–<b className={line.won ? '' : 'win'}>{line.score.split('–')[1]}</b>{oppCode && <img src={espnLogoUrl(oppCode)} alt={line.opp}/>}</small>
+        {/* His own team is already on the face badge, so the game line is just the score (winner in bold) and the opponent. */}
+        <small className="rp-game">{line.live && <i className="rp-wl live">Live</i>}<b className={line.won ? 'win' : ''}>{line.score.split('–')[0]}</b>–<b className={line.won ? '' : 'win'}>{line.score.split('–')[1]}</b><span className="rp-vs">{line.home ? 'vs' : '@'}</span>{oppCode && <img src={espnLogoUrl(oppCode)} alt={line.opp}/>}</small>
       </span>
       <span className="rp-grade">{rating(s).toFixed(1)}</span>
     </a>

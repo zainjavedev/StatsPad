@@ -41,7 +41,7 @@ export default function Ladder({params}) {
                   <span className="rp-top"><b>{row.name}</b><small> · {row.team}<span className="ldp-gp"> · {row.games} {row.games === 1 ? 'game' : 'games'}</span> · avg</small></span>
                   <span className="rp-trio"><span><b>{row.pts}</b>pts</span><span><b>{row.reb}</b>reb</span><span><b>{row.ast}</b>ast</span></span>
                 </span>
-                <span className="ldp-right"><span className="ldp-score" title="Per-game game score, pulled toward the pool average for players with few games"><b>{row.score}</b><small>game score</small></span>{row.qualified === false ? null : <Move value={row.move}/>}</span>
+                <span className="ldp-right"><span className="ldp-score" title="Per-game game score, pulled toward the pool average for players with few games"><b>{row.score}</b><small>game score</small></span><Move value={row.move}/></span>
               </>;
               return row.url ? <a className="ld-row ldc" href={row.url}>{body}</a> : <div className="ld-row ldc">{body}</div>;
             })()}

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ChevronRight, Share2 } from 'lucide-react';
 import PerfShare from './PerfShare';
+import { trio } from '../lib/trio';
 import ShotChart from './ShotChart';
 import {PerfCard, PerfSkeleton} from './RecentPerformances';
 import { bestOfNight, performancesOf } from '../lib/performances';
@@ -8,7 +9,7 @@ import { finished, loadSchedule } from '../lib/schedule';
 import { loadBoxscore } from '../lib/boxscore';
 import { navigate } from '../lib/nav';
 import { playerUrl } from '../lib/routes';
-import { assistShotsOf, fps, quarterStats, rating, shotsOf, tagsOf, total, tsPct, fgPct } from '../lib/playerGame';
+import { gradeTone, assistShotsOf, fps, quarterStats, rating, shotsOf, tagsOf, total, tsPct, fgPct } from '../lib/playerGame';
 
 /* One player's night, told as a story: what he did in a sentence, where every shot came from, how the game
    swung while he scored, quarter by quarter, and who he set up. */
@@ -16,7 +17,7 @@ import { assistShotsOf, fps, quarterStats, rating, shotsOf, tagsOf, total, tsPct
 const num = value => Number(String(value ?? '').replace('+', '')) || 0;
 const dayFormat = new Intl.DateTimeFormat(undefined, {weekday: 'short', month: 'short', day: 'numeric'});
 const label = quarter => (quarter <= 4 ? `Q${quarter}` : quarter === 5 ? 'OT' : `${quarter - 4}OT`);
-const tone = value => (value >= 8 ? 'great' : value >= 6 ? 'good' : value >= 4.5 ? 'ok' : 'poor');
+const tone = gradeTone;
 const lastName = name => name.split(' ').slice(1).join(' ') || name;
 
 export default function PlayerGame({gameId, box, plays, team, player, onClose, onPick, nameOf}) {
@@ -89,7 +90,7 @@ export default function PlayerGame({gameId, box, plays, team, player, onClose, o
       <a className="pg-profile" href={playerUrl(player.name)} aria-label={`${player.name} profile`}>{player.photo ? <img className="pg-photo" src={player.photo} alt=""/> : <i className="pg-photo"/>}<img className="pg-badge" src={team.logo} alt={team.abbr}/></a>
       <div className="pg-who">
         <h2><a className="pg-name" href={playerUrl(player.name)}>{player.name.replace(/^(\S)\S*\s+/, '$1. ')}</a><span className="pg-fps">{fps(all)} fps</span></h2>
-        <p className="pg-big"><span><b>{all.PTS}</b><small>pts</small></span><span><b>{all.REB}</b><small>reb</small></span><span><b>{all.AST}</b><small>ast</small></span></p>
+        <p className="pg-big">{trio(s).map(([value, label]) => <span key={label}><b>{value}</b><small>{label}</small></span>)}</p>
         {game.date && <small>{dayFormat.format(game.date)}</small>}
       </div>
       <div className="pg-actions">
@@ -130,10 +131,10 @@ export default function PlayerGame({gameId, box, plays, team, player, onClose, o
 
     {assists.length > 0 && <div className="pg-card">
       <div className="pg-card-head"><h3>Who he set up</h3><span className="pg-note">{assistPts} points created</span></div>
-      <ul className="pg-assists">{assists.map(entry => <li key={entry.id}>
+      <ul className="pg-assists">{assists.map(entry => <li key={entry.id}><a className="pg-assist" href={`/games/${gameId}?player=${entry.id}`} onClick={event => { event.preventDefault(); onPick(entry.id); }}>
         {photo(entry.id) ? <img src={photo(entry.id)} alt=""/> : <i/>}
         <span><b>{lastName(entry.name)}</b><small>{entry.pts} pts</small></span><strong>{entry.ast} ast</strong>
-      </li>)}</ul>
+      </a></li>)}</ul>
     </div>}
     </div>
 
