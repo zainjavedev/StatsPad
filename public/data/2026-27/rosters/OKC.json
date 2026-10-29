@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Mark Daigneault",
-  "lastUpdated": "2026-10-23",
+  "lastUpdated": "2026-10-29",
   "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
@@ -251,18 +251,6 @@
       "exp": 0,
       "college": "Creighton",
       "jersey": "21",
-      "unit": "camp"
-    },
-    {
-      "name": "Otega Oweh",
-      "nbaId": null,
-      "espnId": 5106270,
-      "pos": "G",
-      "height": "6-4",
-      "birthDate": "2003-06-21",
-      "exp": 0,
-      "college": "Kentucky",
-      "jersey": "13",
       "unit": "camp"
     }
   ]
