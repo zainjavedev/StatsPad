@@ -40,7 +40,7 @@ function TeamCompare({teams}) {
   if (rows.length === 0) return null;
   return <section className="gd-card gd-compare">
     <div className="pg-card-head"><h3>Team stats</h3></div>
-    <div className="gd-compare-head">{teams.map(team => <span key={team.abbr}>{team.logo && <img src={team.logo} alt=""/>}{team.abbr}</span>)}</div>
+    <div className="gd-compare-head">{teams.map(team => <a key={team.abbr} className="gd-teamlink" href={teamHref(team.abbr) ?? undefined}>{team.logo && <img src={team.logo} alt=""/>}{team.abbr}</a>)}</div>
     {rows.map(([label, key, suffix = '', fewer]) => {
       const [a, b] = teams.map(team => lead(team.totals[key])), best = a === b ? -1 : (fewer ? a < b : a > b) ? 0 : 1;
       return <div key={label} className="gd-compare-row">
@@ -272,7 +272,7 @@ export default function GamePage({id}) {
         const out = team.players.filter(player => !player.starter && player.out);
         const shown = all ? lines : lines.slice(0, TOP);
         return <section key={team.abbr} className={`gd-team gd-cards${side === index ? ' on' : ''}`}>
-          <h3>{team.logo && <img src={team.logo} alt=""/>}{team.name}</h3>
+          <h3>{teamHref(team.abbr) ? <a className="gd-teamlink" href={teamHref(team.abbr)}>{team.logo && <img src={team.logo} alt=""/>}{team.name}</a> : <>{team.logo && <img src={team.logo} alt=""/>}{team.name}</>}</h3>
           <ul className="rp-list">{shown.map(line => <li key={line.player.id}><PerfCard line={line} onPick={pick}/></li>)}</ul>
           {out.length > 0 && <p className="gd-out">Did not play: {out.map(player => player.name).join(', ')}</p>}
         </section>;

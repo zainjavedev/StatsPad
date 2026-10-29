@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { espnLogoUrl, nickname } from '../lib/teams';
-import { gameUrl, playerUrl } from '../lib/routes';
+import { gameUrl, playerUrl, teamUrl } from '../lib/routes';
 import { loadSchedule } from '../lib/schedule';
 import InjuryMark from './InjuryMark';
 
@@ -34,7 +34,7 @@ function useTonight() {
 function Five({code, fives}) {
   const five = fives[code] ?? [];
   return <div className="tn-team">
-    <b><img src={espnLogoUrl(code)} alt="" width="22" height="22" loading="lazy"/>{nickname(code)}</b>
+    <a className="tn-teamlink" href={teamUrl(code)}><b><img src={espnLogoUrl(code)} alt="" width="22" height="22" loading="lazy"/>{nickname(code)}</b></a>
     {five.length ? <ol>{five.map(([slot, name]) => <li key={slot + name}><i>{slot}</i><a href={playerUrl(name)}>{name}</a><InjuryMark name={name}/></li>)}</ol> : <p>To be announced</p>}
   </div>;
 }
