@@ -2,7 +2,7 @@
   "season": "2026-27",
   "seasonType": "Preseason",
   "description": "NBA player per-game statistics for the 2026-27 preseason",
-  "lastUpdated": "2026-10-29",
+  "lastUpdated": "2026-10-30",
   "source": {
     "name": "ESPN preseason box scores",
     "url": "https://www.espn.com/nba/schedule"
