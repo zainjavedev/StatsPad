@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Will Hardy",
-  "lastUpdated": "2026-10-23",
+  "lastUpdated": "2026-10-31",
   "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
@@ -215,19 +215,6 @@
       "exp": 9,
       "college": "Kansas",
       "jersey": "10",
-      "unit": "third"
-    },
-    {
-      "name": "Blake Hinson",
-      "bbrefId": "hinsobl01",
-      "nbaId": null,
-      "espnId": 4396963,
-      "pos": "F",
-      "height": "6-8",
-      "birthDate": "1999-12-26",
-      "exp": 2,
-      "college": "Pittsburgh",
-      "jersey": "25",
       "unit": "third"
     },
     {
