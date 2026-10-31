@@ -4901,3 +4901,24 @@ section.pg .pg-hero{position:relative}
 section.pg .pg-hero .pg-actions{position:absolute!important;top:0;right:0;flex-direction:row!important;align-items:center!important;gap:4px!important;margin:0!important}
 section.pg .pg-who h2{padding-right:112px}
 section.pg .pg-big b{font-size:clamp(24px,15cqi,46px)!important}
+
+/* Performance cards: the name line never wraps (the fps and date trim with an ellipsis instead), so every card's text block
+   is the same height and every face is the same size. */
+.rp-list>li>.rp-card .rp-top{display:block;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;line-height:1.2}
+.rp-list>li>.rp-card .rp-main{min-width:0}
+/* ...and the three numbers stay on one line too, shrinking a little on narrow phones instead of wrapping (a wrapped line doubled the face). */
+.rp-list>li>.rp-card .rp-trio{flex-wrap:nowrap!important;white-space:nowrap}
+/* Sized by the screen, not the column: the column's width depends on the face, so sizing by it would loop. */
+.rp-list>li>.rp-card .rp-trio b{font-size:clamp(18px,5.8vw,27px)}
+.rp-list>li>.rp-card .rp-trio{font-size:clamp(11px,2.9vw,13.5px)}
+
+/* A game that has not started: the two logos on one line at either edge, the tip-off time and the radar centred underneath at full width. */
+.gp-head.is-pre{display:grid!important;grid-template-columns:1fr 1fr!important;align-items:center;row-gap:6px!important;padding-right:0!important}
+.gp-head.is-pre>div{display:flex!important;flex-direction:row!important;justify-content:flex-start!important}
+.gp-head.is-pre>div:last-child{justify-content:flex-end!important}
+.gp-head.is-pre>.gp-mid{grid-column:1/-1!important;grid-row:2!important;order:0!important;display:flex;flex-direction:column;align-items:center;width:100%;text-align:center}
+.gp-head.is-pre .gp-tip{font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--text-2);text-transform:uppercase}
+.gp-head.is-pre .gp-mid .gp-radar{width:min(440px,100%)!important;margin:4px auto 0!important}
+.gp-head.is-pre .gp-radar .vs-legend,.gp-head.is-pre .gp-radar [class*=legend]{justify-content:center;margin-left:auto;margin-right:auto}
+.gp-head.is-pre .vs-radar-head,.gp-head.is-pre .vs-radar-key{justify-content:center!important;width:100%;text-align:center}
+.gp-head.is-pre .gp-tip{display:block;margin:2px 0 0}

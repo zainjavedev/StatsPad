@@ -90,6 +90,7 @@ const shapeAxes = (teams, scores) => SHAPE.map(([label, get, low, high, text]) =
 const plain = name => String(name).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[.']/g, '').replace(/\s+/g, ' ').trim();
 
 const SEASON_FETCH = year => code => fetch(`https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/${TEAMS[code].espn}/schedule?season=${year}`).then(response => response.json()).catch(() => ({events: []}));
+const tipFormat = new Intl.DateTimeFormat(undefined, {weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'});
 const dayFormat = new Intl.DateTimeFormat(undefined, {month: 'short', day: 'numeric', year: 'numeric'});
 
 /* One side's recent results, newest first, and the streak they are on. */
@@ -165,7 +166,7 @@ function Preview({box}) {
   if (!data) return <div className="gp-preview" aria-busy="true" aria-label="Loading the starting fives">{[0, 1].map(side => <section key={side} className="gp-side"><div className="sk sk-title"/><div className="starter-grid">{[0, 1, 2, 3, 4].map(index => <div key={index} className="sk sk-starter"/>)}</div></section>)}</div>;
   const per = (player, key) => Number.isFinite(player.line?.[key]) ? player.line[key].toFixed(1) : '—';
   return <div className="gp-preview">
-    <p className="gd-note">No box score yet. Expected starters are who started the most preseason games, with this season&apos;s per-game numbers (preseason numbers until the regular season starts).</p>
+    <p className="gd-note">No box score yet. These are the expected starting fives, with this season&apos;s per-game numbers.</p>
     {data.length === 0 && <div className="gp-retry"><p>The starting fives did not load. This is usually a weak connection.</p><button type="button" className="spoiler-toggle" onClick={() => { setData(null); setAttempt(count => count + 1); }}>Try again</button></div>}
     {data.map(({roster, code, side, five}) => <section key={code} className="gp-side" style={{'--team': TEAMS[code].color}}>
       <h3>{side.logo && <img src={side.logo} alt=""/>}<span>{roster.teamName}<small>Expected starting five</small></span></h3>
@@ -254,9 +255,9 @@ export default function GamePage({id}) {
   return <section className="gp">
     {!focusTeam && <a className="gp-back" href="/schedule"><ArrowLeft size={15}/> Schedule</a>}
     {!focusTeam && <>
-    <div className={box.state === 'in' ? 'gd-head gp-head is-live' : 'gd-head gp-head'}>
+    <div className={`gd-head gp-head${box.state === 'in' ? ' is-live' : box.state === 'pre' ? ' is-pre' : ''}`}>
       <div><TeamLink side={box.away}/>{scored && <strong className={Number(box.away.score) > Number(box.home.score) ? 'won' : ''}>{box.away.score}</strong>}</div>
-      <span className={box.state === 'pre' ? 'gp-mid' : undefined}>{box.state === 'post' ? (hidden ? 'Played' : 'Final') : box.state === 'in' ? (box.detail || 'Live') : 'Upcoming'}{box.state === 'pre' && <MatchupRadar box={box}/>}</span>
+      <span className={box.state === 'pre' ? 'gp-mid' : undefined}>{box.state === 'post' ? (hidden ? 'Played' : 'Final') : box.state === 'in' ? (box.detail || 'Live') : <time className="gp-tip">{box.date ? tipFormat.format(new Date(box.date)) : 'Upcoming'}</time>}{box.state === 'pre' && <MatchupRadar box={box}/>}</span>
       <div><TeamLink side={box.home}/>{scored && <strong className={Number(box.home.score) > Number(box.away.score) ? 'won' : ''}>{box.home.score}</strong>}</div>
     </div>
     <p className="gd-meta">{[box.venue].filter(Boolean).join(' · ')}</p>
