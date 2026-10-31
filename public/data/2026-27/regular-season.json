@@ -2,7 +2,7 @@
   "season": "2026-27",
   "seasonType": "Regular Season",
   "description": "NBA player per-game statistics for the 2026-27 regular season",
-  "lastUpdated": "2026-10-30",
+  "lastUpdated": "2026-10-31",
   "source": {
     "name": "ESPN box scores",
     "url": "https://www.espn.com/nba/schedule"
