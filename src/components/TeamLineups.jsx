@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { TEAMS, teamCodeOf } from '../lib/teams';
-import { playerUrl } from '../lib/routes';
+import { gameUrl, playerUrl } from '../lib/routes';
 import { indexPlayers, isCurrent, isPreseason, statsFor } from '../lib/season';
 import { loadSchedule } from '../lib/schedule';
 import { Headshot } from './TeamPage';
@@ -55,7 +55,7 @@ function Meetings({games}) {
     <div className="lineup-head"><small>Matchups this season</small><span>{ordered.length} {ordered.length === 1 ? 'game' : 'games'}</span></div>
     <div className="meet-row">{ordered.map(game => {
       const done = game.state === 'post', live = game.state === 'in', awayScore = Number(game.away.score), homeScore = Number(game.home.score);
-      return <a key={game.id} href={`/games/${game.id}`} className={`meet${live ? ' live' : ''}`}>
+      return <a key={game.id} href={gameUrl(game.away.code, game.home.code, game.id)} className={`meet${live ? ' live' : ''}`}>
         <small>{dayOf(game.date)}{game.preseason ? ' · Preseason' : ''}{live ? ' · Live' : ''}</small>
         {[game.away, game.home].map((team, index) => {
           const won = done && (index === 0 ? awayScore > homeScore : homeScore > awayScore);
