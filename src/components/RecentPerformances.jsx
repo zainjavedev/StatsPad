@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ArrowRight, Share2 } from 'lucide-react';
 import { bestOfNight, newestFirst } from '../lib/performances';
 import { fps, rating } from '../lib/playerGame';
@@ -70,27 +70,32 @@ const worked = new WeakMap();
 const loadSaved = () => fetch(`/data/${CURRENT}/recent-performances.json`).then(response => (response.ok ? response.json() : null)).catch(() => null);
 const pick = found => { const seen = new Set(); return newestFirst(found).filter(line => (seen.has(line.gameId) ? false : seen.add(line.gameId))).slice(0, LIMIT); };
 
+/* The saved file can be hours behind, so it isn't shown on its own while newer games might exist: the list waits for the
+   schedule, reads any games that finished since, and renders once. If ESPN is slow the saved lines show after a short wait. */
+const PATIENCE = 3000;
+
 export default function RecentPerformances({results}) {
   const [lines, setLines] = useState(() => (results ? worked.get(results) ?? null : null));
+  const saved = useMemo(loadSaved, []);
   useEffect(() => {
+    if (!results) return;
     let live = true;
     (async () => {
-      const saved = await loadSaved();
-      const known = (saved?.lines ?? []).map(line => ({...line, date: new Date(line.date)}));
-      if (known.length && live) setLines(pick(known));
-      if (!results) return;
+      const known = ((await saved)?.lines ?? []).map(line => ({...line, date: new Date(line.date)}));
       /* Games that finished since the file was written are the only box scores read from ESPN. */
       const have = new Set(known.map(line => line.gameId));
       const since = known.length ? Math.min(...known.map(line => line.date.getTime())) - 12 * 3600 * 1000 : 0;
       const missing = known.length ? results.filter(game => !have.has(String(game.id)) && (game.date?.getTime?.() ?? 0) >= since).slice(0, 8) : results;
-      if (!missing.length) { if (!known.length && live) setLines([]); worked.set(results, pick(known)); return; }
-      const found = await bestOfNight(missing, 400).catch(() => []);
-      const next = pick([...known, ...found]);
+      if (!missing.length) { worked.set(results, pick(known)); if (live) setLines(pick(known)); return; }
+      const fresh = bestOfNight(missing, 400).catch(() => []);
+      const early = await Promise.race([fresh, new Promise(resolve => setTimeout(() => resolve(null), PATIENCE))]);
+      if (early === null && known.length && live) setLines(current => current ?? pick(known));
+      const next = pick([...known, ...await fresh]);
       worked.set(results, next);
       if (live) setLines(next);
     })().catch(() => { if (live) setLines(previous => previous ?? []); });
     return () => { live = false; };
-  }, [results]);
+  }, [results, saved]);
   return <section className="front-panel recent-perf">
     <div className="front-panel-head"><h2>Recent performances</h2><a className="front-more" href="/top-performances">All performances <ArrowRight size={14}/></a></div>
     {lines === null ? <PerfSkeleton count={LIMIT}/> : lines.length === 0 ? <p className="rp-empty">No finished games yet. Performances show up here once games end.</p> : <ul className="rp-list">{lines.map(line => {
