@@ -142,15 +142,17 @@ function VsRow({players,population,metric,row,colors}){
 
 /* Each side of the card header is also its own picker: tap the player to swap them,
    or the add button when the slot is empty. */
-function VsSlot({index,entity,options,playerIds,noun,onPick,color}){
+function VsSlot({index,entity,options,playerIds,noun,onPick,onShuffle,color}){
   const[open,setOpen]=useState(false),[query,setQuery]=useState('');
   const results=options.filter(option=>`${option.playerName} ${option.team}`.toLowerCase().includes(query.toLowerCase())).slice(0,8);
   const choose=option=>{onPick(option);setOpen(false);setQuery('')};
   return <div className={entity?'vs-person':'vs-person is-empty'} style={{'--player-color':COLORS[index],'--team':color}}>
     {entity?<>
+      {/* Swap just this side for a random star, keeping the other one. */}
+      <button type="button" className="vs-shuffle" onClick={onShuffle} aria-label={`Swap ${entity.playerName} for a random ${noun}`} title={`Random ${noun}`}><Shuffle size={15}/></button>
       <button className="vs-change" onClick={()=>setOpen(!open)} aria-label={`Change ${entity.playerName}`} aria-expanded={open}>
         <EntityArt entity={entity} playerIds={playerIds} minimal className={entity.entityType==='team'?'vs-art is-logo':'vs-art'}/>
-        <strong>{entity.playerName}</strong>
+        <strong style={{'--len':String(entity.playerName||'').length}}>{entity.playerName}</strong>
       </button>
       {entity.entityType!=='team'&&TEAMS[teamCodeOf(entity.team)]&&<img className="vs-team-logo" src={espnLogoUrl(teamCodeOf(entity.team))} alt={teamLabel(entity.team)} title={teamLabel(entity.team)}/>}
     </>:
@@ -202,7 +204,8 @@ function Profile({entity,season,playoffs,allEntities,playerIds,onBack,backLabel=
 function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEntityType,seasonType,switchSeason,enriched,setSelected,playerIds,enrichedPopulation,chartRef,onHome,toast,theme,onToggleTheme}){
   const[sharing,setSharing]=useState(false);
   /* Two random names from the top scorers (any two teams in team mode), never the pair already showing. */
-  const surprise=()=>{const pool=entityType==='team'?data.players:[...data.players].sort((a,b)=>b.stats.points-a.stats.points).slice(0,60);const now=enriched.map(entity=>entity.playerName).sort().join('|');let pair;for(let tries=0;tries<20;tries+=1){const a=pool[Math.floor(Math.random()*pool.length)],b=pool[Math.floor(Math.random()*pool.length)];if(a&&b&&a.playerName!==b.playerName){pair=[a,b];if([a.playerName,b.playerName].sort().join('|')!==now)break}}if(pair)setSelected(pair)};
+  const starPool=()=>entityType==='team'?data.players:[...data.players].sort((a,b)=>b.stats.points-a.stats.points).slice(0,60);
+  const surprise=()=>{const pool=starPool();const now=enriched.map(entity=>entity.playerName).sort().join('|');let pair;for(let tries=0;tries<20;tries+=1){const a=pool[Math.floor(Math.random()*pool.length)],b=pool[Math.floor(Math.random()*pool.length)];if(a&&b&&a.playerName!==b.playerName){pair=[a,b];if([a.playerName,b.playerName].sort().join('|')!==now)break}}if(pair)setSelected(pair)};
   const ready=enriched.length>=2,noun=entityType==='team'?'teams':'players';
   const colors=[0,1].map(index=>sideColor(enriched[index]));
   const sections=entityType==='team'?TEAM_SECTIONS:VS_SECTIONS;
@@ -230,7 +233,8 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
       <div className={ready?'vs-head has-radar':'vs-head'}>
         {[0,1].map(index=>{const slot=<VsSlot key={index} index={index} entity={enriched[index]} playerIds={playerIds} noun={entityType==='team'?'team':'player'} color={colors[index]}
           options={data.players.filter(option=>!enriched.some(selected=>selected.playerName===option.playerName))}
-          onPick={option=>setSelected(index<enriched.length?enriched.map((entity,position)=>position===index?option:entity):[...enriched,option].slice(0,2))}/>;return index===1&&ready?<React.Fragment key="radar"><Radar axes={radar} names={enriched.slice(0,2).map(entity=>entity.playerName)} colors={COLORS} scope={radarScope} notes={radarNotes}/>{slot}</React.Fragment>:slot})}
+          onPick={option=>setSelected(index<enriched.length?enriched.map((entity,position)=>position===index?option:entity):[...enriched,option].slice(0,2))}
+          onShuffle={()=>{const pool=starPool().filter(option=>!enriched.some(selected=>selected.playerName===option.playerName)),option=pool[Math.floor(Math.random()*pool.length)];if(option)setSelected(enriched.map((entity,position)=>position===index?option:entity))}}/>;return index===1&&ready?<React.Fragment key="radar"><Radar axes={radar} names={enriched.slice(0,2).map(entity=>entity.playerName)} colors={COLORS} scope={radarScope} notes={radarNotes}/>{slot}</React.Fragment>:slot})}
         {!ready&&<span className="vs-badge">VS</span>}
       </div>
       {ready?<>{entityType==='team'&&<TeamLineups teams={enriched.slice(0,2)} leaguePlayers={leaguePlayers} season={data.season} colors={COLORS}/>}<div className="vs-table" key={enriched.map(player=>player.playerName).join('|')}>

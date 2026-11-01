@@ -4316,6 +4316,10 @@ li>button.rp-share{position:absolute!important;right:10px;bottom:10px;left:auto;
 .cmp-share:hover{border-color:var(--text-3)}
 .vp-face.is-logo{background:none;border-radius:0}.vp-face.is-logo img{object-fit:contain;padding:6px}
 .vs-head.has-radar .vs-person strong{white-space:normal;overflow:visible;text-wrap:balance}
+/* A long name shrinks to fit its slot on one line, down to a floor, so a two-line name doesn't push its photo above the other one. */
+.vs-person{container-type:inline-size}
+@media(max-width:700px){.vs-person{--name-size:15px}}
+.vs-person .vs-change strong{font-size:max(13px,min(var(--name-size,21px),calc(100cqi / (var(--len,10) * .58))));line-height:calc(var(--name-size,21px) * 1.25)}
 .cmp-surprise{display:inline-flex;align-items:center;gap:7px;margin-left:auto;height:36px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--text-1);font-size:13px;font-weight:700;cursor:pointer}
 .cmp-surprise:hover{border-color:var(--text-3)}
 .cmp-surprise+.cmp-share{margin-left:8px}
@@ -4913,8 +4917,8 @@ section.pg .pg-big b{font-size:clamp(24px,15cqi,46px)!important}
 .gp-head.is-pre>.gp-mid{grid-column:1/-1!important;grid-row:2!important;order:0!important;display:flex;flex-direction:column;align-items:center;width:100%;text-align:center}
 .gp-head.is-pre .gp-tip{font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--text-2);text-transform:uppercase}
 .gp-head.is-pre .gp-mid .gp-radar{width:min(440px,100%)!important;margin:4px auto 0!important}
-.gp-head.is-pre .gp-radar .vs-legend,.gp-head.is-pre .gp-radar [class*=legend]{justify-content:center;margin-left:auto;margin-right:auto}
-.gp-head.is-pre .vs-radar-head,.gp-head.is-pre .vs-radar-key{justify-content:center!important;width:100%;text-align:center}
+.gp-head:is(.is-pre,.is-post) .gp-radar .vs-legend,.gp-head:is(.is-pre,.is-post) .gp-radar [class*=legend]{justify-content:center;margin-left:auto;margin-right:auto}
+.gp-head:is(.is-pre,.is-post) .vs-radar-head,.gp-head:is(.is-pre,.is-post) .vs-radar-key{justify-content:center!important;width:100%;text-align:center}
 .gp-head.is-pre .gp-tip{display:block;margin:2px 0 0}
 
 /* The injuries page uses the lineups page's team list: down the left on desktop, a strip along the top on phones. */
@@ -4948,9 +4952,10 @@ section.pg .pg-big b{font-size:clamp(24px,15cqi,46px)!important}
 }
 
 /* Compare picker on phones: a full-width panel instead of a box squeezed into one half of the card, so names stay on one line. */
+/* The slot's entry animation leaves a transform behind, which makes it a layer of its own: on phones that pins the fixed
+   panel inside the slot, and at any width the stat rows painted after it draw over the open list. */
+.vs-person:has(.picker-popover){transform:none!important;animation:none!important;z-index:40}
 @media(max-width:520px){
-  /* the slot's entry animation leaves a transform behind, which would pin a fixed panel inside the slot */
-  .vs-person:has(.picker-popover){transform:none!important;animation:none!important}
   .vs-person .picker-popover{position:fixed!important;top:76px!important;left:12px!important;right:12px!important;bottom:auto!important;width:auto!important;max-height:min(60vh,440px)!important;overflow-x:hidden!important;overflow-y:auto!important;z-index:60!important;padding:8px!important}
   .vs-person .picker-popover label{height:42px;margin-bottom:4px}
   .vs-person .picker-popover input{width:100%;min-width:0;font-size:16px}
@@ -4980,14 +4985,17 @@ section.pg .pg-big b{font-size:clamp(24px,15cqi,46px)!important}
   .gp-head:has(.gp-mid) img{width:48px!important;height:48px!important}
 }
 
-/* Upcoming game on wider screens: one row, the two logos hugging the radar instead of sitting at the page edges above it. */
+/* Upcoming or finished game on wider screens: one row, the logos (and scores) hugging the radar instead of sitting at the page edges above it. */
 @media(min-width:761px){
-  .gp-head.is-pre{grid-template-columns:1fr minmax(0,460px) 1fr!important;column-gap:32px!important;align-items:center!important}
-  .gp-head.is-pre>div:first-child{grid-column:1;grid-row:1;justify-content:flex-end!important}
-  .gp-head.is-pre>.gp-mid{grid-column:2!important;grid-row:1!important}
-  .gp-head.is-pre>div:last-child{grid-column:3;grid-row:1;justify-content:flex-start!important}
-  .gp-head.is-pre img{width:96px!important;height:96px!important;object-fit:contain}
+  .gp-head:is(.is-pre,.is-post){display:grid!important;grid-template-columns:1fr minmax(0,460px) 1fr!important;column-gap:32px!important;align-items:center!important;padding-right:0!important}
+  .gp-head:is(.is-pre,.is-post)>div:first-child{grid-column:1;grid-row:1;justify-content:flex-end!important}
+  .gp-head:is(.is-pre,.is-post)>.gp-mid{grid-column:2!important;grid-row:1!important}
+  .gp-head:is(.is-pre,.is-post)>div:last-child{grid-column:3;grid-row:1;justify-content:flex-start!important}
+  .gp-head:is(.is-pre,.is-post) img{width:96px!important;height:96px!important;object-fit:contain}
 }
+.gp-head.is-post>.gp-mid{display:flex;flex-direction:column;align-items:center;width:100%;text-align:center}
+.gp-head.is-post .gp-final{display:block;font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
+.gp-head.is-post .gp-mid .gp-radar{width:min(440px,100%)!important;margin:4px auto 0!important;text-transform:none;letter-spacing:0}
 
 /* Finished game: the radar from this game's totals, between the score and the box score. */
 .gp-game-radar{display:flex;flex-direction:column;align-items:center;gap:2px;margin:0 0 8px}
@@ -5006,3 +5014,10 @@ section.pg .pg-big b{font-size:clamp(24px,15cqi,46px)!important}
   .gd-sides .rp-list>li>.rp-card .rp-grade{align-self:start;min-width:44px;text-align:right;font-size:26px;line-height:1}
   .gd-sides .rp-list>li>button.rp-share{width:36px;height:36px;right:4px;bottom:18px}
 }
+
+/* One side's shuffle: a quiet round button in the slot's top corner, away from the photo the player taps to search. */
+.vs-shuffle{position:absolute;top:10px;z-index:2;display:grid;place-items:center;width:34px;height:34px;padding:0;border:1px solid var(--line);border-radius:50%;background:var(--ink-2);color:var(--text-2)}
+.vs-person:first-child .vs-shuffle{left:10px}
+.vs-person:not(:first-child) .vs-shuffle{right:10px}
+@media(hover:hover){.vs-shuffle:hover{color:var(--text-1);border-color:var(--text-3)}}
+@media(max-width:640px){.vs-shuffle{top:8px;width:32px;height:32px}}

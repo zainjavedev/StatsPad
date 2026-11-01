@@ -141,11 +141,9 @@ const gameAxes = (a, b, pool) => AXES.map(([label, parts]) => ({label, sides: [a
 function GameRadar({box}) {
   const pool = useFeed(loadMatchupPool);
   const [a, b] = [box.away, box.home].map(side => { const team = box.teams.find(entry => entry.abbr === side.abbr), code = codeOf(side.abbr); return team && code ? gameLine(side, team, code) : null; });
+  if (pool === null) return <div className="gp-radar" aria-hidden="true"><div className="sk" style={{aspectRatio: '560 / 400', borderRadius: 28}}/></div>;
   if (!pool || pool.length < 10 || !a || !b || !Number.isFinite(a.stats.fieldGoalPercentage) || !Number.isFinite(b.stats.fieldGoalPercentage)) return null;
-  return <section className="gp-game-radar" aria-label="This game's radar">
-    <h2>This game</h2>
-    <div className="gp-radar" style={radarTints(a, b)}><Radar axes={gameAxes(a, b, pool)} names={[box.away.short, box.home.short]} colors={['var(--ta)', 'var(--tb)']}/></div>
-  </section>;
+  return <div className="gp-radar" style={radarTints(a, b)} aria-label="This game's radar"><Radar axes={gameAxes(a, b, pool)} names={[box.away.short, box.home.short]} colors={['var(--ta)', 'var(--tb)']}/></div>;
 }
 
 /* Before tip-off: each side's expected starting five on the team page's cards, with last season's per-game
@@ -276,19 +274,18 @@ export default function GamePage({id}) {
 
   const focusTeam = focus ? box.teams.find(team => team.players.some(entry => entry.id === focus && !entry.out)) : null;
   const nameOf = athlete => box.teams.flatMap(team => team.players).find(entry => entry.id === athlete)?.name;
-  const hidden = box.state !== 'pre' && !spoilers.revealed(String(id)), scored = box.state !== 'pre' && !hidden;
+  const hidden = box.state !== 'pre' && !spoilers.revealed(String(id)), scored = box.state !== 'pre' && !hidden, final = box.state === 'post' && !hidden;
   const ordered = [...box.teams].sort((a, b) => (a.abbr === box.away.abbr ? 0 : 1) - (b.abbr === box.away.abbr ? 0 : 1));
 
   return <section className="gp">
     {!focusTeam && <a className="gp-back" href="/schedule"><ArrowLeft size={15}/> Schedule</a>}
     {!focusTeam && <>
-    <div className={`gd-head gp-head${box.state === 'in' ? ' is-live' : box.state === 'pre' ? ' is-pre' : ''}`}>
+    <div className={`gd-head gp-head${box.state === 'in' ? ' is-live' : box.state === 'pre' ? ' is-pre' : final ? ' is-post' : ''}`}>
       <div><TeamLink side={box.away}/>{scored && <strong className={Number(box.away.score) > Number(box.home.score) ? 'won' : ''}>{box.away.score}</strong>}</div>
-      <span className={box.state === 'pre' ? 'gp-mid' : undefined}>{box.state === 'post' ? (hidden ? 'Played' : 'Final') : box.state === 'in' ? (box.detail || 'Live') : <time className="gp-tip">{box.date ? tipFormat.format(new Date(box.date)) : 'Upcoming'}</time>}{box.state === 'pre' && <MatchupRadar box={box}/>}</span>
+      <span className={box.state === 'pre' || final ? 'gp-mid' : undefined}>{box.state === 'post' ? (hidden ? 'Played' : <small className="gp-final">Final</small>) : box.state === 'in' ? (box.detail || 'Live') : <time className="gp-tip">{box.date ? tipFormat.format(new Date(box.date)) : 'Upcoming'}</time>}{box.state === 'pre' && <MatchupRadar box={box}/>}{final && <GameRadar box={box}/>}</span>
       <div><TeamLink side={box.home}/>{scored && <strong className={Number(box.home.score) > Number(box.away.score) ? 'won' : ''}>{box.home.score}</strong>}</div>
     </div>
     <p className="gd-meta">{[box.venue].filter(Boolean).join(' · ')}</p>
-    {box.state === 'post' && !hidden && !focusTeam && <GameRadar box={box}/>}
     </>}
 
     {focusTeam && <PlayerGame gameId={id} box={box} plays={box.plays ?? []} team={focusTeam} player={focusTeam.players.find(entry => entry.id === focus)} onClose={() => pick(null)} onPick={pick} nameOf={nameOf}/>}

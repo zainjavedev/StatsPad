@@ -11,7 +11,7 @@
 /* Cards and chips also shrink a touch, which reads as "pressed" better than fading alone. */
 :where(.rp-card, .scr-card, .meet, .lc, .team-tile, .starter-card, .debate-card, .leader-card, .team-chip, .story-card, .award-card,
   .night-card, .fight, .blog-tile, .pp-vs, .pl-choice, .statpage-row, .gp-card, .board-row, .stand td.team a, .ticker a, .tk-game,
-  .h2h-actions button, .cmp-bar button, .pills button, .adm-seg button, .tabbar a, .tabbar button, .site-nav a, .site-nav button):active:not(:disabled){transform:scale(.97);opacity:.85}
+  .h2h-actions button, .cmp-bar button, .vs-shuffle, .pills button, .adm-seg button, .tabbar a, .tabbar button, .site-nav a, .site-nav button):active:not(:disabled){transform:scale(.97);opacity:.85}
 :where(.tabbar a, .tabbar button):active{transform:scale(.92)}
 
 /* Phones have no hover: the lift a card gets under the mouse otherwise stays stuck on after a tap. */
