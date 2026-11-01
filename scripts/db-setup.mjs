@@ -86,4 +86,27 @@ await sql`create table if not exists game_raw (
   game_id text primary key references games (id) on delete cascade,
   data jsonb not null
 )`;
+/* Activity for the owner's /admin dashboard: page views from /api/hit and each Guess the Player answer. src/server/activity.js also creates these on first use. */
+await sql`create table if not exists page_views (
+  id bigserial primary key,
+  visitor text not null,
+  subscriber_id uuid,
+  path text not null,
+  referrer text,
+  device text,
+  country text,
+  at timestamptz not null default now()
+)`;
+await sql`create index if not exists page_views_at on page_views (at desc)`;
+await sql`create index if not exists page_views_visitor on page_views (visitor, at desc)`;
+await sql`create table if not exists play_answers (
+  id bigserial primary key,
+  subscriber_id uuid not null,
+  game_id text not null,
+  step int,
+  player text,
+  correct boolean not null,
+  at timestamptz not null default now()
+)`;
+await sql`create index if not exists play_answers_at on play_answers (at desc)`;
 console.log('db: ready');

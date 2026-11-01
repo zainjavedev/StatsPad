@@ -5,7 +5,7 @@ const wrap = {maxWidth: 680, margin: '0 auto', padding: '48px 16px 80px', font: 
 export default function Privacy() {
   return <main style={wrap}>
     <h1>Privacy Policy</h1>
-    <p><em>Last updated: October 20, 2026</em></p>
+    <p><em>Last updated: October 31, 2026</em></p>
     <p>StatsPads (&quot;we&quot;, &quot;us&quot;) runs statspads.com, a free NBA stats and player comparison site. You can browse, compare players and follow teams without an account. This policy explains what we collect if you do sign in, and what we collect from everyone.</p>
 
     <h2>Information we collect</h2>
@@ -13,7 +13,7 @@ export default function Privacy() {
       <li><strong>Account information.</strong> Your email address, and your name only if you sign in with Google. From Google we receive your email address and whether it is verified. We do not receive your Google password or access any other Google data.</li>
       <li><strong>Teams you follow.</strong> Stored with your account so we can restore your teams on another browser. If you follow teams without signing in, they stay in your own browser and are not sent to us.</li>
       <li><strong>Notification data.</strong> If you turn on browser notifications, the push subscription your browser gives us.</li>
-      <li><strong>Usage data.</strong> Standard web analytics (pages viewed, device type, approximate location) collected through Vercel Analytics and Google Tag Manager.</li>
+      <li><strong>Usage data.</strong> Standard web analytics (pages viewed, device type, approximate location) collected through Vercel Analytics and Google Tag Manager. We also keep our own log of the pages you open and the Guess the Player rounds you play, tied to a random browser ID, and to your account if you are signed in. We don&apos;t store your IP address.</li>
     </ul>
 
     <h2>How we use it</h2>

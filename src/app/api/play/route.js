@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { sql } from '../../../server/db';
+import { ensureActivity } from '../../../server/activity';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,7 +27,8 @@ export async function GET(request) {
   return NextResponse.json(shape(row));
 }
 
-/* POST {token, correct: boolean} records one answer and returns the new totals. */
+/* POST {token, correct: boolean, game, step, player} records one answer and returns the new totals.
+   game groups a set of ten answers, so the admin dashboard can count games played and finished. */
 export async function POST(request) {
   const body = await request.json().catch(() => null);
   const token = String(body?.token || '');
@@ -41,5 +43,8 @@ export async function POST(request) {
       best = greatest(play_scores.best, case when ${right} = 1 then play_scores.streak + 1 else 0 end),
       updated_at = now()
     returning correct, total, streak, best`;
+  const step = Number.isInteger(body?.step) && body.step > 0 && body.step <= 10 ? body.step : null;
+  await ensureActivity().then(() => sql`insert into play_answers (subscriber_id, game_id, step, player, correct)
+    select id, ${String(body?.game || 'unknown').slice(0, 40)}, ${step}, ${body?.player ? String(body.player).slice(0, 80) : null}, ${right === 1} from subscribers where token = ${token}`).catch(error => console.error('play log failed', error.message));
   return NextResponse.json(shape(row));
 }

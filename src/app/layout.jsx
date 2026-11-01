@@ -1,6 +1,7 @@
 import '../style.css';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { socialTags } from '../lib/social';
+import Tracker from '../components/Tracker';
 
 const TITLE = 'StatsPads: NBA player and team comparisons', DESCRIPTION = 'Compare NBA players and teams side by side, browse rosters and see the league leaders.';
 
@@ -30,6 +31,7 @@ export default function RootLayout({children}) {
       <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K7SXMQQ3" height="0" width="0" style={{display: 'none', visibility: 'hidden'}}/></noscript>
       {children}
       <SpeedInsights/>
+      <Tracker/>
     </body>
   </html>;
 }

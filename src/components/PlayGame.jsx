@@ -17,6 +17,7 @@ const day = new Intl.DateTimeFormat(undefined, {month: 'short', day: 'numeric'})
 const readSeen = () => { try { return new Set(JSON.parse(localStorage.getItem(SEEN)) || []); } catch { return new Set(); } };
 const writeSeen = seen => { try { localStorage.setItem(SEEN, JSON.stringify([...seen].slice(-400))); } catch { /* private mode */ } };
 const hoopY = 36.75;
+const newGame = () => Math.random().toString(36).slice(2, 12);
 const api = (method, body, token) => fetch(method === 'GET' ? `/api/play?token=${encodeURIComponent(token)}` : '/api/play', method === 'GET' ? undefined : {method, headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)}).then(response => response.ok ? response.json() : Promise.reject(new Error(response.status)));
 
 function Shots({shots}) {
@@ -109,7 +110,7 @@ export default function PlayGame() {
   const [results, setResults] = useState([]);
   const [finished, setFinished] = useState(false);
   const [skipped, setSkipped] = useState(false);
-  const seen = useRef(null), upcoming = useRef(null), card = useRef(null), started = useRef(false);
+  const seen = useRef(null), upcoming = useRef(null), card = useRef(null), started = useRef(false), game = useRef(newGame());
 
   const fetchRound = useCallback(async () => {
     const pool = await loadPool();
@@ -141,8 +142,8 @@ export default function PlayGame() {
     setPicked(index);
     setResults(now => [...now, {name: round.answer.name, right}]);
     setStats(now => ({correct: now.correct + (right ? 1 : 0), total: now.total + 1, streak: right ? now.streak + 1 : 0, best: Math.max(now.best, right ? now.streak + 1 : 0)}));
-    api('POST', {token, correct: right}).then(setStats).catch(() => {});
-  }, [round, picked, token, auth]);
+    api('POST', {token, correct: right, game: game.current, step: results.length + 1, player: round.answer.name}).then(setStats).catch(() => {});
+  }, [round, picked, token, auth, results.length]);
 
   const showNext = useCallback(async () => {
     setStatus('loading'); setPicked(null);
@@ -150,7 +151,7 @@ export default function PlayGame() {
     if (found) { setRound(found); setStatus('ready'); prefetch(); window.scrollTo({top: 0, behavior: 'smooth'}); } else setStatus('error');
   }, [fetchRound, prefetch]);
   const next = useCallback(() => { if (results.length >= ROUND) { setFinished(true); window.scrollTo({top: 0, behavior: 'smooth'}); } else showNext(); }, [results.length, showNext]);
-  const again = useCallback(() => { setResults([]); setFinished(false); setSkipped(false); showNext(); }, [showNext]);
+  const again = useCallback(() => { game.current = newGame(); setResults([]); setFinished(false); setSkipped(false); showNext(); }, [showNext]);
   /* One skip per round of ten: the player is swapped for a new one and nothing is scored. */
   const skip = useCallback(() => { if (picked !== null || skipped || status === 'loading') return; setSkipped(true); showNext(); }, [picked, skipped, status, showNext]);
 
