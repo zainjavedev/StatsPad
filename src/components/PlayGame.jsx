@@ -1,13 +1,13 @@
 'use client';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowRight, Check, LogIn, RotateCcw, Share2, SkipForward, X } from 'lucide-react';
+import { ArrowRight, Check, LogIn, RotateCcw, SkipForward, X } from 'lucide-react';
 import ShareSheet from './ShareSheet';
 import { Court } from './ShotChart';
 import { trio } from '../lib/trio';
 import { fps, rating } from '../lib/playerGame';
 import { readAlerts } from '../lib/alerts';
 import { loadPool, nextRound } from '../lib/playRound';
-import GamesNav from './GamesNav';
+import GameHead from './GamesNav';
 import { TEAMS, espnLogoUrl, nickname } from '../lib/teams';
 import { photoUrl } from '../lib/photos';
 
@@ -57,13 +57,12 @@ const ChallengePoster = React.forwardRef(function ChallengePoster({round}, ref) 
       <p><b>{hit}/{round.shots.length}</b> from the field</p>
     </div>
     <div className="gx-copy">
-      <span className="gx-kicker">Guess the player</span>
       <b className="gx-q">Who had this night?</b>
       <span className="gx-line">{[['PTS', line.PTS], ['REB', line.REB], ['AST', line.AST]].map(([label, value]) => <span key={label}><b>{value}</b>{label}</span>)}</span>
       <span className="gx-meta">{line.FG} FG · {line['3PT']} 3PT · {line.MIN} min · {round.game.home ? 'vs' : '@'} {TEAMS[round.game.opp] ? nickname(round.game.opp) : ''}{round.game.date ? ` · ${day.format(new Date(round.game.date))}` : ''}</span>
       <ol className="gx-choices">{round.choices.map((choice, index) => <li key={choice.name}><i>{'ABC'[index]}</i>{choice.name}</li>)}</ol>
     </div>
-    <p className="gx-foot"><b>statspads.com/play</b><span>Answer in the replies</span></p>
+    <p className="gx-foot"><b>statspads.com/play/guess</b><span>Answer in the replies</span></p>
   </div>;
 });
 
@@ -94,18 +93,18 @@ function Sparks() {
   })}</span>;
 }
 
-const goSignIn = () => { try { sessionStorage.setItem('statspad-return', '/play'); } catch { /* private mode */ } window.location.href = '/signin'; };
+export const goSignIn = (back = '/play/guess') => { try { sessionStorage.setItem('statspad-return', back); } catch { /* private mode */ } window.location.href = '/signin'; };
 
-/* Signed-out visitors see a real round, clues and all, with the choices locked behind this bar. */
-function SignInBar() {
+/* Signed-out visitors see a real round, clues and all, with the choices locked behind this bar. The Stats Quiz uses it too. */
+export function SignInBar({back = '/play/guess', title = 'Think you know who it is?', line = 'Sign in to lock in your guess. Your score and streak are saved to your account.'}) {
   return <div className="pl-bar">
-    <div><b>Think you know who it is?</b><span>Sign in to lock in your guess. Your score and streak are saved to your account.</span></div>
-    <button type="button" className="pl-primary" onClick={goSignIn}><LogIn size={18}/> Sign in to play</button>
+    <div><b>{title}</b><span>{line}</span></div>
+    <button type="button" className="pl-primary" onClick={() => goSignIn(back)}><LogIn size={18}/> Sign in to play</button>
   </div>;
 }
 
 function SignInPrompt() {
-  const go = goSignIn;
+  const go = () => goSignIn();
   return <section className="pl-gate">
     <div className="pl-gate-sil" aria-hidden="true"><svg viewBox="0 0 100 120"><circle cx="50" cy="32" r="20"/><path d="M12 120c0-34 14-52 38-52s38 18 38 52z"/></svg><b>?</b></div>
     <h2>Sign in to play</h2>
@@ -120,7 +119,6 @@ const tier = right => right >= 9 ? ['Hall of Fame eye', 'You know this league co
 function Results({results, stats, onAgain}) {
   const right = results.filter(item => item.right).length, [title, line] = tier(right);
   return <section className="pl-results">
-    <p className="pl-results-kicker">Round complete</p>
     <div className="pl-results-score"><b>{right}</b><span>/{ROUND}</span></div>
     <h2>{title}</h2>
     <p>{line}</p>
@@ -202,10 +200,7 @@ export default function PlayGame() {
   const number = Math.min(ROUND, results.length + (revealed ? 0 : 1));
 
   return <main className="pl">
-    <GamesNav active="/play"/>
-    <div className="pl-top">
-      <div><h1>Guess the player</h1><p>A shot chart and a stat line from this season. Which starter is it?</p></div>
-    </div>
+    <GameHead title="Guess the player" line="A shot chart and a stat line from this season. Which starter is it?" onShare={round && !revealed && !finished ? () => setSharing(true) : null}/>
 
     {auth === 'in' && !finished && round && <div className="pl-progress" aria-label={`Round ${number} of ${ROUND}`}>
       <b>Round {number}<span> of {ROUND}</span></b>
@@ -261,11 +256,9 @@ export default function PlayGame() {
         {revealed
           ? <button type="button" className="pl-primary" onClick={next} disabled={status === 'loading'}>{results.length >= ROUND ? 'See results' : 'Next player'} <ArrowRight size={18}/></button>
           : <button type="button" className="pl-skip" onClick={skip} disabled={skipped || status === 'loading'}><SkipForward size={16}/> {skipped ? 'Skip used' : 'Skip this player (1 per round)'}</button>}
-        <p>Tip: press 1, 2 or 3 to answer, S to skip and Enter for the next one.</p>
-        {!revealed && <button type="button" className="pl-share" onClick={() => setSharing(true)}><Share2 size={15}/> Share as a challenge</button>}
       </div>}
     </div>}
-    {sharing && round && <ShareSheet width={1600} ready onClose={() => setSharing(false)} filename="guess-the-player" title="Guess the player" text={`Who had ${round.line.PTS} points, ${round.line.REB} rebounds and ${round.line.AST} assists? ${round.choices.map(choice => choice.name).join(', ')}?`} url={`${location.origin}/play`}>
+    {sharing && round && <ShareSheet width={1600} ready onClose={() => setSharing(false)} filename="guess-the-player" title="Guess the player" text={`Who had ${round.line.PTS} points, ${round.line.REB} rebounds and ${round.line.AST} assists? ${round.choices.map(choice => choice.name).join(', ')}?`} url={`${location.origin}/play/guess`}>
       {ref => <ChallengePoster ref={ref} round={round}/>}
     </ShareSheet>}
   </main>;

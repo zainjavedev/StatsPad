@@ -3,7 +3,7 @@ import StatsQuiz from '../../../components/StatsQuiz';
 
 export const metadata = {
   title: 'NBA Stats Quiz | StatsPads',
-  description: 'Ten questions about this NBA season: who leads the league, who had that game, whose numbers are whose. A new quiz every round.',
+  description: 'Ten questions about this NBA season: who leads the league, who leads each team, who wins the head to head. No question asked twice.',
   alternates: {canonical: '/play/quiz'},
   robots: {index: false},
 };

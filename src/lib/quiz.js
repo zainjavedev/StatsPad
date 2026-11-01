@@ -43,13 +43,6 @@ function pools(data) {
   return {regulars, stars};
 }
 
-/* Decoys that score about the same but clearly rebound or pass differently, so the full line points to one name. */
-const distinct = (pool, answer) => {
-  const gap = other => Math.abs(other.stats.totalRebounds - answer.stats.totalRebounds) + Math.abs(other.stats.assists - answer.stats.assists);
-  const fair = pool.filter(other => other.playerName !== answer.playerName && Math.abs(other.stats.points - answer.stats.points) <= 7 && gap(other) >= 3);
-  return shuffle(fair).slice(0, 3).map(asPlayer);
-};
-
 const ask = ({kind, prompt, detail, answer, others, explain, path}) => {
   const options = shuffle([answer, ...others]);
   return {kind, prompt, detail, options, answer: options.indexOf(answer), explain, path};
@@ -69,12 +62,6 @@ const BUILDERS = {
     if (!top || ranked.length < 6) return null;
     return ask({kind: 'Shooting', prompt: `Who has the best ${word}?`, detail: `At least ${min} a game`, answer: asPlayer(top), others: shuffle(ranked.slice(1, 8)).slice(0, 3).map(asPlayer),
       explain: `${top.playerName} is at ${f1(top.stats[key])}%. ${ranked[1].playerName} is next at ${f1(ranked[1].stats[key])}%.`, path: playerUrl(top.playerName)});
-  },
-  statline({stars}) {
-    const player = pick(stars.slice(0, 40));
-    if (!player) return null;
-    return ask({kind: 'Name the line', prompt: 'Which player is averaging this?', detail: `${f1(player.stats.points)} points · ${f1(player.stats.totalRebounds)} rebounds · ${f1(player.stats.assists)} assists`,
-      answer: asPlayer(player), others: distinct(stars, player), explain: `That's ${player.playerName} over ${player.gamesPlayed} games.`, path: playerUrl(player.playerName)});
   },
   versus({stars}) {
     const [key, word, unit] = pick(STATS.slice(0, 5)), a = pick(stars.slice(0, 40));
@@ -127,15 +114,22 @@ const BUILDERS = {
   },
 };
 
-/* A round: ten questions over as many kinds as possible, no kind more than twice, the same answer never twice. */
-export function makeRound(data, count = 10) {
+/* What identifies a question for "never ask it again": the wording and the right answer. If a leader changes, it is a new question. */
+export const questionKey = question => `${question.prompt}|${question.detail ?? ''}|${question.options[question.answer].key}`;
+
+/* A round: ten questions over as many kinds as possible, the same answer never twice, and nothing in `seen` (questions
+   this visitor already had). No kind more than twice, unless the small kinds have all been seen; then the big ones
+   (team leaders, head to head) may fill the gap, up to five each. */
+export function makeRound(data, seen = new Set(), count = 10) {
   const context = {...data, ...pools(data)}, used = new Set(), round = [];
-  const order = [...shuffle(Object.keys(BUILDERS)), ...shuffle(['leader', 'leader', 'teamLead', 'teamLead', 'statline', 'versus', 'shooting', 'teams', 'record', 'doubleDouble'])];
-  for (let tries = 0; round.length < count && tries < 80; tries += 1) {
-    const kind = order[tries % order.length], question = BUILDERS[kind](context);
-    const key = question && `${question.kind}:${question.options[question.answer].key}`;
-    if (!question || used.has(key) || round.filter(each => each.kind === question.kind).length >= 2) continue;
-    used.add(key); round.push(question);
+  const order = [...shuffle(Object.keys(BUILDERS)), ...shuffle(['leader', 'leader', 'teamLead', 'teamLead', 'versus', 'versus', 'shooting', 'teams', 'record', 'doubleDouble'])];
+  for (const cap of [2, 5]) {
+    for (let tries = 0; round.length < count && tries < 600; tries += 1) {
+      const kind = order[tries % order.length], question = BUILDERS[kind](context);
+      const key = question && `${question.kind}:${question.options[question.answer].key}`;
+      if (!question || used.has(key) || seen.has(questionKey(question)) || round.filter(each => each.kind === question.kind).length >= cap) continue;
+      used.add(key); round.push(question);
+    }
   }
-  return round;
+  return shuffle(round);
 }

@@ -5182,10 +5182,39 @@ a.starter-card{color:inherit;text-decoration:none}
 .pr .rp-face.is-logo img{object-fit:contain;padding:8px}
 
 /* Games switcher on /play and /play/quiz. */
-.games-nav{display:flex;gap:6px;width:max-content;max-width:100%;margin:0 0 18px;padding:4px;border:1px solid var(--line);border-radius:999px;background:var(--ink-1)}
-.games-nav a{padding:8px 16px;border-radius:999px;color:var(--text-3);font-size:13.5px;font-weight:700;text-decoration:none;white-space:nowrap}
-.games-nav a.on{background:var(--text-1);color:var(--ink-0,#0b0b0c)}
-@media(hover:hover){.games-nav a:not(.on):hover{color:var(--text-1)}}
+/* Top of each game page (GamesNav GameHead): back to the hub, title, a small share button opposite it. */
+.gh{margin:0 0 16px}
+.gh-back{display:inline-flex;align-items:center;gap:2px;margin:0 0 10px -4px;color:var(--text-3);font-size:13.5px;font-weight:700;text-decoration:none}
+@media(hover:hover){.gh-back:hover{color:var(--text-1)}}
+.gh-row{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.gh h1{margin:0;font-size:clamp(28px,5vw,40px);font-weight:800;letter-spacing:-.035em;line-height:1.05}
+.gh p{margin:8px 0 0;max-width:520px;color:var(--text-2);font-size:15px;line-height:1.45}
+.gh-side{display:flex;align-items:center;gap:8px;flex:none;margin-top:4px}
+.gh-share{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 13px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--text-2);font:700 13px inherit;cursor:pointer}
+@media(hover:hover){.gh-share:hover{color:var(--text-1);border-color:var(--text-3)}}
+@media(max-width:600px){.gh-share{width:34px;padding:0;justify-content:center;font-size:0}.gh-side .qz-best{display:none}}
+
+/* /play games hub (GamesHub). */
+.gm{width:100%;max-width:960px;margin:0 auto;padding:22px 16px 80px}
+.gm h1{margin:0;font-size:clamp(30px,5vw,44px);font-weight:800;letter-spacing:-.035em}
+.gm-lede{margin:8px 0 22px;color:var(--text-2);font-size:15.5px}
+.gm-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.gm-card{display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:var(--ink-1);color:var(--text-1);text-decoration:none;transition:border-color .15s,transform .15s}
+@media(hover:hover){.gm-card:hover{border-color:var(--text-3);transform:translateY(-2px)}}
+.gm-art{position:relative;display:grid;place-items:center;height:180px;overflow:hidden}
+.gm-art.is-guess{background:radial-gradient(circle at 50% 35%,rgb(255 255 255 / .55),transparent 62%),linear-gradient(165deg,#3a4585,#0a0d1a)}
+.gm-art.is-guess svg{position:absolute;bottom:0;width:150px;fill:#050609}
+.gm-art.is-guess b{position:absolute;top:58px;color:#fff;font-size:40px;font-weight:900}
+.gm-art.is-quiz{grid-template-columns:repeat(2,96px);gap:10px;align-content:center;justify-content:center;background:radial-gradient(70% 90% at 50% 100%,#1f6b53 0,transparent 70%),linear-gradient(165deg,#163a31,#0a0d0c)}
+.gm-art.is-quiz span{position:relative;height:56px;border:2px solid rgb(255 255 255 / .14);border-radius:12px;background:rgb(0 0 0 / .35)}
+.gm-art.is-quiz span.on{border-color:#34d399;background:rgb(52 211 153 / .16)}
+.gm-art.is-quiz i{position:absolute;top:6px;left:6px;display:grid;place-items:center;width:20px;height:20px;border-radius:6px;background:rgb(0 0 0 / .45);color:#fff;font-size:11px;font-style:normal;font-weight:700}
+.gm-copy{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:18px 20px 20px}
+.gm-tag{color:var(--text-3);font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.gm-copy h2{margin:0;font-size:24px;font-weight:800;letter-spacing:-.025em}
+.gm-copy p{margin:0;color:var(--text-2);font-size:14.5px;line-height:1.45}
+.gm-go{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:9px 16px;border-radius:999px;background:var(--text-1);color:var(--ink-0,#0b0b0c);font-size:14px;font-weight:800}
+@media(max-width:640px){.gm-grid{grid-template-columns:1fr}.gm-art{height:140px}}
 
 /* Stats quiz: one card per question, choices with faces or logos, the answer explained, a score at the end. */
 .qz{width:100%;max-width:960px;margin:0 auto;padding:18px 16px 100px}
@@ -5200,7 +5229,7 @@ a.starter-card{color:inherit;text-decoration:none}
 .qz-card{padding:26px 26px 24px;border:1px solid var(--line);border-radius:22px;background:var(--ink-1);animation:plIn .45s cubic-bezier(.2,.8,.2,1) both}
 .qz-skeleton{height:420px;animation:none;background:linear-gradient(90deg,var(--ink-1),color-mix(in srgb,var(--ink-1) 80%,#fff 4%),var(--ink-1));background-size:200% 100%}
 .qz-kicker{display:inline-block;padding:4px 11px;border-radius:999px;background:var(--line);color:var(--text-2);font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
-.qz-card h2{margin:14px 0 6px;font-size:clamp(22px,3.2vw,30px);font-weight:800;letter-spacing:-.025em;line-height:1.2}
+.qz-card h2{margin:0 0 6px;font-size:clamp(22px,3.2vw,30px);font-weight:800;letter-spacing:-.025em;line-height:1.2}
 .qz-detail{display:flex;align-items:center;gap:10px;margin:8px 0 0;color:var(--text-2);font-size:15px;font-weight:600}
 .qz-detail img{width:48px;height:35px;object-fit:cover;object-position:top;border-radius:8px;background:var(--line)}
 .qz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
@@ -5243,7 +5272,7 @@ a.starter-card{color:inherit;text-decoration:none}
 /* Guess the Player on a wide screen: the card on the left, the three choices stacked on the right with the next/skip button
    under them, so the answer sits beside the clues instead of below the fold. */
 @media(min-width:1100px){
-  .pl:has(.pl-play){max-width:1240px}
+  .pl,.qz,.gm{max-width:1240px}
   .pl-play{display:grid;grid-template-columns:minmax(0,1fr) 320px;grid-template-rows:1fr auto;column-gap:18px;align-items:stretch}
   .pl-play>.pl-card{grid-row:1/span 2}
   .pl-play>.pl-choices{grid-template-columns:1fr;grid-template-rows:repeat(3,1fr);margin:0;gap:10px}
@@ -5298,3 +5327,22 @@ a.starter-card{color:inherit;text-decoration:none}
 .gx-choices i{display:grid;place-items:center;width:24px;height:24px;border-radius:7px;background:#2a2b31;color:#c9cad0;font-size:12px;font-style:normal;font-weight:800}
 .gx-foot{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;margin:0 28px;padding:12px 0 16px;border-top:1px solid #23252b;color:#8e8f8a;font-size:12px}
 .gx-foot b{color:#fff;font-size:15px}
+
+/* Stats Quiz share pictures (StatsQuiz ShotFrame): the real quiz card on the page background, like a screenshot. */
+.qx{display:flex;flex-direction:column;gap:14px;width:800px;padding:22px 26px 16px;border-radius:16px;background:var(--ink-0,#0b0b0c);color:var(--text-1)}
+.qx *{animation:none!important;transition:none!important}
+.qx-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.qx-top b{font-size:26px;font-weight:800;letter-spacing:-.03em}
+.qx-top span{color:var(--text-3);font-size:13px;font-weight:600}
+.qx .qz-card{padding:22px 22px 20px}
+.qx .qz-options{margin-top:18px}
+.qx .qz-option{cursor:default}
+.qx .qz-done{padding:30px 24px 32px}
+.qx-foot{display:flex;justify-content:space-between;align-items:center;margin:0;color:var(--text-3);font-size:12px}
+.qx-foot b{color:var(--text-1);font-size:14px}
+.qx .qz-options{grid-template-columns:1fr 1fr}
+.qx .qz-options.is-players{grid-template-columns:repeat(4,minmax(0,1fr))}
+.qx .qz-options.is-players.is-pair{grid-template-columns:repeat(2,minmax(0,240px));justify-content:center}
+.qx .qz-option{min-height:68px}.qx .qz-option.is-player .qz-label b{font-size:15.5px}
+.qx .qz-card h2{font-size:28px}
+.gm-art.is-quiz{place-items:stretch}
