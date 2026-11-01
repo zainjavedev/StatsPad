@@ -15,7 +15,7 @@ import { GameSkeleton } from './Skeletons';
 import { TEAMS, teamCodeOf } from '../lib/teams';
 import { gameUrl } from '../lib/routes';
 import { useFeed } from '../lib/useFeed';
-import { radarAxes, radarTints } from '../lib/radarAxes';
+import { AXES, radarAxes, radarCurve, radarRange, radarTints } from '../lib/radarAxes';
 import InjuryMark from './InjuryMark';
 
 /* A team's page from ESPN's abbreviation, so the game header can link to it. */
@@ -119,6 +119,33 @@ function MatchupRadar({box}) {
   return <div className="gp-radar" style={radarTints(a, b)} aria-label={`${box.away.short} and ${box.home.short} radar`}>
     <Radar axes={radarAxes(a, b, pool)} names={[box.away.short, box.home.short]} colors={['var(--ta)', 'var(--tb)']}/>
   </div>;
+}
+
+/* After the final: the same seven spokes from this game's team totals only. There is no file of single-game team lines, so each
+   spoke runs over this season's team averages widened by half their spread either way (one night swings far more than an
+   average), and the hover shows the real numbers from the game. */
+const pair = value => String(value ?? '').split('-').map(Number);
+const UNIT = {PPG: 'pts', APG: 'ast', RPG: 'reb', SPG: 'stl', BPG: 'blk'};
+const gameLine = (side, team, code) => {
+  const t = team.totals ?? {}, [, fga] = pair(t.FG), [, tpa] = pair(t['3PT']), [, fta] = pair(t.FT);
+  return {team: code, stats: {points: Number(side.score), fieldGoalsAttempted: fga, freeThrowsAttempted: fta, threePointersAttempted: tpa, fieldGoalPercentage: Number(t['Field Goal %']), threePointPercentage: Number(t['Three Point %']), assists: Number(t.Assists), totalRebounds: Number(t.Rebounds), steals: Number(t.Steals), blocks: Number(t.Blocks)}};
+};
+const gameAxes = (a, b, pool) => AXES.map(([label, parts]) => ({label, sides: [a, b].map(team => {
+  const shares = parts.map(([get]) => {
+    const [low, high] = radarRange(pool.map(get)), pad = (high - low) / 2;
+    return high > low ? Math.max(0, Math.min(1, (get(team) - low + pad) / (high - low + 2 * pad))) : .5;
+  });
+  const share = shares.reduce((sum, value) => sum + value, 0) / shares.length;
+  return {pct: Math.round(radarCurve(share) * 100), text: parts.map(([get, short]) => `${Math.round(get(team) * 10) / 10}${UNIT[short] ? ` ${UNIT[short]}` : ` ${short}`}`).join(' · '), rank: 'This game, against this season\'s team averages'};
+})}));
+function GameRadar({box}) {
+  const pool = useFeed(loadMatchupPool);
+  const [a, b] = [box.away, box.home].map(side => { const team = box.teams.find(entry => entry.abbr === side.abbr), code = codeOf(side.abbr); return team && code ? gameLine(side, team, code) : null; });
+  if (!pool || pool.length < 10 || !a || !b || !Number.isFinite(a.stats.fieldGoalPercentage) || !Number.isFinite(b.stats.fieldGoalPercentage)) return null;
+  return <section className="gp-game-radar" aria-label="This game's radar">
+    <h2>This game</h2>
+    <div className="gp-radar" style={radarTints(a, b)}><Radar axes={gameAxes(a, b, pool)} names={[box.away.short, box.home.short]} colors={['var(--ta)', 'var(--tb)']}/></div>
+  </section>;
 }
 
 /* Before tip-off: each side's expected starting five on the team page's cards, with last season's per-game
@@ -261,6 +288,7 @@ export default function GamePage({id}) {
       <div><TeamLink side={box.home}/>{scored && <strong className={Number(box.home.score) > Number(box.away.score) ? 'won' : ''}>{box.home.score}</strong>}</div>
     </div>
     <p className="gd-meta">{[box.venue].filter(Boolean).join(' · ')}</p>
+    {box.state === 'post' && !hidden && !focusTeam && <GameRadar box={box}/>}
     </>}
 
     {focusTeam && <PlayerGame gameId={id} box={box} plays={box.plays ?? []} team={focusTeam} player={focusTeam.players.find(entry => entry.id === focus)} onClose={() => pick(null)} onPick={pick} nameOf={nameOf}/>}

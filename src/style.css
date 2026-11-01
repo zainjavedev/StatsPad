@@ -4931,3 +4931,21 @@ section.pg .pg-big b{font-size:clamp(24px,15cqi,46px)!important}
   .gp-head.is-pre>div:last-child{grid-column:3;grid-row:1;justify-content:flex-start!important}
   .gp-head.is-pre img{width:96px!important;height:96px!important;object-fit:contain}
 }
+
+/* Finished game: the radar from this game's totals, between the score and the box score. */
+.gp-game-radar{display:flex;flex-direction:column;align-items:center;gap:2px;margin:0 0 8px}
+.gp-game-radar h2{margin:0;font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
+.gp-game-radar .gp-radar{width:min(480px,100%);text-transform:none;letter-spacing:0}
+
+/* Game page box score on wider screens: bigger cards, and the rating and share button kept apart in the right column. */
+@media(min-width:821px){
+  .gd-sides{column-gap:56px}
+  .gd-sides .rp-list>li{position:relative}
+  .gd-sides .rp-list>li>.rp-card{gap:18px;padding:18px 4px;min-height:118px;align-items:center}
+  .gd-sides .rp-list>li>.rp-card .rp-top{font-size:17px}
+  .gd-sides .rp-list>li>.rp-card .rp-top small{font-size:14px}
+  .gd-sides .rp-list>li>.rp-card .rp-trio b{font-size:38px}
+  .gd-sides .rp-list>li>.rp-card .rp-trio{font-size:15px}
+  .gd-sides .rp-list>li>.rp-card .rp-grade{align-self:start;min-width:44px;text-align:right;font-size:26px;line-height:1}
+  .gd-sides .rp-list>li>button.rp-share{width:36px;height:36px;right:4px;bottom:18px}
+}
