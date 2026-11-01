@@ -5,7 +5,14 @@ import { gamesAround } from './espn';
    same shape the game lists use, with ESPN's scoreboard laid over the games of the last week and
    the next few days for live scores and final results. */
 
-let rows;
+let rows, around, aroundAt = 0;
+
+/* The front page asks for upcoming games and results at the same moment, so one scoreboard read is shared by every
+   caller for a few seconds instead of each one fetching the same three days. The 60-second refresh still gets fresh scores. */
+const liveScores = () => {
+  if (!around || Date.now() - aroundAt > 15000) { aroundAt = Date.now(); around = gamesAround().catch(() => []); }
+  return around;
+};
 
 const side = (code, score) => ({abbr: TEAMS[code].espn.toUpperCase(), code, name: nickname(code), logo: espnLogoUrl(code), score: score === null ? undefined : String(score)});
 
@@ -13,7 +20,7 @@ const side = (code, score) => ({abbr: TEAMS[code].espn.toUpperCase(), code, name
    it on every call (three requests, instead of one per day of the week). */
 export async function loadSchedule() {
   rows ??= fetch('/data/2026-27/schedule.json').then(response => response.json());
-  const [list, live] = await Promise.all([rows, gamesAround().catch(() => [])]);
+  const [list, live] = await Promise.all([rows, liveScores()]);
   const updates = new Map(live.map(game => [game.id, game]));
   return list.map(([id, date, away, home, venue, tv, state, awayScore, homeScore, preseason]) => {
     const game = {id, date: new Date(date), away: side(away, awayScore), home: side(home, homeScore), venue, tv, state, detail: '', preseason: preseason === 1};

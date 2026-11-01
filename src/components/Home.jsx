@@ -330,7 +330,8 @@ export default function Home({onReady}){
   if(!data){
     const idle=()=>{};
     const skeleton=page==='home'?<HomeSkeleton/>:page==='compare'?<CompareSkeleton/>:page==='team'?<TeamLoading teamCode={teamCode} color={TEAMS[teamCode].color} onPick={idle}/>:page==='game'?<GameSkeleton/>:page==='profile'?<ProfileSkeleton/>:page==='teams'?<TilesSkeleton/>:skeletonForPath(location.pathname);
-    return <main><SiteHeader page={page} onHome={idle} onCompare={idle} onTeams={idle} onLeaders={idle} theme={theme} onToggleTheme={toggleTheme}/>{skeleton}</main>;
+    /* The header works while the data loads: a tap on a tab during the skeleton still goes where it says. */
+    return <main><SiteHeader page={page} onHome={goHomeEarly} onCompare={()=>navigate('/compare')} onTeams={()=>navigate('/lineups')} onLeaders={()=>navigate('/stats/points')} theme={theme} onToggleTheme={toggleTheme}/>{skeleton}</main>;
   }
   const goHome=()=>{setPage('home');setProfile(null);history.pushState({},'','/');scrollTo({top:0,behavior:'smooth'})};
   const openProfile=(item,from=null)=>{setProfileFrom(from);setProfile(item);setPage('profile');history.pushState({},'',item.entityType==='team'?`/?profile=${encodeURIComponent(item.playerName)}`:playerUrl(item.playerName));scrollTo({top:0,behavior:'smooth'})};

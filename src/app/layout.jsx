@@ -1,4 +1,5 @@
 import '../style.css';
+import '../feel.css';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { socialTags } from '../lib/social';
 import Tracker from '../components/Tracker';

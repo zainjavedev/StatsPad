@@ -1,0 +1,32 @@
+/* Touch feel, loaded after style.css. Every tap gets an answer the moment the finger lands: links and buttons dip,
+   cards press in, and hover lifts don't stick on phones after a tap. Selectors in :where() add no specificity, so a
+   component's own transition or opacity still wins wherever it sets one. */
+
+:where(a[href], button, [role=button], [role=tab], summary, label[for]){-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+
+/* The press: a quick dip on the way down, a slower fade back on release. */
+:where(a[href], button, [role=button], [role=tab], summary){transition:opacity .18s ease-out, transform .18s ease-out}
+:where(a[href], button, [role=button], [role=tab], summary):active:not(:disabled){opacity:.7;transition-duration:.04s}
+
+/* Cards and chips also shrink a touch, which reads as "pressed" better than fading alone. */
+:where(.rp-card, .scr-card, .meet, .lc, .team-tile, .starter-card, .debate-card, .leader-card, .team-chip, .story-card, .award-card,
+  .night-card, .fight, .blog-tile, .pp-vs, .pl-choice, .statpage-row, .gp-card, .board-row, .stand td.team a, .ticker a, .tk-game,
+  .h2h-actions button, .cmp-bar button, .pills button, .adm-seg button, .tabbar a, .tabbar button, .site-nav a, .site-nav button):active:not(:disabled){transform:scale(.97);opacity:.85}
+:where(.tabbar a, .tabbar button):active{transform:scale(.92)}
+
+/* Phones have no hover: the lift a card gets under the mouse otherwise stays stuck on after a tap. */
+@media (hover:none){
+  .story-card:hover,.team-tile:hover,.starter-card:not(:disabled):hover,.debate-card:hover,.leader-card:hover,.team-chip:hover,
+  .leaders-page .story-feed .story-card:hover,.award-card:hover,.night-card:hover,.fight:hover,.blog-tile:hover,
+  .perfs-night .rp-list>li:hover,.pp-vs:hover,.pl-choice:not(:disabled):hover,.pl-primary:not(:disabled):hover,
+  .pp-vs-meta .pp-versus:hover,.rp-share:hover,.pg-share:hover,a.lc:hover,.compare-main .chart-actions button:hover{transform:none;box-shadow:none}
+  .matchup-stage article:hover .hero-art{transform:none}
+}
+
+/* Thumb-sized targets on phones: the header icons and the small toggles were 30-32px. */
+@media (max-width:640px){
+  .site-header .theme-toggle,.site-header .account-btn.signed-out{width:40px;height:40px}
+  .site-header .account-btn.signed-in{padding:4px}
+  .pills button,.cmp-bar .pills button{min-height:38px}
+  .statpage-back{min-height:40px}
+}

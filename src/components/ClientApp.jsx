@@ -15,11 +15,13 @@ import { teamUrl } from '../lib/routes';
    placeholder the app itself shows while its data loads, picked from the route,
    so a page goes from one skeleton straight to its content. */
 const idle = () => {};
+const go = path => { if (location.pathname !== path) location.assign(path); };
 
 function Boot({route}) {
   const teamCode = Object.keys(TEAMS).find(code => teamUrl(code) === route);
   const skeleton = route === '/' ? <HomeSkeleton/> : /^\/compare(\/|$)/.test(route) ? <CompareSkeleton/> : teamCode ? <TeamLoading teamCode={teamCode} color={TEAMS[teamCode].color} onPick={idle}/> : skeletonForPath(route);
-  return <main aria-busy="true"><SiteHeader page={route === '/' ? 'home' : teamCode ? 'team' : ''} onHome={idle} onCompare={idle} onTeams={idle} onLeaders={idle} theme="dark" onToggleTheme={idle}/>{skeleton}</main>;
+  /* The app isn't listening yet, so a tab tapped this early goes there as a plain page load instead of doing nothing. */
+  return <main aria-busy="true"><SiteHeader page={route === '/' ? 'home' : teamCode ? 'team' : ''} onHome={() => go('/')} onCompare={() => go('/compare')} onTeams={() => go('/lineups')} onLeaders={() => go('/stats/points')} theme="dark" onToggleTheme={idle}/>{skeleton}</main>;
 }
 
 const Home = dynamic(() => import('./Home'), {ssr: false, loading: () => null});
