@@ -191,5 +191,5 @@ a.adm-path:hover{color:var(--text-1);text-decoration:underline}
 .pk-copy>small{overflow:hidden;color:var(--text-3);font-size:12px;text-overflow:ellipsis;white-space:nowrap}
 .pk-actions{display:flex;flex:none;gap:4px}
 .pk-actions button,.pk-actions a{display:grid;place-items:center;width:36px;height:36px;padding:0;border:0;border-radius:9px;background:transparent;color:var(--text-2)}
-.pk-actions .done{color:var(--good,#34d399)}
+.pk-actions .done{color:#34d399}
 @media(hover:hover){.pk-actions button:hover,.pk-actions a:hover{background:var(--line);color:var(--text-1)}}

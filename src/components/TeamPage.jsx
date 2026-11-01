@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowDown, ArrowUp, ChevronRight } from 'lucide-react';
+import { ArrowDown, ArrowUp, ChevronRight, Share2 } from 'lucide-react';
+import PlayerShare from './PlayerShare';
 import { playerUrl } from '../lib/routes';
 import { GameList } from './Feeds';
 import { useFeed } from '../lib/useFeed';
@@ -148,6 +149,7 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, season, onOpe
   const schedule = useCallback(() => teamSchedule(TEAMS[teamCode].espn, 5), [teamCode]);
   const games = useFeed(schedule);
   const teamPool = useFeed(loadTeamPool);
+  const [sharing, setSharing] = useState(false);
   const finished = useFeed(useCallback(() => teamResults(TEAMS[teamCode].espn, 5), [teamCode]));
   useEffect(() => {
     let active = true;
@@ -186,8 +188,10 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, season, onOpe
       {teamEntity && teamPool.length > 10 && <div className="team-hero-radar" aria-label={`${roster.teamName} radar`}>
         <Radar axes={radarAxes(teamEntity, teamEntity, teamPool).map(axis => ({...axis, sides: [axis.sides[0]]}))} names={[roster.teamName]} colors={['#ffffff']} scope="all 30 teams"/>
       </div>}
+      {teamEntity && teamPool.length > 10 && <button type="button" className="team-hero-share" onClick={() => setSharing(true)} title="Share the radar as an image"><Share2 size={15}/> Share</button>}
       <FavoriteStar code={teamCode} active={favorites.includes(teamCode)} className="on-hero"/>
     </div>
+    {sharing && teamEntity && <PlayerShare team player={teamEntity} pool={teamPool} season={pretty(season || roster.statsSeason || '2026-27')} onClose={() => setSharing(false)}/>}
 
     <section className="team-block">
       <div className="block-head">

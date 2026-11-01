@@ -12,8 +12,8 @@ import Radar from './Radar';
 import { Headshot } from './TeamPage';
 import { loadSchedule } from '../lib/schedule';
 import { GameSkeleton } from './Skeletons';
-import { TEAMS, teamCodeOf } from '../lib/teams';
-import { gameUrl } from '../lib/routes';
+import { nickname, TEAMS, teamCodeOf } from '../lib/teams';
+import { gameUrl, playerUrl } from '../lib/routes';
 import { useFeed } from '../lib/useFeed';
 import { AXES, radarAxes, radarCurve, radarRange, radarTints } from '../lib/radarAxes';
 import InjuryMark from './InjuryMark';
@@ -195,7 +195,7 @@ function Preview({box}) {
     {data.length === 0 && <div className="gp-retry"><p>The starting fives did not load. This is usually a weak connection.</p><button type="button" className="spoiler-toggle" onClick={() => { setData(null); setAttempt(count => count + 1); }}>Try again</button></div>}
     {data.map(({roster, code, side, five}) => <section key={code} className="gp-side" style={{'--team': TEAMS[code].color}}>
       <h3>{side.logo && <img src={side.logo} alt=""/>}<span>{roster.teamName}<small>Expected starting five</small></span></h3>
-      <div className="starter-grid">{five.map(player => <div key={player.name} className="starter-card">
+      <div className="starter-grid">{five.map(player => <a key={player.name} className="starter-card" href={playerUrl(player.name)}>
         <span className="starter-stage"><span className="slot-badge">{player.slot ?? player.pos}</span><InjuryMark name={player.name} stage/><Headshot player={player} className="starter-art"/></span>
         <h3>{player.name}</h3>
         <dl className="starter-line">
@@ -204,7 +204,7 @@ function Preview({box}) {
           <div><dt>APG</dt><dd>{per(player, 'apg')}</dd></div>
         </dl>
         
-      </div>)}</div>
+      </a>)}</div>
     </section>)}
     {context && <Context box={box} context={context}/>}
   </div>;
@@ -222,13 +222,26 @@ function Context({box, context}) {
   return <>
     <section className="gp-form">
       <h3>Recent form</h3>
-      <div className="gp-form-grid">{sides.map(([code, side], index) => <div key={code}>
-        <p className="gp-form-head">{side.logo && <img src={side.logo} alt=""/>}<b>{side.short}</b>{form[index]?.streak && <em className={form[index].streak.startsWith('W') ? 'win' : 'loss'}>{form[index].results.every(result => spoilers.revealed(result.id)) ? form[index].streak : '?'}</em>}</p>
-        {form[index]?.results.length ? <ul>{form[index].results.map(result => <li key={result.id}>
-          {spoilers.revealed(result.id) ? <span className={`gp-wl ${result.win ? 'win' : 'loss'}`}>{result.win ? 'W' : 'L'}</span> : <span className="gp-wl">?</span>}
-          <span>{result.home ? 'vs' : '@'} {result.opp}{result.pre ? ' · Preseason' : ''}</span>{spoilers.revealed(result.id) ? <strong>{result.us}–{result.them}</strong> : <Hidden id={result.id} onReveal={revealGame}/>}
-        </li>)}</ul> : <p className="gd-note">No games played yet.</p>}
-      </div>)}</div>
+      <div className="gp-form-grid">{sides.map(([code, side], index) => {
+        const results = form[index]?.results ?? [], shown = results.every(result => spoilers.revealed(result.id)), won = results.filter(result => result.win).length;
+        return <div key={code}>
+          <div className="gp-form-head">
+            {side.logo && <img src={side.logo} alt=""/>}
+            <span><b>{side.short}</b>{results.length > 0 && <small>{shown ? `${won}–${results.length - won} last ${results.length}` : `last ${results.length}`}</small>}</span>
+            {form[index]?.streak && <em className={shown ? (form[index].streak.startsWith('W') ? 'win' : 'loss') : ''}>{shown ? form[index].streak : '?'}</em>}
+          </div>
+          {results.length > 0 && <div className="gp-form-strip" aria-hidden="true">{[...results].reverse().map(result => <i key={result.id} className={spoilers.revealed(result.id) ? (result.win ? 'win' : 'loss') : ''}/>)}</div>}
+          {results.length ? <ul>{results.map(result => {
+            const opp = codeOf(result.opp), path = opp ? gameUrl(result.home ? opp : code, result.home ? code : opp, result.id) : `/games/${result.id}`, open = spoilers.revealed(result.id);
+            const Row = open ? 'a' : 'div';
+            return <li key={result.id}><Row className="gp-form-row" href={open ? path : undefined}>
+              {opp && <img src={TEAMS[opp] ? `https://a.espncdn.com/i/teamlogos/nba/500/${TEAMS[opp].espn}.png` : ''} alt=""/>}
+              <span className="gp-form-opp">{result.home ? 'vs' : '@'} {opp ? nickname(opp) : result.opp}{result.pre ? <small> · Preseason</small> : null}</span>
+              {open ? <><span className={`gp-wl ${result.win ? 'win' : 'loss'}`}>{result.win ? 'W' : 'L'}</span><strong><b>{result.us}</b>–{result.them}</strong></> : <><span className="gp-wl">?</span><Hidden id={result.id} onReveal={revealGame}/></>}
+            </Row></li>;
+          })}</ul> : <p className="gd-note">No games played yet.</p>}
+        </div>;
+      })}</div>
     </section>
     <section className="gp-past">
       <h3>Past matchups <SpoilerToggle/></h3>
