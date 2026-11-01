@@ -159,7 +159,7 @@ function Timeline({person, onClose}) {
           <h3>Visit {visit.number}<span>{clock.format(new Date(visit.start.at))} · <Icon size={12}/> {flag(visit.start.country)}{visit.source ? ` · ${visit.source.name}` : ''}</span></h3>
           <ol className="adm-timeline">{visit.items.map((item, index) => <li key={index} className={item.kind}>
             <time>{time.format(new Date(item.at))}</time>
-            {item.kind === 'view' ? <span className="adm-path">{item.path}</span>
+            {item.kind === 'view' ? <a className="adm-path" href={item.path} target="_blank" rel="noreferrer">{item.path}</a>
               : <span><Gamepad2 size={13}/> Round {item.step ?? '?'} · {item.player ?? 'a player'} · <b className={item.correct ? 'ok' : 'miss'}>{item.correct ? 'right' : 'wrong'}</b></span>}
           </li>)}</ol>
         </section>; })}
