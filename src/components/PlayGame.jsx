@@ -6,6 +6,7 @@ import { trio } from '../lib/trio';
 import { fps, rating } from '../lib/playerGame';
 import { readAlerts } from '../lib/alerts';
 import { loadPool, nextRound } from '../lib/playRound';
+import GamesNav from './GamesNav';
 import { TEAMS, espnLogoUrl, nickname } from '../lib/teams';
 import { photoUrl } from '../lib/photos';
 
@@ -171,6 +172,7 @@ export default function PlayGame() {
   const number = Math.min(ROUND, results.length + (revealed ? 0 : 1));
 
   return <main className="pl">
+    <GamesNav active="/play"/>
     <div className="pl-top">
       <div><h1>Guess the player</h1><p>A shot chart and a stat line from this season. Which starter is it?</p></div>
     </div>
@@ -188,7 +190,7 @@ export default function PlayGame() {
 
     {auth === 'in' && finished && <Results results={results} stats={stats} onAgain={again}/>}
 
-    {auth !== 'checking' && round && !finished && <>
+    {auth !== 'checking' && round && !finished && <div className="pl-play">
       <section ref={card} className={`pl-card ${revealed ? 'is-revealed' : ''} ${revealed ? (right ? 'is-right' : 'is-wrong') : ''} ${status === 'loading' ? 'is-loading' : ''}`} key={round.key} style={{'--team': revealed ? round.color : '#5b6cff'}}>
         <div className="pl-stage">
           <div className="pl-disc">
@@ -231,6 +233,6 @@ export default function PlayGame() {
           : <button type="button" className="pl-skip" onClick={skip} disabled={skipped || status === 'loading'}><SkipForward size={16}/> {skipped ? 'Skip used' : 'Skip this player (1 per round)'}</button>}
         <p>Tip: press 1, 2 or 3 to answer, S to skip and Enter for the next one.</p>
       </div>}
-    </>}
+    </div>}
   </main>;
 }
