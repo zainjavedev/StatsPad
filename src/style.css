@@ -4922,3 +4922,12 @@ section.pg .pg-big b{font-size:clamp(24px,15cqi,46px)!important}
 .gp-head.is-pre .gp-radar .vs-legend,.gp-head.is-pre .gp-radar [class*=legend]{justify-content:center;margin-left:auto;margin-right:auto}
 .gp-head.is-pre .vs-radar-head,.gp-head.is-pre .vs-radar-key{justify-content:center!important;width:100%;text-align:center}
 .gp-head.is-pre .gp-tip{display:block;margin:2px 0 0}
+
+/* Upcoming game on wider screens: one row, the two logos hugging the radar instead of sitting at the page edges above it. */
+@media(min-width:761px){
+  .gp-head.is-pre{grid-template-columns:1fr minmax(0,460px) 1fr!important;column-gap:32px!important;align-items:center!important}
+  .gp-head.is-pre>div:first-child{grid-column:1;grid-row:1;justify-content:flex-end!important}
+  .gp-head.is-pre>.gp-mid{grid-column:2!important;grid-row:1!important}
+  .gp-head.is-pre>div:last-child{grid-column:3;grid-row:1;justify-content:flex-start!important}
+  .gp-head.is-pre img{width:96px!important;height:96px!important;object-fit:contain}
+}
