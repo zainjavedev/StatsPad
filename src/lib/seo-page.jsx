@@ -33,6 +33,7 @@ export function SeoPage({route, page = pages[route]}) {
       {HUBS.map(([href, label]) => <a key={href} href={href}>{label}</a>)}
     </nav>
     <div className={VISIBLE.test(route) ? 'seo-static seo-copy' : 'seo-static'} dangerouslySetInnerHTML={{__html: page?.body ?? ''}}/>
+    {VISIBLE.test(route) && <div id="footer-slot"/>}
     <ClientApp route={route}/>
   </>;
 }

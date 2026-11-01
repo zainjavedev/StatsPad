@@ -88,15 +88,20 @@ async function loadDb() {
 const db = await loadDb();
 const dayLabel = date => new Date(date).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/New_York'});
 const shortDay = date => new Date(date).toLocaleDateString('en-US', {month: 'short', day: 'numeric', timeZone: 'America/New_York'});
+/* The last ten games as mini score cards (date, opponent, result and the player's line), each linking to the box score. */
 const gameLog = p => {
   const lines = (p.espnId && db?.byPlayer.get(String(p.espnId))) || [];
   const rows = lines.map(line => ({line, game: db.gameById.get(line.game_id)})).filter(row => row.game).sort((x, y) => new Date(y.game.played_at) - new Date(x.game.played_at)).slice(0, 10);
   if (!rows.length) return '';
-  const body = rows.map(({line, game}) => {
-    const home = game.home === line.team, mine = home ? game.home_score : game.away_score, theirs = home ? game.away_score : game.home_score;
-    return [link(gameUrl(game.away, game.home, game.id), shortDay(game.played_at)), esc(`${home ? 'vs' : '@'} ${TEAMS[line.opponent]?.name ?? line.opponent}`), `<b class="${mine > theirs ? 'won' : 'lost'}">${mine > theirs ? 'W' : 'L'}</b> ${mine}-${theirs}`, line.minutes, line.pts, line.reb, line.ast];
-  });
-  return `<h2>${esc(p.playerName)} game log, ${pretty(SEASONS[0])}</h2>${table(['Date', 'Opponent', 'Result', 'MIN', 'PTS', 'REB', 'AST'], body, `${p.playerName} last ${rows.length} games`)}`;
+  const cards = rows.map(({line, game}) => {
+    const home = game.home === line.team, mine = home ? game.home_score : game.away_score, theirs = home ? game.away_score : game.home_score, won = mine > theirs;
+    const opp = TEAMS[line.opponent], logo = opp ? `<img src="https://a.espncdn.com/i/teamlogos/nba/500/${opp.espn}.png" alt="" width="28" height="28" loading="lazy">` : '';
+    return `<li><a class="glog-card" href="${gameUrl(game.away, game.home, game.id)}"><span class="glog-date">${esc(shortDay(game.played_at))}</span>`
+      + `<span class="glog-opp">${logo}<span>${home ? 'vs' : '@'} ${esc(opp?.name ?? line.opponent)}</span></span>`
+      + `<span class="glog-res"><b class="${won ? 'won' : 'lost'}">${won ? 'W' : 'L'}</b> ${mine}-${theirs}</span>`
+      + `<span class="glog-line"><span><b>${line.pts}</b> PTS</span><span><b>${line.reb}</b> REB</span><span><b>${line.ast}</b> AST</span><span><b>${line.minutes}</b> MIN</span></span></a></li>`;
+  }).join('');
+  return `<h2>${esc(p.playerName)} game log, ${pretty(SEASONS[0])}</h2><p>${esc(p.playerName)}'s last ${rows.length} games. Open one for the full box score.</p><ol class="glog">${cards}</ol>`;
 };
 const pages = {};
 const written = [];

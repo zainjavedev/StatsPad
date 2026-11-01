@@ -1,13 +1,19 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Check, Copy, ExternalLink, Image as ImageIcon } from 'lucide-react';
+import { readAlerts } from '../lib/alerts';
+import AdminTabs from './AdminTabs';
+import './admin.css';
 import PerfShare from './PerfShare';
 import StoryShare from './StoryShare';
 import { nickname, TEAMS } from '../lib/teams';
 import { gameUrl, playerUrl, SITE } from '../lib/routes';
 
-/* The admin Post kit: last few nights' posts, ready to go. Each card has the picture (the same share cards the site uses) and a
-   written post to copy. Big nights and streaks come from the stored box scores (/api/admin {feed}), ladder moves from ladders.json. */
+/* The owner's Post kit (/admin/postkit): last few nights' posts, ready to go. Each row has the picture (the same share cards the
+   site uses) and a written post to copy. Big nights and streaks come from the stored box scores (/api/admin {feed}), ladder moves
+   from ladders.json. Anyone but the owner gets a plain not-found, the same as /admin. */
+const feedCall = () => fetch('/api/admin', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({token: readAlerts().email || '', feed: true})})
+  .then(response => response.status === 404 ? 'denied' : response.ok ? response.json() : Promise.reject(new Error(response.status)));
 
 const face = id => `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${id}.png&w=260&h=190`;
 const espn = code => (TEAMS[code]?.espn ?? code).toUpperCase();
@@ -72,42 +78,41 @@ function storyCard(game) {
   };
 }
 
-function Card({card, onImage}) {
+function Row({card, onImage}) {
   const [copied, setCopied] = useState(false);
   const copy = () => navigator.clipboard?.writeText(card.text).then(() => { setCopied(true); setTimeout(() => setCopied(false), 1600); }).catch(() => {});
-  return <article className="pk-card">
-    <div className="pk-art">{card.id ? <img src={face(card.id)} alt="" loading="lazy"/> : <span className="pk-teams">{card.teams.map(code => TEAMS[code] && <img key={code} src={`https://a.espncdn.com/i/teamlogos/nba/500/${TEAMS[code].espn}.png`} alt=""/>)}</span>}</div>
-    <div className="pk-copy">
-      <div className="pk-tags">{card.tags.map(tag => <span key={tag}>{tag}</span>)}<small>{card.when}</small></div>
+  return <li className="pk-row">
+    <span className="pk-art">{card.id ? <img src={face(card.id)} alt="" loading="lazy"/> : <span className="pk-teams">{card.teams.map(code => TEAMS[code] && <img key={code} src={`https://a.espncdn.com/i/teamlogos/nba/500/${TEAMS[code].espn}.png`} alt=""/>)}</span>}</span>
+    <span className="pk-copy">
       <b>{card.title}</b>
       <span className={`pk-line${card.up === false ? ' down' : ''}`}>{card.line}</span>
-      <small>{card.sub}</small>
-      <p className="pk-text">{card.text.split('\n\n')[0]}</p>
-      <div className="pk-actions">
-        {card.share && <button type="button" onClick={() => onImage(card.share)}><ImageIcon size={15}/> Image</button>}
-        <button type="button" onClick={copy}>{copied ? <Check size={15}/> : <Copy size={15}/>} {copied ? 'Copied' : 'Copy post'}</button>
-        <a href={card.path} target="_blank" rel="noreferrer" aria-label="Open the page"><ExternalLink size={15}/></a>
-      </div>
-    </div>
-  </article>;
+      <small>{card.tags.join(' · ')} · {card.when}</small>
+    </span>
+    <span className="pk-actions">
+      {card.share && <button type="button" onClick={() => onImage(card.share)} aria-label="Share image" title="Share image"><ImageIcon size={16}/></button>}
+      <button type="button" onClick={copy} className={copied ? 'done' : ''} aria-label={copied ? 'Post copied' : 'Copy post'} title={copied ? 'Copied' : 'Copy post'}>{copied ? <Check size={16}/> : <Copy size={16}/>}</button>
+      <a href={card.path} target="_blank" rel="noreferrer" aria-label="Open the page" title="Open the page"><ExternalLink size={16}/></a>
+    </span>
+  </li>;
 }
 
 const TABS = [['nights', 'Big nights'], ['ladders', 'Ladder moves'], ['streaks', 'Streaks'], ['games', 'Games']];
 
-export default function PostKit({load}) {
+export default function PostKit() {
   const [feed, setFeed] = useState(null), [ladders, setLadders] = useState(null), [tab, setTab] = useState('nights'), [share, setShare] = useState(null);
   useEffect(() => {
-    load().then(setFeed).catch(() => setFeed({nights: [], streaks: [], stories: []}));
+    feedCall().then(setFeed).catch(() => setFeed({nights: [], streaks: [], stories: []}));
     fetch('/data/2026-27/ladders.json', {cache: 'no-cache'}).then(response => response.json()).then(setLadders).catch(() => setLadders({}));
-  }, [load]);
-  const cards = {
-    nights: (feed?.nights ?? []).map(nightCard), ladders: ladderCards(ladders), streaks: (feed?.streaks ?? []).map(streakCard), games: (feed?.stories ?? []).map(storyCard),
-  };
-  return <section className="adm-panel pk">
-    <div className="adm-hd"><h2>Post kit</h2><p>last four nights, ready to post</p></div>
-    <div className="adm-seg pk-tabs" role="group" aria-label="Kind">{TABS.map(([key, label]) => <button key={key} type="button" className={key === tab ? 'on' : ''} onClick={() => setTab(key)}>{label}{feed ? <small> {cards[key].length}</small> : null}</button>)}</div>
-    {!feed ? <p className="adm-muted">Loading…</p> : !cards[tab].length ? <p className="adm-muted">Nothing here right now.</p>
-      : <div className="pk-grid">{cards[tab].map(card => <Card key={card.key} card={card} onImage={setShare}/>)}</div>}
+  }, []);
+  if (feed === 'denied') return <section className="adm adm-denied"><h1>Page not found</h1><p>There is nothing here.</p></section>;
+  const cards = feed ? {nights: feed.nights.map(nightCard), ladders: ladderCards(ladders), streaks: feed.streaks.map(streakCard), games: feed.stories.map(storyCard)} : null;
+  return <section className="adm pk">
+    <AdminTabs active="/admin/postkit"/>
+    <div className="pk-head">
+      <div className="adm-seg" role="group" aria-label="Kind">{TABS.map(([key, label]) => <button key={key} type="button" className={key === tab ? 'on' : ''} onClick={() => setTab(key)}>{label}{cards ? <small> {cards[key].length}</small> : null}</button>)}</div>
+    </div>
+    {!cards ? <p className="adm-muted">Loading…</p> : !cards[tab].length ? <p className="adm-muted">Nothing here right now.</p>
+      : <ul className="pk-list">{cards[tab].map(card => <Row key={card.key} card={card} onImage={setShare}/>)}</ul>}
     {share?.kind === 'perf' && <PerfShare line={share.line} onClose={() => setShare(null)}/>}
     {share?.kind === 'story' && <StoryShare story={share.story} onClose={() => setShare(null)}/>}
   </section>;
