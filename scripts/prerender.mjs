@@ -94,7 +94,7 @@ const gameLog = p => {
   if (!rows.length) return '';
   const body = rows.map(({line, game}) => {
     const home = game.home === line.team, mine = home ? game.home_score : game.away_score, theirs = home ? game.away_score : game.home_score;
-    return [link(gameUrl(game.away, game.home, game.id), shortDay(game.played_at)), esc(`${home ? 'vs' : '@'} ${TEAMS[line.opponent]?.name ?? line.opponent}`), esc(`${mine > theirs ? 'W' : 'L'} ${mine}-${theirs}`), line.minutes, line.pts, line.reb, line.ast];
+    return [link(gameUrl(game.away, game.home, game.id), shortDay(game.played_at)), esc(`${home ? 'vs' : '@'} ${TEAMS[line.opponent]?.name ?? line.opponent}`), `<b class="${mine > theirs ? 'won' : 'lost'}">${mine > theirs ? 'W' : 'L'}</b> ${mine}-${theirs}`, line.minutes, line.pts, line.reb, line.ast];
   });
   return `<h2>${esc(p.playerName)} game log, ${pretty(SEASONS[0])}</h2>${table(['Date', 'Opponent', 'Result', 'MIN', 'PTS', 'REB', 'AST'], body, `${p.playerName} last ${rows.length} games`)}`;
 };

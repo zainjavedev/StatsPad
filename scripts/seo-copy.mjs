@@ -135,8 +135,9 @@ export function makeCopy({players, teams, esc, link, nameOf, playerHref, pairRou
   /* Where each category sits in the league, as a table so each name appears once in the header instead of on every line. */
   const rankings = (pool, cats, entries, noun) => {
     const rows = cats.map(cat => {
-      const cells = entries.map(entry => { const rank = rankIn(pool, entry.item, cat); return rank ? [fixed(cat.get(entry.item)), ord(rank)] : null; });
-      return cells.every(Boolean) ? `<tr><th scope="row">${cat.label}</th>${cells.map(([value, rank]) => `<td>${value}</td><td>${rank}</td>`).join('')}</tr>` : '';
+      const cells = entries.map(entry => { const rank = rankIn(pool, entry.item, cat); return rank ? [fixed(cat.get(entry.item)), ord(rank), 1 - (rank - 1) / pool.length] : null; });
+      /* --p is the rank as a share of the pool (1 = first), which the page draws as a bar behind the rank. */
+      return cells.every(Boolean) ? `<tr><th scope="row">${cat.label}</th>${cells.map(([value, rank, share]) => `<td>${value}</td><td class="rk" style="--p:${share.toFixed(2)}">${rank}</td>`).join('')}</tr>` : '';
     }).filter(Boolean).join('');
     if (!rows) return '';
     const heads = entries.map(entry => `<th colspan="2" scope="colgroup">${esc(entry.name)}</th>`).join('');

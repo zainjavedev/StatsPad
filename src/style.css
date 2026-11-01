@@ -5069,3 +5069,45 @@ section.pg .pg-big b{font-size:clamp(24px,15cqi,46px)!important}
 .st-stats b{color:#fff;font-size:24px;letter-spacing:-.02em;text-transform:none}
 .st-foot{display:flex;justify-content:space-between;align-items:center;margin:0 28px;padding-top:12px;border-top:1px solid #23252b;color:#8e8f8a;font-size:12px}
 .st-foot b{color:#fff;font-size:15px}
+
+/* The written copy under player, compare, team and game pages, designed instead of a wall of text: sections with a tick,
+   tables as rounded cards with right-aligned numbers, ranks drawn as percentile bars (--p from prerender), W/L badges in the
+   game log, and link lists as chips. Every word stays in the page for search engines. */
+.seo-copy article{padding-top:8px}
+.seo-copy h1{font-size:24px;font-weight:800;margin-bottom:6px}
+.seo-copy h1+p{color:var(--text-3);font-size:13px}
+.seo-copy h2{display:flex;align-items:center;gap:10px;margin:36px 0 12px;font-size:19px;font-weight:800}
+.seo-copy h2::before{content:"";flex:none;width:4px;height:18px;border-radius:2px;background:var(--accent)}
+.seo-copy p{max-width:68ch}
+.seo-copy table{border-collapse:separate;border-spacing:0;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:var(--ink-1)}
+.seo-copy caption{caption-side:top;padding:0 2px 8px;text-align:left;color:var(--text-3);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.seo-copy thead th{background:color-mix(in srgb,var(--ink-1) 60%,var(--ink-2,#1b1c20))}
+.seo-copy th,.seo-copy td{padding:10px 12px}
+.seo-copy tbody tr:last-child>*{border-bottom:0}
+.seo-copy td{color:var(--text-1);font-weight:600}
+.seo-copy tbody th{color:var(--text-2);font-size:12.5px}
+.seo-copy td:not(:first-child),.seo-copy thead th:not(:first-child){text-align:right}
+@media(hover:hover){.seo-copy tbody tr:hover>*{background:color-mix(in srgb,var(--text-1) 4%,transparent)}}
+/* Rank with a bar: the further up the league, the longer the bar. */
+.seo-copy td.rk{position:relative;min-width:110px;color:var(--text-2);font-weight:700}
+.seo-copy td.rk::before{content:"";position:absolute;left:12px;right:62px;top:50%;height:6px;margin-top:-3px;border-radius:3px;background:linear-gradient(90deg,var(--accent) calc(var(--p) * 100%),var(--line) 0)}
+/* Game log: a coloured W or L. */
+.seo-copy td b.won,.seo-copy td b.lost{display:inline-grid;place-items:center;width:20px;height:20px;margin-right:6px;border-radius:6px;font-size:11px;font-weight:800}
+.seo-copy td b.won{background:color-mix(in srgb,var(--good,#34d399) 22%,transparent);color:var(--good,#34d399)}
+.seo-copy td b.lost{background:color-mix(in srgb,#f87171 18%,transparent);color:#f87171}
+.seo-copy td a{text-decoration:none;color:var(--text-1)}
+/* Lists of links (teammates, similar players, comparisons) as chips. */
+.seo-copy ul:has(>li>a:first-child){display:flex;flex-wrap:wrap;gap:8px;padding:0;list-style:none}
+.seo-copy ul:has(>li>a:first-child)>li{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:var(--ink-1);color:var(--text-3);font-size:13px}
+.seo-copy ul:has(>li>a:first-child)>li>a{color:var(--text-1);font-weight:700;text-decoration:none}
+@media(hover:hover){.seo-copy ul:has(>li>a:first-child)>li:hover{border-color:var(--text-3)}}
+@media(max-width:520px){
+  .seo-copy th,.seo-copy td{padding:9px 10px}
+  .seo-copy td.rk{min-width:96px}.seo-copy td.rk::before{right:54px;left:10px}
+}
+/* Wide tables (game log, career) on phones: one line per cell, and the card scrolls sideways instead of cutting columns off. */
+@media(max-width:640px){
+  .seo-copy table:has(thead th:nth-child(5)){display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .seo-copy table:has(thead th:nth-child(5)) :is(td,th){white-space:nowrap}
+}
+.seo-copy table:has(thead th:nth-child(5)) :is(td,th):nth-child(2){text-align:left}
