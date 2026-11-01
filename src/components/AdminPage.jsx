@@ -2,6 +2,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ChevronRight, Gamepad2, Monitor, RefreshCw, Smartphone, Tablet, X } from 'lucide-react';
 import { readAlerts } from '../lib/alerts';
+import PostKit from './PostKit';
 import './admin.css';
 
 /* The owner's activity dashboard: who visited, where they came from, what they opened, and who plays Guess the Player.
@@ -200,6 +201,7 @@ export default function AdminPage() {
     return () => clearInterval(timer);
   }, [load]);
   const closeSheet = useCallback(() => setOpen(null), []);
+  const loadFeed = useCallback(() => call({feed: true}), []);
 
   if (data === 'denied') return <section className="adm adm-denied"><h1>Page not found</h1><p>There is nothing here.</p></section>;
   if (!data) return <section className="adm"><p className="adm-muted">{error || 'Loading…'}</p></section>;
@@ -228,6 +230,8 @@ export default function AdminPage() {
       <Tile label="Signed in" value={s.members} note={`of ${plural(s.accounts, 'account')}`}/>
       <Tile label="Game rounds" value={s.answers} note={s.answers ? `${plural(s.games, 'game')} · ${s.accuracy}% right` : 'Guess the Player'}/>
     </div>
+
+    <PostKit load={loadFeed}/>
 
     <Traffic series={series} days={days}/>
 

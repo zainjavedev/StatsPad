@@ -5044,3 +5044,28 @@ section.pg .pg-big b{font-size:clamp(24px,15cqi,46px)!important}
 
 /* Share sheet on a desktop: wide enough for the preview to show at a readable size instead of a small card in the middle. */
 @media(min-width:900px){.ss-sheet{width:min(1040px,calc(100vw - 48px))}}
+
+/* Guess the Player on a desktop: the three choices get real headshots instead of thumbnails. */
+@media(min-width:900px){
+  .pl-choice{padding:14px 22px;gap:18px}
+  .pl-face{width:112px;height:112px}
+  .pl-face .pl-badge{width:34px;height:34px;right:-4px;bottom:-2px}
+  .pl-choice b{font-size:23px}
+}
+
+/* Story picture for the admin Post kit (StoryShare.jsx): 16:9, the player in his team colour on the left, the story on the right. */
+.st{display:flex;flex-direction:column;width:800px;height:450px;padding:0 0 16px;overflow:hidden;border:1px solid #24262d;border-radius:16px;background:#14151a;color:#f2f2f0;font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,sans-serif}
+.st-body{flex:1;min-height:0;display:grid;grid-template-columns:360px minmax(0,1fr);align-items:stretch}
+.st-art{position:relative;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;background:radial-gradient(80% 70% at 50% 100%,color-mix(in srgb,var(--team) 70%,#fff 8%) 0,transparent 75%),linear-gradient(180deg,color-mix(in srgb,var(--team) 55%,#000),color-mix(in srgb,var(--team) 25%,#000))}
+.st-face{display:block;width:360px;height:auto;margin-bottom:-2px}
+.st-logo{position:absolute;top:18px;left:18px;width:46px;height:46px;object-fit:contain;filter:drop-shadow(0 2px 6px rgb(0 0 0 / .4))}
+.st-copy{display:flex;flex-direction:column;justify-content:center;gap:6px;padding:28px 34px}
+.st-kicker{align-self:flex-start;padding:5px 12px;border-radius:999px;background:color-mix(in srgb,var(--team) 45%,#2a2b31);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.st-big{margin-top:6px;font-size:84px;font-weight:800;line-height:.95;letter-spacing:-.04em}
+.st-headline{font-size:22px;font-weight:700;line-height:1.2;color:#c9cad0}
+.st-name{margin-top:10px;font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.st-stats{display:flex;gap:22px;margin-top:16px}
+.st-stats>span{display:flex;flex-direction:column;color:#9a9ba2;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.st-stats b{color:#fff;font-size:24px;letter-spacing:-.02em;text-transform:none}
+.st-foot{display:flex;justify-content:space-between;align-items:center;margin:0 28px;padding-top:12px;border-top:1px solid #23252b;color:#8e8f8a;font-size:12px}
+.st-foot b{color:#fff;font-size:15px}
