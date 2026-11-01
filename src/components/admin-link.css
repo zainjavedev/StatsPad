@@ -1,0 +1,2 @@
+/* The owner's header link to /admin. It borrows .theme-toggle for size and border; an <a> needs centring a button gets for free. */
+.admin-link{display:inline-grid;place-items:center;color:inherit;text-decoration:none}

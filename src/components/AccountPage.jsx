@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Eye, EyeOff, LogOut, ShieldCheck, Trash2 } from 'lucide-react';
+import { BarChart3, Eye, EyeOff, LogOut, ShieldCheck, Trash2 } from 'lucide-react';
+import { useIsAdmin } from '../lib/admin';
 import { useFavorites, toggleFavorite } from '../lib/favorites';
 import { TEAMS } from '../lib/teams';
 import { TeamLogo } from './TeamRail';
@@ -14,7 +15,7 @@ export default function AccountPage({onTeams}) {
   const favorites = useFavorites();
   const [saved, setSaved] = useState(null), [mode, setMode] = useState('in'), [email, setEmail] = useState(''), [password, setPasswordText] = useState(''), [show, setShow] = useState(false);
   const [newPassword, setNewPassword] = useState(''), [busy, setBusy] = useState(false), [note, setNote] = useState({});
-  const googleButton = useRef(null);
+  const googleButton = useRef(null), admin = useIsAdmin();
   const signedIn = Boolean(saved?.email);
 
   const run = async (area, task) => {
@@ -97,6 +98,11 @@ export default function AccountPage({onTeams}) {
     </div>
     {say('auth')}
     <div className="acct-grid">
+      {admin && <div className="acct-card">
+        <h2>Activity</h2>
+        <p className="acct-empty">Who visited, what they opened, where they came from, and Guess the Player rounds.</p>
+        <a className="acct-secondary" href="/admin"><BarChart3 size={15}/> Open the dashboard</a>
+      </div>}
       <div className="acct-card">
         <h2>Favorite teams</h2>
         {favorites.length
