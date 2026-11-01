@@ -5025,3 +5025,19 @@ section.pg .pg-big b{font-size:clamp(24px,15cqi,46px)!important}
 .vs-person:not(:first-child) .vs-shuffle{right:10px}
 @media(hover:hover){.vs-shuffle:hover{color:var(--text-1);border-color:var(--text-3)}}
 @media(max-width:640px){.vs-shuffle{top:8px;width:32px;height:32px}}
+
+/* Head to head picture v4: the Compare card's look. Shoulder-cut photos, the full name on one line at one size for both
+   sides (set by the longer name), each side's colour bar and the team logo, on the card's dark grey. */
+.vp{background:#14151a;border-color:#24262d;padding:24px 28px 16px}
+.vp-body{grid-template-columns:220px minmax(0,1fr) 220px;gap:4px}
+.vp-side{align-self:center}
+.vp-photo{display:block;width:200px;aspect-ratio:260/190;overflow:hidden}
+.vp-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+.vp-photo.is-logo{width:132px;aspect-ratio:1;margin:0 auto 14px}
+.vp-photo.is-logo img{object-fit:contain}
+.vp-name{display:block;max-width:100%;margin-top:14px;font-size:clamp(13px,calc(212px / (var(--n,12) * .56)),24px);font-weight:800;line-height:1.2;letter-spacing:-.02em;white-space:nowrap}
+.vp-bar{display:block;width:40px;height:3px;margin:9px auto 0;border-radius:2px}
+.vp-side.left .vp-bar{background:var(--ra)}
+.vp-side.right .vp-bar{background:var(--rb)}
+.vp-team{display:block;width:30px;height:30px;margin:12px auto 0;object-fit:contain}
+.vp-record{display:block;margin-top:10px;color:#a9abb2;font-size:15px;font-weight:700}

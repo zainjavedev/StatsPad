@@ -13,7 +13,6 @@ const headshot = player => {
   if (player.entityType === 'team') { const code = teamCodeOf(player.team); return TEAMS[code] ? espnLogoUrl(code) : null; }
   const id = (/^espn-(\d+)$/.exec(player.playerId ?? '') || [])[1]; return id ? `https://a.espncdn.com/i/headshots/nba/players/full/${id}.png` : null; };
 const f1 = value => Number(value || 0).toFixed(1);
-const split = name => { const parts = name.split(' '); return parts.length > 1 ? [parts[0], parts.slice(1).join(' ')] : ['', name]; };
 
 /* W-L this regular season from the finished games, by team code. */
 function useRecords(enabled) {
@@ -39,29 +38,28 @@ function useRecords(enabled) {
   return records;
 }
 
-function Side({player, rival, side, records}) {
-  const team = player.entityType === 'team', code = team ? teamCodeOf(player.team) : null;
+/* One side, laid out like the Compare card: the photo cut off at the shoulders, the full name, the side's colour bar and the team logo
+   (a team gets its logo up top and its record under the name). */
+function Side({player, side, records}) {
+  const team = player.entityType === 'team', code = teamCodeOf(player.team), photo = headshot(player);
   const record = team && records?.[code] ? `${records[code].w}\u2013${records[code].l}` : null;
-  const [first, last] = team ? ['Record', record || '\u2013'] : split(player.playerName), photo = headshot(player);
   return <div className={`vp-side ${side}`}>
-    <span className={`vp-face${player.entityType === 'team' ? ' is-logo' : ''}`}>{photo ? <img src={photo} alt="" crossOrigin="anonymous"/> : <i/>}</span>
-    <span className="vp-first"><i className="vp-dot" aria-hidden="true"/>{first}</span>
-    <b className="vp-last">{last}</b>
-    {!team && <span className="vp-line">
-      {[['points', 'pts'], ['totalRebounds', 'reb'], ['assists', 'ast']].map(([key, label]) => <span key={key} className={player.stats[key] < rival.stats[key] ? 'behind' : ''}><b>{f1(player.stats[key])}</b>{label}</span>)}
-    </span>}
+    <span className={`vp-photo${team ? ' is-logo' : ''}`}>{photo ? <img src={photo} alt="" crossOrigin="anonymous"/> : <i/>}</span>
+    <b className="vp-name">{player.playerName}</b>
+    <i className="vp-bar" aria-hidden="true"/>
+    {team ? <span className="vp-record">{record || '\u2013'}</span> : TEAMS[code] && <img className="vp-team" src={espnLogoUrl(code)} alt="" crossOrigin="anonymous"/>}
   </div>;
 }
 
 const Poster = forwardRef(function Poster({a, b, pool, records}, ref) {
   const axes = radarAxes(a, b, pool);
-  /* Both surnames take the size that fits the longer one, so the two sides match and the photos line up. */
-  const longest = a.entityType === 'team' ? 5 : Math.max(5, ...[a, b].map(player => split(player.playerName)[1].length));
+  /* Both names take the size that fits the longer one, so the two sides match and the photos line up. */
+  const longest = Math.max(8, a.playerName.length, b.playerName.length);
   return <div className="vp" ref={ref} style={{...radarTints(a, b), '--n': longest}}>
     <div className="vp-body">
-      <Side player={a} rival={b} side="left" records={records}/>
+      <Side player={a} side="left" records={records}/>
       <Radar axes={axes} names={[a.playerName, b.playerName]} colors={['var(--ra)', 'var(--rb)']} scope={`${pool.length} players`}/>
-      <Side player={b} rival={a} side="right" records={records}/>
+      <Side player={b} side="right" records={records}/>
     </div>
     <p className="vp-foot"><b>statspads.com</b></p>
   </div>;
