@@ -34,7 +34,7 @@ export default function ClientApp({route = ''}) {
   return <>
     <div data-nosnippet="" style={{display: 'contents'}}>
       {!ready && <Boot route={route}/>}
-      <Home onReady={onReady}/>
+      <Home onReady={onReady} route={route}/>
     </div>
     <Analytics/>
   </>;

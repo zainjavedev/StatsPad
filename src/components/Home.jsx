@@ -245,10 +245,13 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
   </section><SiteFooter/>{toast&&<div className="toast"><Check size={16}/>{toast}</div>}</main>
 }
 
-export default function Home({onReady}){
+/* The page the server rendered for. Coming from another Next page (Scores, Games, the blog) the router can mount the
+   app before it updates the address bar, so location still says /scores; the route prop is the page actually opened. */
+const startPath=route=>route&&route!==location.pathname?route:location.pathname;
+export default function Home({onReady,route}){
   /* Before the first paint, so the loading placeholder is swapped for the app without a flash. */
   useLayoutEffect(()=>{onReady?.()},[onReady]);
-  const paramsOnLoad=useMemo(()=>routeParams(location.pathname,location.search),[]);
+  const[paramsOnLoad]=useState(()=>{const path=startPath(route);return routeParams(path,path===location.pathname?location.search:'')});
   const[statSlug,setStatSlug]=useState(()=>paramsOnLoad.get('stat')||(paramsOnLoad.get('view')==='teamstat'?'efficiency':'points'));
   const[seasonType,setSeasonType]=useState(()=>paramsOnLoad.get('type')==='playoffs'?'playoffs':'regular-season'),[seasonChanging,setSeasonChanging]=useState(false),[entityType,setEntityType]=useState(()=>paramsOnLoad.get('mode')||'player'),[data,setData]=useState(null),[,setSplits]=useState(null),[selected,setSelected]=useState([]),[toast]=useState(''),[playerIds,setPlayerIds]=useState({}),[catalog,setCatalog]=useState({players:[],teams:[]}),[gameId,setGameId]=useState(()=>paramsOnLoad.get('game')),[page,setPage]=useState(['account','schedule','standings','injuries','stat','teamstat','game'].includes(paramsOnLoad.get('view'))?paramsOnLoad.get('view'):paramsOnLoad.get('view')==='leaders'?'leaders':paramsOnLoad.get('view')==='teams'?'teams':paramsOnLoad.has('team')?'team':paramsOnLoad.has('players')?'compare':paramsOnLoad.has('profile')?'profile':'home'),[regularPlayers,setRegularPlayers]=useState(null),[regularSeason,setRegularSeason]=useState(null),[profileFrom,setProfileFrom]=useState(null),[profile,setProfile]=useState(null),[profileBundle,setProfileBundle]=useState(null),[profileType,setProfileType]=useState(null),[bundlePair,setBundlePair]=useState({}),[,setYearsTick]=useState(0),[teamCode,setTeamCode]=useState(()=>TEAMS[paramsOnLoad.get('team')]?paramsOnLoad.get('team'):'PHI');
   const chartRef=useRef(null),seasonTransitionRef=useRef(0),preseasonTried=useRef(false),seoTitleRef=useRef(null);
@@ -331,7 +334,7 @@ export default function Home({onReady}){
   if(page==='account')return <main><SiteHeader page={page} onHome={goHomeEarly} onCompare={()=>navigate('/compare')} onTeams={()=>navigate('/lineups')} onLeaders={()=>navigate('/stats/points')} theme={theme} onToggleTheme={toggleTheme}/><AccountPage onTeams={()=>navigate('/lineups')}/><SiteFooter/></main>;
   if(!data){
     const idle=()=>{};
-    const skeleton=page==='home'?<HomeSkeleton/>:page==='compare'?<CompareSkeleton/>:page==='team'?<TeamLoading teamCode={teamCode} color={TEAMS[teamCode].color} onPick={idle}/>:page==='game'?<GameSkeleton/>:page==='profile'?<ProfileSkeleton/>:page==='teams'?<TilesSkeleton/>:skeletonForPath(location.pathname);
+    const skeleton=page==='home'?<HomeSkeleton/>:page==='compare'?<CompareSkeleton/>:page==='team'?<TeamLoading teamCode={teamCode} color={TEAMS[teamCode].color} onPick={idle}/>:page==='game'?<GameSkeleton/>:page==='profile'?<ProfileSkeleton/>:page==='teams'?<TilesSkeleton/>:skeletonForPath(startPath(route));
     /* The header works while the data loads: a tap on a tab during the skeleton still goes where it says. */
     return <main><SiteHeader page={page} onHome={goHomeEarly} onCompare={()=>navigate('/compare')} onTeams={()=>navigate('/lineups')} onLeaders={()=>navigate('/stats/points')} theme={theme} onToggleTheme={toggleTheme}/>{skeleton}</main>;
   }
