@@ -4,7 +4,7 @@ import { ensureActivity } from '../../../server/activity';
 
 export const dynamic = 'force-dynamic';
 
-/* POST {visitor, token, path, referrer}: one page view, sent by src/components/Tracker.jsx with sendBeacon.
+/* POST {visitor, token, path, referrer}: one page view (or {visitor, hide: true}, below), sent by src/components/Tracker.jsx with sendBeacon.
    The body is read as text because a beacon's content type isn't reliable. No IP is stored. */
 const BOT = /bot|crawl|spider|slurp|headless|lighthouse|preview|facebookexternalhit|embedly/i;
 const VISITOR = /^[a-z0-9]{8,40}$/;
@@ -24,6 +24,12 @@ export async function POST(request) {
   let body;
   try { body = JSON.parse(await request.text()); } catch { return done(); }
   const visitor = String(body?.visitor || ''), path = clean(String(body?.path || '')).slice(0, 300);
+  /* {visitor, hide: true}: this browser opened ?notme=1. Marking a browser only ever hides that browser, so it needs no sign-in. */
+  if (body?.hide === true && VISITOR.test(visitor)) {
+    await ensureActivity();
+    await sql`insert into hidden_visitors (visitor) values (${visitor}) on conflict do nothing`;
+    return done();
+  }
   if (!VISITOR.test(visitor) || !path.startsWith('/') || path.startsWith('/admin')) return done();
   const referrer = body?.referrer ? String(body.referrer).slice(0, 300) : null;
   await ensureActivity();

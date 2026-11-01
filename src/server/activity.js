@@ -16,6 +16,10 @@ export const ensureActivity = () => (ready ??= (async () => {
   )`;
   await sql`create index if not exists page_views_at on page_views (at desc)`;
   await sql`create index if not exists page_views_visitor on page_views (visitor, at desc)`;
+  /* Browsers the owner marked as his own with ?notme=1; the dashboard leaves them out like his signed-in ones. */
+  await sql`create table if not exists hidden_visitors (visitor text primary key, at timestamptz not null default now())`;
+  /* The owner's other accounts, hidden along with the one he signs in to the dashboard with. Filled by hand. */
+  await sql`create table if not exists hidden_accounts (subscriber_id uuid primary key)`;
   await sql`create table if not exists play_answers (
     id bigserial primary key,
     subscriber_id uuid not null,
