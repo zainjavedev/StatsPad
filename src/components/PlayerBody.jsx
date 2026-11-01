@@ -119,7 +119,9 @@ function TrendChart({ seasons, tint }) {
   const x = index => pad.left + (points.length === 1 ? (width - pad.left - pad.right) / 2 : (index / (points.length - 1)) * (width - pad.left - pad.right));
   const y = value => pad.top + (1 - (value - lo) / (hi - lo)) * (height - pad.top - pad.bottom);
   const path = points.map((point, index) => `${index ? 'L' : 'M'}${x(index).toFixed(1)},${y(point.value).toFixed(1)}`).join(' ');
-  const showValues = points.length <= 12;
+  /* Every value fits up to twelve seasons. A longer career labels the first, the latest, the peak and the low so the numbers never pile up. */
+  const peak = values.indexOf(high), dip = values.indexOf(low);
+  const labelled = index => points.length <= 12 || [0, points.length - 1, peak, dip].includes(index);
   const every = Math.ceil(points.length / 8);
   return <div className="pp-trend">
     <div className="pp-tabs" role="tablist" aria-label="Trend stat">
@@ -129,13 +131,13 @@ function TrendChart({ seasons, tint }) {
       ? <p className="pp-empty">{points.length ? 'One season so far, so there is no trend yet.' : 'Not enough shooting attempts to chart this stat.'}</p>
       : <svg key={metric} style={{ color: tint }} viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${label} by season`}>
         <defs><linearGradient id="ppFade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="currentColor" stopOpacity=".28"/><stop offset="1" stopColor="currentColor" stopOpacity="0"/></linearGradient></defs>
-        {[0, 0.5, 1].map(step => <line key={step} x1={pad.left} x2={width - pad.right} y1={pad.top + step * (height - pad.top - pad.bottom)} y2={pad.top + step * (height - pad.top - pad.bottom)} className="pp-grid"/>)}
+        {[0, 0.5, 1].map(step => <g key={step}><line x1={pad.left} x2={width - pad.right} y1={pad.top + step * (height - pad.top - pad.bottom)} y2={pad.top + step * (height - pad.top - pad.bottom)} className="pp-grid"/><text x={pad.left - 6} y={pad.top + step * (height - pad.top - pad.bottom) + 4} textAnchor="end" className="pp-axis">{f1(hi - step * (hi - lo))}</text></g>)}
         <path d={`${path} L${x(points.length - 1).toFixed(1)},${height - pad.bottom} L${x(0).toFixed(1)},${height - pad.bottom} Z`} className="pp-area"/>
         <path d={path} className="pp-line" pathLength="1"/>
         <circle r="6" className="pp-comet"><animateMotion dur="1.3s" fill="freeze" path={path} calcMode="linear"/></circle>
         {points.map((point, index) => <g key={point.s} style={{ '--t': `${(points.length > 1 ? index / (points.length - 1) : 0) * 1.25}s` }}>
           <circle cx={x(index)} cy={y(point.value)} r={point.live || index === points.length - 1 ? 5 : 3.5} className={point.live ? 'pp-dot live' : 'pp-dot'}><title>{`${pretty(point.s)}: ${f1(point.value)} ${label}`}</title></circle>
-          {showValues && <text x={x(index)} y={y(point.value) - 10} textAnchor="middle" className="pp-val">{f1(point.value)}</text>}
+          {labelled(index) && <text x={x(index)} y={index === dip && index !== peak && points.length > 12 ? y(point.value) + 20 : y(point.value) - 10} textAnchor={index === 0 ? 'start' : index === points.length - 1 ? 'end' : 'middle'} className="pp-val">{f1(point.value)}</text>}
           {index % every === 0 && <text x={x(index)} y={height - 8} textAnchor="middle" className="pp-axis">{point.s.slice(2)}</text>}
         </g>)}
       </svg>}
