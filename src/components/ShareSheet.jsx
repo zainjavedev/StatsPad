@@ -67,7 +67,10 @@ export default function ShareSheet({ready, failed, unavailable = 'This is not av
       const card = poster.current, room = frame.current;
       if (!card || !room) return;
       setPosterHeight(card.offsetHeight);
-      setScale(Math.min(1, (room.clientHeight - 8) / card.offsetHeight, (room.clientWidth - 4) / card.offsetWidth));
+      /* On a big screen the preview may grow past the poster's own size, as far as the window's height allows next to the buttons. */
+      const sheet = room.parentElement, chrome = sheet.offsetHeight - room.clientHeight, wide = matchMedia('(min-width: 900px)').matches;
+      const tall = wide ? (innerHeight - 48 - chrome) : room.clientHeight - 8;
+      setScale(Math.min(wide ? 1.6 : 1, tall / card.offsetHeight, (room.clientWidth - 4) / card.offsetWidth));
     };
     measure();
     const watch = new ResizeObserver(measure);

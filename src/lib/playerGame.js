@@ -1,4 +1,7 @@
 import { gameScore } from './performances';
+import { shotsOf } from './boxscore';
+
+export { shotsOf };
 
 /* One player's night rebuilt from ESPN's play-by-play: every quarter's stats, who he assisted, and a rating. */
 
@@ -110,11 +113,6 @@ export function tagsOf(row, minutes, game) {
 }
 
 /* Every field-goal attempt by the player, with where it was taken (feet from the basket: x across, y up the floor). */
-export function shotsOf(plays, id) {
-  return plays.filter(play => play.who[0] === id && play.q && !/Free Throw/i.test(play.type) && /\b(makes|misses|blocks)\b/i.test(play.text) && Number.isFinite(play.x) && play.x >= 0 && play.y > -100)
-    .map(play => ({x: play.x, y: play.y, made: /\bmakes\b/i.test(play.text), three: play.pa === 3, q: play.q, text: play.text.replace(/\s*\(.*?\)\s*$/, '')}));
-}
-
 /* Baskets by teammates that this player set up, with where they were taken. */
 export function assistShotsOf(plays, id) {
   return plays.filter(play => play.who[1] === id && play.scoring && play.q && !/Free Throw/i.test(play.type) && Number.isFinite(play.x) && play.x >= 0 && play.y > -100)

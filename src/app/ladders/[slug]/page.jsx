@@ -25,7 +25,7 @@ export default function Ladder({params}) {
   const ladder = pages[`/ladders/${params.slug}`]?.ladder;
   if (!ladder) notFound();
   const rows = ladder.rows;
-  return <BlogShell active="/ladders">
+  return <BlogShell active="/leaders">
     <main className="lu-main">
       <h1>NBA {ladder.name} ladder, 2026–27</h1>
       <p className="lu-lede">{ladder.method}</p>

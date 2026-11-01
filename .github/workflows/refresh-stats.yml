@@ -50,6 +50,10 @@ jobs:
         if: env.DATABASE_URL != ''
         continue-on-error: true
         run: node scripts/sync-espn-db.mjs
+      - name: Build Guess the Player rounds
+        if: env.DATABASE_URL != ''
+        continue-on-error: true
+        run: node scripts/build-play-rounds.mjs
       - name: Commit changes
         run: |
           git add public/data

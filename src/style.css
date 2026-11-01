@@ -5041,3 +5041,6 @@ section.pg .pg-big b{font-size:clamp(24px,15cqi,46px)!important}
 .vp-side.right .vp-bar{background:var(--rb)}
 .vp-team{display:block;width:30px;height:30px;margin:12px auto 0;object-fit:contain}
 .vp-record{display:block;margin-top:10px;color:#a9abb2;font-size:15px;font-weight:700}
+
+/* Share sheet on a desktop: wide enough for the preview to show at a readable size instead of a small card in the middle. */
+@media(min-width:900px){.ss-sheet{width:min(1040px,calc(100vw - 48px))}}

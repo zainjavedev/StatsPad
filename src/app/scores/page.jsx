@@ -11,7 +11,7 @@ export const metadata = seoMetadata('/scores');
 export default function Scores() {
   const scores = pages['/scores']?.scores;
   if (!scores) notFound();
-  return <BlogShell active="/schedule">
+  return <BlogShell active="/scores">
     <main className="lu-main">
       <h1>NBA scores and results</h1>
       <p className="lu-lede">Final scores from the latest game nights. Open a game for the full box score and every player&rsquo;s stats.</p>
