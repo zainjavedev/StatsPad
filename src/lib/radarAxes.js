@@ -7,7 +7,7 @@ import { TEAMS, teamCodeOf } from './teams';
    series colour for the second player so the shapes never merge. */
 const rgb = hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
 /* Clubs whose official primary is too dark to read as a data colour use their gold instead. */
-const RADAR_COLOR = {IND: '#fdbb30'};
+const RADAR_COLOR = {IND: '#fdbb30', CHA: '#00788c', DEN: '#fec524', MIN: '#78be20', NOP: '#c8102e', PHX: '#e56020', WAS: '#e31837'};
 export const teamHex = player => { const code = teamCodeOf(player?.team); return RADAR_COLOR[code] || TEAMS[code]?.color || '#8a8a8a'; };
 const hue = hex => {
   const [r, g, b] = rgb(hex).map(v => v / 255), max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
@@ -25,11 +25,18 @@ const apart = (x, y) => {
 
 /* Seven skills, each scaled from the league's lowest to highest rotation player, as on the compare page. */
 export const ts = stats => stats.points / (2 * (stats.fieldGoalsAttempted + .44 * stats.freeThrowsAttempted)) * 100 || 0;
+/* The shooting spokes take their ends only from players who shoot enough. One three in one try is 100%, which stretched the
+   3P% spoke to 0-100 and left real shooters in the middle. Anyone below the bar is still drawn, clamped to the edge. */
+export const RANGE_GATE = {
+  trueShootingPercentage: stats => stats.fieldGoalsAttempted >= 5,
+  fieldGoalPercentage: stats => stats.fieldGoalsAttempted >= 5,
+  threePointPercentage: stats => stats.threePointersAttempted >= 2,
+};
 export const AXES = [
   ['Scoring', [[p => p.stats.points, 'PPG']]],
-  ['Efficiency', [[p => ts(p.stats), 'TS%']]],
-  ['FG%', [[p => p.stats.fieldGoalPercentage, 'FG%']]],
-  ['3P%', [[p => p.stats.threePointPercentage, '3P%']]],
+  ['Efficiency', [[p => ts(p.stats), 'TS%', 'trueShootingPercentage']]],
+  ['FG%', [[p => p.stats.fieldGoalPercentage, 'FG%', 'fieldGoalPercentage']]],
+  ['3P%', [[p => p.stats.threePointPercentage, '3P%', 'threePointPercentage']]],
   ['Playmaking', [[p => p.stats.assists, 'APG']]],
   ['Rebounding', [[p => p.stats.totalRebounds, 'RPG']]],
   ['Defense', [[p => p.stats.steals, 'SPG'], [p => p.stats.blocks, 'BPG']]],
@@ -57,8 +64,9 @@ export const radarCurve = share => {
 
 /* One entry per spoke: the pct drives the shape, the text shows on hover. */
 export const radarAxes = (a, b, pool) => AXES.map(([label, parts]) => ({label, sides: [a, b].map(player => {
-  const shares = parts.map(([get]) => {
-    const [low, high] = radarRange(pool.map(get));
+  const shares = parts.map(([get,, key]) => {
+    const gated = RANGE_GATE[key] ? pool.filter(entry => RANGE_GATE[key](entry.stats)) : pool;
+    const [low, high] = radarRange((gated.length ? gated : pool).map(get));
     return high > low ? Math.max(0, Math.min(1, (get(player) - low) / (high - low))) : .5;
   });
   const share = shares.reduce((sum, value) => sum + value, 0) / shares.length;

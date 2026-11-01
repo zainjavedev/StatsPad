@@ -5,7 +5,7 @@ import { TEAMS, teamCodeOf } from '../src/lib/teams.js';
 import { SEASONS, pretty } from '../src/lib/season.js';
 import { makeCopy } from './seo-copy.mjs';
 import { bestSeason, careerOf, liveRow, seasonsOf, tsOf } from '../src/lib/career.js';
-import { LEADERS, statUrl } from '../src/lib/statLeaders.js';
+import { LEADERS, leaderValue, statUrl } from '../src/lib/statLeaders.js';
 import { TEAM_LEADERS, teamStatUrl, rankTeams, showValue } from '../src/lib/teamLeaders.js';
 import { published } from '../src/content/blog/posts.js';
 import { SITE, compareUrl, gameUrl, playerUrl, slugify, teamUrl } from '../src/lib/routes.js';
@@ -217,13 +217,13 @@ for (const [slug, name, file, keep] of LEADER_SETS) {
 }
 /* One page per stat ranking: the top 25 players, with the same qualifying minimums the app uses. */
 for (const entry of LEADERS) {
-  const ranked = players.filter(p => !entry.min || p.stats[entry.min[0]] >= entry.min[1]).sort((x, y) => y.stats[entry.key] - x.stats[entry.key]).slice(0, 25);
+  const ranked = players.filter(p => !entry.min || p.stats[entry.min[0]] >= entry.min[1]).sort((x, y) => leaderValue(entry, y.stats) - leaderValue(entry, x.stats)).slice(0, 25);
   const lower = entry.label.toLowerCase();
   writePage({route: statUrl(entry.slug), title: fitTitle(`NBA ${lower} leaders ${pretty(seasonKey)} | StatsPads`, `NBA ${lower} leaders ${pretty(seasonKey)}`),
     description: fitDescription(`Who leads the NBA in ${lower} (${entry.unit}) in ${yearLabel}: the top 25 players ranked, from ${ranked[0]?.playerName ?? 'the league leader'} down, with team and games played.`, `Who leads the NBA in ${lower} (${entry.unit}) in ${yearLabel}: the top 25 players ranked.`),
     jsonLd: [crumbs(['Home', '/'], ['Leaders', '/stats/points'], [`${entry.label} leaders`, statUrl(entry.slug)]), webPage(statUrl(entry.slug), `NBA ${lower} leaders ${yearLabel}`, `Top 25 NBA players in ${lower} (${entry.unit}) for ${yearLabel}.`),
       {'@context': 'https://schema.org', '@type': 'ItemList', name: `NBA ${lower} leaders, ${yearLabel}`, itemListOrder: 'https://schema.org/ItemListOrderDescending', numberOfItems: ranked.length, itemListElement: ranked.map((p, index) => ({'@type': 'ListItem', position: index + 1, name: p.playerName, url: SITE + playerUrl(p.playerName)}))}],
-    body: `<article class="seo"><h1>NBA ${esc(lower)} leaders, ${yearLabel}</h1><p>The top 25 NBA players in ${esc(lower)} (${entry.unit}) for ${yearLabel}${entry.min ? `, among players with at least ${entry.min[1]} ${entry.min[0].replace(/([A-Z])/g, ' $1').toLowerCase()} per game` : ''}.</p>${table(['Rank', 'Player', 'Team', 'GP', entry.unit], ranked.map((p, index) => [index + 1, link(playerUrl(p.playerName), p.playerName), p.code ? esc(TEAMS[p.code].name) : '', p.gamesPlayed, fixed(p.stats[entry.key])]), `NBA ${lower} leaders, ${yearLabel}`)}<p>${link('/leaders', 'All stat leaders')} · ${LEADERS.filter(other => other.slug !== entry.slug).map(other => link(statUrl(other.slug), `${other.label} leaders`)).join(' · ')}</p></article>`});
+    body: `<article class="seo"><h1>NBA ${esc(lower)} leaders, ${yearLabel}</h1><p>The top 25 NBA players in ${esc(lower)} (${entry.unit}) for ${yearLabel}${entry.min ? `, among players with at least ${entry.min[1]} ${entry.min[0].replace(/([A-Z])/g, ' $1').toLowerCase()} per game` : ''}.</p>${table(['Rank', 'Player', 'Team', 'GP', entry.unit], ranked.map((p, index) => [index + 1, link(playerUrl(p.playerName), p.playerName), p.code ? esc(TEAMS[p.code].name) : '', p.gamesPlayed, fixed(leaderValue(entry, p.stats))]), `NBA ${lower} leaders, ${yearLabel}`)}<p>${link('/leaders', 'All stat leaders')} · ${LEADERS.filter(other => other.slug !== entry.slug).map(other => link(statUrl(other.slug), `${other.label} leaders`)).join(' · ')}</p></article>`});
 }
 /* Team rankings: a hub with each category's best team, and one page per stat with all 30 teams. */
 const playedTeams = teamData.filter(team => team.gamesPlayed > 0 && TEAMS[team.team]);
@@ -283,7 +283,7 @@ for (const [slug, key, name] of [['mvp', 'mvp', 'MVP'], ['roty', 'rookie', 'Rook
     const line = g => `${g.away} ${g.awayScore}, ${g.home} ${g.homeScore}${g.awayTop && g.homeTop ? ` (top scorers: ${g.awayTop.name} ${g.awayTop.pts}, ${g.homeTop.name} ${g.homeTop.pts})` : ''}`;
     writePage({route: '/scores', jsonLd: [crumbs(['Home', '/'], ['Scores', '/scores']), webPage('/scores', 'NBA scores and results', `NBA final scores from ${latest.label}.`)],
       title: 'NBA scores: last night\u2019s final scores | StatsPads',
-      description: fitDescription(`NBA scores and final results from ${latest.label}: ${top.join('; ')}. Box scores and player stats for every game.`, `NBA scores and final results from ${latest.label}, with a box score and player stats for every game.`),
+      description: fitDescription(`NBA scores and final results from ${latest.label}: ${top.join('; ')}. Box scores and player stats for every game.`, `NBA scores and final results from ${latest.label}, with a box score and player stats for every game. Updated after each game night.`),
       body: `<article class="seo"><h1>NBA scores and results</h1><p>Final scores from the latest game nights. Open a game for the full box score and every player\u2019s stats.</p>${days.map(d => `<h2>NBA scores, ${esc(d.label)}</h2><ul>${d.games.map(g => `<li>${link(g.url, line(g))}</li>`).join('')}</ul>`).join('')}<p>${link('/schedule', 'Full schedule')} \u00b7 ${link('/standings', 'Standings')} \u00b7 ${link('/scores', 'Scores')} \u00b7 ${link('/lineups', 'Lineups')}</p></article>`});
     pages['/scores'].scores = {days};
   }
@@ -433,7 +433,17 @@ const started = Date.now();
 
 /* ---------- sitemap and robots ---------- */
 const today = new Date().toISOString().slice(0, 10);
-const urls = ['/', '/compare', '/stats/points', '/lineups', '/schedule', '/standings', '/blog', ...published().map(post => `/blog/${post.slug}`), '/about', '/contact', '/terms', '/privacy', ...written.filter(route => !['/compare', '/lineups', '/stats/points'].includes(route) && !route.startsWith('/leaders'))];
+/* Every pair keeps its page, but the sitemap lists the ones worth a crawl: the featured debates, the pairs Search Console already showed, the top of the star list against itself, the rookie class against itself and each team against its division rivals. Listing all 1,600 near-twins left most of them sitting in "discovered, not indexed". The set depends only on the debate lists and the divisions, never on this week's stats, so a page does not slide in and out of the sitemap. */
+const DIVISIONS = ['BOS BKN NYK PHI TOR', 'CHI CLE DET IND MIL', 'ATL CHA MIA ORL WAS', 'DEN MIN OKC POR UTA', 'GSW LAC LAL PHX SAC', 'DAL HOU MEM NOP SAS'].map(line => line.split(' '));
+const sitemapCompare = new Set();
+const listPair = (a, b) => sitemapCompare.add(compareUrl([a.playerName ?? a.name, b.playerName ?? b.name]));
+featuredPairs.forEach(([a, b]) => listPair(a, b));
+for (const key of read('scripts/seo-keep-pairs.json')) { const [x, y] = key.split('-vs-').map(slug => players.find(p => p.slug === slug)); if (x && y) listPair(x, y); }
+const starList = named(debates.stars).slice(0, 20), rookieList = named(debates.rookies);
+for (const group of [starList, rookieList]) for (let i = 0; i < group.length; i += 1) for (let j = i + 1; j < group.length; j += 1) listPair(group[i], group[j]);
+for (const [a, b] of teamPairs) if (DIVISIONS.some(division => division.includes(a.code) && division.includes(b.code))) listPair(a, b);
+
+const urls = ['/', '/compare', '/stats/points', '/lineups', '/schedule', '/standings', '/blog', ...published().map(post => `/blog/${post.slug}`), '/about', '/contact', '/terms', '/privacy', ...written.filter(route => !['/compare', '/lineups', '/stats/points'].includes(route) && !route.startsWith('/leaders') && (!route.startsWith('/compare/') || sitemapCompare.has(route)))];
 /* lastmod is the day a page's numbers last changed: a team's last finished game for team, player and compare pages, the game's own day for a game page. Hubs that change every day, and the static pages, get their own dates. */
 const lastGame = (() => {
   const rows = (() => { try { return read(`public/data/${SEASONS[0]}/schedule.json`); } catch { return []; } })();

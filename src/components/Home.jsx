@@ -14,7 +14,7 @@ import TeamPage from './TeamPage';
 import TeamsIndex from './TeamsIndex';
 import Radar from './Radar';
 import TeamLineups from './TeamLineups';
-import { radarCurve, radarRange as spokeRange } from '../lib/radarAxes';
+import { RANGE_GATE, radarCurve, radarRange as spokeRange } from '../lib/radarAxes';
 import { CompareSkeleton, GameSkeleton, HomeSkeleton, ProfileSkeleton, TeamLoading, TilesSkeleton, skeletonForPath } from './Skeletons';
 import { TEAMS, espnLogoUrl, nickname, teamCodeOf } from '../lib/teams';
 import { CURRENT, loadLatest, pretty, qualified, setCurrentIsPreseason, stageOf } from '../lib/season';
@@ -154,8 +154,9 @@ function VsSlot({index,entity,options,playerIds,noun,onPick,color}){
     </>:
       <button className="vs-add" onClick={()=>setOpen(!open)}><span>+</span> Add {noun}</button>
     }
-    {open&&<div className="picker-popover">
-      <label><Search size={16}/><input autoFocus value={query} onChange={event=>setQuery(event.target.value)} placeholder={`Search ${noun}s`}/></label>
+    {open&&<button type="button" className="picker-backdrop" aria-label="Close search" onClick={()=>setOpen(false)}/>}
+    {open&&<div className="picker-popover" onKeyDown={event=>event.key==='Escape'&&setOpen(false)}>
+      <div className="picker-search"><label><Search size={16}/><input autoFocus value={query} onChange={event=>setQuery(event.target.value)} placeholder={`Search ${noun}s`}/></label><button type="button" className="picker-close" aria-label="Close search" onClick={()=>setOpen(false)}><X size={18}/></button></div>
       <div>{results.map(option=><button key={option.playerId||option.teamId} onClick={()=>choose(option)}>
         <EntityArt entity={option} playerIds={playerIds} className="mini-avatar"/>
         <span><b>{option.playerName}</b><small>{option.team} · {option.stats.points} PPG</small></span>
@@ -204,7 +205,7 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
   const colors=[0,1].map(index=>sideColor(enriched[index]));
   const sections=entityType==='team'?TEAM_SECTIONS:VS_SECTIONS;
   /* Each axis runs from the league's lowest rotation player at the centre to its highest at the edge, so the gap between two stars shows (a percentile would put the top two scorers on the same dot). */
-  const radarRange=part=>{const values=enrichedPopulation.filter(entity=>volumeOk(entity,part)).map(entity=>valueOf(entity,part)).filter(Number.isFinite);return spokeRange(values)};
+  const radarRange=part=>{const ok=enrichedPopulation.filter(entity=>volumeOk(entity,part)),gated=RANGE_GATE[part]?ok.filter(entity=>RANGE_GATE[part](entity.stats)):ok,values=(gated.length?gated:ok).map(entity=>valueOf(entity,part)).filter(Number.isFinite);return spokeRange(values)};
   const radar=ready?RADAR_AXES.map(({label,parts})=>({label,sides:[0,1].map(side=>{
     const entity=enriched[side],thin=parts.some(([key])=>!volumeOk(entity,key));
     const shares=parts.map(([key])=>{const[low,high]=radarRange(key);return high>low?Math.max(0,Math.min(1,(statValue(entity,key)-low)/(high-low))):.5});

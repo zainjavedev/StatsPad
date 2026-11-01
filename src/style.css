@@ -1462,7 +1462,7 @@ header .brand small{margin-top:3px}
 
 /* schedule and standings */
 .sched{display:flex;flex-direction:column;gap:14px;width:min(1100px,100%);margin:0 auto;padding:36px 28px 48px;color:var(--text-1)}
-.sched-head h1{margin:0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:clamp(28px,4vw,38px);font-weight:800;letter-spacing:-.03em}
+.sched-head h1,.sched-head .sched-h1{margin:0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:clamp(28px,4vw,38px);font-weight:800;letter-spacing:-.03em}
 .sched-head p{margin:6px 0 0;color:var(--text-2)}
 .sched-filters{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px}
 .sched-filters label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:700;color:var(--text-3)}
@@ -1796,10 +1796,10 @@ header .brand small{margin-top:3px}
   .toast{left:12px;right:12px;bottom:84px}
 }
 
-.tl-abbr,.hd-abbr,.stand .team .nick{display:none}
+.tl-abbr,.hd-abbr,.stand .team .nick,.statpage-who .nick{display:none}
 @media (max-width:760px){
-  .tl-name,.hd-name,.stand .team .full{display:none}
-  .tl-abbr,.hd-abbr,.stand .team .nick{display:inline}
+  .tl-name,.hd-name,.stand .team .full,.statpage-who .full:has(+.nick){display:none}
+  .tl-abbr,.hd-abbr,.stand .team .nick,.statpage-who .nick{display:inline}
   /* schedule rows: time on its own line, then the matchup on one line */
   .tl-row{grid-template-columns:1fr;gap:6px;padding:12px 14px}
   .tl-when{grid-row:auto;flex-direction:row;align-items:baseline;justify-content:flex-start;gap:10px}
@@ -4385,7 +4385,7 @@ section.pg .pg-hero .pg-rating{align-self:flex-start!important;margin-top:8px}
 }
 .pp-recent .rp-list>li::after{content:none}
 
-.profile-copy .profile-season,.pf-copy .profile-season{margin:0 0 12px;max-width:100%}
+.profile-copy .profile-season,.pf-copy .profile-season{width:max-content;margin:0 0 12px;max-width:100%}
 .pf-copy .profile-season{position:relative;z-index:2}
 @media(max-width:640px){.profile-copy .profile-season,.pf-copy .profile-season{width:max-content;max-width:100%}.pf-copy .profile-season button{padding:8px 11px;min-height:40px}.pf-copy .profile-season small{display:none}}
 
@@ -4832,12 +4832,6 @@ section.pg .pg-hero .pg-share{margin:0!important}
 .inj-list.rp-skeleton .rp-face>i{display:block;background:var(--ink-2)}
 .inj-tabs i{margin-left:5px;font-style:normal;font-weight:600;font-variant-numeric:tabular-nums;opacity:.6}
 .inj-peek .inj-news{display:none}
-.inj-team{margin-top:18px}
-.inj-team h2{display:flex;align-items:center;gap:10px;margin:0;padding:0 2px 8px;border-bottom:1px solid var(--line);font-size:16px;font-weight:800}
-.inj-team h2 img{width:26px;height:26px;object-fit:contain}
-.inj-team h2 small{margin-left:auto;color:var(--text-3);font-size:12.5px;font-weight:700}
-.inj-team .rp-list>li:last-child{border-bottom:0}
-@media(max-width:600px){.inj-team{margin-top:10px}.inj-team h2{font-size:15px;padding-bottom:6px}.inj-team h2 img{width:22px;height:22px}}
 .lead-switch{margin:0 0 14px}
 .lead-switch button{font-size:15px}
 .statpage-art.team-logo{border-radius:0;object-fit:contain;background:none;padding:6px}
@@ -4922,6 +4916,69 @@ section.pg .pg-big b{font-size:clamp(24px,15cqi,46px)!important}
 .gp-head.is-pre .gp-radar .vs-legend,.gp-head.is-pre .gp-radar [class*=legend]{justify-content:center;margin-left:auto;margin-right:auto}
 .gp-head.is-pre .vs-radar-head,.gp-head.is-pre .vs-radar-key{justify-content:center!important;width:100%;text-align:center}
 .gp-head.is-pre .gp-tip{display:block;margin:2px 0 0}
+
+/* The injuries page uses the lineups page's team list: down the left on desktop, a strip along the top on phones. */
+.inj-shell .inj{width:auto;margin:0;padding:28px 0 48px;min-width:0}
+.inj-rail-all{display:grid;place-items:center;flex:none;width:24px;height:24px;border-radius:50%;background:var(--text-1);color:var(--ink-1);font-size:10px;font-weight:800}
+.inj-rail-count{margin-left:auto;color:var(--text-4);font-size:12px;font-style:normal;font-weight:700;font-variant-numeric:tabular-nums}
+@media(max-width:900px){.inj-rail-count{display:none}.inj-shell .inj{padding:14px 0 40px}}
+@media(max-width:600px){.inj-shell{padding:0 12px}}
+/* Player page on phones: one step smaller all round, so the hero, tiles and recent games read as a page rather than a poster. */
+@media(max-width:520px){
+  .pf-hero{min-height:0!important;padding:14px 0 0 14px!important}
+  .pf-first{font-size:12px!important}
+  .pf-last{font-size:clamp(22px,calc(240px / var(--n,8)),40px)!important}
+  .pf-meta{margin:6px 0 10px!important;font-size:11.5px!important}
+  .pf-copy .profile-season{margin-bottom:10px!important}
+  .pf-copy .profile-season button{min-height:32px!important;padding:6px 11px!important;font-size:12px!important}
+  .pf-compare,.pf-actions .ghost-button{height:32px!important;padding:0 12px!important;font-size:12.5px!important;gap:6px!important}
+  .pf-actions{margin-bottom:14px}
+  .pf-photo{width:36vw!important;max-height:160px!important}
+  .pf-stats-wrap{gap:5px!important;margin-top:10px!important}
+  .pf-stat{min-width:0!important;padding:7px 2px!important}
+  .pf-stat strong{font-size:17px!important}
+  .pf-stat span{margin-top:0!important;font-size:9.5px!important}
+  .pf-stat small{font-size:10.5px!important}
+  .pp-recent h2{font-size:16px!important}
+  .pl-perf .rp-card{padding:10px 12px!important}
+  .pl-perf .rp-trio b{font-size:24px!important}
+  .pl-perf .rp-trio{gap:0 10px!important;font-size:12px!important}
+  .pl-perf .rp-top{font-size:13.5px!important}.pl-perf .rp-top small{font-size:11.5px!important}
+  .pl-perf .rp-grade{font-size:17px!important}
+}
+
+/* Compare picker on phones: a full-width panel instead of a box squeezed into one half of the card, so names stay on one line. */
+@media(max-width:520px){
+  /* the slot's entry animation leaves a transform behind, which would pin a fixed panel inside the slot */
+  .vs-person:has(.picker-popover){transform:none!important;animation:none!important}
+  .vs-person .picker-popover{position:fixed!important;top:76px!important;left:12px!important;right:12px!important;bottom:auto!important;width:auto!important;max-height:min(60vh,440px)!important;overflow-x:hidden!important;overflow-y:auto!important;z-index:60!important;padding:8px!important}
+  .vs-person .picker-popover label{height:42px;margin-bottom:4px}
+  .vs-person .picker-popover input{width:100%;min-width:0;font-size:16px}
+  .vs-person .picker-popover>div>button{padding:7px 8px;gap:10px}
+  .vs-person .picker-popover>div>button>span{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
+  .vs-person .picker-popover b,.vs-person .picker-popover small{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14.5px}
+  .vs-person .picker-popover small{font-size:12px}
+  .vs-person .picker-popover .mini-avatar{flex:none;width:36px;height:36px}
+}
+
+/* Closing the compare picker: tap outside it, the X, or Escape. The backdrop is invisible on desktop and dims the page on phones. */
+.picker-backdrop{position:fixed;inset:0;z-index:25;padding:0;border:0;background:transparent;cursor:default}
+.picker-search{display:flex;align-items:center;gap:6px}
+.picker-search label{flex:1;min-width:0}
+.picker-popover .picker-search>.picker-close{display:grid;place-items:center;flex:none;width:38px;height:38px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--text-2);cursor:pointer}
+.picker-popover .picker-search>.picker-close:hover{background:var(--ink-2);color:var(--text-1)}
+@media(max-width:520px){.picker-backdrop{z-index:55;background:rgb(0 0 0 / .55)}.vs-person .picker-search{margin-bottom:4px}.vs-person .picker-search label{margin-bottom:0}}
+
+/* Upcoming game on phones: the two logos side by side, the radar full width under them. An older phone rule forced the
+   head into three columns with !important, which squeezed the radar into the middle column. */
+@media(max-width:760px){
+  .gp-head:has(.gp-mid){grid-template-columns:1fr 1fr!important;row-gap:2px!important;align-items:center}
+  .gp-head:has(.gp-mid)>div:first-child{justify-self:start}
+  .gp-head:has(.gp-mid)>div:last-child{justify-self:end}
+  .gp-head:has(.gp-mid)>.gp-mid{grid-column:1/-1!important;grid-row:2!important}
+  .gp-head:has(.gp-mid) .gp-radar{width:min(420px,100%)!important;margin:0!important}
+  .gp-head:has(.gp-mid) img{width:48px!important;height:48px!important}
+}
 
 /* Upcoming game on wider screens: one row, the two logos hugging the radar instead of sitting at the page edges above it. */
 @media(min-width:761px){

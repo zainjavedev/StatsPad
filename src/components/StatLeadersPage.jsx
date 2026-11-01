@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { ArrowLeft } from 'lucide-react';
-import { LEADERS } from '../lib/statLeaders';
+import { LEADERS, leaderValue } from '../lib/statLeaders';
 import { qualified } from '../lib/season';
 import { navigate } from '../lib/nav';
 import { TEAMS, espnLogoUrl, teamCodeOf } from '../lib/teams';
@@ -15,15 +15,15 @@ export default function StatLeadersPage({slug, players, playerIds, Art, onOpen})
   const ranked = useMemo(() => {
     const pool = qualified(players), base = pool.length ? pool : players;
     const eligible = entry.min ? base.filter(player => player.stats[entry.min[0]] >= entry.min[1]) : base;
-    return [...eligible].sort((a, b) => b.stats[entry.key] - a.stats[entry.key] || a.playerName.localeCompare(b.playerName)).slice(0, SHOWN);
+    return [...eligible].sort((a, b) => leaderValue(entry, b.stats) - leaderValue(entry, a.stats) || a.playerName.localeCompare(b.playerName)).slice(0, SHOWN);
   }, [players, entry]);
-  const value = player => `${player.stats[entry.key].toFixed(1)}${entry.pct ? '%' : ''}`;
+  const value = player => `${leaderValue(entry, player.stats).toFixed(1)}${entry.pct ? '%' : ''}`;
   const rank = ranked.map((_, index) => index + 1); // ties run in alphabetical order, each with its own number
   return <section className="statpage">
     <button className="statpage-back" onClick={() => navigate('/')}><ArrowLeft size={15}/> Home</button>
     <LeadersSwitch active="players"/>
     <h1>{entry.label} leaders</h1>
-    <p>{entry.unit} · top {ranked.length}</p>
+    <p>{entry.unit}{entry.note ? ` · ${entry.note}` : ''} · top {ranked.length}</p>
     <div className="statpage-tabs" role="group" aria-label="Stat">{LEADERS.map(item => <button key={item.slug} className={item.slug === entry.slug ? 'active' : ''} onClick={() => navigate(`/stats/${item.slug}`)}>{item.label}</button>)}</div>
     <ol className="statpage-list">{ranked.map((player, index) => {
       const code = teamCodeOf(player.team), color = TEAMS[code]?.color || '#8a8a8a';

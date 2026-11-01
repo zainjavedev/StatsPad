@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { ArrowLeft } from 'lucide-react';
 import { TEAM_LEADERS, rankTeams, showValue, teamStatUrl } from '../lib/teamLeaders';
-import { TEAMS, espnLogoUrl } from '../lib/teams';
+import { TEAMS, espnLogoUrl, nickname } from '../lib/teams';
 import { teamUrl } from '../lib/routes';
 import { navigate } from '../lib/nav';
 
@@ -20,6 +21,7 @@ export default function TeamLeadersPage({slug}) {
   const entry = TEAM_LEADERS.find(item => item.slug === slug) || TEAM_LEADERS[0];
   const ranked = useMemo(() => (teams ? rankTeams(entry, teams) : null), [teams, entry]);
   return <section className="statpage">
+    <button className="statpage-back" onClick={() => navigate('/')}><ArrowLeft size={15}/> Home</button>
     <LeadersSwitch active="teams"/>
     <h1>{entry.label} leaders</h1>
     <p>{entry.unit}{entry.note ? ` · ${entry.note.replace('&rsquo;', '’')}` : ''} · per game, all {ranked ? ranked.length : 30} teams</p>
@@ -31,7 +33,7 @@ export default function TeamLeadersPage({slug}) {
         <button onClick={() => navigate(teamUrl(code))}>
           <span className="statpage-rank">{index + 1}</span>
           <img className="statpage-art team-logo" src={espnLogoUrl(code)} alt=""/>
-          <span className="statpage-who"><b>{team.playerName}</b><small>{team.gamesPlayed} {team.gamesPlayed === 1 ? 'game' : 'games'}</small></span>
+          <span className="statpage-who"><b><span className="full">{team.playerName}</span>{TEAMS[code] && <span className="nick">{nickname(code)}</span>}</b><small>{team.gamesPlayed} {team.gamesPlayed === 1 ? 'game' : 'games'}</small></span>
           <strong>{showValue(entry, entry.value(team.stats))}<small>{entry.unit}</small></strong>
         </button>
       </li>;

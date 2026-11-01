@@ -3,11 +3,11 @@
 const ts = stats => stats.points / (2 * (stats.fieldGoalsAttempted + .44 * stats.freeThrowsAttempted)) * 100 || 0;
 
 export const TEAM_LEADERS = [
-  {slug: 'efficiency', label: 'Efficiency', unit: 'TS%', pct: true, value: ts, note: 'True shooting: points per shot attempt, counting threes and free throws'},
+  {slug: 'efficiency', label: 'Efficiency', unit: 'TS%', pct: true, value: ts, note: 'True shooting'},
   {slug: 'points', label: 'Scoring', unit: 'PPG', value: stats => stats.points},
   {slug: 'assists', label: 'Playmaking', unit: 'APG', value: stats => stats.assists},
   {slug: 'rebounds', label: 'Rebounding', unit: 'RPG', value: stats => stats.totalRebounds},
-  {slug: 'defense', label: 'Defense', unit: 'STL+BLK', value: stats => stats.steals + stats.blocks, note: 'Steals plus blocks per game, the radar&rsquo;s defense axis'},
+  {slug: 'defense', label: 'Stocks', unit: 'STK', value: stats => stats.steals + stats.blocks, note: 'Steals + blocks'},
   {slug: 'steals', label: 'Steals', unit: 'SPG', value: stats => stats.steals},
   {slug: 'blocks', label: 'Blocks', unit: 'BPG', value: stats => stats.blocks},
   {slug: 'field-goal-pct', label: 'Field-goal %', unit: 'FG%', pct: true, value: stats => stats.fieldGoalPercentage},

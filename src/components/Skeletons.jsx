@@ -19,7 +19,7 @@ export function InjuryRowsSkeleton({count = 9}) {
 
 export function InjuriesSkeleton() {
   return <section className="inj" aria-busy="true" aria-label="Loading the injury report">
-    <div className="sched-head"><h1>NBA injury report</h1></div>
+    <div className="sched-head"><div className="sched-h1">NBA injury report</div></div>
     <div className="inj-flat"><InjuryRowsSkeleton/></div>
   </section>;
 }

@@ -6,6 +6,7 @@ export const LEADERS = [
   {slug: 'assists', key: 'assists', label: 'Assists', unit: 'APG'},
   {slug: 'steals', key: 'steals', label: 'Steals', unit: 'SPG'},
   {slug: 'blocks', key: 'blocks', label: 'Blocks', unit: 'BPG'},
+  {slug: 'stocks', label: 'Stocks', unit: 'STK', value: stats => stats.steals + stats.blocks, note: 'Steals + blocks', home: false},
   {slug: 'threes', key: 'threePointersMade', label: 'Threes made', unit: '3PM'},
   {slug: 'three-point-pct', key: 'threePointPercentage', label: 'Three-point %', unit: '3P%', pct: true, min: ['threePointersAttempted', 3]},
   {slug: 'field-goal-pct', key: 'fieldGoalPercentage', label: 'Field-goal %', unit: 'FG%', pct: true, min: ['fieldGoalsAttempted', 8]},
@@ -13,3 +14,5 @@ export const LEADERS = [
   {slug: 'turnovers', key: 'turnovers', label: 'Turnovers', unit: 'TOV', home: false},
 ];
 export const statUrl = slug => `/stats/${slug}`;
+/* A stat is either one field of the stats row (key) or worked out from several (value). */
+export const leaderValue = (entry, stats) => (entry.value ? entry.value(stats) : stats[entry.key]);
