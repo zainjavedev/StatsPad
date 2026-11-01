@@ -8,16 +8,19 @@ import GamesNav from './GamesNav';
 /* Stats Quiz (/play/quiz): ten questions about this season, answer explained after each one, best score kept on this device. */
 
 const BEST = 'statspad-quiz-best';
-const face = id => `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${id}.png&w=96&h=70`;
+const face = id => `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${id}.png&w=260&h=190`;
 const readBest = () => { try { return Number(localStorage.getItem(BEST)) || 0; } catch { return 0; } };
 
+/* A player answer is a tall card (headshot on his team's colour, name under it); a team answer shows its logo; a number is just the number. */
 function Option({option, index, state, onPick}) {
-  return <button type="button" className={`qz-option ${state}${option.number ? ' is-number' : ''}`} onClick={() => onPick(index)} disabled={state !== 'idle'} style={{'--i': index}}>
-    {option.face && <span className="qz-face"><img src={face(option.face)} alt="" loading="lazy"/></span>}
-    {option.logo && <span className="qz-face is-logo"><img src={espnLogoUrl(option.logo)} alt="" loading="lazy"/></span>}
+  const mark = state === 'right' ? <Check size={18} className="qz-mark"/> : state === 'wrong' ? <X size={18} className="qz-mark"/> : null;
+  const kind = option.face ? ' is-player' : option.logo ? ' is-team' : option.number ? ' is-number' : '';
+  return <button type="button" className={`qz-option ${state}${kind}`} onClick={() => onPick(index)} disabled={state !== 'idle'} style={{'--i': index, '--team': option.color || '#3b3b45'}}>
+    <kbd>{index + 1}</kbd>
+    {option.face && <span className="qz-photo"><img src={face(option.face)} alt="" loading="lazy"/></span>}
+    {option.logo && <span className="qz-logo"><img src={espnLogoUrl(option.logo)} alt="" loading="lazy"/></span>}
     <span className="qz-label"><b>{option.label}</b>{option.sub && <small>{option.sub}</small>}</span>
-    {state === 'right' && <Check size={18} className="qz-mark"/>}
-    {state === 'wrong' && <X size={18} className="qz-mark"/>}
+    {mark}
   </button>;
 }
 
@@ -75,8 +78,8 @@ export default function StatsQuiz() {
       <section className="qz-card" key={step}>
         <span className="qz-kicker">{question.kind}</span>
         <h2>{question.prompt}</h2>
-        {question.detail && <p className="qz-detail">{question.face && <img src={face(question.face)} alt=""/>}{question.detail}</p>}
-        <div className={`qz-options${question.options.length === 2 ? ' is-pair' : ''}${question.options[0]?.number ? ' is-numbers' : ''}`}>
+        {question.detail && <p className="qz-detail">{question.detail}</p>}
+        <div className={`qz-options${question.options.length === 2 ? ' is-pair' : ''}${question.options[0]?.face ? ' is-players' : ''}`}>
           {question.options.map((option, index) => <Option key={option.key} option={option} index={index} onPick={choose}
             state={picked === null ? 'idle' : index === question.answer ? 'right' : index === picked ? 'wrong' : 'out'}/>)}
         </div>

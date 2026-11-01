@@ -59,6 +59,12 @@ async function postKit() {
   const nights = recent.filter(line => line.tags.length).sort((a, b) => b.score - a.score).slice(0, 12);
   for (const line of [...recent].sort((a, b) => b.score - a.score)) { if (nights.length >= 8) break; if (!nights.includes(line)) nights.push({...line, tags: ['Top game score']}); }
 
+  /* Duos: two teammates who both went off in the same game (both 25+, or 60+ between them with both at 20+). */
+  const byTeamGame = new Map();
+  for (const line of recent) (byTeamGame.get(`${line.game_id}:${line.team}`) ?? byTeamGame.set(`${line.game_id}:${line.team}`, []).get(`${line.game_id}:${line.team}`)).push(line);
+  const duos = [...byTeamGame.values()].map(group => [...group].sort((a, b) => b.pts - a.pts).slice(0, 2)).filter(([a, b]) => b && (b.pts >= 25 || (a.pts + b.pts >= 60 && b.pts >= 20)))
+    .map(([a, b]) => ({...a, partner: b, total: a.pts + b.pts})).sort((a, b) => b.total - a.total).slice(0, 8);
+
   /* Streaks over the season: 30-point games in a row, double-doubles in a row, and a last three games well above the season average. */
   const byPlayer = new Map();
   for (const line of lines) (byPlayer.get(line.id) ?? byPlayer.set(line.id, []).get(line.id)).push(line);
@@ -78,7 +84,7 @@ async function postKit() {
 
   const stories = games.map(game => ({...game, margin: Math.abs(game.away_score - game.home_score)}))
     .filter(game => game.margin >= 25 || game.margin <= 3).sort((a, b) => (b.margin >= 25) - (a.margin >= 25) || b.margin - a.margin).slice(0, 8);
-  return {nights, streaks: streaks.slice(0, 10), stories};
+  return {nights, duos, streaks: streaks.slice(0, 10), stories};
 }
 
 const tally = (rows, key) => {

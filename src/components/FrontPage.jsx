@@ -78,10 +78,9 @@ export default function FrontPage({players, playerIds, Art, onCompare, onLeaders
 
     <Ladders/>
 
-    <div className="peek-pair">
-      <InjuriesPeek/>
-      <StandingsPeek games={games}/>
-    </div>
+    <StandingsPeek games={games}/>
+
+    <InjuriesPeek/>
 
 
 

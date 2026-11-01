@@ -1,6 +1,7 @@
 'use client';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowRight, Check, LogIn, RotateCcw, SkipForward, X } from 'lucide-react';
+import { ArrowRight, Check, LogIn, RotateCcw, Share2, SkipForward, X } from 'lucide-react';
+import ShareSheet from './ShareSheet';
 import { Court } from './ShotChart';
 import { trio } from '../lib/trio';
 import { fps, rating } from '../lib/playerGame';
@@ -37,6 +38,34 @@ function Shots({shots}) {
     <p className="pl-legend"><b>{hit}/{shots.length}</b> from the field<span><i className="m"/>made</span><span><i className="x"/>missed</span></p>
   </div>;
 }
+
+/* The round as a 16:9 challenge picture for X: the real shot chart, the stat line, the opponent and the three names, no answer. */
+const ChallengePoster = React.forwardRef(function ChallengePoster({round}, ref) {
+  const line = round.line, hit = round.shots.filter(shot => shot.made).length;
+  return <div className="gx" ref={ref}>
+    <div className="gx-chart">
+      <svg viewBox="-2 -2 54 46" overflow="visible">
+        <rect width="50" height="42" rx="1.2" fill="#ffffff" fillOpacity=".04"/>
+        <Court/>
+        {round.shots.map((shot, index) => {
+          const cx = Math.min(49.2, Math.max(.8, shot.x)), cy = Math.min(41.2, Math.max(.8, hoopY - shot.y));
+          return shot.made
+            ? <circle key={index} cx={cx} cy={cy} r=".85" fill="#34d399" fillOpacity=".25" stroke="#34d399" strokeWidth=".35"/>
+            : <path key={index} d={`M${cx - .6} ${cy - .6}l1.2 1.2M${cx + .6} ${cy - .6}l-1.2 1.2`} stroke="#f87171" strokeWidth=".35" strokeLinecap="round"/>;
+        })}
+      </svg>
+      <p><b>{hit}/{round.shots.length}</b> from the field</p>
+    </div>
+    <div className="gx-copy">
+      <span className="gx-kicker">Guess the player</span>
+      <b className="gx-q">Who had this night?</b>
+      <span className="gx-line">{[['PTS', line.PTS], ['REB', line.REB], ['AST', line.AST]].map(([label, value]) => <span key={label}><b>{value}</b>{label}</span>)}</span>
+      <span className="gx-meta">{line.FG} FG · {line['3PT']} 3PT · {line.MIN} min · {round.game.home ? 'vs' : '@'} {TEAMS[round.game.opp] ? nickname(round.game.opp) : ''}{round.game.date ? ` · ${day.format(new Date(round.game.date))}` : ''}</span>
+      <ol className="gx-choices">{round.choices.map((choice, index) => <li key={choice.name}><i>{'ABC'[index]}</i>{choice.name}</li>)}</ol>
+    </div>
+    <p className="gx-foot"><b>statspads.com/play</b><span>Answer in the replies</span></p>
+  </div>;
+});
 
 const num = value => Number(String(value ?? '').replace('+', '')) || 0;
 const initialed = name => name.replace(/^(\S)\S*\s+/, '$1. ');
@@ -111,6 +140,7 @@ export default function PlayGame() {
   const [results, setResults] = useState([]);
   const [finished, setFinished] = useState(false);
   const [skipped, setSkipped] = useState(false);
+  const [sharing, setSharing] = useState(false);
   const seen = useRef(null), upcoming = useRef(null), card = useRef(null), started = useRef(false), game = useRef(newGame());
 
   const fetchRound = useCallback(async () => {
@@ -232,7 +262,11 @@ export default function PlayGame() {
           ? <button type="button" className="pl-primary" onClick={next} disabled={status === 'loading'}>{results.length >= ROUND ? 'See results' : 'Next player'} <ArrowRight size={18}/></button>
           : <button type="button" className="pl-skip" onClick={skip} disabled={skipped || status === 'loading'}><SkipForward size={16}/> {skipped ? 'Skip used' : 'Skip this player (1 per round)'}</button>}
         <p>Tip: press 1, 2 or 3 to answer, S to skip and Enter for the next one.</p>
+        {!revealed && <button type="button" className="pl-share" onClick={() => setSharing(true)}><Share2 size={15}/> Share as a challenge</button>}
       </div>}
     </div>}
+    {sharing && round && <ShareSheet width={1600} ready onClose={() => setSharing(false)} filename="guess-the-player" title="Guess the player" text={`Who had ${round.line.PTS} points, ${round.line.REB} rebounds and ${round.line.AST} assists? ${round.choices.map(choice => choice.name).join(', ')}?`} url={`${location.origin}/play`}>
+      {ref => <ChallengePoster ref={ref} round={round}/>}
+    </ShareSheet>}
   </main>;
 }

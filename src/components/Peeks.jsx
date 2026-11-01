@@ -21,8 +21,8 @@ const link = code => `/lineups/${TEAMS[code].name.toLowerCase().replace(/[^a-z0-
 const clock = new Intl.DateTimeFormat(undefined, {weekday: 'short', hour: 'numeric', minute: '2-digit'});
 const pct = value => (Number(value) ? Number(value).toFixed(3).replace(/^0/, '') : '.000');
 
-/* One table with East, West and League tabs: record, point difference, streak and each team's next game. Seeds 1-6 go
-   straight to the playoffs, 7-10 to the play-in. */
+/* One table with East, West and League tabs, every team listed: record, point difference, streak and each team's next game.
+   Seeds 1-6 go straight to the playoffs, 7-10 to the play-in, and the rest are out. */
 export function StandingsPeek({games}) {
   const groups = useFeed(loadStandings), favorites = useFavorites();
   const [tab, setTab] = useState('eastern');
@@ -44,10 +44,11 @@ export function StandingsPeek({games}) {
     </div>
     {rows.length ? <div className="pk-table">
       <div className="pk-row pk-head"><span/><span>Team</span><span>W-L</span><span>PCT</span><span className="extra">GB</span><span className="extra">DIFF</span><span>STRK</span><span className="extra">NEXT</span></div>
-      {rows.slice(0, 10).map((row, index) => {
+      {rows.map((row, index) => {
         const upcoming = next(row.code), streak = String(row.stat.streak || '');
         return <React.Fragment key={row.code}>
           {tab !== 'league' && index === 6 && <div className="pk-cut" aria-hidden="true"><span>Play-in</span></div>}
+          {tab !== 'league' && index === 10 && <div className="pk-cut out" aria-hidden="true"><span>Out</span></div>}
           <a className={`pk-row${favorites.includes(row.code) ? ' mine' : ''}${tab !== 'league' && index < 6 ? ' in' : ''}`} href={link(row.code)}>
             <i>{index + 1}</i>
             <span className="pk-team"><img src={espnLogoUrl(row.code)} alt=""/><b>{nickname(row.code)}</b></span>

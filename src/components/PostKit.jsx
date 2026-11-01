@@ -37,6 +37,20 @@ function nightCard(line) {
   };
 }
 
+/* Two teammates' big nights in the same game. */
+const last = name => name.split(' ').filter(part => !/^(jr\.?|sr\.?|ii|iii|iv)$/i.test(part)).pop();
+function duoCard(line) {
+  const b = line.partner, home = line.team === line.home, own = home ? line.home_score : line.away_score, other = home ? line.away_score : line.home_score, won = own > other;
+  const path = gameUrl(line.away, line.home, line.game_id), short = player => `${player.pts} pts, ${player.reb} reb, ${player.ast} ast`;
+  return {
+    key: `d${line.game_id}${line.team}`, ids: [line.id, b.id], tags: ['Duo'], when: day.format(new Date(line.played_at)),
+    title: `${line.name} + ${b.name}`, line: `${line.pts} + ${b.pts} = ${line.total} pts`, sub: `${won ? 'W' : 'L'} ${own}–${other} ${home ? 'vs' : '@'} ${nickname(line.opponent)}`,
+    text: `${line.name} (${short(line)}) and ${b.name} (${short(b)}) combined for ${line.total} points in a ${own}–${other} ${won ? 'win' : 'loss'} ${home ? 'over' : 'at'} the ${nickname(line.opponent)}.\n\n${host}${path}`,
+    path, share: {kind: 'story', story: {ids: [line.id, b.id], name: `${line.name} + ${b.name}`, team: line.team, kicker: `${nickname(line.team)} duo`, big: String(line.total),
+      headline: `points between them, ${won ? 'a win' : 'a loss'} ${home ? 'vs' : 'at'} the ${nickname(line.opponent)}`, stats: [[line.pts, last(line.name)], [b.pts, last(b.name)], [`${own}–${other}`, won ? 'win' : 'loss']]}},
+  };
+}
+
 const LADDERS = [['mvp', 'mvp', 'MVP'], ['rookie', 'roty', 'Rookie of the Year']];
 function ladderCards(ladders) {
   if (!ladders) return [];
@@ -81,14 +95,14 @@ function storyCard(game) {
 function Row({card, onImage}) {
   const [copied, setCopied] = useState(false);
   const copy = () => navigator.clipboard?.writeText(card.text).then(() => { setCopied(true); setTimeout(() => setCopied(false), 1600); }).catch(() => {});
-  return <li className="pk-row">
-    <span className="pk-art">{card.id ? <img src={face(card.id)} alt="" loading="lazy"/> : <span className="pk-teams">{card.teams.map(code => TEAMS[code] && <img key={code} src={`https://a.espncdn.com/i/teamlogos/nba/500/${TEAMS[code].espn}.png`} alt=""/>)}</span>}</span>
-    <span className="pk-copy">
+  return <li className="kit-row">
+    <span className={`kit-art${card.ids ? ' is-duo' : ''}`}>{card.ids ? card.ids.map(id => <img key={id} src={face(id)} alt="" loading="lazy"/>) : card.id ? <img src={face(card.id)} alt="" loading="lazy"/> : <span className="kit-teams">{card.teams.map(code => TEAMS[code] && <img key={code} src={`https://a.espncdn.com/i/teamlogos/nba/500/${TEAMS[code].espn}.png`} alt=""/>)}</span>}</span>
+    <span className="kit-copy">
       <b>{card.title}</b>
-      <span className={`pk-line${card.up === false ? ' down' : ''}`}>{card.line}</span>
+      <span className={`kit-line${card.up === false ? ' down' : ''}`}>{card.line}</span>
       <small>{card.tags.join(' · ')} · {card.when}</small>
     </span>
-    <span className="pk-actions">
+    <span className="kit-actions">
       {card.share && <button type="button" onClick={() => onImage(card.share)} aria-label="Share image" title="Share image"><ImageIcon size={16}/></button>}
       <button type="button" onClick={copy} className={copied ? 'done' : ''} aria-label={copied ? 'Post copied' : 'Copy post'} title={copied ? 'Copied' : 'Copy post'}>{copied ? <Check size={16}/> : <Copy size={16}/>}</button>
       <a href={card.path} target="_blank" rel="noreferrer" aria-label="Open the page" title="Open the page"><ExternalLink size={16}/></a>
@@ -96,7 +110,7 @@ function Row({card, onImage}) {
   </li>;
 }
 
-const TABS = [['nights', 'Big nights'], ['ladders', 'Ladder moves'], ['streaks', 'Streaks'], ['games', 'Games']];
+const TABS = [['nights', 'Big nights'], ['duos', 'Duos'], ['ladders', 'Ladder moves'], ['streaks', 'Streaks'], ['games', 'Games']];
 
 export default function PostKit() {
   const [feed, setFeed] = useState(null), [ladders, setLadders] = useState(null), [tab, setTab] = useState('nights'), [share, setShare] = useState(null);
@@ -105,14 +119,14 @@ export default function PostKit() {
     fetch('/data/2026-27/ladders.json', {cache: 'no-cache'}).then(response => response.json()).then(setLadders).catch(() => setLadders({}));
   }, []);
   if (feed === 'denied') return <section className="adm adm-denied"><h1>Page not found</h1><p>There is nothing here.</p></section>;
-  const cards = feed ? {nights: feed.nights.map(nightCard), ladders: ladderCards(ladders), streaks: feed.streaks.map(streakCard), games: feed.stories.map(storyCard)} : null;
-  return <section className="adm pk">
+  const cards = feed ? {nights: feed.nights.map(nightCard), duos: (feed.duos ?? []).map(duoCard), ladders: ladderCards(ladders), streaks: feed.streaks.map(streakCard), games: feed.stories.map(storyCard)} : null;
+  return <section className="adm kit">
     <AdminTabs active="/admin/postkit"/>
-    <div className="pk-head">
+    <div className="kit-head">
       <div className="adm-seg" role="group" aria-label="Kind">{TABS.map(([key, label]) => <button key={key} type="button" className={key === tab ? 'on' : ''} onClick={() => setTab(key)}>{label}{cards ? <small> {cards[key].length}</small> : null}</button>)}</div>
     </div>
     {!cards ? <p className="adm-muted">Loading…</p> : !cards[tab].length ? <p className="adm-muted">Nothing here right now.</p>
-      : <ul className="pk-list">{cards[tab].map(card => <Row key={card.key} card={card} onImage={setShare}/>)}</ul>}
+      : <ul className="kit-list">{cards[tab].map(card => <Row key={card.key} card={card} onImage={setShare}/>)}</ul>}
     {share?.kind === 'perf' && <PerfShare line={share.line} onClose={() => setShare(null)}/>}
     {share?.kind === 'story' && <StoryShare story={share.story} onClose={() => setShare(null)}/>}
   </section>;
