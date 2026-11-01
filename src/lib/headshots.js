@@ -13,12 +13,23 @@ export async function loadHeadshotIds() {
   return {nba: byLooseKey(nba), espn: byLooseKey(espn)};
 }
 
-export function headshotSources(entity, {nba = {}, espn = {}} = {}, nbaFallback = {}) {
+/* Avatars are 40-80px on screen, so they take the 260x190 cut instead of the 1040x760 original: a page of leaders
+   decodes a fraction of the pixels and scrolls without stalling. Both CDNs serve the small size. */
+const ESPN_FULL = /^https:\/\/a\.espncdn\.com\/i\/headshots\/nba\/players\/full\/(\d+)\.png$/;
+export const smallHeadshot = url => {
+  if (!url) return url;
+  const espn = ESPN_FULL.exec(url);
+  if (espn) return `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${espn[1]}.png&w=260&h=190`;
+  return url.replace('/headshots/nba/latest/1040x760/', '/headshots/nba/latest/260x190/');
+};
+
+export function headshotSources(entity, {nba = {}, espn = {}} = {}, nbaFallback = {}, small = false) {
   const key = looseKey(entity.playerName);
   const nbaId = nba[key] ?? nbaFallback[entity.playerName];
   const espnId = espn[key] ?? (/^espn-(\d+)$/.exec(entity.playerId ?? '') || [])[1];
-  return [
+  const sources = [
     nbaId && `https://cdn.nba.com/headshots/nba/latest/1040x760/${nbaId}.png`,
     espnId && `https://a.espncdn.com/i/headshots/nba/players/full/${espnId}.png`,
   ].filter(Boolean);
+  return small ? sources.map(smallHeadshot) : sources;
 }

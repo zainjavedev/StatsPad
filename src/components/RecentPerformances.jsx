@@ -6,6 +6,7 @@ import { trio } from '../lib/trio';
 import PerfShare from './PerfShare';
 import { TEAMS, espnLogoUrl } from '../lib/teams';
 import { CURRENT } from '../lib/season';
+import { smallHeadshot } from '../lib/headshots';
 
 /* Recent individual lines in the stat-app mould: face with team badge, "T. Jerome · 64.4 fps · Oct 21",
    three big numbers and a grade. Each opens that player's game report and can be shared. */
@@ -37,7 +38,7 @@ export function PerfCard({line, onPick, showDate = true}) {
   const row = {PTS: num(s.PTS), REB: num(s.REB), AST: num(s.AST), STL: num(s.STL), BLK: num(s.BLK), TO: num(s.TO)};
   return <>
     <a className="rp-card" style={face ? {'--face': `${face}px`} : undefined} href={`/games/${line.gameId}?player=${line.player.id}`} onClick={onPick ? event => { event.preventDefault(); onPick(line.player.id); } : undefined}>
-      <span className="rp-face">{line.player.photo ? <img src={line.player.photo} alt="" loading="lazy"/> : <i/>}{code && <img className="rp-team" src={espnLogoUrl(code)} alt=""/>}</span>
+      <span className="rp-face">{line.player.photo ? <img src={smallHeadshot(line.player.photo)} alt="" loading="lazy" decoding="async"/> : <i/>}{code && <img className="rp-team" src={espnLogoUrl(code)} alt=""/>}</span>
       <span className="rp-main" ref={main}>
         <span className="rp-top"><b>{short(line.player.name)}</b><small> · {fps(row)} fps{showDate && line.date ? ` · ${day.format(line.date)}` : ''}</small></span>
         <span className="rp-trio">{trio(s).map(([value, label]) => <span key={label}><b>{value}</b>{label}</span>)}</span>

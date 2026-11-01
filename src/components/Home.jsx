@@ -56,20 +56,22 @@ const metricValue = (player,key) => key==='trueShootingPercentage' ? (player?.st
 const format = (value,key) => `${Number(value).toFixed(1)}${pctKeys.has(key)?'%':''}`;
 const initials = name => name.split(' ').map(part=>part[0]).slice(-2).join('');
 const ordinal = value => { const tens = value % 100, ones = value % 10; return `${value}${tens > 10 && tens < 14 ? 'th' : ones === 1 ? 'st' : ones === 2 ? 'nd' : ones === 3 ? 'rd' : 'th'}`; };
+/* List avatars get the small headshot; the big art (profile, versus, head to head) keeps the full one. */
+const SMALL_ART=/\b(mini-avatar|perf-art|split-avatar|statpage-art)\b/;
 function EntityArt({entity,playerIds,className='',minimal=false}){
   const[step,setStep]=useState(0);
   const sources=useMemo(()=>{
     if(entity.entityType==='team'){const code=teamCodeOf(entity.team);const full=`https://cdn.nba.com/logos/nba/${entity.teamId}/global/L/logo.svg`,mini=TEAMS[code]&&espnLogoUrl(code);return(minimal?[mini,full]:[full,mini]).filter(Boolean)}
     return [
       PLAYER_AVATARS[entity.playerName],
-      ...headshotSources(entity,playerIds,EXTRA_PLAYER_IDS),
+      ...headshotSources(entity,playerIds,EXTRA_PLAYER_IDS,SMALL_ART.test(className)),
     ].filter(Boolean);
-  },[entity,playerIds,minimal]);
+  },[entity,playerIds,minimal,className]);
   useEffect(()=>{setStep(0)},[sources]);
   const src=sources[step];
   if(!src)return <img className={`${className} art-fallback-image`} alt={`${entity.playerName} avatar`}
     src={`https://api.dicebear.com/9.x/avataaars/png?seed=${encodeURIComponent(entity.playerName)}&backgroundColor=${(TEAM_COLORS[entity.team]||'#3b3b45').replace('#','')}&size=512`}/>;
-  return <img className={className} src={src} alt="" loading="lazy" onError={()=>setStep(current=>current+1)}/>;
+  return <img className={className} src={src} alt="" loading="lazy" decoding="async" onError={()=>setStep(current=>current+1)}/>;
 }
 function percentile(players,key,value,inverse=false){const values=players.map(p=>valueOf(p,key)).filter(Number.isFinite).sort((a,b)=>a-b);if(!values.length)return 0;const below=values.filter(v=>v<value).length,equal=values.filter(v=>v===value).length,score=Math.round(((below+equal*.5)/values.length)*100);return inverse?100-score:score}
 

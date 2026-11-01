@@ -46,7 +46,7 @@ const initials = name => name.replace(/ (Jr\.|Sr\.|II|III)$/, '').split(' ').map
 export function Headshot({player, className}) {
   const sources = useMemo(() => [
     player.nbaId && `https://cdn.nba.com/headshots/nba/latest/260x190/${player.nbaId}.png`,
-    player.espnId && `https://a.espncdn.com/i/headshots/nba/players/full/${player.espnId}.png`,
+    player.espnId && `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${player.espnId}.png&w=260&h=190`,
   ].filter(Boolean), [player.nbaId, player.espnId]);
   const [step, setStep] = useState(0);
   useEffect(() => setStep(0), [sources]);

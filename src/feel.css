@@ -30,3 +30,10 @@
   .pills button,.cmp-bar .pills button{min-height:38px}
   .statpage-back{min-height:40px}
 }
+
+/* Scrolling on phones: a blurred bar re-blurs everything that slides under it on every frame. The bars were already
+   82-92% opaque, so on touch screens they go solid and drop the blur; the look barely changes and the scroll stays smooth. */
+@media (hover:none),(max-width:760px){
+  body .site-header{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--ink-0)}
+  body .tabbar{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--ink-1)}
+}

@@ -9,6 +9,7 @@ import { performancesOf } from '../lib/performances';
 import { finished, loadSchedule } from '../lib/schedule';
 import { loadBoxscore } from '../lib/boxscore';
 import { navigate } from '../lib/nav';
+import { smallHeadshot } from '../lib/headshots';
 import {PerfCard, PerfSkeleton} from './RecentPerformances';
 import Radar from './Radar';
 import { radarAxes, teamHex as radarHex } from '../lib/radarAxes';
@@ -244,9 +245,9 @@ export default function PlayerBody({ entity, season, population, showCareer, onO
       <div className="pp-vs-grid">
         {suggestions.map(player => <div key={player.playerId} className="pp-vs" style={{ '--a': teamHex(entity), '--b': teamHex(player) }}>
           <button className="pp-vs-faces" onClick={() => onCompare([entity, player])} aria-label={`Compare ${entity.playerName} with ${player.playerName}`}>
-            <span className="pp-vs-face">{espnPhoto(entity) ? <img src={espnPhoto(entity)} alt="" loading="lazy"/> : <i/>}</span>
+            <span className="pp-vs-face">{espnPhoto(entity) ? <img src={smallHeadshot(espnPhoto(entity))} alt="" loading="lazy" decoding="async"/> : <i/>}</span>
             <b>VS</b>
-            <span className="pp-vs-face">{espnPhoto(player) ? <img src={espnPhoto(player)} alt="" loading="lazy"/> : <i/>}</span>
+            <span className="pp-vs-face">{espnPhoto(player) ? <img src={smallHeadshot(espnPhoto(player))} alt="" loading="lazy" decoding="async"/> : <i/>}</span>
           </button>
           <div className="pp-vs-meta">
             <button className="pp-open" onClick={() => onOpen(player)}><b>{player.playerName}</b><small>{player.team} · {f1(player.stats.points)} PPG</small></button>

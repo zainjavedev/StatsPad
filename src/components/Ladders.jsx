@@ -11,7 +11,7 @@ import { TEAMS, espnLogoUrl } from '../lib/teams';
 
 /* false when the file is missing, so the skeleton (shown while the answer is null) goes away instead of staying. */
 const loadLadders = () => fetch(`/data/${CURRENT}/ladders.json`).then(response => (response.ok ? response.json() : false)).catch(() => false);
-const photo = id => `https://a.espncdn.com/i/headshots/nba/players/full/${id}.png`;
+const photo = id => `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${id}.png&w=260&h=190`;
 
 /* How far a player moved since the night before: an arrow and the places, or NEW, or a dash. */
 function Move({value}) {
