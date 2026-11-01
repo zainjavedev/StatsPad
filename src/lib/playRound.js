@@ -1,5 +1,5 @@
 import { loadBoxscore } from './boxscore';
-import { loadSchedule } from './schedule';
+import { scheduleFile } from './schedule';
 import { looseKey } from './headshots';
 import { shotsOf } from './playerGame';
 import { TEAMS, teamCodeOf } from './teams';
@@ -18,7 +18,7 @@ const group = position => (/C/.test(position) ? 'big' : /F/.test(position) ? 'wi
 let cached;
 /* Starters (real minutes, started most of their games) and this season's finished games. */
 export function loadPool() {
-  cached ??= Promise.all([fetch(`/data/${SEASON}/regular-season.json`).then(response => response.json()), fetch(`/data/${LAST}/regular-season.json`).then(response => response.json()).catch(() => ({players: []})), loadSchedule()]).then(([season, last, schedule]) => {
+  cached ??= Promise.all([fetch(`/data/${SEASON}/regular-season.json`).then(response => response.json()), fetch(`/data/${LAST}/regular-season.json`).then(response => response.json()).catch(() => ({players: []})), scheduleFile()]).then(([season, last, schedule]) => {
     /* A few games in, this season's averages swing wildly, so a full last season decides who counts as a star. */
     const before = new Map(last.players.filter(player => player.gamesPlayed >= 30).map(player => [looseKey(player.playerName), player.stats]));
     const list = season.players.filter(player => player.gamesPlayed >= 1 && player.minutesPerGame >= 25 && player.gamesStarted >= player.gamesPlayed * .6)
@@ -42,7 +42,10 @@ function decoysFor(answer, avoid, pool) {
 
 /* One round, or null when no game works out. `seen` is a Set of "game:player" keys already played. */
 export async function nextRound(pool, seen) {
-  for (const game of shuffle(pool.games).slice(0, 10)) {
+  const games = shuffle(pool.games).slice(0, 10);
+  for (const [index, game] of games.entries()) {
+    /* The next game's box score downloads while this one is checked, so a game with no usable starter costs no extra wait. */
+    if (games[index + 1]) loadBoxscore(games[index + 1].id).catch(() => null);
     const box = await loadBoxscore(game.id).catch(() => null);
     if (!box || box.state !== 'post') continue;
     const options = box.teams.flatMap(team => team.players.filter(player => player.starter && !player.out && player.id && !seen.has(`${game.id}:${player.id}`)).map(player => ({team, player})))

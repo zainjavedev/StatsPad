@@ -4338,6 +4338,10 @@ li>button.rp-share{position:absolute!important;right:10px;bottom:10px;left:auto;
 .vp-foot{margin-top:20px;padding-top:14px}
 .vp-body{grid-template-columns:190px minmax(0,1fr) 190px;gap:8px}
 .vp .vs-radar svg{width:122%;margin:-6% -11% -8%}
+/* Exactly 16:9 (saved at 1600x900), the shape X shows whole and full width in the feed instead of a thin strip. */
+.vp{display:flex;flex-direction:column;height:450px;padding:26px 36px 18px}
+.vp-body{flex:1;min-height:0;align-items:center}
+.vp-foot{margin-top:auto}
 
 .lu-title{display:flex;align-items:center;gap:12px}.lu-title img{flex:none;object-fit:contain}
 .lu-main[style] .lu-card{border-top-color:var(--tc)}

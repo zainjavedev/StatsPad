@@ -46,7 +46,7 @@ function Side({player, rival, side, records}) {
   return <div className={`vp-side ${side}`}>
     <span className={`vp-face${player.entityType === 'team' ? ' is-logo' : ''}`}>{photo ? <img src={photo} alt="" crossOrigin="anonymous"/> : <i/>}</span>
     <span className="vp-first"><i className="vp-dot" aria-hidden="true"/>{first}</span>
-    <b className="vp-last" style={{'--n': Math.max(last.length, 5)}}>{last}</b>
+    <b className="vp-last">{last}</b>
     {!team && <span className="vp-line">
       {[['points', 'pts'], ['totalRebounds', 'reb'], ['assists', 'ast']].map(([key, label]) => <span key={key} className={player.stats[key] < rival.stats[key] ? 'behind' : ''}><b>{f1(player.stats[key])}</b>{label}</span>)}
     </span>}
@@ -55,7 +55,9 @@ function Side({player, rival, side, records}) {
 
 const Poster = forwardRef(function Poster({a, b, pool, records}, ref) {
   const axes = radarAxes(a, b, pool);
-  return <div className="vp" ref={ref} style={radarTints(a, b)}>
+  /* Both surnames take the size that fits the longer one, so the two sides match and the photos line up. */
+  const longest = a.entityType === 'team' ? 5 : Math.max(5, ...[a, b].map(player => split(player.playerName)[1].length));
+  return <div className="vp" ref={ref} style={{...radarTints(a, b), '--n': longest}}>
     <div className="vp-body">
       <Side player={a} rival={b} side="left" records={records}/>
       <Radar axes={axes} names={[a.playerName, b.playerName]} colors={['var(--ra)', 'var(--rb)']} scope={`${pool.length} players`}/>
@@ -68,7 +70,7 @@ const Poster = forwardRef(function Poster({a, b, pool, records}, ref) {
 export default function VersusShare({a, b, pool, onClose}) {
   const records = useRecords(a.entityType === 'team');
   const slug = player => player.playerName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  return <ShareSheet ready={a.entityType !== 'team' || records !== null} onClose={onClose} filename={`${slug(a)}-vs-${slug(b)}`} title={`${a.playerName} vs ${b.playerName}`}
+  return <ShareSheet width={1600} ready={a.entityType !== 'team' || records !== null} onClose={onClose} filename={`${slug(a)}-vs-${slug(b)}`} title={`${a.playerName} vs ${b.playerName}`}
     text={`${a.playerName} vs ${b.playerName}: ${f1(a.stats.points)} vs ${f1(b.stats.points)} PPG`} url={`${siteOrigin()}/`}>
     {ref => <Poster ref={ref} a={a} b={b} pool={pool} records={records}/>}
   </ShareSheet>;

@@ -45,7 +45,8 @@ async function flattenSvgs(node) {
   return () => { swaps.forEach(([svg, image]) => { image.remove(); svg.style.visibility = ''; }); node.style.position = position; };
 }
 
-export default function ShareSheet({ready, failed, unavailable = 'This is not available yet.', onClose, options, filename, text, url, children}) {
+/* `width` is the saved picture's width in pixels; the poster is drawn at its CSS size and scaled up to it. */
+export default function ShareSheet({ready, failed, unavailable = 'This is not available yet.', onClose, options, filename, text, url, width = 1080, children}) {
   const [note, setNote] = useState(''), [busy, setBusy] = useState(false);
   const poster = useRef(null), frame = useRef(null), built = useRef(null), [scale, setScale] = useState(1), [posterHeight, setPosterHeight] = useState(0);
 
@@ -89,7 +90,7 @@ export default function ShareSheet({ready, failed, unavailable = 'This is not av
     await inlineImages(node);
     const restore = await flattenSvgs(node);
     let made;
-    try { made = await toBlob(node, {pixelRatio: 1080 / node.offsetWidth, backgroundColor: '#000000', ...(fontEmbedCSS ? {fontEmbedCSS} : {})}); } finally { restore(); }
+    try { made = await toBlob(node, {pixelRatio: width / node.offsetWidth, backgroundColor: '#000000', ...(fontEmbedCSS ? {fontEmbedCSS} : {})}); } finally { restore(); }
     if (!made) throw new Error('no image');
     return made;
   };
