@@ -140,6 +140,28 @@ function StatTable({players, season, onOpen}) {
   </section>;
 }
 
+/* The team's per-game numbers with where each ranks among the 30 teams (turnovers and points allowed rank low-is-best), laid out like the
+   player page's tiles. */
+const ordinal = n => { const suffix = ['th', 'st', 'nd', 'rd'], v = n % 100; return `${n}${suffix[(v - 20) % 10] || suffix[v] || suffix[0]}`; };
+const TEAM_TILES = [
+  ['PPG', team => team.stats.points], ['RPG', team => team.stats.totalRebounds], ['APG', team => team.stats.assists], ['SPG', team => team.stats.steals],
+  ['BPG', team => team.stats.blocks], ['TOV', team => team.stats.turnovers, true], ['FG%', team => team.stats.fieldGoalPercentage],
+  ['3P%', team => team.stats.threePointPercentage], ['FT%', team => team.stats.freeThrowPercentage], ['3PM', team => team.stats.threePointersMade],
+];
+function TeamTiles({team, pool}) {
+  return <section className="pf-stats-wrap team-tiles" aria-label={`${team.playerName} per-game stats with league ranks`}>
+    {TEAM_TILES.map(([name, get, lowIsBest]) => {
+      const values = pool.map(get).sort((a, b) => (lowIsBest ? a - b : b - a)), value = get(team);
+      const rank = values.findIndex(other => (lowIsBest ? other >= value : other <= value)) + 1;
+      return <div key={name} className="pf-stat">
+        <strong>{Number(value).toFixed(1)}</strong>
+        <span>{name}</span>
+        <small className={rank && rank <= 5 ? 'top' : ''}>{rank ? <>{ordinal(rank)}<i> of {pool.length}</i></> : '–'}</small>
+      </div>;
+    })}
+  </section>;
+}
+
 /* Every team's per-game line this season, which the radar scales a team against. */
 const loadTeamPool = () => fetch('/data/2026-27/teams-regular-season.json').then(response => (response.ok ? response.json() : null)).then(data => (Array.isArray(data?.players) ? data.players.filter(team => team.gamesPlayed > 0) : [])).catch(() => []);
 
@@ -191,6 +213,10 @@ export default function TeamPage({teamCode = 'PHI', leaguePlayers, season, onOpe
       {teamEntity && teamPool.length > 10 && <button type="button" className="team-hero-share" onClick={() => setSharing(true)} title="Share the radar as an image"><Share2 size={15}/> Share</button>}
       <FavoriteStar code={teamCode} active={favorites.includes(teamCode)} className="on-hero"/>
     </div>
+    {teamEntity && teamPool.length > 10 && <div className="team-mobile-radar" aria-label={`${roster.teamName} radar`}>
+      <Radar axes={radarAxes(teamEntity, teamEntity, teamPool).map(axis => ({...axis, sides: [axis.sides[0]]}))} names={[roster.teamName]} colors={['var(--team-light)']} scope="all 30 teams"/>
+    </div>}
+    {teamEntity && teamPool.length > 10 && <TeamTiles team={teamEntity} pool={teamPool}/>}
     {sharing && teamEntity && <PlayerShare team player={teamEntity} pool={teamPool} season={pretty(season || roster.statsSeason || '2026-27')} onClose={() => setSharing(false)}/>}
 
     <section className="team-block">
