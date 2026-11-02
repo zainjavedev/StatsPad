@@ -2,7 +2,7 @@
   "season": "2026-27",
   "seasonType": "Regular Season",
   "description": "NBA team per-game statistics for the 2026-27 regular season",
-  "lastUpdated": "2026-11-01",
+  "lastUpdated": "2026-11-02",
   "source": {
     "name": "ESPN box scores",
     "url": "https://www.espn.com/nba/schedule"
@@ -71,40 +71,10 @@
     },
     {
       "entityType": "team",
-      "teamId": 1610612738,
-      "team": "BOS",
-      "playerName": "Boston Celtics",
-      "rank": 3,
-      "gamesPlayed": 5,
-      "position": "Team",
-      "stats": {
-        "points": 120.8,
-        "assists": 27.8,
-        "totalRebounds": 43.6,
-        "offensiveRebounds": 12.2,
-        "defensiveRebounds": 31.4,
-        "steals": 9.2,
-        "blocks": 3.4,
-        "turnovers": 15.2,
-        "personalFouls": 25.4,
-        "fieldGoalsMade": 42,
-        "fieldGoalsAttempted": 88.6,
-        "fieldGoalPercentage": 47.4,
-        "threePointersMade": 14.8,
-        "threePointersAttempted": 39.6,
-        "threePointPercentage": 37.4,
-        "freeThrowsMade": 22,
-        "freeThrowsAttempted": 28.8,
-        "freeThrowPercentage": 76.4,
-        "effectiveFieldGoalPercentage": 55.8
-      }
-    },
-    {
-      "entityType": "team",
       "teamId": 1610612745,
       "team": "HOU",
       "playerName": "Houston Rockets",
-      "rank": 4,
+      "rank": 3,
       "gamesPlayed": 7,
       "position": "Team",
       "stats": {
@@ -134,7 +104,7 @@
       "teamId": 1610612757,
       "team": "POR",
       "playerName": "Portland Trail Blazers",
-      "rank": 5,
+      "rank": 4,
       "gamesPlayed": 5,
       "position": "Team",
       "stats": {
@@ -164,7 +134,7 @@
       "teamId": 1610612750,
       "team": "MIN",
       "playerName": "Minnesota Timberwolves",
-      "rank": 6,
+      "rank": 5,
       "gamesPlayed": 7,
       "position": "Team",
       "stats": {
@@ -194,7 +164,7 @@
       "teamId": 1610612740,
       "team": "NOP",
       "playerName": "New Orleans Pelicans",
-      "rank": 7,
+      "rank": 6,
       "gamesPlayed": 6,
       "position": "Team",
       "stats": {
@@ -217,6 +187,36 @@
         "freeThrowsAttempted": 30.5,
         "freeThrowPercentage": 80.3,
         "effectiveFieldGoalPercentage": 55.1
+      }
+    },
+    {
+      "entityType": "team",
+      "teamId": 1610612738,
+      "team": "BOS",
+      "playerName": "Boston Celtics",
+      "rank": 7,
+      "gamesPlayed": 6,
+      "position": "Team",
+      "stats": {
+        "points": 118.7,
+        "assists": 28,
+        "totalRebounds": 43.2,
+        "offensiveRebounds": 12.5,
+        "defensiveRebounds": 30.7,
+        "steals": 9.2,
+        "blocks": 4,
+        "turnovers": 14.7,
+        "personalFouls": 24.8,
+        "fieldGoalsMade": 41.2,
+        "fieldGoalsAttempted": 87.8,
+        "fieldGoalPercentage": 46.9,
+        "threePointersMade": 14.3,
+        "threePointersAttempted": 40.3,
+        "threePointPercentage": 35.5,
+        "freeThrowsMade": 22,
+        "freeThrowsAttempted": 28.3,
+        "freeThrowPercentage": 77.6,
+        "effectiveFieldGoalPercentage": 55
       }
     },
     {
@@ -671,40 +671,10 @@
     },
     {
       "entityType": "team",
-      "teamId": 1610612753,
-      "team": "ORL",
-      "playerName": "Orlando Magic",
-      "rank": 23,
-      "gamesPlayed": 5,
-      "position": "Team",
-      "stats": {
-        "points": 109.8,
-        "assists": 26.8,
-        "totalRebounds": 39.4,
-        "offensiveRebounds": 9,
-        "defensiveRebounds": 30.4,
-        "steals": 7.2,
-        "blocks": 4.6,
-        "turnovers": 16.8,
-        "personalFouls": 25,
-        "fieldGoalsMade": 37.6,
-        "fieldGoalsAttempted": 82.2,
-        "fieldGoalPercentage": 45.7,
-        "threePointersMade": 13.4,
-        "threePointersAttempted": 38,
-        "threePointPercentage": 35.3,
-        "freeThrowsMade": 21.2,
-        "freeThrowsAttempted": 27.4,
-        "freeThrowPercentage": 77.4,
-        "effectiveFieldGoalPercentage": 53.9
-      }
-    },
-    {
-      "entityType": "team",
       "teamId": 1610612758,
       "team": "SAC",
       "playerName": "Sacramento Kings",
-      "rank": 24,
+      "rank": 23,
       "gamesPlayed": 6,
       "position": "Team",
       "stats": {
@@ -734,7 +704,7 @@
       "teamId": 1610612755,
       "team": "PHI",
       "playerName": "Philadelphia 76ers",
-      "rank": 25,
+      "rank": 24,
       "gamesPlayed": 7,
       "position": "Team",
       "stats": {
@@ -764,7 +734,7 @@
       "teamId": 1610612762,
       "team": "UTA",
       "playerName": "Utah Jazz",
-      "rank": 26,
+      "rank": 25,
       "gamesPlayed": 6,
       "position": "Team",
       "stats": {
@@ -787,6 +757,36 @@
         "freeThrowsAttempted": 27.2,
         "freeThrowPercentage": 77.3,
         "effectiveFieldGoalPercentage": 51
+      }
+    },
+    {
+      "entityType": "team",
+      "teamId": 1610612753,
+      "team": "ORL",
+      "playerName": "Orlando Magic",
+      "rank": 26,
+      "gamesPlayed": 6,
+      "position": "Team",
+      "stats": {
+        "points": 107.7,
+        "assists": 26.3,
+        "totalRebounds": 40,
+        "offensiveRebounds": 9.7,
+        "defensiveRebounds": 30.3,
+        "steals": 7,
+        "blocks": 4.2,
+        "turnovers": 16.7,
+        "personalFouls": 24.5,
+        "fieldGoalsMade": 37,
+        "fieldGoalsAttempted": 82,
+        "fieldGoalPercentage": 45.1,
+        "threePointersMade": 13.5,
+        "threePointersAttempted": 38.2,
+        "threePointPercentage": 35.4,
+        "freeThrowsMade": 20.2,
+        "freeThrowsAttempted": 26,
+        "freeThrowPercentage": 77.6,
+        "effectiveFieldGoalPercentage": 53.4
       }
     },
     {
