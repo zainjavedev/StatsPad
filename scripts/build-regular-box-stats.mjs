@@ -63,7 +63,7 @@ for (const [id, date] of schedule) {
     if (best && sides.home && sides.away) {
       const mine = best.abbr === sides.home.abbr ? sides.home : sides.away, other = mine === sides.home ? sides.away : sides.home;
       bestLines.push({gameId: String(id), day: dayOf(date), date: competition.date ?? date, rating: best.rating, team: best.abbr, opp: other.abbr, home: mine === sides.home, won: mine.winner, score: `${mine.score}–${other.score}`,
-        player: {id: String(best.athlete.id), name: best.athlete.displayName, photo: `https://a.espncdn.com/i/headshots/nba/players/full/${best.athlete.id}.png`, stats: best.stats}});
+        player: {id: String(best.athlete.id), name: best.athlete.displayName, photo: `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${best.athlete.id}.png&w=260&h=190`, stats: best.stats}});
     }
   }
   for (const entry of data.boxscore?.players ?? []) {

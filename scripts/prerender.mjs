@@ -95,7 +95,7 @@ const gameLog = p => {
   if (!rows.length) return '';
   const cards = rows.map(({line, game}) => {
     const home = game.home === line.team, mine = home ? game.home_score : game.away_score, theirs = home ? game.away_score : game.home_score, won = mine > theirs;
-    const opp = TEAMS[line.opponent], logo = opp ? `<img src="https://a.espncdn.com/i/teamlogos/nba/500/${opp.espn}.png" alt="" width="28" height="28" loading="lazy">` : '';
+    const opp = TEAMS[line.opponent], logo = opp ? `<img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${opp.espn}.png&w=80&h=80" alt="" width="28" height="28" loading="lazy">` : '';
     return `<li><a class="glog-card" href="${gameUrl(game.away, game.home, game.id)}"><span class="glog-date">${esc(shortDay(game.played_at))}</span>`
       + `<span class="glog-opp">${logo}<span>${home ? 'vs' : '@'} ${esc(opp?.name ?? line.opponent)}</span></span>`
       + `<span class="glog-res"><b class="${won ? 'won' : 'lost'}">${won ? 'W' : 'L'}</b> ${mine}-${theirs}</span>`

@@ -1,13 +1,13 @@
 import React, { forwardRef } from 'react';
 import ShareSheet from './ShareSheet';
-import { espnLogoUrl, TEAMS } from '../lib/teams';
+import { espnLogoUrl, TEAMS, espnHeadshotUrl } from '../lib/teams';
 import { siteOrigin } from '../lib/share';
 
 /* A 16:9 picture for one player's story in the admin Post kit (a ladder move, a scoring streak, or two teammates' duo night):
    the shoulder-cut headshot (or two) on the left in the team's colour, a kicker, a big headline and a few numbers on the right.
    Saved at 1600x900 for X. */
 
-const photo = id => `https://a.espncdn.com/i/headshots/nba/players/full/${id}.png`;
+const photo = id => espnHeadshotUrl(id);
 
 const Poster = forwardRef(function Poster({story}, ref) {
   const {id, ids, name, team, kicker, big, headline, stats} = story;

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { BarChart3, Share2 } from 'lucide-react';
 import PlayerShare from './PlayerShare';
-import { TEAMS, teamCodeOf, espnLogoUrl } from '../lib/teams';
+import { TEAMS, teamCodeOf, espnLogoUrl, espnHeadshotUrl } from '../lib/teams';
 import { slugify } from '../lib/routes';
 import { careerOf, liveRow, seasonsOf, tsOf } from '../lib/career';
 import { pretty } from '../lib/season';
@@ -82,7 +82,7 @@ function RecentGames({ lines }) {
   </section>;
 }
 
-const espnPhoto = player => { const id = (/^espn-(\d+)$/.exec(player.playerId ?? '') || [])[1]; return id ? `https://a.espncdn.com/i/headshots/nba/players/full/${id}.png` : null; };
+const espnPhoto = player => { const id = (/^espn-(\d+)$/.exec(player.playerId ?? '') || [])[1]; return id ? espnHeadshotUrl(id) : null; };
 const teamHex = player => TEAMS[teamCodeOf(player.team)]?.color || '#8a8a8a';
 
 const SEASON_LINE = ['PPG', 'RPG', 'APG', 'SPG', 'BPG', 'MPG', 'FG%', '3P%', 'FT%', 'TS%'];

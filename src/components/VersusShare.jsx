@@ -3,7 +3,7 @@ import ShareSheet from './ShareSheet';
 import Radar from './Radar';
 import { radarAxes, radarTints } from '../lib/radarAxes';
 import { siteOrigin } from '../lib/share';
-import { espnLogoUrl, teamCodeOf, TEAMS } from '../lib/teams';
+import { espnLogoUrl, teamCodeOf, TEAMS, espnHeadshotUrl } from '../lib/teams';
 import { loadSchedule } from '../lib/schedule';
 
 /* The picture behind the share button on Head to head: both players with their per-game line either side of the
@@ -11,7 +11,7 @@ import { loadSchedule } from '../lib/schedule';
 
 const headshot = player => {
   if (player.entityType === 'team') { const code = teamCodeOf(player.team); return TEAMS[code] ? espnLogoUrl(code) : null; }
-  const id = (/^espn-(\d+)$/.exec(player.playerId ?? '') || [])[1]; return id ? `https://a.espncdn.com/i/headshots/nba/players/full/${id}.png` : null; };
+  const id = (/^espn-(\d+)$/.exec(player.playerId ?? '') || [])[1]; return id ? espnHeadshotUrl(id) : null; };
 const f1 = value => Number(value || 0).toFixed(1);
 
 /* W-L this regular season from the finished games, by team code. */

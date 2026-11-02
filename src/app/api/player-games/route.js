@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { sql } from '../../../server/db';
-import { TEAMS } from '../../../lib/teams';
+import { TEAMS, espnHeadshotUrl } from '../../../lib/teams';
 
 /* One player's latest regular-season games from the stored box scores, shaped like the box-score lines the performance cards use.
    Reading them here replaces downloading the last sixty games' box scores from ESPN to find a single player's lines. */
@@ -22,7 +22,7 @@ export async function GET(request) {
       const home = row.home === row.team, mine = home ? row.home_score : row.away_score, theirs = home ? row.away_score : row.home_score;
       return {
         gameId: row.game_id, team: abbr(row.team), opp: abbr(row.opponent), home, won: mine > theirs, score: `${mine}–${theirs}`, date: row.played_at, rating: gameScore(row),
-        player: {id, name: row.name, photo: `https://a.espncdn.com/i/headshots/nba/players/full/${id}.png`, stats: {
+        player: {id, name: row.name, photo: espnHeadshotUrl(id), stats: {
           MIN: String(row.minutes ?? 0), PTS: String(row.pts), FG: `${row.fgm}-${row.fga}`, '3PT': `${row.tpm}-${row.tpa}`, FT: `${row.ftm}-${row.fta}`, REB: String(row.reb), AST: String(row.ast), TO: String(row.tov),
           STL: String(row.stl), BLK: String(row.blk), OREB: String(row.oreb), DREB: String(row.dreb), PF: String(row.pf),
         }},

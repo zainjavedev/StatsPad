@@ -1,3 +1,4 @@
+import { slimEspn } from './teams';
 /* One game's box score from ESPN's summary: both teams' players with their lines, starters first.
    Games that haven't tipped off return no players, and the screen shows the expected fives instead. */
 
@@ -16,7 +17,7 @@ export function parseSummary(data) {
   const teams = (data.boxscore?.players ?? []).map(entry => {
     const block = entry.statistics?.[0] ?? {labels: [], athletes: []};
     const players = block.athletes.map(item => ({
-      id: item.athlete?.id, hasPhoto: Boolean(item.athlete?.headshot?.href), photo: item.athlete?.headshot?.href ?? (item.athlete?.id ? `https://a.espncdn.com/i/headshots/nba/players/full/${item.athlete.id}.png` : null), name: item.athlete?.displayName, short: item.athlete?.shortName, pos: item.athlete?.position?.abbreviation ?? '', jersey: item.athlete?.jersey ?? '',
+      id: item.athlete?.id, hasPhoto: Boolean(item.athlete?.headshot?.href), photo: slimEspn(item.athlete?.headshot?.href ?? (item.athlete?.id ? `https://a.espncdn.com/i/headshots/nba/players/full/${item.athlete.id}.png` : null)), name: item.athlete?.displayName, short: item.athlete?.shortName, pos: item.athlete?.position?.abbreviation ?? '', jersey: item.athlete?.jersey ?? '',
       starter: Boolean(item.starter), out: Boolean(item.didNotPlay) || !item.stats?.length, stats: Object.fromEntries(block.labels.map((label, index) => [label, item.stats?.[index]])),
     }));
     const totals = Object.fromEntries((data.boxscore.teams.find(team => team.team.id === entry.team.id)?.statistics ?? []).map(stat => [stat.label, stat.displayValue]));

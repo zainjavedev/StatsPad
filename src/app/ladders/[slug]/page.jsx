@@ -2,13 +2,13 @@ import { notFound } from 'next/navigation';
 import pages from '../../../seo/pages.json';
 import BlogShell from '../../../components/blog/BlogShell';
 import { routesUnder, seoMetadata } from '../../../lib/seo-page';
-import { TEAMS, espnLogoUrl } from '../../../lib/teams';
+import { TEAMS, espnLogoUrl, espnHeadshotUrl } from '../../../lib/teams';
 
 export const dynamicParams = false;
 export const generateStaticParams = () => routesUnder('/ladders').map(slug => ({slug}));
 export const generateMetadata = ({params}) => seoMetadata(`/ladders/${params.slug}`);
 
-const photo = id => `https://a.espncdn.com/i/headshots/nba/players/full/${id}.png`;
+const photo = id => espnHeadshotUrl(id);
 
 /* How far a player moved since the night before: an arrow and the places, or NEW, or a dash. */
 function Move({value}) {

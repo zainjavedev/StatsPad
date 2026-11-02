@@ -38,7 +38,14 @@ export const TEAMS = {
 const BBREF_CODES = {BRK: 'BKN', CHO: 'CHA', PHO: 'PHX'};
 export const teamCodeOf = code => BBREF_CODES[code] || code;
 
-export const espnLogoUrl = code => `https://a.espncdn.com/i/teamlogos/nba/500/${TEAMS[code].espn}.png`;
+/* ESPN's full-size files are big (a 500px logo is ~65 KB, a headshot ~200 KB). Its resizer serves the same picture at the size we
+   show it, about a seventh of the weight, from the same CDN. */
+export const slimEspn = (url, width = 260, height = 190) => {
+  const match = /^https:\/\/a\.espncdn\.com(\/i\/(?:headshots|teamlogos)\/[^?]+\.png)$/.exec(url || '');
+  return match ? `https://a.espncdn.com/combiner/i?img=${match[1]}&w=${width}&h=${height}` : url;
+};
+export const espnHeadshotUrl = id => slimEspn(`https://a.espncdn.com/i/headshots/nba/players/full/${id}.png`);
+export const espnLogoUrl = code => slimEspn(`https://a.espncdn.com/i/teamlogos/nba/500/${TEAMS[code].espn}.png`, 160, 160);
 export const logoUrl = code => `https://cdn.nba.com/logos/nba/${TEAMS[code].id}/global/L/logo.svg`;
 
 /* "Oklahoma City Thunder" -> "Thunder". */

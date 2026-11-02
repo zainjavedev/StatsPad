@@ -2,13 +2,14 @@ import BlogShell from '../../components/blog/BlogShell';
 import { published } from '../../content/blog/posts';
 import { SITE } from '../../lib/routes';
 import { socialTags } from '../../lib/social';
+import { espnHeadshotUrl } from '../../lib/teams';
 
 const TITLE = 'StatsPads blog: NBA stats, explained | StatsPads', DESCRIPTION = 'Player comparisons and stat breakdowns with radar charts, built from the same numbers as the StatsPads compare tool.';
 export const metadata = {title: TITLE, description: DESCRIPTION, alternates: {canonical: '/blog'}, ...socialTags({title: TITLE, description: DESCRIPTION, route: '/blog'})};
 
 const dateFormat = new Intl.DateTimeFormat('en-US', {month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC'});
 
-const headshot = id => `https://a.espncdn.com/i/headshots/nba/players/full/${id}.png`;
+const headshot = id => espnHeadshotUrl(id);
 
 export default function BlogIndex() {
   const schema = {'@context': 'https://schema.org', '@type': 'Blog', name: 'StatsPads blog', url: `${SITE}/blog`, description: DESCRIPTION, inLanguage: 'en-US', publisher: {'@type': 'Organization', name: 'StatsPads', url: SITE},

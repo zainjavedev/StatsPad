@@ -12,7 +12,7 @@ import Radar from './Radar';
 import { Headshot } from './TeamPage';
 import { loadSchedule } from '../lib/schedule';
 import { GameSkeleton } from './Skeletons';
-import { nickname, TEAMS, teamCodeOf } from '../lib/teams';
+import { nickname, TEAMS, teamCodeOf, espnLogoUrl } from '../lib/teams';
 import { gameUrl, playerUrl } from '../lib/routes';
 import { useFeed } from '../lib/useFeed';
 import { AXES, radarAxes, radarCurve, radarRange, radarTints } from '../lib/radarAxes';
@@ -235,7 +235,7 @@ function Context({box, context}) {
             const opp = codeOf(result.opp), path = opp ? gameUrl(result.home ? opp : code, result.home ? code : opp, result.id) : `/games/${result.id}`, open = spoilers.revealed(result.id);
             const Row = open ? 'a' : 'div';
             return <li key={result.id}><Row className="gp-form-row" href={open ? path : undefined}>
-              {opp && <img src={TEAMS[opp] ? `https://a.espncdn.com/i/teamlogos/nba/500/${TEAMS[opp].espn}.png` : ''} alt=""/>}
+              {opp && <img src={TEAMS[opp] ? espnLogoUrl(opp) : ''} alt=""/>}
               <span className="gp-form-opp">{result.home ? 'vs' : '@'} {opp ? nickname(opp) : result.opp}{result.pre ? <small> · Preseason</small> : null}</span>
               {open ? <><span className={`gp-wl ${result.win ? 'win' : 'loss'}`}>{result.win ? 'W' : 'L'}</span><strong><b>{result.us}</b>–{result.them}</strong></> : <><span className="gp-wl">?</span><Hidden id={result.id} onReveal={revealGame}/></>}
             </Row></li>;

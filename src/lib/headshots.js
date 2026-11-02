@@ -1,3 +1,4 @@
+import { espnHeadshotUrl } from './teams';
 /* Name matching for player photos. Stat sources spell names differently
    ("A.J. Green", "Vince Williams Jr.", "Gui Santos") so every lookup goes
    through the same loose key: no accents, dots or apostrophes, no suffix. */
@@ -29,7 +30,7 @@ export function headshotSources(entity, {nba = {}, espn = {}} = {}, nbaFallback 
   const espnId = espn[key] ?? (/^espn-(\d+)$/.exec(entity.playerId ?? '') || [])[1];
   const sources = [
     nbaId && `https://cdn.nba.com/headshots/nba/latest/1040x760/${nbaId}.png`,
-    espnId && `https://a.espncdn.com/i/headshots/nba/players/full/${espnId}.png`,
+    espnId && espnHeadshotUrl(espnId),
   ].filter(Boolean);
   return small ? sources.map(smallHeadshot) : sources;
 }

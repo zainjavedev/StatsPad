@@ -1,4 +1,4 @@
-import { TEAMS } from './teams';
+import { TEAMS, slimEspn } from './teams';
 import { slugify } from './routes';
 
 /* ESPN's league-wide injury report, sorted into three tiers: a bandage for a game or a few days,
@@ -38,7 +38,7 @@ const parse = (data, now) => (data.injuries ?? []).flatMap(team => team.injuries
     slug: slugify(athlete.displayName),
     team: code,
     position: athlete.position?.abbreviation ?? '',
-    headshot: athlete.headshot?.href ?? null,
+    headshot: slimEspn(athlete.headshot?.href ?? null),
     status: entry.status,
     returnDate: details.returnDate ?? null,
     area: [details.side, details.type].filter(Boolean).join(' ').toLowerCase() || null,
