@@ -124,11 +124,12 @@ const gameAxes = (a, b, pool) => AXES.map(([label, parts]) => ({label, sides: [a
   const share = shares.reduce((sum, value) => sum + value, 0) / shares.length;
   return {pct: Math.round(radarCurve(share) * 100), text: parts.map(([get, short]) => `${Math.round(get(team) * 10) / 10}${UNIT[short] ? ` ${UNIT[short]}` : ` ${short}`}`).join(' · '), rank: 'This game, against this season\'s team averages'};
 })}));
-function GameRadar({box}) {
+function GameRadar({box, bare = false}) {
   const pool = useFeed(loadMatchupPool);
   const [a, b] = [box.away, box.home].map(side => { const team = box.teams.find(entry => entry.abbr === side.abbr), code = codeOf(side.abbr); return team && code ? gameLine(side, team, code) : null; });
   if (pool === null) return <div className="gp-radar" aria-hidden="true"><div className="sk" style={{aspectRatio: '560 / 400', borderRadius: 28}}/></div>;
   if (!pool || pool.length < 10 || !a || !b || !Number.isFinite(a.stats.fieldGoalPercentage) || !Number.isFinite(b.stats.fieldGoalPercentage)) return null;
+  if (bare) return <div className="gp-radar" style={radarTints(a, b)} aria-label="This game's radar"><Radar axes={gameAxes(a, b, pool)} names={[box.away.short, box.home.short]} colors={['var(--ta)', 'var(--tb)']}/></div>;
   return <section className="gd-card gp-shape">
     <div className="pg-card-head"><h3>Game shape</h3></div>
     <div className="gp-radar" style={radarTints(a, b)} aria-label="This game's radar"><Radar axes={gameAxes(a, b, pool)} names={[box.away.short, box.home.short]} colors={['var(--ta)', 'var(--tb)']}/></div>
@@ -284,7 +285,7 @@ export default function GamePage({id}) {
     {!focusTeam && <>
     <div className={`gd-head gp-head${box.state === 'in' ? ' is-live' : box.state === 'pre' ? ' is-pre' : final ? ' is-post' : ''}`}>
       <div><TeamLink side={box.away}/>{scored && <strong className={Number(box.away.score) > Number(box.home.score) ? 'won' : ''}>{box.away.score}</strong>}</div>
-      <span className={box.state === 'pre' || final ? 'gp-mid' : undefined}>{box.state === 'post' ? (hidden ? 'Played' : <small className="gp-final">Final</small>) : box.state === 'in' ? (box.detail || 'Live') : <time className="gp-tip">{box.date ? tipFormat.format(new Date(box.date)) : 'Upcoming'}</time>}{final && <small className="gp-when">{[box.date && dayShortFormat.format(new Date(box.date)), box.venue].filter(Boolean).join(' · ')}</small>}{box.state === 'pre' && <MatchupRadar box={box}/>}</span>
+      <span className={box.state === 'pre' || final ? 'gp-mid' : undefined}>{box.state === 'post' ? (hidden ? 'Played' : <small className="gp-final">Final</small>) : box.state === 'in' ? (box.detail || 'Live') : <time className="gp-tip">{box.date ? tipFormat.format(new Date(box.date)) : 'Upcoming'}</time>}{final && <small className="gp-when">{[box.date && dayShortFormat.format(new Date(box.date)), box.venue].filter(Boolean).join(' · ')}</small>}{final && <GameRadar box={box} bare/>}{box.state === 'pre' && <MatchupRadar box={box}/>}</span>
       <div><TeamLink side={box.home}/>{scored && <strong className={Number(box.home.score) > Number(box.away.score) ? 'won' : ''}>{box.home.score}</strong>}</div>
     </div>
     {!final && box.venue && <p className="gd-meta">{box.venue}</p>}
@@ -308,7 +309,6 @@ export default function GamePage({id}) {
       {!all && ordered.some(team => performancesOf(box, id).filter(line => line.team === team.abbr).length > TOP) && <button type="button" className="gd-more" onClick={() => setAll(true)}>View all players</button>}
       <GameFlow box={box} plays={box.plays ?? []}/>
       {ordered.length === 2 && <TeamCompare teams={ordered}/>}
-      <GameRadar box={box}/>
     </>}
   </section>;
 }
