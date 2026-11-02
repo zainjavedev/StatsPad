@@ -5370,7 +5370,13 @@ a.starter-card{color:inherit;text-decoration:none}
 
 /* Game page player cards: grade at the top of the row and the share button at the bottom with clear space between them. */
 @media(max-width:640px){
-  .gd-sides .rp-list>li>.rp-card{min-height:112px;align-items:center}
+  .gd-sides .rp-list>li>.rp-card{min-height:100px;align-items:center;padding-top:10px;padding-bottom:10px}
   .gd-sides .rp-list>li>.rp-card .rp-grade{align-self:start;margin-top:2px;font-size:23px}
   .gd-sides .rp-list>li>button.rp-share{width:34px;height:34px;right:4px;bottom:12px}
 }
+
+/* Finished game header: the date and arena sit under FINAL, so the box score starts right below. */
+.gp-head .gp-when{display:block;margin-top:2px;color:var(--text-3);font-size:12px;font-weight:600;letter-spacing:0;text-transform:none}
+.gp-shape{margin-top:16px}
+.gp-shape .gp-radar{width:min(440px,100%);margin:0 auto}
+.gp-shape .vs-radar-head,.gp-shape .vs-radar-key{justify-content:center}

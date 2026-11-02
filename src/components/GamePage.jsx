@@ -69,28 +69,13 @@ function GameFlow({box, plays}) {
 
 const codeOf = abbr => Object.keys(TEAMS).find(code => TEAMS[code].espn === String(abbr).toLowerCase());
 const TOP = 6;
-const num = value => Number(String(value ?? '').replace('+', '')) || 0;
 
-/* How each side played, on a typical NBA game's range (a point is where that stat usually runs from low to high). */
-const SHAPE = [
-  ['Scoring', side => side.points, 85, 140, value => `${value} pts`],
-  ['FG%', side => side.totals['Field Goal %'], 35, 60, value => `${value}%`],
-  ['3P%', side => side.totals['Three Point %'], 20, 50, value => `${value}%`],
-  ['Rebounds', side => side.totals.Rebounds, 30, 60, value => `${value} reb`],
-  ['Assists', side => side.totals.Assists, 15, 35, value => `${value} ast`],
-  ['Defense', side => num(side.totals.Steals) + num(side.totals.Blocks), 4, 22, value => `${value} stl + blk`],
-  ['Ball care', side => num(side.totals.Turnovers), 22, 8, value => `${value} turnovers`],
-];
-const shapeAxes = (teams, scores) => SHAPE.map(([label, get, low, high, text]) => ({label, sides: teams.map((team, index) => {
-  const value = num(get({totals: team.totals, points: scores[index]}));
-  const pct = Math.round(Math.max(0, Math.min(1, (value - low) / (high - low))) * 100);
-  return {pct, text: text(value), rank: `${pct}% of a typical game's range`};
-})}));
 
 
 const plain = name => String(name).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[.']/g, '').replace(/\s+/g, ' ').trim();
 
 const SEASON_FETCH = year => code => fetch(`https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/${TEAMS[code].espn}/schedule?season=${year}`).then(response => response.json()).catch(() => ({events: []}));
+const dayShortFormat = new Intl.DateTimeFormat(undefined, {weekday: 'short', month: 'short', day: 'numeric'});
 const tipFormat = new Intl.DateTimeFormat(undefined, {weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'});
 const dayFormat = new Intl.DateTimeFormat(undefined, {month: 'short', day: 'numeric', year: 'numeric'});
 
@@ -144,7 +129,10 @@ function GameRadar({box}) {
   const [a, b] = [box.away, box.home].map(side => { const team = box.teams.find(entry => entry.abbr === side.abbr), code = codeOf(side.abbr); return team && code ? gameLine(side, team, code) : null; });
   if (pool === null) return <div className="gp-radar" aria-hidden="true"><div className="sk" style={{aspectRatio: '560 / 400', borderRadius: 28}}/></div>;
   if (!pool || pool.length < 10 || !a || !b || !Number.isFinite(a.stats.fieldGoalPercentage) || !Number.isFinite(b.stats.fieldGoalPercentage)) return null;
-  return <div className="gp-radar" style={radarTints(a, b)} aria-label="This game's radar"><Radar axes={gameAxes(a, b, pool)} names={[box.away.short, box.home.short]} colors={['var(--ta)', 'var(--tb)']}/></div>;
+  return <section className="gd-card gp-shape">
+    <div className="pg-card-head"><h3>Game shape</h3></div>
+    <div className="gp-radar" style={radarTints(a, b)} aria-label="This game's radar"><Radar axes={gameAxes(a, b, pool)} names={[box.away.short, box.home.short]} colors={['var(--ta)', 'var(--tb)']}/></div>
+  </section>;
 }
 
 /* Before tip-off: each side's expected starting five on the team page's cards, with last season's per-game
@@ -296,10 +284,10 @@ export default function GamePage({id}) {
     {!focusTeam && <>
     <div className={`gd-head gp-head${box.state === 'in' ? ' is-live' : box.state === 'pre' ? ' is-pre' : final ? ' is-post' : ''}`}>
       <div><TeamLink side={box.away}/>{scored && <strong className={Number(box.away.score) > Number(box.home.score) ? 'won' : ''}>{box.away.score}</strong>}</div>
-      <span className={box.state === 'pre' || final ? 'gp-mid' : undefined}>{box.state === 'post' ? (hidden ? 'Played' : <small className="gp-final">Final</small>) : box.state === 'in' ? (box.detail || 'Live') : <time className="gp-tip">{box.date ? tipFormat.format(new Date(box.date)) : 'Upcoming'}</time>}{box.state === 'pre' && <MatchupRadar box={box}/>}{final && <GameRadar box={box}/>}</span>
+      <span className={box.state === 'pre' || final ? 'gp-mid' : undefined}>{box.state === 'post' ? (hidden ? 'Played' : <small className="gp-final">Final</small>) : box.state === 'in' ? (box.detail || 'Live') : <time className="gp-tip">{box.date ? tipFormat.format(new Date(box.date)) : 'Upcoming'}</time>}{final && <small className="gp-when">{[box.date && dayShortFormat.format(new Date(box.date)), box.venue].filter(Boolean).join(' · ')}</small>}{box.state === 'pre' && <MatchupRadar box={box}/>}</span>
       <div><TeamLink side={box.home}/>{scored && <strong className={Number(box.home.score) > Number(box.away.score) ? 'won' : ''}>{box.home.score}</strong>}</div>
     </div>
-    <p className="gd-meta">{[box.venue].filter(Boolean).join(' · ')}</p>
+    {!final && box.venue && <p className="gd-meta">{box.venue}</p>}
     </>}
 
     {focusTeam && <PlayerGame gameId={id} box={box} plays={box.plays ?? []} team={focusTeam} player={focusTeam.players.find(entry => entry.id === focus)} onClose={() => pick(null)} onPick={pick} nameOf={nameOf}/>}
@@ -320,7 +308,7 @@ export default function GamePage({id}) {
       {!all && ordered.some(team => performancesOf(box, id).filter(line => line.team === team.abbr).length > TOP) && <button type="button" className="gd-more" onClick={() => setAll(true)}>View all players</button>}
       <GameFlow box={box} plays={box.plays ?? []}/>
       {ordered.length === 2 && <TeamCompare teams={ordered}/>}
-      {ordered.length === 2 && <Radar axes={shapeAxes(ordered, ordered.map(team => team.abbr === box.away.abbr ? box.away.score : box.home.score))} names={ordered.map(team => team.abbr === box.away.abbr ? box.away.short : box.home.short)} colors={['var(--accent)', 'var(--series-2)']} scope="a typical NBA game" notes={['Each spoke runs from a low to a high night for that stat, so the shape shows how each team played, not season averages. Ball care rewards fewer turnovers.']}/>}
+      <GameRadar box={box}/>
     </>}
   </section>;
 }
