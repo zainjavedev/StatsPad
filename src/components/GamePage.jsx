@@ -7,12 +7,13 @@ import PlayerGame from './PlayerGame';
 import { Flow } from './ShotChart';
 import { PerfCard } from './RecentPerformances';
 import SpoilerToggle, { Hidden } from './SpoilerToggle';
+import { fitLogo } from '../lib/fitLogo';
 import { loadBoxscore } from '../lib/boxscore';
 import Radar from './Radar';
 import { Headshot } from './TeamPage';
 import { loadSchedule } from '../lib/schedule';
 import { GameSkeleton } from './Skeletons';
-import { nickname, TEAMS, teamCodeOf, espnLogoUrl } from '../lib/teams';
+import { nickname, TEAMS, teamCodeOf, espnLogoUrl, slimEspn } from '../lib/teams';
 import { gameUrl, playerUrl } from '../lib/routes';
 import { useFeed } from '../lib/useFeed';
 import { AXES, radarAxes, radarCurve, radarRange, radarTints } from '../lib/radarAxes';
@@ -24,7 +25,7 @@ const teamHref = abbr => {
   return code ? `/lineups/${TEAMS[code].name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}` : null;
 };
 const TeamLink = ({side}) => {
-  const href = teamHref(side.abbr), logo = <img src={side.logo} alt={side.short}/>;
+  const href = teamHref(side.abbr), logo = <img src={slimEspn(side.logo, 160, 160)} alt={side.short} crossOrigin="anonymous" onLoad={fitLogo}/>;
   return href ? <a className="hd-link" href={href} title={`${side.short} team page`}>{logo}</a> : logo;
 };
 
