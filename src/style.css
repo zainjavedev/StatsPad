@@ -5441,3 +5441,19 @@ a.starter-card{color:inherit;text-decoration:none}
   .pf-copy .season-pills.profile-season button{min-height:26px!important;padding:3px 9px!important;font-size:11px!important;line-height:1.1}
   .pf-hero{padding:12px 0 10px 14px!important}
 }
+
+/* Team page game lists on phones: one row per game (date on the left, then the matchup, then W/L), small logos, tighter
+   padding, so the next five and the last five fit on about one screen. */
+@media(max-width:640px){
+  .team-feeds{gap:10px!important}
+  .team-feeds .team-games{padding:12px 12px 4px!important}
+  .team-feeds .team-games h2{font-size:16px!important;margin:0 0 2px!important}
+  .team-feeds .team-games .game-list li{display:grid!important;grid-template-columns:60px minmax(0,1fr) 24px!important;gap:8px!important;align-items:center;padding:7px 0!important}
+  .team-feeds .team-games .game-list li>.game-when{grid-column:1!important;grid-row:1!important;white-space:normal!important;font-size:10.5px!important;line-height:1.25}
+  .team-feeds .team-games .game-list li>.game-line{grid-column:2!important;grid-row:1!important;display:flex!important;align-items:center;justify-content:space-between;gap:4px!important;min-width:0}
+  .team-feeds .team-games .game-list li>.game-result{grid-column:3!important;grid-row:1!important;width:22px!important;height:22px!important;font-size:11px!important;border-radius:6px!important;display:grid;place-items:center;margin:0!important}
+  .team-feeds .team-games .game-team{gap:5px!important;font-size:13.5px!important}
+  .team-feeds .team-games .game-team img{width:20px!important;height:20px!important}
+  .team-feeds .team-games .game-score{font-size:15px!important}
+  .team-feeds .team-games .game-sep{font-size:12px!important;opacity:.6}
+}
