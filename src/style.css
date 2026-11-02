@@ -5367,3 +5367,10 @@ a.starter-card{color:inherit;text-decoration:none}
   .pf-stat{text-align:center;align-items:center}
   .pf-stat small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 }
+
+/* Game page player cards: grade at the top of the row and the share button at the bottom with clear space between them. */
+@media(max-width:640px){
+  .gd-sides .rp-list>li>.rp-card{min-height:112px;align-items:center}
+  .gd-sides .rp-list>li>.rp-card .rp-grade{align-self:start;margin-top:2px;font-size:23px}
+  .gd-sides .rp-list>li>button.rp-share{width:34px;height:34px;right:4px;bottom:12px}
+}
