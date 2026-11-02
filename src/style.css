@@ -5349,3 +5349,8 @@ a.starter-card{color:inherit;text-decoration:none}
 /* iPhone's system font is wider than the desktop one: a little tighter so TS% stays on the second row. */
 .sp-st p{gap:6px 8px!important}
 .sp-st span b{font-size:17px!important}
+
+/* Injury cards follow the performance cards: one-line rows, the face as tall as the text, the tier badge centred on the row. */
+.inj-row .rp-card .rp-game{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inj-row .rp-card{align-items:center}
+.inj-row .inj-badge{align-self:center}

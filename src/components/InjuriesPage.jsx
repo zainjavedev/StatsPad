@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { REFRESH, TIERS, loadInjuries, loadStatLines } from '../lib/injuries';
 import { TierIcon } from './InjuryMark';
+import { useFaceSize } from './RecentPerformances';
 import { InjuryRowsSkeleton } from './Skeletons';
 import { TEAMS, espnLogoUrl, nickname } from '../lib/teams';
 import { TeamLogo } from './TeamRail';
@@ -33,14 +34,14 @@ export const area = item => (item.area ? item.area.replace(/\b[a-z]/g, letter =>
 
 /* Laid out like the recent-performance cards: face with team badge, big numbers, the injury where the score would be. */
 export function Card({item, line, compact = false}) {
-  const tier = TIERS.find(entry => entry.key === item.tier);
+  const tier = TIERS.find(entry => entry.key === item.tier), [main, face] = useFaceSize();
   return <li className={`inj-row tier-${item.tier}`}>
-    <a className="rp-card" href={`/players/${item.slug}`}>
+    <a className="rp-card" style={face ? {'--face': `${face}px`} : undefined} href={`/players/${item.slug}`}>
       <span className="rp-face">{item.headshot ? <img src={item.headshot} alt="" loading="lazy"/> : <i/>}<img className="rp-team" src={espnLogoUrl(item.team)} alt={item.team}/></span>
-      <span className="rp-main">
+      <span className="rp-main" ref={main}>
         <span className="rp-top"><b>{short(item.name)}</b><small> · {back(item)}</small></span>
         {!compact && (line ? <span className="rp-trio"><span><b>{line.points.toFixed(1)}</b>pts</span><span><b>{line.rebounds.toFixed(1)}</b>reb</span><span><b>{line.assists.toFixed(1)}</b>ast</span></span> : <span className="rp-trio none">No NBA games on record</span>)}
-        <small className="rp-game">{area(item)}{!compact && line ? ` · ${line.games} GP, ${line.season === '2026-27' ? 'this season' : 'last season'}` : ''}</small>
+        <small className="rp-game">{area(item)}{!compact && line ? ` · ${line.games} GP${line.season === '2026-27' ? '' : ' last season'}` : ''}</small>
       </span>
       <span className="inj-badge" title={tier.label} role="img" aria-label={tier.label}><TierIcon tier={item.tier} size={22}/></span>
     </a>

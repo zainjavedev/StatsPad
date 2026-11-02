@@ -18,7 +18,7 @@ const codeOf = abbr => Object.keys(TEAMS).find(code => TEAMS[code].espn === Stri
 /* One performance card; used on Home and beside a player's game report. */
 /* Design rule: the photo is exactly as tall as the text beside it. The text block is measured and the face follows it,
    so a card with a wrapped name or a bigger font gets a bigger face instead of a gap. */
-const useFaceSize = () => {
+export const useFaceSize = () => {
   const main = useRef(null), [size, setSize] = useState(null);
   useLayoutEffect(() => {
     const node = main.current;
