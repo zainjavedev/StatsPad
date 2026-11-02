@@ -63,6 +63,7 @@ export default function PerfShare({line, onClose}) {
     filename={`${line.player.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${line.gameId}`} title={line.player.name}
     text={`${line.player.name}: ${trio(line.player.stats).map(([value, label]) => `${value} ${label}`).join(', ')} (${line.team} ${line.score})`}
     url={`${siteOrigin()}/games/${line.gameId}?player=${line.player.id}`}
+    revision={chart ? 'chart' : 'plain'}
     options={<button type="button" className="ss-chip" aria-pressed={chart} onClick={() => setChart(on => !on)}>Shot chart</button>}>
     {ref => <Poster ref={ref} line={line} box={box} chart={chart}/>}
   </ShareSheet>;

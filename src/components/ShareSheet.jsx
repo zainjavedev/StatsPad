@@ -29,7 +29,7 @@ const bake = (source, width, height) => {
 async function flattenSvgs(node) {
   const swaps = [], position = node.style.position;
   node.style.position = 'relative';
-  for (const svg of node.querySelectorAll('.vs-radar svg')) {
+  for (const svg of node.querySelectorAll('.vs-radar svg, svg.shot-chart')) {
     const box = svg.getBoundingClientRect(), scale = box.width / (svg.clientWidth || box.width) || 1;
     const width = svg.clientWidth || box.width / scale, height = svg.clientHeight || box.height / scale;
     const parent = svg.parentElement;
@@ -46,7 +46,7 @@ async function flattenSvgs(node) {
 }
 
 /* `width` is the saved picture's width in pixels; the poster is drawn at its CSS size and scaled up to it. */
-export default function ShareSheet({ready, failed, unavailable = 'This is not available yet.', onClose, options, filename, text, url, width = 1080, children}) {
+export default function ShareSheet({ready, failed, unavailable = 'This is not available yet.', onClose, options, revision, filename, text, url, width = 1080, children}) {
   const [note, setNote] = useState(''), [busy, setBusy] = useState(false);
   const poster = useRef(null), frame = useRef(null), built = useRef(null), [scale, setScale] = useState(1), [posterHeight, setPosterHeight] = useState(0);
 
@@ -93,19 +93,28 @@ export default function ShareSheet({ready, failed, unavailable = 'This is not av
     await inlineImages(node);
     const restore = await flattenSvgs(node);
     let made;
-    try { made = await toBlob(node, {pixelRatio: width / node.offsetWidth, backgroundColor: '#000000', ...(fontEmbedCSS ? {fontEmbedCSS} : {})}); } finally { restore(); }
+    const options = {pixelRatio: width / node.offsetWidth, backgroundColor: '#000000', ...(fontEmbedCSS ? {fontEmbedCSS} : {})};
+    /* Safari draws the images inside the capture only once they have been decoded in it, so its first picture comes out with blank
+       photos and charts. A throwaway first pass warms it up; the second is the real one. */
+    const webkit = /AppleWebKit/.test(navigator.userAgent) && !/Chrome|Chromium|Android/.test(navigator.userAgent);
+    try {
+      if (webkit) { await toBlob(node, options).catch(() => null); await toBlob(node, options).catch(() => null); }
+      made = await toBlob(node, options);
+    } finally { restore(); }
     if (!made) throw new Error('no image');
     return made;
   };
   /* The picture is made once, in the background as soon as the card is on screen, so Copy, Save and Share only hand over a finished
      file. That keeps the tap valid for the phone's share sheet, which iOS refuses after a few seconds of waiting. */
   const blob = () => (built.current ??= make().catch(error => { built.current = null; throw error; }));
+  /* When the card changes (the shot chart switched on or off), the picture made for the old card is thrown away and made again. */
   useEffect(() => {
     if (!ready) return undefined;
+    built.current = null;
     const timer = setTimeout(() => { blob().catch(() => {}); }, 450);
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready]);
+  }, [ready, revision]);
   const file = async () => new File([await blob()], `${filename}.png`, {type: 'image/png'});
   const save = async picture => {
     const anchor = document.createElement('a');
