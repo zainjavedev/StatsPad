@@ -4,6 +4,7 @@ import ShotChart from './ShotChart';
 import { loadBoxscore } from '../lib/boxscore';
 import { gradeTone, assistShotsOf, fgPct, fps, quarterStats, rating, shotsOf, tagsOf, total, tsPct } from '../lib/playerGame';
 import { trio } from '../lib/trio';
+import { useSeasonHigh } from '../lib/seasonHigh';
 import { siteOrigin } from '../lib/share';
 
 /* The photo maker behind the share icon on a performance card: a picture of the player's night (stats,
@@ -20,7 +21,8 @@ const Poster = forwardRef(function Poster({line, box, chart}, ref) {
   const all = total(quarters);
   const shots = useMemo(() => shotsOf(box.plays, id), [box, id]);
   const assists = useMemo(() => assistShotsOf(box.plays, id), [box, id]);
-  const s = player.stats, grade = rating(s), tags = tagsOf(all, s.MIN, {won: num(box.away.abbr === line.team ? box.away.score : box.home.score) > num(box.away.abbr === line.team ? box.home.score : box.away.score), margin: Math.abs(num(box.away.score) - num(box.home.score)), quarters, plays: box.plays, id, teamId: (box.away.abbr === line.team ? box.away : box.home).id, away: box.away.abbr === line.team, starter: player.starter});
+  const seasonHigh = useSeasonHigh(id, line.gameId, box.date);
+  const s = player.stats, grade = rating(s), tags = tagsOf(all, s.MIN, {won: num(box.away.abbr === line.team ? box.away.score : box.home.score) > num(box.away.abbr === line.team ? box.home.score : box.away.score), margin: Math.abs(num(box.away.score) - num(box.home.score)), quarters, plays: box.plays, id, teamId: (box.away.abbr === line.team ? box.away : box.home).id, away: box.away.abbr === line.team, starter: player.starter, seasonHigh});
   const own = line.team === box.away.abbr ? box.away : box.home, other = own === box.away ? box.home : box.away;
   const won = num(own.score) > num(other.score);
   const cell = (label, value) => <span key={label} className={label === '+/-' ? (num(value) > 0 ? 'pos' : num(value) < 0 ? 'neg' : '') : ''}><b>{value}</b>{label}</span>;

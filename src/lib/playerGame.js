@@ -75,6 +75,8 @@ function closedItOut(game) {
    The card shows the three rarest that apply. `game` is optional context: {won, margin, quarters, plays, id, teamId, away}. */
 const TAGS = [
   ['tripleDouble', 100, row => [row.PTS, row.REB, row.AST, row.STL, row.BLK].filter(value => value >= 10).length >= 3],
+  /* His most points this season, beating every earlier game (at least two of them). */
+  ['seasonHigh', 95, (row, mins, game) => Boolean(game?.seasonHigh && game.seasonHigh.games >= 2 && row.PTS > game.seasonHigh.points && row.PTS >= 15)],
   ['him', 96, (row, mins, game) => closedItOut(game)],
   ['forNoReason', 92, (row, mins, game) => game?.won === false && row.PTS >= 30],
   ['fiftyBurger', 99, row => row.PTS >= 50],
