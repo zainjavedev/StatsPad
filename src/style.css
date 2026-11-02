@@ -4863,7 +4863,7 @@ section.pg .pg-hero .pg-share{margin:0!important}
 .rp-wl.w{color:#5ee08a}.rp-wl.l{color:#ef8a5a}.rp-wl.live{color:#f0c54a;text-transform:uppercase}
 .rp-vs{margin:0 1px 0 4px;color:var(--text-3);font-weight:600}
 
-/* RULE: a card's photo is exactly as tall as the text beside it (name, numbers, game line), never taller or shorter.
+/* RULE: a card's photo is exactly as tall as the name and numbers beside it, never taller or shorter.
    PerfCard measures its text block and sets --face; the face column, photo and ring all follow it. */
 .rp-list>li>.rp-card[style*="--face"]{grid-template-columns:var(--face) minmax(0,1fr) auto!important}
 .rp-list>li>.rp-card[style*="--face"] .rp-face,.rp-list>li>.rp-card[style*="--face"] .rp-face>img:first-child,.rp-list>li>.rp-card[style*="--face"] .rp-face>i{width:var(--face)!important;height:var(--face)!important}
@@ -5457,3 +5457,16 @@ a.starter-card{color:inherit;text-decoration:none}
   .team-feeds .team-games .game-score{font-size:15px!important}
   .team-feeds .team-games .game-sep{font-size:12px!important;opacity:.6}
 }
+
+/* Performance cards on phones, in the proportions of the stat apps' mini cards: the face spans the name and the big numbers,
+   the game line sits under them, name 15px, numbers 32px with 15px units, grade 16px. */
+@media(max-width:640px){
+  .rp-list>li>.rp-card[style*="--face"]{align-items:start!important;padding:12px 2px!important;column-gap:12px!important}
+  .rp-list>li>.rp-card[style*="--face"] .rp-face{align-self:start}
+  .rp-list>li>.rp-card .rp-top{font-size:15px!important}.rp-list>li>.rp-card .rp-top small{font-size:14px!important}
+  .rp-list>li>.rp-card .rp-trio{font-size:clamp(12px,3.6vw,15px)!important;gap:0 12px!important;margin-top:2px}
+  .rp-list>li>.rp-card .rp-trio b{font-size:clamp(21px,6.9vw,32px)!important;margin-right:3px;line-height:1.05}
+  .rp-list>li>.rp-card .rp-game{margin-top:4px;font-size:13px!important}
+  .rp-list>li>.rp-card .rp-grade{font-size:16px!important}
+}
+@media(max-width:360px){.rp-list>li>.rp-card .rp-trio b{font-size:20px!important}.rp-list>li>.rp-card .rp-trio{gap:0 9px!important;font-size:11px!important}}

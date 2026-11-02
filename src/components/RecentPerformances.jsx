@@ -23,7 +23,11 @@ export const useFaceSize = () => {
   useLayoutEffect(() => {
     const node = main.current;
     if (!node || typeof ResizeObserver === 'undefined') return undefined;
-    const measure = () => setSize(Math.round(node.getBoundingClientRect().height));
+    /* The face matches the name and the numbers; the game line under them runs the full width, like the stat apps' cards. */
+    const measure = () => {
+      const top = node.querySelector('.rp-top'), trio = node.querySelector('.rp-trio');
+      setSize(top && trio ? Math.round(trio.getBoundingClientRect().bottom - top.getBoundingClientRect().top) : Math.round(node.getBoundingClientRect().height));
+    };
     measure();
     const watch = new ResizeObserver(measure);
     watch.observe(node);
