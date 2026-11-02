@@ -210,7 +210,7 @@ export default function PlayerBody({ entity, season, population, showCareer, onO
           return <div key={name} className="pf-stat">
             <strong>{f1(tile[1](enriched))}</strong>
             <span>{name}</span>
-            <small className={ranking && ranking.rank <= 10 ? 'top' : ''}>{ranking ? <>{ord(ranking.rank)}<i> of {ranking.total}</i></> : 'Too few attempts'}</small>
+            <small className={ranking && ranking.rank <= 10 ? 'top' : ''}>{ranking ? <>{ord(ranking.rank)}<i> of {ranking.total}</i></> : 'Few shots'}</small>
           </div>;
         })}
     </section>
