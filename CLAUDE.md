@@ -62,4 +62,4 @@ Follow `PRODUCT.md` and `DESIGN.md` if present. Mobile first, since many visitor
 - Do not add `Co-Authored-By: Claude ...`, `Claude-Session: ...`, or any other Claude/AI attribution lines to commit messages.
 - Do not add "Generated with Claude Code" attribution to pull request descriptions.
 - Commits should be authored as the repository owner (Zain Javed), not as Claude.
-- Ask before committing or pushing.
+- Commit and push to `master` right after every change, once lint passes and the change is checked. Do not wait to be asked.
