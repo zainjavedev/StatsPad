@@ -34,9 +34,10 @@ const plural = (count, word) => `${count} ${word}${count === 1 ? '' : 's'}`;
 const bucket = value => new Date(value.length === 10 ? `${value}T00:00:00Z` : `${value}:00Z`);
 const who = person => person.email || `${flag(person.country)} ${person.device ?? 'desktop'} · ${person.source?.name ?? 'Direct'}`.trim();
 
-/* No change is shown against an empty previous period: before logging began that just reads as "new". */
+/* No change is shown against an empty or tiny previous period: before logging began (or with a handful of visits) a percentage like
+   +5100% says nothing. */
 function Delta({now, before}) {
-  if (!before) return null;
+  if (!before || before < 10) return null;
   const change = Math.round(((now - before) / before) * 100);
   return <em className={`adm-delta ${change > 0 ? 'up' : change < 0 ? 'down' : ''}`}>{change > 0 ? '+' : ''}{change}%</em>;
 }
@@ -224,7 +225,7 @@ export default function AdminPage() {
     {error && <p className="adm-error">{error}</p>}
 
     <div className="adm-tiles">
-      <Tile label="Visitors" value={s.visitors} note={s.visitors_before ? <><Delta now={s.visitors} before={s.visitors_before}/> vs previous {range}</> : `${s.visitors_day ?? s.visitors} in the last 24h`}><Spark values={series.map(row => row.visitors)}/></Tile>
+      <Tile label="Visitors" value={s.visitors} note={s.visitors_before >= 10 ? <><Delta now={s.visitors} before={s.visitors_before}/> vs previous {range}</> : `${s.visitors_day ?? s.visitors} in the last 24h`}><Spark values={series.map(row => row.visitors)}/></Tile>
       <Tile label="Page views" value={s.views} note={<><Delta now={s.views} before={s.views_before}/> {s.visitors ? `${(s.views / s.visitors).toFixed(1)} per visitor` : range}</>}><Spark values={series.map(row => row.views)}/></Tile>
       <Tile label="From AI" value={ai} note={ai ? sources.filter(row => row.kind === 'ai').map(row => row.name).join(', ') : 'ChatGPT, Perplexity…'}/>
       <Tile label="Signed in" value={s.members} note={`of ${plural(s.accounts, 'account')}`}/>
