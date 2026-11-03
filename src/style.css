@@ -5470,3 +5470,11 @@ a.starter-card{color:inherit;text-decoration:none}
   .rp-list>li>.rp-card .rp-grade{font-size:16px!important}
 }
 @media(max-width:360px){.rp-list>li>.rp-card .rp-trio b{font-size:20px!important}.rp-list>li>.rp-card .rp-trio{gap:0 9px!important;font-size:11px!important}}
+/* Season switch on phones: room above the compare/share buttons, text centred in each pill. */
+@media(max-width:640px){
+  .pf-copy{row-gap:0!important}
+  .pf-copy .pf-actions{margin-top:10px!important}
+  .pf-copy .pf-first{margin-bottom:2px}
+  .pf-copy .season-pills.profile-season{display:inline-flex!important;align-items:center;gap:2px}
+  .pf-copy .season-pills.profile-season button{display:inline-flex!important;align-items:center;justify-content:center;min-height:30px!important;padding:0 12px!important;line-height:1!important}
+}
