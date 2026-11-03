@@ -41,40 +41,10 @@
     },
     {
       "entityType": "team",
-      "teamId": 1610612739,
-      "team": "CLE",
-      "playerName": "Cleveland Cavaliers",
-      "rank": 2,
-      "gamesPlayed": 6,
-      "position": "Team",
-      "stats": {
-        "points": 121,
-        "assists": 28.7,
-        "totalRebounds": 48.2,
-        "offensiveRebounds": 11.7,
-        "defensiveRebounds": 36.5,
-        "steals": 7.7,
-        "blocks": 6.5,
-        "turnovers": 14.8,
-        "personalFouls": 21.2,
-        "fieldGoalsMade": 43,
-        "fieldGoalsAttempted": 91,
-        "fieldGoalPercentage": 47.3,
-        "threePointersMade": 14.7,
-        "threePointersAttempted": 39.7,
-        "threePointPercentage": 37,
-        "freeThrowsMade": 20.3,
-        "freeThrowsAttempted": 26.3,
-        "freeThrowPercentage": 77.2,
-        "effectiveFieldGoalPercentage": 55.3
-      }
-    },
-    {
-      "entityType": "team",
       "teamId": 1610612745,
       "team": "HOU",
       "playerName": "Houston Rockets",
-      "rank": 3,
+      "rank": 2,
       "gamesPlayed": 7,
       "position": "Team",
       "stats": {
@@ -104,7 +74,7 @@
       "teamId": 1610612757,
       "team": "POR",
       "playerName": "Portland Trail Blazers",
-      "rank": 4,
+      "rank": 3,
       "gamesPlayed": 5,
       "position": "Team",
       "stats": {
@@ -134,7 +104,7 @@
       "teamId": 1610612747,
       "team": "LAL",
       "playerName": "Los Angeles Lakers",
-      "rank": 5,
+      "rank": 4,
       "gamesPlayed": 7,
       "position": "Team",
       "stats": {
@@ -164,7 +134,7 @@
       "teamId": 1610612750,
       "team": "MIN",
       "playerName": "Minnesota Timberwolves",
-      "rank": 6,
+      "rank": 5,
       "gamesPlayed": 7,
       "position": "Team",
       "stats": {
@@ -187,6 +157,36 @@
         "freeThrowsAttempted": 24.4,
         "freeThrowPercentage": 66.1,
         "effectiveFieldGoalPercentage": 55.7
+      }
+    },
+    {
+      "entityType": "team",
+      "teamId": 1610612739,
+      "team": "CLE",
+      "playerName": "Cleveland Cavaliers",
+      "rank": 6,
+      "gamesPlayed": 7,
+      "position": "Team",
+      "stats": {
+        "points": 119.7,
+        "assists": 29,
+        "totalRebounds": 47.9,
+        "offensiveRebounds": 11.6,
+        "defensiveRebounds": 36.3,
+        "steals": 7.6,
+        "blocks": 6,
+        "turnovers": 13.7,
+        "personalFouls": 20.9,
+        "fieldGoalsMade": 42.6,
+        "fieldGoalsAttempted": 90.9,
+        "fieldGoalPercentage": 46.9,
+        "threePointersMade": 15.1,
+        "threePointersAttempted": 41,
+        "threePointPercentage": 36.9,
+        "freeThrowsMade": 19.4,
+        "freeThrowsAttempted": 26,
+        "freeThrowPercentage": 74.7,
+        "effectiveFieldGoalPercentage": 55.2
       }
     },
     {
@@ -761,10 +761,40 @@
     },
     {
       "entityType": "team",
+      "teamId": 1610612760,
+      "team": "OKC",
+      "playerName": "Oklahoma City Thunder",
+      "rank": 26,
+      "gamesPlayed": 7,
+      "position": "Team",
+      "stats": {
+        "points": 108,
+        "assists": 21.1,
+        "totalRebounds": 46.6,
+        "offensiveRebounds": 12.9,
+        "defensiveRebounds": 33.7,
+        "steals": 7.9,
+        "blocks": 6,
+        "turnovers": 12.7,
+        "personalFouls": 19.7,
+        "fieldGoalsMade": 40,
+        "fieldGoalsAttempted": 91.4,
+        "fieldGoalPercentage": 43.8,
+        "threePointersMade": 10.3,
+        "threePointersAttempted": 32.1,
+        "threePointPercentage": 32,
+        "freeThrowsMade": 17.7,
+        "freeThrowsAttempted": 20.1,
+        "freeThrowPercentage": 87.9,
+        "effectiveFieldGoalPercentage": 49.4
+      }
+    },
+    {
+      "entityType": "team",
       "teamId": 1610612753,
       "team": "ORL",
       "playerName": "Orlando Magic",
-      "rank": 26,
+      "rank": 27,
       "gamesPlayed": 6,
       "position": "Team",
       "stats": {
@@ -794,7 +824,7 @@
       "teamId": 1610612752,
       "team": "NYK",
       "playerName": "New York Knicks",
-      "rank": 27,
+      "rank": 28,
       "gamesPlayed": 6,
       "position": "Team",
       "stats": {
@@ -824,7 +854,7 @@
       "teamId": 1610612746,
       "team": "LAC",
       "playerName": "LA Clippers",
-      "rank": 28,
+      "rank": 29,
       "gamesPlayed": 6,
       "position": "Team",
       "stats": {
@@ -847,36 +877,6 @@
         "freeThrowsAttempted": 23.2,
         "freeThrowPercentage": 82,
         "effectiveFieldGoalPercentage": 52.9
-      }
-    },
-    {
-      "entityType": "team",
-      "teamId": 1610612760,
-      "team": "OKC",
-      "playerName": "Oklahoma City Thunder",
-      "rank": 29,
-      "gamesPlayed": 6,
-      "position": "Team",
-      "stats": {
-        "points": 106.5,
-        "assists": 21.7,
-        "totalRebounds": 45.3,
-        "offensiveRebounds": 12.5,
-        "defensiveRebounds": 32.8,
-        "steals": 8.3,
-        "blocks": 6.3,
-        "turnovers": 13.5,
-        "personalFouls": 19.8,
-        "fieldGoalsMade": 39.7,
-        "fieldGoalsAttempted": 90.3,
-        "fieldGoalPercentage": 43.9,
-        "threePointersMade": 10,
-        "threePointersAttempted": 32.3,
-        "threePointPercentage": 30.9,
-        "freeThrowsMade": 17.2,
-        "freeThrowsAttempted": 19.7,
-        "freeThrowPercentage": 87.3,
-        "effectiveFieldGoalPercentage": 49.4
       }
     },
     {
