@@ -5478,3 +5478,30 @@ a.starter-card{color:inherit;text-decoration:none}
   .pf-copy .season-pills.profile-season{display:inline-flex!important;align-items:center;gap:2px}
   .pf-copy .season-pills.profile-season button{display:inline-flex!important;align-items:center;justify-content:center;min-height:30px!important;padding:0 12px!important;line-height:1!important}
 }
+
+/* Story poster v2 (Post kit): the whole card wears the team colour, the faces fill the left half top to bottom, the name leads,
+   one huge number with its line beside it, a stat strip with dividers, and the logo with the site in the footer. 800x450, saved at 1600x900. */
+.st.st2{position:relative;padding:0;border:0;border-radius:18px;background:radial-gradient(120% 120% at 0% 100%,color-mix(in srgb,var(--team) 85%,#fff 6%) 0,transparent 60%),linear-gradient(135deg,color-mix(in srgb,var(--team) 70%,#05060a) 0%,#07080c 78%);isolation:isolate}
+.st2 .st-watermark{position:absolute;right:-18px;top:-46px;z-index:-1;font-size:360px;font-weight:900;line-height:1;letter-spacing:-.06em;color:rgb(255 255 255 / .04)}
+.st2 .st-body{grid-template-columns:380px minmax(0,1fr)}
+.st2 .st-art{background:none;align-items:flex-end;padding:0;overflow:visible}
+.st2 .st-face{width:440px;max-width:none;margin:0 -30px -2px -30px;filter:drop-shadow(0 18px 30px rgb(0 0 0 / .45))}
+.st2 .st-art.is-duo{padding-left:0}
+.st2 .st-face.is-pair{width:300px;margin:0 -60px -2px 0}
+.st2 .st-face.is-pair+.st-face.is-pair{margin:0 0 -2px -40px;position:relative}
+.st2 .st-copy{gap:0;padding:30px 34px 18px 8px;justify-content:center}
+.st2 .st-kicker{padding:0;background:none;border-radius:0;color:color-mix(in srgb,var(--team) 45%,#fff);font-size:13px;letter-spacing:.14em}
+.st2 .st-name{margin:8px 0 0;font-size:34px;line-height:1.05;letter-spacing:-.025em}
+.st2 .st-bigline{display:flex;align-items:flex-end;gap:14px;margin-top:14px}
+.st2 .st-big{margin:0;font-size:120px;line-height:.82;letter-spacing:-.05em}
+.st2 .st-headline{max-width:190px;padding-bottom:8px;font-size:17px;line-height:1.25;color:rgb(255 255 255 / .78)}
+.st2 .st-stats{gap:0;margin-top:26px;border-top:1px solid rgb(255 255 255 / .16);padding-top:14px}
+.st2 .st-stats>span{padding:0 22px;border-left:1px solid rgb(255 255 255 / .16);color:rgb(255 255 255 / .6)}
+.st2 .st-stats>span:first-child{padding-left:0;border-left:0}
+.st2 .st-stats b{font-size:28px}
+.st2 .st-foot{position:relative;z-index:1;gap:10px;justify-content:flex-start;margin:0;padding:12px 26px;border-top:0;background:rgb(0 0 0 / .35);color:rgb(255 255 255 / .6)}
+.st2 .st-foot img{width:22px;height:22px;object-fit:contain}
+.st2 .st-foot span{margin-left:auto}
+.st2 .st-face.is-pair{width:330px;margin:0 -80px -2px -10px}
+.st2 .st-face.is-pair+.st-face.is-pair{margin:0 -20px -2px -50px}
+.st2 .st-kicker{color:rgb(255 255 255 / .62)}
