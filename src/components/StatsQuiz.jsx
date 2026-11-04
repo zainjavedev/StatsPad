@@ -13,7 +13,7 @@ import { SignInBar, goSignIn } from './PlayGame';
    on this device until every question has been seen. */
 
 const BEST = 'statspad-quiz-best', SEEN = 'statspad-quiz-seen';
-const face = id => `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${id}.png&w=260&h=190`;
+const face = id => `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${id}.png&w=520&h=380`;
 const readBest = () => { try { return Number(localStorage.getItem(BEST)) || 0; } catch { return 0; } };
 const readSeen = () => { try { return new Set(JSON.parse(localStorage.getItem(SEEN)) || []); } catch { return new Set(); } };
 const writeSeen = seen => { try { localStorage.setItem(SEEN, JSON.stringify([...seen].slice(-1500))); } catch { /* private mode */ } };

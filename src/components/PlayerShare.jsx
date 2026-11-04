@@ -3,7 +3,7 @@ import ShareSheet from './ShareSheet';
 import Radar from './Radar';
 import { radarAxes, teamHex } from '../lib/radarAxes';
 import { onDark, siteOrigin } from '../lib/share';
-import { teamCodeOf, espnLogoUrl, TEAMS, espnHeadshotUrl } from '../lib/teams';
+import { teamCodeOf, espnLogoUrl, TEAMS, espnHeadshotLarge } from '../lib/teams';
 import { playerUrl, teamUrl } from '../lib/routes';
 
 /* The picture behind the share button on a player's profile: the performance-card header with his season
@@ -11,7 +11,7 @@ import { playerUrl, teamUrl } from '../lib/routes';
    in place of the face and the team line (no minutes). */
 
 const f1 = value => Number(value || 0).toFixed(1);
-const headshot = player => { const id = (/^espn-(\d+)$/.exec(player.playerId ?? '') || [])[1]; return id ? espnHeadshotUrl(id) : null; };
+const headshot = player => { const id = (/^espn-(\d+)$/.exec(player.playerId ?? '') || [])[1]; return id ? espnHeadshotLarge(id) : null; };
 const LINE = [
   ['MPG', p => p.minutesPerGame], ['SPG', p => p.stats.steals], ['BPG', p => p.stats.blocks], ['TO', p => p.stats.turnovers],
   ['FG%', p => p.stats.fieldGoalPercentage], ['3P%', p => p.stats.threePointPercentage], ['FT%', p => p.stats.freeThrowPercentage], ['TS%', p => p.trueShooting],

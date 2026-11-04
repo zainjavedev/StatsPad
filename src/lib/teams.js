@@ -45,6 +45,9 @@ export const slimEspn = (url, width = 260, height = 190) => {
   return match ? `https://a.espncdn.com/combiner/i?img=${match[1]}&w=${width}&h=${height}` : url;
 };
 export const espnHeadshotUrl = id => slimEspn(`https://a.espncdn.com/i/headshots/nba/players/full/${id}.png`);
+/* The original 1040x760 file, for a photo shown big (the player page hero) or drawn into a share picture, where the small cut blurs.
+   It is the lighter download at that size too: ESPN's resizer re-encodes it to about four times the bytes. */
+export const espnHeadshotLarge = id => `https://a.espncdn.com/i/headshots/nba/players/full/${id}.png`;
 export const espnLogoUrl = code => slimEspn(`https://a.espncdn.com/i/teamlogos/nba/500/${TEAMS[code].espn}.png`, 160, 160);
 export const logoUrl = code => `https://cdn.nba.com/logos/nba/${TEAMS[code].id}/global/L/logo.svg`;
 

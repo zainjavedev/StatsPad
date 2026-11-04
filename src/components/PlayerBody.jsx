@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { BarChart3, Share2 } from 'lucide-react';
 import PlayerShare from './PlayerShare';
-import { TEAMS, teamCodeOf, espnLogoUrl, espnHeadshotUrl } from '../lib/teams';
+import { TEAMS, teamCodeOf, espnLogoUrl, espnHeadshotUrl, espnHeadshotLarge } from '../lib/teams';
 import { slugify } from '../lib/routes';
 import { careerOf, liveRow, seasonsOf, tsOf } from '../lib/career';
 import { pretty } from '../lib/season';
@@ -82,7 +82,8 @@ function RecentGames({ lines }) {
   </section>;
 }
 
-const espnPhoto = player => { const id = (/^espn-(\d+)$/.exec(player.playerId ?? '') || [])[1]; return id ? espnHeadshotUrl(id) : null; };
+const espnId = player => (/^espn-(\d+)$/.exec(player.playerId ?? '') || [])[1];
+const espnPhoto = player => { const id = espnId(player); return id ? espnHeadshotUrl(id) : null; };
 const teamHex = player => TEAMS[teamCodeOf(player.team)]?.color || '#8a8a8a';
 
 const SEASON_LINE = ['PPG', 'RPG', 'APG', 'SPG', 'BPG', 'MPG', 'FG%', '3P%', 'FT%', 'TS%'];
@@ -202,7 +203,7 @@ export default function PlayerBody({ entity, season, population, showCareer, onO
       {pool.length > 10 && <div className="pf-radar" aria-label={`${entity.playerName} skill radar`}>
         <Radar axes={radarAxes(enriched, enriched, pool).map(axis => ({ ...axis, sides: [axis.sides[0]] }))} names={[entity.playerName]} colors={['#ffffff']}/>
       </div>}
-      {espnPhoto(entity) && <img className="pf-photo" src={espnPhoto(entity)} alt=""/>}
+      {espnPhoto(entity) && <img className="pf-photo" src={espnHeadshotLarge(espnId(entity))} alt=""/>}
     </div>
     <section className="pf-stats-wrap" aria-label={`${season ? pretty(season) : 'Season'} per-game stats`}>
       {SEASON_LINE.map(name => {
