@@ -141,11 +141,13 @@ function rankAsOf(day) {
   const meanOf = (list, get) => (list.length ? list.reduce((sum, row) => sum + get(row) / row.games, 0) / list.length : 0);
   const rank = list => {
     const gsPrior = meanOf(list, row => row.gs);
-    return list.map(row => {
+    const ranked = list.map(row => {
       /* The rating is per-game game score alone, pulled toward the pool's average by six games' worth. */
       const gs = (row.gs + WEIGHT * gsPrior) / (row.games + WEIGHT);
       return {...row, rate: gs};
     }).sort((a, b) => b.rate - a.rate || a.name.localeCompare(b.name));
+    ranked.prior = gsPrior;
+    return ranked;
   };
   const mvp = rank(eligible);
   /* Rookies play fewer minutes, so they only need a short rotation role, but they still have to have played most of
@@ -155,7 +157,7 @@ function rankAsOf(day) {
   /* Every other first-year player who has played comes after the ranked ones, ordered the same way, so the rookie page lists them all. */
   const ranked = new Set(firstYear.map(row => row.id));
   const others = rank([...byPlayer.values()].filter(row => (rosterInfo.get(row.id)?.exp === 0 || rosterInfo.get(row.id)?.exp === '0') && !ranked.has(row.id)));
-  return {mvp, rookies: [...rookies, ...others], qualifiedRookies: rookies.length};
+  return {mvp, rookies: [...rookies, ...others], qualifiedRookies: rookies.length, rookiePrior: rookies.prior};
 }
 const latest = days.at(-1), before = days.length > 1 ? days.at(-2) : null;
 if (latest) {
@@ -172,7 +174,11 @@ if (latest) {
   };
   /* The MVP ladder lists 30; the rookie ladder lists every rookie who has played, with a flag for the ones who have not yet met the games and minutes bar. */
   const top = (list, thenList, size = list.length, qualifiedCount = list.length) => { list.qualifiedCount = qualifiedCount; return list.slice(0, size).map((row, index) => entry(row, index + 1, list, thenList)); };
-  const out = {season: '2026-27', updated: new Date().toISOString().slice(0, 10), through: latest, compared: before, mvp: top(now.mvp, then?.mvp, 30), rookie: top(now.rookies, then?.rookies, now.rookies.length, now.qualifiedRookies)};
+  /* Raw season totals for the contenders, so the site can re-rank the ladders live while games are on (src/lib/liveLadder.js):
+     the top 80 on the MVP side, so someone just outside the 30 can climb in on a big night, and every qualified rookie. */
+  const pool = (list, size) => ({prior: round(list.prior ?? 0, 3), rows: list.slice(0, size).map(row => ({id: row.id, name: row.name, team: row.code, games: row.games, min: round(row.min, 1), gs: round(row.gs, 2), pts: row.pts, reb: row.reb, ast: row.ast, fgm: row.fgm, fga: row.fga, ftm: row.ftm, fta: row.fta}))});
+  const out = {season: '2026-27', updated: new Date().toISOString().slice(0, 10), through: latest, compared: before, mvp: top(now.mvp, then?.mvp, 30), rookie: top(now.rookies, then?.rookies, now.rookies.length, now.qualifiedRookies),
+    live: {weight: 6, mvp: pool(now.mvp, 80), rookie: pool(Object.assign(now.rookies.slice(0, now.qualifiedRookies), {prior: now.rookiePrior}), now.qualifiedRookies)}};
   fs.writeFileSync(`${dir}/ladders.json`, `${JSON.stringify(out)}\n`);
   /* The last three game days, enough for the home page's six cards with room to spare. */
   const recentDays = new Set([...new Set(bestLines.map(line => line.day))].sort().slice(-3));

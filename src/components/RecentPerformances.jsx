@@ -36,12 +36,13 @@ export const useFaceSize = () => {
   return [main, size];
 };
 
-export function PerfCard({line, onPick, showDate = true}) {
+export function PerfCard({line, onPick, showDate = true, rank}) {
   const [sharing, setSharing] = useState(false), [main, face] = useFaceSize();
   const s = line.player.stats, code = codeOf(line.team), oppCode = codeOf(line.opp);
   const row = {PTS: num(s.PTS), REB: num(s.REB), AST: num(s.AST), STL: num(s.STL), BLK: num(s.BLK), TO: num(s.TO)};
   return <>
-    <a className="rp-card" style={face ? {'--face': `${face}px`} : undefined} href={`/games/${line.gameId}?player=${line.player.id}`} onClick={onPick ? event => { event.preventDefault(); onPick(line.player.id); } : undefined}>
+    <a className={`rp-card${rank ? ' has-rank' : ''}`} style={face ? {'--face': `${face}px`} : undefined} href={`/games/${line.gameId}?player=${line.player.id}`} onClick={onPick ? event => { event.preventDefault(); onPick(line.player.id); } : undefined}>
+      {rank && <b className="ld-rank">{rank}</b>}
       <span className="rp-face">{line.player.photo ? <img src={smallHeadshot(line.player.photo)} alt="" loading="lazy" decoding="async"/> : <i/>}{code && <img className="rp-team" src={espnLogoUrl(code)} alt=""/>}</span>
       <span className="rp-main" ref={main}>
         <span className="rp-top"><b>{short(line.player.name)}</b><small> · {fps(row)} fps{showDate && line.date ? ` · ${day.format(line.date)}` : ''}</small></span>
@@ -103,8 +104,10 @@ export default function RecentPerformances({results}) {
   }, [results, saved]);
   return <section className="front-panel recent-perf">
     <div className="front-panel-head"><h2>Recent performances</h2><a className="front-more" href="/top-performances">All performances <ArrowRight size={14}/></a></div>
-    {lines === null ? <PerfSkeleton count={LIMIT}/> : lines.length === 0 ? <p className="rp-empty">No finished games yet. Performances show up here once games end.</p> : <ul className="rp-list">{lines.map(line => {
-      return <li key={`${line.gameId}-${line.player.id}`}><PerfCard line={line}/></li>;
+    {/* Laid out like the ladders below it: ranked on the grade, the best three as team-colour cards. */}
+    {lines === null ? <PerfSkeleton count={LIMIT}/> : lines.length === 0 ? <p className="rp-empty">No finished games yet. Performances show up here once games end.</p> : <ul className="rp-list rp-ranked">{[...lines].sort((a, b) => rating(b.player.stats) - rating(a.player.stats)).map((line, index) => {
+      const code = codeOf(line.team);
+      return <li key={`${line.gameId}-${line.player.id}`} className={index < 3 ? 'top3' : undefined} style={{'--tc': TEAMS[code]?.color || '#8a8a8a'}}><PerfCard line={line} rank={index + 1}/></li>;
     })}</ul>}
   </section>;
 }

@@ -5,33 +5,26 @@ import { CURRENT } from '../lib/season';
 import { navigate } from '../lib/nav';
 import { playerUrl } from '../lib/routes';
 import { TEAMS, espnLogoUrl } from '../lib/teams';
+import { useLiveLadders } from '../lib/liveLadder';
+import { LiveBadge, Move, Tonight } from './LadderLive';
 
 /* The MVP and rookie ladders, as performance-style cards with per-game averages: the six best players on per-game score, each with how far he moved since the night
-   before (scripts/build-regular-box-stats.mjs ranks the league as of every game day). */
+   before (scripts/build-regular-box-stats.mjs ranks the league as of every game day). While games are on they are re-ranked live (src/lib/liveLadder.js). */
 
 /* false when the file is missing, so the skeleton (shown while the answer is null) goes away instead of staying. */
 const loadLadders = () => fetch(`/data/${CURRENT}/ladders.json`).then(response => (response.ok ? response.json() : false)).catch(() => false);
 const photo = id => `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${id}.png&w=260&h=190`;
 
-/* How far a player moved since the night before: an arrow and the places, or NEW, or a dash. */
-function Move({value}) {
-  if (value === undefined) return null;
-  if (value === null) return <span className="ld-move new">New</span>;
-  if (value === 0) return <span className="ld-move flat" title="No change">–</span>;
-  const up = value > 0, places = Math.abs(value);
-  return <span className={`ld-move ${up ? 'up' : 'down'}`} title={`${up ? 'Up' : 'Down'} ${places} ${places === 1 ? 'place' : 'places'}`}>{up ? '▲' : '▼'} {places}</span>;
-}
-
-function Ladder({title, rows, href}) {
+function Ladder({title, rows, href, live}) {
   return <section className="front-panel ladder" aria-label={title}>
-    <div className="front-panel-head"><h2>{title}</h2><a className="front-more" href={href}>Full ladder <ArrowRight size={14}/></a></div>
+    <div className="front-panel-head"><h2>{title} <LiveBadge live={live}/></h2><a className="front-more" href={href}>Full ladder <ArrowRight size={14}/></a></div>
     <ol className="ld-list">
       {rows.filter(row => row.qualified !== false).slice(0, 6).map((row, index) => <li key={row.playerId} className={index < 3 ? 'top3' : undefined} style={{'--tc': TEAMS[row.team]?.color || '#8a8a8a'}}>
         <button className="ld-row ldc" onClick={() => navigate(playerUrl(row.name))}>
           <b className="ld-rank">{row.rank}</b>
           <span className="rp-face"><img src={photo(row.espnId)} alt="" loading="lazy"/>{TEAMS[row.team] && <img className="rp-team" src={espnLogoUrl(row.team)} alt=""/>}</span>
           <span className="rp-main">
-            <span className="rp-top"><b>{row.name}</b><small> · {row.team} · avg</small></span>
+            <span className="rp-top"><b>{row.name}</b><small> · {row.team} · avg</small><Tonight line={row.tonight}/></span>
             <span className="rp-trio"><span><b>{row.pts}</b>pts</span><span><b>{row.reb}</b>reb</span><span><b>{row.ast}</b>ast</span></span>
           </span>
           <Move value={row.move}/>
@@ -50,11 +43,11 @@ function LadderSkeleton() {
 }
 
 export default function Ladders() {
-  const data = useFeed(loadLadders);
+  const data = useFeed(loadLadders), live = useLiveLadders(data || null);
   if (data === null) return <LadderSkeleton/>;
   if (!data || !data.mvp?.length) return null;
   return <div className="ladder-pair">
-    <Ladder title="MVP ladder" rows={data.mvp} href="/ladders/mvp"/>
-    {data.rookie?.length > 0 && <Ladder title="ROTY ladder" rows={data.rookie} href="/ladders/roty"/>}
+    <Ladder title="MVP ladder" rows={live?.mvp ?? data.mvp} href="/ladders/mvp" live={live?.mvp && live}/>
+    {data.rookie?.length > 0 && <Ladder title="ROTY ladder" rows={live?.rookie ?? data.rookie} href="/ladders/roty" live={live?.rookie && live}/>}
   </div>;
 }
