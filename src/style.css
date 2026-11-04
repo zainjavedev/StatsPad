@@ -5528,3 +5528,6 @@ a.starter-card{color:inherit;text-decoration:none}
 .rp-ranked>li.top3>.rp-card .rp-top{font-size:16px}
 .rp-ranked>li.top3 .rp-share{right:14px;bottom:14px;background:transparent}
 @media(max-width:520px){.rp-ranked>li>.rp-card.has-rank{grid-template-columns:18px var(--face,44px) minmax(0,1fr) auto!important;gap:10px}.rp-ranked>li.top3>.rp-card.has-rank{grid-template-columns:22px var(--face,60px) minmax(0,1fr) auto!important;gap:12px;padding:14px 12px}.rp-ranked>li.top3 .ld-rank{font-size:21px}}
+
+/* Player hero on phones: the photo fills the card top to bottom (cropped at the shoulders) instead of sitting small in the corner. */
+@media(max-width:640px){.pf-photo{top:0!important;bottom:0!important;height:100%!important;width:44%!important;max-width:44%!important;object-fit:cover!important;object-position:center top!important}}
