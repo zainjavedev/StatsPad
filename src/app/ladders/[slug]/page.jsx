@@ -21,7 +21,7 @@ export default function Ladder({params}) {
         <h2 className="ldp-h2">{ladder.name} ladder: {ladder.key === 'mvp' ? `top ${rows.length}` : `all ${rows.length} rookies`}</h2>
         <LadderLive rows={rows} ladderKey={ladder.key}/>
       </section>
-      <p className="lu-links"><a href="/ladders">All award ladders</a> · <a href="/ladders/mvp">MVP ladder</a> · <a href="/ladders/roty">Rookie of the Year ladder</a> · <a href="/stats/points">Stat leaders</a> · <a href="/scores">Fixtures</a> · <a href="/standings">Standings</a></p>
+      <p className="lu-links"><a href="/ladders">All award ladders</a> · <a href="/ladders/mvp">MVP ladder</a> · <a href="/ladders/roty">Rookie of the Year ladder</a> · <a href="/stats/points">Stat leaders</a> · <a href="/fixtures">Fixtures</a> · <a href="/standings">Standings</a></p>
     </main>
   </BlogShell>;
 }

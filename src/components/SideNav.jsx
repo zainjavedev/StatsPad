@@ -10,7 +10,7 @@ import { gameUrl, teamUrl } from '../lib/routes';
    Labels from 1280px with tonight's games and the visitor's teams under the sections; icons alone from 900px.
    Phones keep the bottom tabs. */
 const GROUPS = [
-  [null, [['home', '/', 'Home', HomeGlyph], ['scores', '/scores', 'Fixtures', FixturesGlyph], ['performances', '/top-performances', 'Performances', PerformancesGlyph], ['leaders', '/leaders', 'Leaders', LeadersGlyph], ['ladders', '/ladders', 'Ladders', LaddersGlyph], ['standings', '/standings', 'Standings', StandingsGlyph]]],
+  [null, [['home', '/', 'Home', HomeGlyph], ['scores', '/fixtures', 'Fixtures', FixturesGlyph], ['performances', '/performances', 'Performances', PerformancesGlyph], ['leaders', '/leaders', 'Leaders', LeadersGlyph], ['ladders', '/ladders', 'Ladders', LaddersGlyph], ['standings', '/standings', 'Standings', StandingsGlyph]]],
   ['Explore', [['compare', '/compare', 'Compare', CompareGlyph], ['teams', '/lineups', 'Teams', TeamsGlyph]]],
   ['More', [['play', '/play', 'Games', GamesGlyph]]],
 ];
@@ -67,7 +67,7 @@ export default function SideNav({current, go}) {
     {games.length > 0 && <section className="side-group side-tonight" aria-label="Today's games">
       <span className="side-head">{live ? <><i className="side-pulse"/>Live now</> : 'Today'}</span>
       {[...games].sort((a, b) => (a.state === 'in' ? 0 : 1) - (b.state === 'in' ? 0 : 1)).slice(0, 5).map(game => <Game key={game.id} game={game}/>)}
-      {games.length > 5 && <a className="side-link side-all" href="/scores">All {games.length} games</a>}
+      {games.length > 5 && <a className="side-link side-all" href="/fixtures">All {games.length} games</a>}
     </section>}
     <section className="side-group side-teams" aria-label="Your teams">
       <span className="side-head">Your teams</span>

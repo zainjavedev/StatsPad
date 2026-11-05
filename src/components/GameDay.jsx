@@ -5,7 +5,7 @@ import { TEAMS, espnLogoUrl, nickname } from '../lib/teams';
 import { gameUrl, playerUrl } from '../lib/routes';
 import { useFavorites } from '../lib/favorites';
 
-/* Fixtures (/scores; /schedule and /fixtures redirect here): a strip of every game day, then that day's games as flat rows
+/* Fixtures (/fixtures; /scores and /schedule redirect here): a strip of every game day, then that day's games as flat rows
    (both teams with logo and record, the score with the winner marked, the status: final, the live clock, or tip-off and TV,
    and each side's best line once the game has started). The day's games come from the schedule file and ESPN's scoreboard
    for that date is laid over them, so results and live scores are always current. It opens on today once the first game

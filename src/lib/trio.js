@@ -5,6 +5,16 @@ const num = value => Number(String(value ?? '').replace('+', '')) || 0;
    blocks, and a quiet night of three steals does not push a real line out. Shooting only counts with enough attempts, and is judged against 65% so an ordinary shooting night does not crowd out a real number.
    The two that follow points keep the usual order (rebounds, assists...). `must` (a label like 'blk') is always one of
    them, for a list sorted on that stat. */
+/* Numbers a card only shows when a list is sorted on them (turnovers, attempts, minutes...), as [value, label]. */
+const pair = (value, part) => Number(String(value ?? '0-0').split('-')[part]) || 0;
+const share = (made, tried) => (tried ? `${Math.round(made / tried * 100)}%` : null);
+const EXTRA = {
+  to: s => num(s.TO), pf: s => num(s.PF), min: s => num(s.MIN), oreb: s => num(s.OREB), dreb: s => num(s.DREB),
+  fgm: s => pair(s.FG, 0), fga: s => pair(s.FG, 1), '3pa': s => pair(s['3PT'], 1), ftm: s => pair(s.FT, 0), fta: s => pair(s.FT, 1),
+  '3p': s => share(pair(s['3PT'], 0), pair(s['3PT'], 1)), ft: s => share(pair(s.FT, 0), pair(s.FT, 1)),
+};
+const extra = (stats, label) => { const value = EXTRA[label]?.(stats); return value === undefined || value === null ? null : [value, label, 0]; };
+
 export function trio(stats, must) {
   const [fgm, fga] = String(stats.FG ?? '0-0').split('-').map(Number), three = Number(String(stats['3PT'] ?? '0-0').split('-')[0]);
   const all = [
@@ -15,7 +25,7 @@ export function trio(stats, must) {
   const [points, ...rest] = all;
   const best = rest.filter(item => item[2] > 0).sort((a, b) => b[2] - a[2]).slice(0, 2);
   for (const fallback of rest.slice(0, 2)) if (best.length < 2 && !best.includes(fallback)) best.push(fallback);
-  const wanted = rest.find(item => item[1] === must);
+  const wanted = rest.find(item => item[1] === must) ?? extra(stats, must);
   if (wanted && !best.includes(wanted)) best.splice(1, 1, wanted);
   return [points, ...best.sort((a, b) => all.indexOf(a) - all.indexOf(b))].map(([value, label]) => [value, label]);
 }

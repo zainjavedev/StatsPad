@@ -104,7 +104,7 @@ export default function RecentPerformances({results}) {
     return () => { live = false; };
   }, [results, saved]);
   return <section className="front-panel recent-perf">
-    <div className="front-panel-head"><h2>Recent performances</h2><a className="front-more" href="/top-performances">All performances <ArrowRight size={14}/></a></div>
+    <div className="front-panel-head"><h2>Recent performances</h2><a className="front-more" href="/performances">All performances <ArrowRight size={14}/></a></div>
     {/* Laid out like the ladders below it: ranked on the grade, the best three as team-colour cards. */}
     {lines === null ? <PerfSkeleton count={LIMIT}/> : lines.length === 0 ? <p className="rp-empty">No finished games yet. Performances show up here once games end.</p> : <ul className="rp-list rp-ranked">{[...lines].sort((a, b) => rating(b.player.stats) - rating(a.player.stats)).map((line, index) => {
       const code = codeOf(line.team);

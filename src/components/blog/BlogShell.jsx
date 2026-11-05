@@ -10,9 +10,9 @@ import SiteSearch from '../SiteSearch';
 
 /* The same banner, left menu and bottom bar the stats app wears, as plain links so the page stays a server page.
    SECTION is the left-menu item a page lights up. */
-const SECTION = {'/': 'home', '/leaders': 'leaders', '/ladders': 'ladders', '/top-performances': 'performances', '/scores': 'scores', '/compare': 'compare', '/lineups': 'teams', '/play': 'play', '/blog': 'blog'};
+const SECTION = {'/': 'home', '/leaders': 'leaders', '/ladders': 'ladders', '/performances': 'performances', '/fixtures': 'scores', '/compare': 'compare', '/lineups': 'teams', '/play': 'play', '/blog': 'blog'};
 
-const TABS = [['/', 'Home', HomeGlyph], ['/leaders', 'Leaders', LeadersGlyph], ['/scores', 'Fixtures', FixturesGlyph], ['/compare', 'Compare', CompareGlyph], ['/play', 'Games', GamesGlyph]];
+const TABS = [['/', 'Home', HomeGlyph], ['/leaders', 'Leaders', LeadersGlyph], ['/fixtures', 'Fixtures', FixturesGlyph], ['/compare', 'Compare', CompareGlyph], ['/play', 'Games', GamesGlyph]];
 
 export default function BlogShell({children, active = '/blog', className = '', tabs = true}) {
   return <div className={`blog ${className}`}>

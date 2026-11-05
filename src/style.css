@@ -3412,7 +3412,7 @@ a.lc:hover,a.lc:focus-visible{border-color:var(--text-3);transform:translateY(-2
 @media(max-width:520px){.ldp-right{gap:8px}.ldp-score b{font-size:20px}.ldp-score small{display:none}.ldp-right .ld-move{min-width:40px;padding:4px 7px;font-size:12px}.ladder .ld-list li.top3 .ldp-score b{font-size:24px}}
 
 
-/* Scorecards on /scores: two logos and the score, each half tinted with its team's colour. */
+/* Scorecards on /fixtures: two logos and the score, each half tinted with its team's colour. */
 .sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
 /* Loading placeholders for the home ladders, the game page, and the team compare lineups. */
@@ -4533,7 +4533,18 @@ a.starter-card{color:inherit;text-decoration:none}
 
 /* Performances page (PerformancesList): night picker and sort chips, then the home page's ranked cards, two columns wide. */
 .perf-page{max-width:var(--page)}
-.pfl-controls{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin:8px 0 10px}
+.pfl-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px;margin:8px 0 10px}
+.pfl-dir{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:var(--ink-1);color:var(--text-1);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+@media(hover:hover){.pfl-dir:hover{border-color:var(--text-3)}}
+/* Sort row plus the More stats panel, which drops over the list instead of pushing it down. */
+.pfl-bar{position:relative;margin-bottom:10px}
+.pfl-sorts .pfl-more{border-style:dashed}
+.pfl-sorts .pfl-more.on{border-style:solid}
+.pfl-panel{position:absolute;top:calc(100% + 8px);left:0;z-index:30;display:grid;grid-template-columns:repeat(3,minmax(0,auto));gap:16px 28px;width:max-content;max-width:min(100%,920px);padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:var(--ink-1);box-shadow:0 18px 48px rgb(0 0 0 / .35);animation:list-in .2s cubic-bezier(.2,.8,.2,1)}
+.pfl-panel>div{display:flex;flex-direction:column;gap:8px;min-width:0}
+.pfl-panel>div>span{color:var(--text-3);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.pfl-panel .pfl-sorts{flex-wrap:wrap;margin:0;padding:0;overflow:visible}
+@media(max-width:760px){.pfl-panel{grid-template-columns:1fr;width:100%}}
 .pfl-sorts{display:flex;flex-wrap:wrap;gap:6px}
 .pfl-sorts button{display:inline-flex;align-items:center;gap:4px;height:34px;padding:0 13px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--text-2);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
 @media(hover:hover){.pfl-sorts button:hover{border-color:var(--text-3);color:var(--text-1)}}
@@ -4541,7 +4552,7 @@ a.starter-card{color:inherit;text-decoration:none}
 .pfl-count{margin:0 0 14px;color:var(--text-3);font-size:13px}
 /* Two newspaper columns on wide screens, so the ranking still reads top to bottom (1 to 15 down the left, then the right). */
 @media(min-width:1100px){.pfl-grid{columns:2;column-gap:56px}.pfl-grid>li{break-inside:avoid}}
-@media(max-width:640px){.pfl-sorts{flex-wrap:nowrap;margin:0 -16px;padding:0 16px;overflow-x:auto;scrollbar-width:none}.pfl-sorts button{flex:none}.pfl-controls .front-tabs{overflow-x:auto;max-width:100%}}
+@media(max-width:640px){.pfl-bar>.pfl-sorts{flex-wrap:nowrap;margin:0 -16px;padding:0 16px;overflow-x:auto;scrollbar-width:none}.pfl-sorts button{flex:none}.pfl-controls .front-tabs{overflow-x:auto;max-width:100%}.pfl-controls .front-tabs button{flex:none;white-space:nowrap}}
 
 /* Navigation icons (NavIcons): the open section's icon draws bolder. */
 .side-link.active .nav-glyph,.tabbar .active .nav-glyph{stroke-width:2.1}

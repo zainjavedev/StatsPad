@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { createPortal } from 'react-dom';
 
 /* One footer for every page: where to go, where the numbers come from, and that this is a fan project. */
-const LINKS = [['Home', '/'], ['Fixtures', '/scores'], ['Standings', '/standings'], ['Injuries', '/injuries'], ['Leaders', '/stats/points'], ['Team leaders', '/stats/teams'], ['Compare', '/compare'], ['Lineups', '/lineups'], ['Blog', '/blog'], ['About', '/about'], ['Contact', '/contact'], ['Terms', '/terms'], ['Privacy', '/privacy']];
+const LINKS = [['Home', '/'], ['Fixtures', '/fixtures'], ['Standings', '/standings'], ['Injuries', '/injuries'], ['Leaders', '/stats/points'], ['Team leaders', '/stats/teams'], ['Compare', '/compare'], ['Lineups', '/lineups'], ['Blog', '/blog'], ['About', '/about'], ['Contact', '/contact'], ['Terms', '/terms'], ['Privacy', '/privacy']];
 
 /* On pages whose written copy shows under the app (src/lib/seo-page.jsx), the footer moves into the slot after that copy, so it
    stays the last thing on the page. The app only renders in the browser, so the slot can be looked up while rendering. */

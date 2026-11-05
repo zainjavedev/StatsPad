@@ -251,7 +251,7 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
 }
 
 /* The page the server rendered for. Coming from another Next page (Scores, Games, the blog) the router can mount the
-   app before it updates the address bar, so location still says /scores; the route prop is the page actually opened. */
+   app before it updates the address bar, so location still says /fixtures; the route prop is the page actually opened. */
 const startPath=route=>route&&route!==location.pathname?route:location.pathname;
 export default function Home({onReady,route}){
   /* Before the first paint, so the loading placeholder is swapped for the app without a flash. */

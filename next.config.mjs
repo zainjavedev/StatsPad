@@ -27,10 +27,11 @@ export default {
   async redirects() {
     return [
       ...Object.entries(gameRedirects).map(([id, destination]) => ({source: `/games/${id}`, destination, permanent: true})),
-      {source: '/performances', destination: '/scores', permanent: true},
-      /* Scores and the schedule became one page, Fixtures, at /scores; ?team= carries over. */
-      {source: '/schedule', destination: '/scores', permanent: true},
-      {source: '/fixtures', destination: '/scores', permanent: true},
+      /* Pages live at the address their menu item names: Fixtures at /fixtures (scores and the schedule in one, ?team= carries
+         over) and Performances at /performances. The old addresses keep working. */
+      {source: '/scores', destination: '/fixtures', permanent: true},
+      {source: '/schedule', destination: '/fixtures', permanent: true},
+      {source: '/top-performances', destination: '/performances', permanent: true},
       {source: '/teams', destination: '/lineups', permanent: true},
       {source: '/teams/:slug', destination: '/lineups/:slug', permanent: true},
       {source: '/leaders', destination: '/stats/points', permanent: true},
