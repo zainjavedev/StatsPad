@@ -7,6 +7,9 @@ const ART = {
   '/play/guess': <div className="gm-art is-guess" aria-hidden="true">
     <svg viewBox="0 0 100 120"><circle cx="50" cy="32" r="20"/><path d="M12 120c0-34 14-52 38-52s38 18 38 52z"/></svg><b>?</b>
   </div>,
+  '/play/blind': <div className="gm-art is-blind" aria-hidden="true">
+    {['A', 'B'].map(key => <span key={key}><svg viewBox="0 0 100 120"><circle cx="50" cy="34" r="20"/><path d="M14 120c0-33 14-50 36-50s36 17 36 50z"/></svg><b>{key}</b></span>)}<i>VS</i>
+  </div>,
   '/play/quiz': <div className="gm-art is-quiz" aria-hidden="true">
     {['1', '2', '3', '4'].map(key => <span key={key} className={key === '3' ? 'on' : ''}><i>{key}</i></span>)}
   </div>,
