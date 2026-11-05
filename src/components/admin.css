@@ -210,4 +210,6 @@ a.adm-path:hover{color:var(--text-1);text-decoration:underline}
 /* Clicks and taps panel and tap lines in a visitor's timeline. */
 .adm-tap{display:flex;flex-direction:column;min-width:0}.adm-tap b,.adm-tap small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.adm-tap small{color:var(--text-3);font-size:12px}
 .adm-taps-pages{display:flex;flex-wrap:wrap;margin:0 0 10px}
-.adm-tap-line{display:inline-flex;align-items:center;gap:6px;min-width:0}.adm-tap-line small{color:var(--text-3)}
+.adm-act{display:inline-flex;align-items:center;flex-wrap:wrap;gap:5px;min-width:0;color:var(--text-2)}.adm-act b{color:var(--text-1);font-weight:700}.adm-act small{color:var(--text-3)}
+.adm-act-path{font-size:11px;color:var(--text-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.adm-timeline li.tap::before{background:transparent;border:2px solid var(--line-2);width:6px;height:6px}

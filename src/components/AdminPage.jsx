@@ -1,6 +1,6 @@
 'use client';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { ChevronRight, Gamepad2, Monitor, MousePointerClick, RefreshCw, Smartphone, Tablet, X } from 'lucide-react';
+import { ChevronRight, FileText, Gamepad2, Monitor, MousePointerClick, RefreshCw, Smartphone, Tablet, X } from 'lucide-react';
 import { readAlerts } from '../lib/alerts';
 import AdminTabs from './AdminTabs';
 import './admin.css';
@@ -151,31 +151,52 @@ function Taps({taps}) {
   </section>;
 }
 
-/* One person's trail, split into visits (30 minutes apart), newest first, with game rounds in between. */
+/* A page's name as a person would say it, from its path: "/stats/points" is "Points leaders". */
+const words = slug => decodeURIComponent(slug || '').split('-').filter(Boolean).map(word => word[0].toUpperCase() + word.slice(1)).join(' ');
+const PAGES = {'': 'Home', fixtures: 'Fixtures', play: 'Guess the Player', compare: 'Compare', leaders: 'Leaders', standings: 'Standings', lineups: 'Teams', injuries: 'Injury report',
+  performances: 'Performances', ladders: 'Award ladders', blog: 'Blog', account: 'Account', schedule: 'Schedule', about: 'About', contact: 'Contact'};
+const pageName = path => {
+  const [pathname, search = ''] = String(path || '/').split('?'), [first = '', second] = pathname.split('/').filter(Boolean);
+  const profile = new URLSearchParams(search).get('profile');
+  if (!first && profile) return words(profile);
+  if (!second) return PAGES[first] ?? words(first);
+  if (first === 'stats') return second === 'teams' ? 'Team leaders' : `${words(second)} leaders`;
+  if (first === 'lineups') return `${words(second)} team page`;
+  if (first === 'players') return words(second);
+  if (first === 'compare') return `Compare ${words(second).replace(/ Vs /, ' vs ')}`;
+  if (first === 'games') return `Game ${words(second.replace(/-\d+$/, '')).replace(/ Vs /, ' vs ')}`;
+  if (first === 'ladders') return `${second.toUpperCase()} ladder`;
+  if (first === 'blog') return `Blog: ${words(second)}`;
+  return `${PAGES[first] ?? words(first)}: ${words(second)}`;
+};
+
+/* One person's trail, split into visits (30 minutes apart). Visits run newest first; inside one, things read in the order they happened. */
 function Timeline({person, onClose}) {
   const [data, setData] = useState(null);
   useEffect(() => { setData(null); call({person: person.person}).then(setData).catch(() => setData({views: [], answers: [], taps: []})); }, [person.person]);
   useEffect(() => { const close = event => event.key === 'Escape' && onClose(); window.addEventListener('keydown', close); return () => window.removeEventListener('keydown', close); }, [onClose]);
   const visits = useMemo(() => {
     if (!data || data === 'denied') return [];
-    const items = [...data.views.map(v => ({...v, kind: 'view'})), ...data.answers.map(a => ({...a, kind: 'play'})), ...(data.taps ?? []).map(t => ({...t, kind: 'tap', tapKind: t.kind}))].sort((a, b) => new Date(a.at) - new Date(b.at));
+    const items = [...data.views.map(v => ({...v, kind: 'view'})), ...data.answers.map(a => ({...a, kind: 'play'})), ...(data.taps ?? []).map(t => ({...t, kind: 'tap', tapKind: t.kind}))].sort((a, b) => new Date(a.at) - new Date(b.at))
+      /* A tap that opened a page (a menu item, a link-like button) says the same as the page view right after it, so it's left out. */
+      .filter((item, index, list) => item.kind !== 'tap' || !list.slice(index + 1).find(next => next.kind === 'view' && new Date(next.at) - new Date(item.at) < 3000));
     const groups = [];
     for (const item of items) {
       const last = groups.at(-1);
       if (!last || new Date(item.at) - new Date(last.items.at(-1).at) > 30 * 60 * 1000) groups.push({items: [item]}); else last.items.push(item);
     }
-    return groups.map((group, index) => ({...group, number: index + 1, start: group.items[0], source: group.items.find(item => item.kind === 'view')?.source})).reverse().map(group => ({...group, items: [...group.items].reverse()}));
+    return groups.map((group, index) => ({...group, number: index + 1, start: group.items[0], source: group.items.find(item => item.kind === 'view')?.source})).reverse();
   }, [data]);
   return <div className="adm-sheet" role="dialog" aria-modal="true" aria-label={`Activity for ${who(person)}`} onClick={event => { if (event.target === event.currentTarget) onClose(); }}>
     <div className="adm-sheet-card">
-      <div className="adm-hd"><div><h2>{who(person)}</h2><p>{person.first_seen ? `${plural(person.views, 'view')} · ${plural(person.visits, 'visit')} · first seen ${ago(person.first_seen)}` : 'Pages, taps and game rounds, newest first'}</p></div><button type="button" onClick={onClose} aria-label="Close"><X size={18}/></button></div>
+      <div className="adm-hd"><div><h2>{who(person)}</h2><p>{person.first_seen ? `${plural(person.views, 'view')} · ${plural(person.visits, 'visit')} · first seen ${ago(person.first_seen)}` : 'Pages, taps and game rounds, latest visit first'}</p></div><button type="button" onClick={onClose} aria-label="Close"><X size={18}/></button></div>
       {!data ? <p className="adm-muted">Loading…</p> : !visits.length ? <p className="adm-muted">Nothing logged yet.</p>
         : visits.map(visit => { const Icon = DEVICE[visit.start.device] ?? Monitor; return <section key={visit.number} className="adm-visit">
           <h3>Visit {visit.number}<span>{clock.format(new Date(visit.start.at))} · <Icon size={12}/> {flag(visit.start.country)}{visit.source ? ` · ${visit.source.name}` : ''}</span></h3>
           <ol className="adm-timeline">{visit.items.map((item, index) => <li key={index} className={item.kind}>
             <time>{time.format(new Date(item.at))}</time>
-            {item.kind === 'view' ? <a className="adm-path" href={item.path} target="_blank" rel="noreferrer">{item.path}</a>
-              : item.kind === 'tap' ? <span className="adm-tap-line"><MousePointerClick size={13}/> {item.label}{item.area ? <small> · {item.area}</small> : null}</span>
+            {item.kind === 'view' ? <><span className="adm-act"><FileText size={13}/> Opened <b>{pageName(item.path)}</b></span><a className="adm-path adm-act-path" href={item.path} target="_blank" rel="noreferrer">{item.path}</a></>
+              : item.kind === 'tap' ? <span className="adm-act"><MousePointerClick size={13}/> Tapped <b>{item.label}</b>{item.area ? <small>in {item.area}</small> : null}</span>
               : <span><Gamepad2 size={13}/> Round {item.step ?? '?'} · {item.player ?? 'a player'} · <b className={item.correct ? 'ok' : 'miss'}>{item.correct ? 'right' : 'wrong'}</b></span>}
           </li>)}</ol>
         </section>; })}
