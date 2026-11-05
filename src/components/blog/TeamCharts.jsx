@@ -27,7 +27,9 @@ export function TeamScatter({teams, focus, x, y, flipY = false, trend = false, l
   const order = [...teams].sort((a, b) => (a.code === focus) - (b.code === focus));
   return <Reveal caption={caption} className="bc-scatter tc">
     <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`${y.label} against ${x.label} for all ${n} teams`}>
-      {y.ticks.map(v => <g key={`y${v}`}><line className="bc-grid" x1={M.l} x2={W - M.r} y1={sy(v)} y2={sy(v)}/><text className="bc-tick" x={M.l - 8} y={sy(v)} textAnchor="end" dominantBaseline="middle">{tick(y, v)}</text></g>)}
+      <line className="tc-axis" x1={M.l} x2={M.l} y1={M.t} y2={H - M.b}/>
+      <line className="tc-axis" x1={M.l} x2={W - M.r} y1={H - M.b} y2={H - M.b}/>
+      {y.ticks.map(v => <text key={`y${v}`} className="bc-tick" x={M.l - 8} y={sy(v)} textAnchor="end" dominantBaseline="middle">{tick(y, v)}</text>)}
       {x.ticks.map(v => <text key={`x${v}`} className="bc-tick" x={sx(v)} y={H - M.b + 18} textAnchor="middle">{tick(x, v)}</text>)}
       <text className="bc-axis" x={(M.l + W - M.r) / 2} y={H - 6} textAnchor="middle">{x.label} →</text>
       <text className="bc-axis" x={M.l + 6} y={M.t + 4} dominantBaseline="hanging">↑ {y.label}</text>

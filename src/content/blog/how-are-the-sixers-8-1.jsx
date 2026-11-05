@@ -34,7 +34,7 @@ export default function Post() {
       <Stat value="26th">threes made</Stat>
       <Stat value="28th">offensive rebounds</Stat>
     </div>
-    <p>All five are offense stats. The Sixers are winning on things those lists don’t show. Here are five of them.</p>
+    <p>Every one of those is about scoring. Philly wins everywhere else.</p>
 
     <h2 className="sx-h"><span>1</span>They stop you from scoring</h2>
     <p>Further right means more points scored, higher means fewer points allowed. Philly is a middling offense with one of the best defenses in the league.</p>

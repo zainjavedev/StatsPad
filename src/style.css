@@ -2664,7 +2664,7 @@ section.pg .pg-big b{margin-left:0!important}
 .tc .tc-rest{fill:var(--text-3);fill-opacity:.45}.tc .tc-focus{fill-opacity:1;stroke-width:2}
 .tc-name{fill:var(--c-a);font-size:13px}.tc-corner{font-size:12px;fill:var(--text-3)}
 .tc-trend{stroke-dasharray:6 5;stroke-dashoffset:0;stroke-width:1.5;opacity:.6}.bc.armed .tc-trend{stroke-dashoffset:0;opacity:0}.bc.play .tc-trend{animation:bcFade .6s ease-out 1s both}
-.tc-zero{stroke:var(--text-3);stroke-width:1}
+.tc-zero{stroke:var(--text-3);stroke-width:1}.tc-axis{stroke:var(--text-3);stroke-width:1.5}
 .pair-list,.rec-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .pair-list li{display:grid;grid-template-columns:minmax(120px,190px) 1fr 44px;align-items:center;gap:10px}
 .pair-name{font-size:14px;font-weight:700}.pair-name small{display:block;font-size:12px;font-weight:600;color:var(--text-3)}
