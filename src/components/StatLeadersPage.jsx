@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import { ArrowLeft } from 'lucide-react';
 import { LEADERS, leaderValue } from '../lib/statLeaders';
 import { qualified } from '../lib/season';
 import { navigate } from '../lib/nav';
@@ -21,7 +20,6 @@ export default function StatLeadersPage({slug, players, playerIds, Art, onOpen})
   const value = player => { const amount = leaderValue(entry, player.stats); return `${entry.signed && amount > 0 ? '+' : ''}${amount.toFixed(1)}${entry.pct ? '%' : ''}`; };
   const rank = ranked.map((_, index) => index + 1); // ties run in alphabetical order, each with its own number
   return <section className="statpage">
-    <button className="statpage-back" onClick={() => navigate('/')}><ArrowLeft size={15}/> Home</button>
     <LeadersSwitch active="players"/>
     <h1>{entry.label} leaders</h1>
     <p>{entry.unit}{entry.note ? ` · ${entry.note}` : ''} · top {ranked.length}</p>

@@ -5,14 +5,8 @@ const num = value => Number(String(value ?? '').replace('+', '')) || 0;
    blocks, and a quiet night of three steals does not push a real line out. Shooting only counts with enough attempts, and is judged against 65% so an ordinary shooting night does not crowd out a real number.
    The two that follow points keep the usual order (rebounds, assists...). `must` (a label like 'blk') is always one of
    them, for a list sorted on that stat. */
-/* Numbers a card only shows when a list is sorted on them (turnovers, attempts, minutes...), as [value, label]. */
-const pair = (value, part) => Number(String(value ?? '0-0').split('-')[part]) || 0;
-const share = (made, tried) => (tried ? `${Math.round(made / tried * 100)}%` : null);
-const EXTRA = {
-  to: s => num(s.TO), pf: s => num(s.PF), min: s => num(s.MIN), oreb: s => num(s.OREB), dreb: s => num(s.DREB),
-  fgm: s => pair(s.FG, 0), fga: s => pair(s.FG, 1), '3pa': s => pair(s['3PT'], 1), ftm: s => pair(s.FT, 0), fta: s => pair(s.FT, 1),
-  '3p': s => share(pair(s['3PT'], 0), pair(s['3PT'], 1)), ft: s => share(pair(s.FT, 0), pair(s.FT, 1)),
-};
+/* Numbers a card only shows when a list is sorted on them (turnovers, free throws attempted), as [value, label]. */
+const EXTRA = {to: s => num(s.TO), fta: s => Number(String(s.FT ?? '0-0').split('-')[1]) || 0};
 const extra = (stats, label) => { const value = EXTRA[label]?.(stats); return value === undefined || value === null ? null : [value, label, 0]; };
 
 export function trio(stats, must) {

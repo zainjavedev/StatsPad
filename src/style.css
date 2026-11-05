@@ -1155,7 +1155,6 @@ header .brand small{margin-top:3px}
 
 /* game page */
 .gp{display:flex;flex-direction:column;width:min(980px,100%);margin:0 auto;padding:30px 28px 56px;color:var(--text-1)}
-.gp-back{display:inline-flex;align-items:center;gap:6px;margin-bottom:14px;color:var(--text-2);font-size:13px;font-weight:700;text-decoration:none}
 .gp-head{padding-right:0}
 .gp .num.led{color:var(--accent);font-weight:800}
 .gp table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
@@ -1980,12 +1979,6 @@ a.pk-row:hover{background:var(--ink-2)}
 /* Shot chart key: green made, red missed. */
 
 /* One breadcrumb on a player's report: Schedule > game > player. */
-.pg-crumbs{grid-column:1/-1;display:flex;align-items:center;flex-wrap:wrap;gap:4px 6px;margin:0 0 18px;font-size:14px;font-weight:500;color:var(--text-3)}
-.pg-crumbs a,.pg-crumbs button{padding:6px 4px;border:0;background:none;color:var(--text-2);font:inherit;text-decoration:none;cursor:pointer;border-radius:6px}
-.pg-crumbs a:hover,.pg-crumbs button:hover{color:var(--text-1);text-decoration:underline;text-underline-offset:4px}
-.pg-crumbs span{color:var(--text-1);font-weight:600;padding:6px 4px}
-.pg-crumbs svg{flex:none;opacity:.55}
-@media(max-width:520px){.pg-crumbs a,.pg-crumbs button{padding:10px 4px}}
 /* Game page: one performance card per player instead of the box-score table. */
 .gd-cards .rp-list{max-width:760px;margin:0 auto}
 /* Game page cards: two per row on desktop, one on a phone. */
@@ -2209,8 +2202,6 @@ a.pk-row:hover{background:var(--ink-2)}
 
 /* Stat leaderboard page: one card per player, the podium picked out in the team's colour. */
 .statpage{width:100%;max-width:var(--page);margin:0 auto;padding:22px 28px 64px}
-.statpage-back{display:inline-flex;align-items:center;gap:6px;margin-bottom:10px;padding:6px 2px;border:0;background:none;color:var(--text-3);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
-.statpage-back:hover{color:var(--text-1)}
 .statpage h1{margin:0;font-size:32px;font-weight:700;letter-spacing:-.02em}
 .statpage>p{margin:4px 0 14px;color:var(--text-3);font-size:14px}
 .statpage-tabs{display:flex;gap:8px;margin:0 -16px 16px;padding:0 16px;overflow-x:auto;scrollbar-width:none}
@@ -2308,7 +2299,7 @@ a.pk-row:hover{background:var(--ink-2)}
 .blog-main{min-height:0;flex:1;max-width:720px;width:100%;margin:0 auto;padding:16px 16px 64px}
 .blog-main h1{font-size:clamp(26px,5vw,36px);line-height:1.2;margin:8px 0 8px}
 .blog-main h2{font-size:24px;line-height:1.3;margin:40px 0 8px}
-.blog-crumbs,.blog-meta{margin:0;font-size:14px;color:var(--text-3)}
+.blog-meta{margin:0;font-size:14px;color:var(--text-3)}
 .blog-meta{margin-bottom:24px}
 .blog-fig{margin:28px 0}
 .blog-fig figcaption{font-size:14px;color:var(--text-3)5;margin-top:8px}
@@ -3556,8 +3547,6 @@ section.pg .pg-who h2{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 8px
 section.pg .pg-name{white-space:nowrap}
 section.pg .pg-fps::before{content:none}
 @media(max-width:520px){
-  .pg-crumbs{margin:2px 0 8px!important;font-size:13px}
-  .pg-crumbs [aria-current="page"],.pg-crumbs svg:last-of-type{display:none}
   section.pg .pg-who h2{font-size:20px!important}
   section.pg .pg-big b{font-size:36px!important}
   section.pg .pg-big{gap:12px}
@@ -3569,7 +3558,6 @@ section.pg .pg-fps::before{content:none}
 }
 @media(max-width:520px){
   section.pg{gap:8px!important}
-  .pg-crumbs{padding:0!important;min-height:0!important;margin:0!important}
   .pg-strip{margin:0}
 }
 
@@ -4069,8 +4057,6 @@ a.starter-card{color:inherit;text-decoration:none}
 /* Games switcher on /play and /play/quiz. */
 /* Top of each game page (GamesNav GameHead): back to the hub, title, a small share button opposite it. */
 .gh{margin:0 0 16px}
-.gh-back{display:inline-flex;align-items:center;gap:2px;margin:0 0 10px -4px;color:var(--text-3);font-size:14px;font-weight:700;text-decoration:none}
-@media(hover:hover){.gh-back:hover{color:var(--text-1)}}
 .gh-row{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
 .gh h1{margin:0;font-size:clamp(28px,5vw,40px);font-weight:800;letter-spacing:-.035em;line-height:1.05}
 .gh p{margin:8px 0 0;max-width:520px;color:var(--text-2);font-size:15px;line-height:1.45}
@@ -4533,18 +4519,7 @@ a.starter-card{color:inherit;text-decoration:none}
 
 /* Performances page (PerformancesList): night picker and sort chips, then the home page's ranked cards, two columns wide. */
 .perf-page{max-width:var(--page)}
-.pfl-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px;margin:8px 0 10px}
-.pfl-dir{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:var(--ink-1);color:var(--text-1);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
-@media(hover:hover){.pfl-dir:hover{border-color:var(--text-3)}}
-/* Sort row plus the More stats panel, which drops over the list instead of pushing it down. */
-.pfl-bar{position:relative;margin-bottom:10px}
-.pfl-sorts .pfl-more{border-style:dashed}
-.pfl-sorts .pfl-more.on{border-style:solid}
-.pfl-panel{position:absolute;top:calc(100% + 8px);left:0;z-index:30;display:grid;grid-template-columns:repeat(3,minmax(0,auto));gap:16px 28px;width:max-content;max-width:min(100%,920px);padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:var(--ink-1);box-shadow:0 18px 48px rgb(0 0 0 / .35);animation:list-in .2s cubic-bezier(.2,.8,.2,1)}
-.pfl-panel>div{display:flex;flex-direction:column;gap:8px;min-width:0}
-.pfl-panel>div>span{color:var(--text-3);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
-.pfl-panel .pfl-sorts{flex-wrap:wrap;margin:0;padding:0;overflow:visible}
-@media(max-width:760px){.pfl-panel{grid-template-columns:1fr;width:100%}}
+.pfl-controls{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin:8px 0 10px}
 .pfl-sorts{display:flex;flex-wrap:wrap;gap:6px}
 .pfl-sorts button{display:inline-flex;align-items:center;gap:4px;height:34px;padding:0 13px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--text-2);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
 @media(hover:hover){.pfl-sorts button:hover{border-color:var(--text-3);color:var(--text-1)}}
@@ -4552,7 +4527,7 @@ a.starter-card{color:inherit;text-decoration:none}
 .pfl-count{margin:0 0 14px;color:var(--text-3);font-size:13px}
 /* Two newspaper columns on wide screens, so the ranking still reads top to bottom (1 to 15 down the left, then the right). */
 @media(min-width:1100px){.pfl-grid{columns:2;column-gap:56px}.pfl-grid>li{break-inside:avoid}}
-@media(max-width:640px){.pfl-bar>.pfl-sorts{flex-wrap:nowrap;margin:0 -16px;padding:0 16px;overflow-x:auto;scrollbar-width:none}.pfl-sorts button{flex:none}.pfl-controls .front-tabs{overflow-x:auto;max-width:100%}.pfl-controls .front-tabs button{flex:none;white-space:nowrap}}
+@media(max-width:640px){.pfl-sorts{flex-wrap:nowrap;margin:0 -16px;padding:0 16px;overflow-x:auto;scrollbar-width:none}.pfl-sorts button{flex:none}.pfl-controls .front-tabs{overflow-x:auto;max-width:100%}.pfl-controls .front-tabs button{flex:none;white-space:nowrap}}
 
 /* Navigation icons (NavIcons): the open section's icon draws bolder. */
 .side-link.active .nav-glyph,.tabbar .active .nav-glyph{stroke-width:2.1}
@@ -4569,6 +4544,10 @@ a.starter-card{color:inherit;text-decoration:none}
    The labels go under the site's 12px floor on purpose: this is a picture, shown and saved at 1.4-3x. */
 .sp-st span{font-size:9.5px;font-weight:500;letter-spacing:.06em;color:#7d7e79}
 .sp-st span b{font-weight:500}
+
+/* The one back link left on a player's night in a game: back to the whole game (the left menu covers everything else). */
+.pg-back{display:inline-flex;align-items:center;gap:6px;margin-bottom:14px;padding:0;border:0;background:none;color:var(--text-2);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+@media(hover:hover){.pg-back:hover{color:var(--text-1)}}
 
 /* Home ladders: the three numbers stay on one line, shrinking with the row instead of wrapping. */
 .ladder .ldc .rp-main{container-type:inline-size}

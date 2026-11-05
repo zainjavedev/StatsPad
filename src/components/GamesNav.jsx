@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronLeft, Share2 } from 'lucide-react';
+import { Share2 } from 'lucide-react';
 
 /* The games hub at /play and the top of every game page: a way back to the hub, the title, and (when there is
    something to share) a small share button opposite the title. Both games use it so they line up the same. */
@@ -10,7 +10,6 @@ export const GAMES = [
 
 export default function GameHead({title, onShare, extra}) {
   return <div className="gh">
-    <a className="gh-back" href="/play"><ChevronLeft size={16}/> Games</a>
     <div className="gh-row">
       <div><h1>{title}</h1></div>
       <div className="gh-side">

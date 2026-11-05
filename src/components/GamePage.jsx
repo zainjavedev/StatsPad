@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowLeft, Eye } from 'lucide-react';
+import { Eye } from 'lucide-react';
 import { revealGame, useSpoilers } from '../lib/spoilers';
 import { performancesOf } from '../lib/performances';
 import { flowOf, rating } from '../lib/playerGame';
@@ -273,7 +273,7 @@ export default function GamePage({id}) {
 
   /* Top three in each category across both teams; the leader (ties included) is what the box score highlights. */
   if (box === undefined) return <GameSkeleton/>;
-  if (!box?.away) return <section className="gp"><a className="gp-back" href="/fixtures"><ArrowLeft size={15}/> Fixtures</a><p className="gd-note">We couldn&apos;t load this game.</p></section>;
+  if (!box?.away) return <section className="gp"><p className="gd-note">We couldn&apos;t load this game.</p></section>;
 
   const focusTeam = focus ? box.teams.find(team => team.players.some(entry => entry.id === focus && !entry.out)) : null;
   const nameOf = athlete => box.teams.flatMap(team => team.players).find(entry => entry.id === athlete)?.name;
@@ -281,7 +281,6 @@ export default function GamePage({id}) {
   const ordered = [...box.teams].sort((a, b) => (a.abbr === box.away.abbr ? 0 : 1) - (b.abbr === box.away.abbr ? 0 : 1));
 
   return <section className="gp">
-    {!focusTeam && <a className="gp-back" href="/fixtures"><ArrowLeft size={15}/> Fixtures</a>}
     {!focusTeam && <>
     <div className={`gd-head gp-head${box.state === 'in' ? ' is-live' : box.state === 'pre' ? ' is-pre' : final ? ' is-post' : ''}`}>
       <div><TeamLink side={box.away}/>{scored && <strong className={Number(box.away.score) > Number(box.home.score) ? 'won' : ''}>{box.away.score}</strong>}</div>

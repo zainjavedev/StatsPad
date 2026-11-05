@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ChevronRight, Share2 } from 'lucide-react';
+import { ArrowLeft, Share2 } from 'lucide-react';
 import PerfShare from './PerfShare';
 import { trio } from '../lib/trio';
 import { useSeasonHigh } from '../lib/seasonHigh';
@@ -78,11 +78,8 @@ export default function PlayerGame({gameId, box, plays, team, player, onClose, o
         {player.photo ? <img src={player.photo} alt=""/> : <i/>}<b>{past.grade.toFixed(1)}</b><small>{past.home ? 'vs' : '@'} {past.opp}</small>
       </a>)}
     </div>
-    <nav className="pg-crumbs" aria-label="Breadcrumb">
-      <a href="/fixtures">Fixtures</a><ChevronRight size={14} aria-hidden="true"/>
-      <button type="button" onClick={onClose}>{team.abbr} {game.home ? 'vs' : '@'} {other.abbr}</button><ChevronRight size={14} aria-hidden="true"/>
-      <span aria-current="page">{player.name}</span>
-    </nav>
+    {/* No breadcrumb trail (the left menu covers the sections); just the way back to the whole game. */}
+    <button type="button" className="pg-back" onClick={onClose}><ArrowLeft size={15}/> {team.abbr} {game.home ? 'vs' : '@'} {other.abbr}</button>
 
     <div className="pg-cols">
     <div className="pg-main">

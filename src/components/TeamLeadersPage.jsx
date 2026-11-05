@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
 import { TEAM_LEADERS, rankTeams, showValue, teamStatUrl } from '../lib/teamLeaders';
 import { TEAMS, espnLogoUrl, nickname } from '../lib/teams';
 import { teamUrl } from '../lib/routes';
@@ -21,7 +20,6 @@ export default function TeamLeadersPage({slug}) {
   const entry = TEAM_LEADERS.find(item => item.slug === slug) || TEAM_LEADERS[0];
   const ranked = useMemo(() => (teams ? rankTeams(entry, teams) : null), [teams, entry]);
   return <section className="statpage">
-    <button className="statpage-back" onClick={() => navigate('/')}><ArrowLeft size={15}/> Home</button>
     <LeadersSwitch active="teams"/>
     <h1>{entry.label} leaders</h1>
     <p>{entry.unit}{entry.note ? ` · ${entry.note.replace('&rsquo;', '’')}` : ''} · per game, all {ranked ? ranked.length : 30} teams</p>

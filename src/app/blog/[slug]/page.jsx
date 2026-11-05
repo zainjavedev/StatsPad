@@ -36,7 +36,6 @@ export default function BlogPost({params}) {
     {schema.map((data, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(data)}}/>)}
     <main className="blog-main">
       <article>
-        <p className="blog-crumbs"><a href="/blog">Blog</a></p>
         <h1>{post.title}</h1>
         <p className="blog-meta"><time dateTime={post.date}>{dateFormat.format(new Date(`${post.date}T12:00:00Z`))}</time> · StatsPads</p>
         <Body/>
