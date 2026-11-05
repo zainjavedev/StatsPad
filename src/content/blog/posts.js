@@ -9,7 +9,7 @@ export const POSTS = [
     draft: false,
     tag: 'Team breakdown',
     /* The starting five by games started, Maxey in the middle, plus the team logo. */
-    cover: {players: [{name: 'VJ Edgecombe', id: '5124612'}, {name: 'Jaylen Brown', id: '3917376'}, {name: 'Tyrese Maxey', id: '4431678'}, {name: 'Joel Embiid', id: '3059318'}, {name: 'LeBron James', id: '1966'}], team: 'PHI', colors: ['#006bb6', '#ed174c']},
+    cover: {players: [{name: 'VJ Edgecombe', id: '5124612'}, {name: 'Jaylen Brown', id: '3917376'}, {name: 'Tyrese Maxey', id: '4431678'}, {name: 'Joel Embiid', id: '3059318'}, {name: 'LeBron James', id: '1966'}], team: 'PHI', colors: ['#006bb6', '#0a4a8f']},
   },
   {
     slug: 'doncic-vs-gilgeous-alexander-shot-efficiency',
