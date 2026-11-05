@@ -37,7 +37,7 @@ export default function Post() {
     <p>All five are offense stats. The Sixers are winning on things those lists don’t show. Here are five of them.</p>
 
     <h2 className="sx-h"><span>1</span>They stop you from scoring</h2>
-    <p>Each logo is a team, and the big one is Philly. Further right means more points scored, higher means fewer points allowed. Philly is a middling offense with one of the best defenses in the league.</p>
+    <p>Further right means more points scored, higher means fewer points allowed. Philly is a middling offense with one of the best defenses in the league.</p>
     <TeamScatter teams={defense} focus={FOCUS}
       x={{label: 'Points scored per game', min: 96, max: 125, ticks: [100, 106, 112, 118, 124]}}
       y={{label: 'Fewer points allowed', min: 100, max: 132, ticks: [104, 110, 116, 122, 128]}} flipY
