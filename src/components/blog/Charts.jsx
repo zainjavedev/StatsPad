@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
    Server HTML is the finished chart. Once the page loads, a figure hides itself ("armed") and plays when it scrolls
    into view, so crawlers, no-JS readers and reduced-motion readers all see the full picture. */
 
-function Reveal({children, caption, className = ''}) {
+export function Reveal({children, caption, className = ''}) {
   const box = useRef(null);
   const [phase, setPhase] = useState('done');
   useEffect(() => {

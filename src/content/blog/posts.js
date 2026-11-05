@@ -2,6 +2,15 @@
    draft: true keeps a post out of the routes, the sitemap and llms.txt. */
 export const POSTS = [
   {
+    slug: 'how-are-the-sixers-8-1',
+    title: 'How are the Sixers 8–1?',
+    description: 'Philadelphia is 20th in scoring and 23rd in shooting efficiency but has the best record in the NBA. Defense, turnovers, 4th quarters and a 7–0 close-game record explain it.',
+    date: '2026-11-05',
+    draft: false,
+    tag: 'Team breakdown',
+    cover: {players: [{name: 'Tyrese Maxey', id: '4431678'}], colors: ['#006bb6', '#ed174c']},
+  },
+  {
     slug: 'doncic-vs-gilgeous-alexander-shot-efficiency',
     title: 'Dončić vs Gilgeous-Alexander: who got more from every shot',
     description: 'Luka Dončić scored 33.5 points a game in 2025–26 and Shai Gilgeous-Alexander 31.1. Shot volume, true shooting and a radar show where the gap comes from.',

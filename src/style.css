@@ -2658,6 +2658,54 @@ section.pg .pg-big b{margin-left:0!important}
 @keyframes bcDraw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
 @keyframes bcFade{from{opacity:0}to{opacity:1}}
 @keyframes bcWipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+/* Team figures (TeamCharts.jsx) and the stat blocks team posts use. --c-a is the team, --c-b the other side. */
+.bc .c-team{background:var(--c-a);fill:var(--c-a)}.bc .c-opp{background:var(--c-b);fill:var(--c-b)}
+.bc-key i.c-team,.bc-key i.c-opp{border-radius:3px}
+.tc .tc-rest{fill:var(--text-3);fill-opacity:.45}.tc .tc-focus{fill-opacity:1;stroke-width:2}
+.tc-name{fill:var(--c-a);font-size:13px}.tc-corner{font-size:12px;fill:var(--text-3)}
+.tc-trend{stroke-dasharray:6 5;stroke-dashoffset:0;stroke-width:1.5;opacity:.6}.bc.armed .tc-trend{stroke-dashoffset:0;opacity:0}.bc.play .tc-trend{animation:bcFade .6s ease-out 1s both}
+.tc-zero{stroke:var(--text-3);stroke-width:1}
+.pair-list,.rec-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.pair-list li{display:grid;grid-template-columns:minmax(120px,190px) 1fr 44px;align-items:center;gap:10px}
+.pair-name{font-size:14px;font-weight:700}.pair-name small{display:block;font-size:12px;font-weight:600;color:var(--text-3)}
+.pair-track,.rec-track{display:flex;gap:2px;height:26px;border-radius:6px;overflow:hidden;background:var(--ink-2)}
+.pair-track i,.rec-track i{display:block;height:100%}.pair-track i{border-radius:0 6px 6px 0}
+.pair-list b,.rec-list b{font-size:15px;font-variant-numeric:tabular-nums;text-align:right}
+.rec-list{gap:6px}.rec-list li{display:grid;grid-template-columns:64px 1fr 40px;align-items:center;gap:10px}
+.rec-name{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700}.rec-name img{width:20px;height:20px;object-fit:contain}.rec-list li:not(.on) .rec-track i{opacity:.45}.rec-list li.on .rec-name,.rec-list li.on b{color:var(--c-a)}
+.rec-track{height:20px;background:transparent}.rec-track i:first-child{border-radius:4px 0 0 4px}.rec-track i:last-child{border-radius:0 4px 4px 0}
+.fl-area.up{fill:color-mix(in srgb,var(--c-a) 22%,transparent)}.fl-area.down{fill:color-mix(in srgb,var(--c-b) 24%,transparent)}
+.fl-line{fill:none;stroke-width:2;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:0}.fl-line.up{stroke:var(--c-a)}.fl-line.down{stroke:var(--c-b)}
+.bc-flowgrid .fl-line{stroke-width:1.5}
+.fl-dot{stroke:var(--ink-1);stroke-width:2}.fl-dot.up{fill:var(--c-a)}.fl-dot.down{fill:var(--c-b)}
+.flow-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.flow-grid li{border:1px solid var(--line);border-radius:10px;padding:6px 6px 4px;min-width:0}
+.fg-head{display:flex;justify-content:space-between;gap:4px;font-size:12px;white-space:nowrap}.fg-head em{font-style:normal;color:var(--text-3);font-variant-numeric:tabular-nums}
+@media(max-width:480px){.flow-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.pair-list li{grid-template-columns:1fr 44px}.pair-name{grid-column:1/-1}}
+.bc.armed .fl-line,.bc.armed .pair-track i,.bc.armed .rec-track,.bc.armed .qb rect{clip-path:inset(0 100% 0 0)}.bc.armed .fl-area,.bc.armed .fl-dot,.bc.armed .bc-flow .sc-name{opacity:0}
+.bc.play .fl-line{animation:bcDraw 1.6s ease-in-out both}.bc.play .fl-area,.bc.play .fl-dot,.bc.play .bc-flow .sc-name{animation:bcFade .5s ease-out 1.2s both}
+.bc.play .pair-track i,.bc.play .rec-track{animation:bcWipe .8s cubic-bezier(.2,.7,.2,1) calc(var(--i)*.08s) both}
+.bc.play .qb rect{animation:bcWipe .6s ease-out calc(var(--i)*.12s) both}
+.sx-hero{display:flex;flex-direction:column;margin:8px 0 20px}.sx-hero b{font-size:clamp(84px,24vw,140px);font-weight:900;line-height:.9;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.sx-hero span{font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin-top:6px}
+.sx-ranks,.sx-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:0 0 20px}
+.sx-stat{display:flex;flex-direction:column;gap:2px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--ink-1);min-width:0}
+.sx-stat b{font-size:28px;font-weight:900;line-height:1.05;letter-spacing:-.02em;font-variant-numeric:tabular-nums}.sx-stat span{font-size:13px;line-height:1.35;color:var(--text-3)}
+.sx-ranks .sx-stat b{color:var(--c-b,#f97316)}
+.blog-main .sx-callout{border-left:3px solid var(--text-1);padding:2px 0 2px 14px;font-size:18px;font-weight:700;line-height:1.45}
+.sx-players{list-style:none;margin:20px 0 8px;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.sx-players a{display:flex;flex-direction:column;height:100%;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:var(--ink-1);text-decoration:none}
+.sx-face{display:block;aspect-ratio:4/3;max-width:100%;background:linear-gradient(180deg,var(--ink-2),var(--ink-1))}
+.sx-face img{display:block;width:100%;height:100%;object-fit:cover;object-position:center top}
+.sx-body{display:flex;flex-direction:column;gap:2px;padding:10px 14px 14px}.sx-body b{font-size:16px}
+.sx-body strong{font-size:26px;font-weight:900;line-height:1.1;letter-spacing:-.02em}.sx-body strong small{font-size:13px;font-weight:800;letter-spacing:.06em;color:var(--text-3)}
+.sx-body>span{font-size:14px;line-height:1.45;color:var(--text-2)}
+@media(max-width:480px){.tc .bc-tick,.tc .bc-axis,.tc .tc-corner,.bc-quarters .bc-tick{font-size:19px}.tc .sc-name,.bc-quarters .sc-name{font-size:21px}.tc .tc-name{font-size:22px}.bc-flow .bc-tick{font-size:14px}.bc-flow .sc-name{font-size:15px}}
+.tc .tc-logo{stroke:none}.tc .tc-logo:not(.tc-focus){opacity:.85}.tc .tc-focus{filter:drop-shadow(0 2px 6px rgb(0 0 0 / .35))}
+.pair-name{display:flex;align-items:center;gap:10px}.pair-name img{flex:none;width:30px;height:30px;object-fit:contain}
+.blog-main h2.sx-h{display:flex;align-items:center;gap:14px}
+.sx-h span{flex:none;display:grid;place-items:center;width:56px;height:56px;border-radius:50%;background:var(--text-1);color:var(--ink-1);font-size:32px;font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
+.sx-verdict{margin:8px 0 20px;padding:16px 18px 16px 34px;border:1px solid var(--line);border-radius:14px;background:var(--ink-1);display:grid;gap:8px}
 @keyframes bcGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @media(max-width:520px){.diet-list li{grid-template-columns:78px 1fr 38px;gap:8px}.leap-list li{grid-template-columns:86px 1fr 62px;gap:8px}.leap-name small{display:none}}
 
