@@ -2,7 +2,7 @@ import BlogShell from '../../components/blog/BlogShell';
 import { published } from '../../content/blog/posts';
 import { SITE } from '../../lib/routes';
 import { socialTags } from '../../lib/social';
-import { espnHeadshotUrl } from '../../lib/teams';
+import { espnHeadshotUrl, logoUrl } from '../../lib/teams';
 
 const TITLE = 'StatsPads blog: NBA stats, explained | StatsPads', DESCRIPTION = 'Player comparisons and stat breakdowns with radar charts, built from the same numbers as the StatsPads compare tool.';
 export const metadata = {title: TITLE, description: DESCRIPTION, alternates: {canonical: '/blog'}, ...socialTags({title: TITLE, description: DESCRIPTION, route: '/blog'})};
@@ -21,9 +21,10 @@ export default function BlogIndex() {
       <ul className="blog-grid">
         {published().map(post => <li key={post.slug}>
           <a className="blog-tile" href={`/blog/${post.slug}`}>
-            <span className="blog-cover" style={{'--ca': post.cover?.colors[0] ?? '#444', '--cb': post.cover?.colors[1] ?? '#222'}}>
+            <span className={`blog-cover${post.cover?.players.length > 2 ? ' many' : ''}`} style={{'--ca': post.cover?.colors[0] ?? '#444', '--cb': post.cover?.colors[1] ?? '#222'}}>
               {post.cover?.players.map(player => <img key={player.id} src={headshot(player.id)} alt="" loading="lazy"/>)}
               {post.cover?.players.length === 2 && <i>VS</i>}
+              {post.cover?.team && <img className="blog-cover-logo" src={logoUrl(post.cover.team)} alt=""/>}
               {post.tag && <em>{post.tag}</em>}
             </span>
             <span className="blog-tile-body">

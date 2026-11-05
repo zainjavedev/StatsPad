@@ -2370,6 +2370,11 @@ a.pk-row:hover{background:var(--ink-2)}
 .blog-cover img{position:relative;z-index:1;width:46%;max-width:190px;height:auto;align-self:flex-end;object-fit:contain}
 .blog-cover i{position:absolute;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--ink-1);color:var(--text-1);font-size:13px;font-style:normal;font-weight:900;letter-spacing:.04em;box-shadow:0 4px 14px rgb(0 0 0 / .35)}
 .blog-cover em{position:absolute;z-index:2;left:12px;top:12px;padding:4px 10px;border-radius:999px;background:rgb(0 0 0 / .55);color:#fff;font-size:12px;font-style:normal;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.blog-cover.many img{width:38%;max-width:170px;margin:0 -8%}
+.blog-cover.many img:nth-child(1),.blog-cover.many img:nth-child(5){z-index:1;transform:scale(.86);transform-origin:bottom}
+.blog-cover.many img:nth-child(2),.blog-cover.many img:nth-child(4){z-index:2;transform:scale(.93);transform-origin:bottom}
+.blog-cover.many img:nth-child(3){z-index:3}
+.blog .blog-cover img.blog-cover-logo{position:absolute;z-index:4;top:10px;right:12px;width:52px;max-width:none;height:52px;margin:0;padding:6px;border-radius:50%;background:#fff;object-fit:contain;align-self:auto;box-shadow:0 4px 14px rgb(0 0 0 / .3);transform:none}
 .blog-cover.cta{align-items:center;background:repeating-linear-gradient(135deg,var(--ink-2) 0 14px,var(--ink-1) 14px 28px)}
 .blog-cover.cta b{font-size:84px;font-weight:900;color:var(--text-3)}
 .blog-tile-body{display:flex;flex-direction:column;gap:6px;padding:16px 18px 20px}
