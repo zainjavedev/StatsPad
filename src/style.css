@@ -2703,8 +2703,8 @@ section.pg .pg-big b{margin-left:0!important}
 .sx-meter i{height:10px;border-radius:2px;background:var(--ink-2)}
 .sx-meter i.on{height:16px;margin-top:-3px;background:var(--text-1)}.sx-stat.good .sx-meter i.on{background:var(--c-a)}.sx-stat.bad .sx-meter i.on{background:var(--c-b)}
 .sx-meter-key{display:flex;justify-content:space-between;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3)}
-.sx-rank{position:absolute;top:14px;right:12px;padding:3px 8px;border-radius:999px;background:var(--ink-2);font-size:11px;font-style:normal;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--text-1);white-space:nowrap}
-.sx-stat:has(.sx-rank) b{padding-top:22px}@media(min-width:561px){.sx-stat:has(.sx-rank) b{padding-top:0}}
+.sx-rank{order:-1;align-self:flex-start;padding:3px 8px;border-radius:999px;background:var(--ink-2);font-size:11px;font-style:normal;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--text-1);white-space:nowrap}
+
 a.sx-stat.linked{text-decoration:none;padding-right:64px;transition:border-color .15s}a.sx-stat.linked:hover{border-color:var(--text-3)}
 a.sx-stat.linked>span::after{content:" →";font-weight:700;color:var(--text-1)}
 .sx-stat-face{position:absolute;right:10px;top:12px;width:48px;height:48px;border-radius:50%;object-fit:cover;object-position:center top;background:var(--ink-2)}
@@ -2732,9 +2732,9 @@ a.sx-stat.linked>span::after{content:" →";font-weight:700;color:var(--text-1)}
   .blog-main h2.sx-h{margin:36px 0 6px;font-size:22px}
   .sx-ranks,.sx-stats{grid-template-columns:1fr;gap:6px;margin-bottom:14px}
   .sx-stat{display:grid;grid-template-columns:84px minmax(0,1fr);column-gap:12px;align-items:center;padding:10px 12px}
-  .sx-stat b{grid-row:1/span 4;font-size:24px;padding-top:0}.sx-stat:has(.sx-rank) b{padding-top:0}
+  .sx-stat b{grid-column:1;grid-row:1/span 4;font-size:24px}.sx-stat>:not(b){grid-column:2}
   .sx-stat>span{font-size:13px}
-  .sx-rank{position:static;justify-self:start;padding:2px 7px;font-size:10px}
+  .sx-rank{justify-self:start;padding:2px 7px;font-size:10px}
   .sx-meter{margin-top:4px}.sx-meter i{height:7px}.sx-meter i.on{height:11px;margin-top:-2px}
   .sx-meter-key{font-size:10px}.sx-stat:not(:first-child) .sx-meter-key{display:none}
   a.sx-stat.linked{padding-right:56px}.sx-stat-face{width:38px;height:38px;top:50%;transform:translateY(-50%)}
