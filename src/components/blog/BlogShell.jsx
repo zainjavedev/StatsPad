@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { CompareGlyph, FixturesGlyph, GamesGlyph, HomeGlyph, LeadersGlyph } from '../NavIcons';
+import { BlogGlyph, CompareGlyph, FixturesGlyph, GamesGlyph, HomeGlyph, LeadersGlyph } from '../NavIcons';
 import SiteFooter from '../SiteFooter';
 import Warm from './Warm';
 import AccountButton from '../AccountButton';
@@ -12,7 +12,7 @@ import SiteSearch from '../SiteSearch';
    SECTION is the left-menu item a page lights up. */
 const SECTION = {'/': 'home', '/leaders': 'leaders', '/ladders': 'ladders', '/performances': 'performances', '/fixtures': 'scores', '/compare': 'compare', '/lineups': 'teams', '/play': 'play', '/blog': 'blog'};
 
-const TABS = [['/', 'Home', HomeGlyph], ['/leaders', 'Leaders', LeadersGlyph], ['/fixtures', 'Fixtures', FixturesGlyph], ['/compare', 'Compare', CompareGlyph], ['/play', 'Games', GamesGlyph]];
+const TABS = [['/', 'Home', HomeGlyph], ['/leaders', 'Leaders', LeadersGlyph], ['/fixtures', 'Fixtures', FixturesGlyph], ['/compare', 'Compare', CompareGlyph], ['/play', 'Games', GamesGlyph], ['/blog', 'Blog', BlogGlyph]];
 
 export default function BlogShell({children, active = '/blog', className = '', tabs = true}) {
   return <div className={`blog ${className}`}>

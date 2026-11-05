@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { CompareGlyph, FixturesGlyph, GamesGlyph, HomeGlyph, LaddersGlyph, LeadersGlyph, PerformancesGlyph, PlusGlyph, StandingsGlyph, TeamsGlyph } from './NavIcons';
+import { BlogGlyph, CompareGlyph, FixturesGlyph, GamesGlyph, HomeGlyph, LaddersGlyph, LeadersGlyph, PerformancesGlyph, PlusGlyph, StandingsGlyph, TeamsGlyph } from './NavIcons';
 import { useFavorites } from '../lib/favorites';
 import { TEAMS, espnLogoUrl } from '../lib/teams';
 import { gameUrl, teamUrl } from '../lib/routes';
@@ -11,7 +11,7 @@ import { gameUrl, teamUrl } from '../lib/routes';
    Phones keep the bottom tabs. */
 const GROUPS = [
   [null, [['home', '/', 'Home', HomeGlyph], ['scores', '/fixtures', 'Fixtures', FixturesGlyph], ['performances', '/performances', 'Performances', PerformancesGlyph], ['leaders', '/leaders', 'Leaders', LeadersGlyph], ['ladders', '/ladders', 'Ladders', LaddersGlyph], ['standings', '/standings', 'Standings', StandingsGlyph]]],
-  ['Explore', [['compare', '/compare', 'Compare', CompareGlyph], ['teams', '/lineups', 'Teams', TeamsGlyph]]],
+  ['Explore', [['compare', '/compare', 'Compare', CompareGlyph], ['teams', '/lineups', 'Teams', TeamsGlyph], ['blog', '/blog', 'Blog', BlogGlyph]]],
   ['More', [['play', '/play', 'Games', GamesGlyph]]],
 ];
 

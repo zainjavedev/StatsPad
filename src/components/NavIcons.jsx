@@ -25,4 +25,6 @@ export const CompareGlyph = props => <Glyph {...props}><circle cx="9" cy="12" r=
 export const TeamsGlyph = props => <Glyph {...props}><path d="M8.6 3.8 4 6.2v4.6l2.6.6v9.1h10.8v-9.1l2.6-.6V6.2l-4.6-2.4c-.5 1.5-1.8 2.4-3.4 2.4s-2.9-.9-3.4-2.4z"/></Glyph>;
 /* A game controller: the quiz and Guess the Player. */
 export const GamesGlyph = props => <Glyph {...props}><path d="M7.2 8.5h9.6a4 4 0 0 1 3.9 4.9l-.7 3.2a2.2 2.2 0 0 1-3.8 1L15 16h-6l-1.2 1.6a2.2 2.2 0 0 1-3.8-1l-.7-3.2a4 4 0 0 1 3.9-4.9z"/><path d="M8.5 11.3v3M7 12.8h3"/><Dot cx="15.6" cy="12" r="1"/><Dot cx="17.2" cy="13.8" r="1"/></Glyph>;
+/* A page with its text lines, for the blog. */
+export const BlogGlyph = props => <Glyph {...props}><path d="M6.5 3.5h7.5l4 4v11.5a1.5 1.5 0 0 1-1.5 1.5h-10A1.5 1.5 0 0 1 5 19V5a1.5 1.5 0 0 1 1.5-1.5z"/><path d="M13.5 3.5V8h4.5M8.5 12h7M8.5 15.5h7"/></Glyph>;
 export const PlusGlyph = props => <Glyph {...props}><path d="M12 6v12M6 12h12"/></Glyph>;
