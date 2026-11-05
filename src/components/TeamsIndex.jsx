@@ -5,7 +5,6 @@ import { favoritesFirst, useFavorites } from '../lib/favorites';
 import { TeamLogo } from './TeamRail';
 import FavoriteStar from './FavoriteStar';
 import AlertsBanner from './AlertsBanner';
-import TonightLineups from './TonightLineups';
 
 /* Divisions in the order the league lists them; a team belongs to exactly one. */
 const DIVISIONS = [
@@ -29,16 +28,14 @@ export default function TeamsIndex({onOpen}) {
   return <section className="teams-index">
     <div className="teams-index-head">
       <h1>NBA starting lineups today and for every team</h1>
-      <p>The expected starting five for all 30 clubs. Pick one to see its bench rotation, 2026–27 roster, numbers and recent games. Tap the bell on a team to get its tip-off alerts.</p>
     </div>
-    <TonightLineups fives={fives}/>
     <AlertsBanner/>
     <div className="teams-filter">
       <input className="teams-search" type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Search teams" aria-label="Search teams"/>
       <div className="teams-chips" role="group" aria-label="Conference or division">{FILTERS.map(name => <button key={name} className={filter === name ? 'active' : ''} onClick={() => setFilter(name)}>{name}</button>)}</div>
     </div>
     {shown.length === 0 && <p className="teams-empty">No team matches that search.</p>}
-    <div className="teams-index-grid">{shown.map(code => <div key={code} className="team-tile-wrap">
+    <div key={`${filter}-${term}`} className="teams-index-grid list-in">{shown.map(code => <div key={code} className="team-tile-wrap">
       <button className="team-tile" style={{'--team': TEAMS[code].color}} onClick={() => onOpen(code)}>
         <TeamLogo code={code} className="team-tile-logo"/>
         <b>{TEAMS[code].name}</b>

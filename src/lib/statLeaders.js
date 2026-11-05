@@ -12,6 +12,8 @@ export const LEADERS = [
   {slug: 'field-goal-pct', key: 'fieldGoalPercentage', label: 'Field-goal %', unit: 'FG%', pct: true, min: ['fieldGoalsAttempted', 8]},
   {slug: 'free-throw-pct', key: 'freeThrowPercentage', label: 'Free-throw %', unit: 'FT%', pct: true, min: ['freeThrowsAttempted', 4]},
   {slug: 'turnovers', key: 'turnovers', label: 'Turnovers', unit: 'TOV', home: false},
+  /* Average plus-minus: the team's margin while he is on the floor, per game. Built from box scores (build-regular-box-stats). */
+  {slug: 'plus-minus', key: 'plusMinus', label: 'Plus-minus', unit: '+/-', signed: true, note: 'Team points minus opponent points while on the floor, per game', home: false},
 ];
 export const statUrl = slug => `/stats/${slug}`;
 /* A stat is either one field of the stats row (key) or worked out from several (value). */

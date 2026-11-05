@@ -25,7 +25,7 @@ for (const code of Object.keys(TEAMS)) for (const player of JSON.parse(fs.readFi
 
 const schedule = JSON.parse(fs.readFileSync(`${dir}/schedule.json`, 'utf8')).filter(row => row[9] !== 1 && Date.parse(row[1]) < Date.now());
 /* schedule.json only learns a game is over when it is rebuilt, so every game that has tipped off is asked about and kept only if ESPN calls it final. */
-const blank = () => ({games: 0, started: 0, min: 0, pts: 0, ast: 0, reb: 0, oreb: 0, dreb: 0, stl: 0, blk: 0, tov: 0, pf: 0, fgm: 0, fga: 0, tpm: 0, tpa: 0, ftm: 0, fta: 0});
+const blank = () => ({games: 0, started: 0, min: 0, pts: 0, ast: 0, reb: 0, oreb: 0, dreb: 0, stl: 0, blk: 0, tov: 0, pf: 0, pm: 0, fgm: 0, fga: 0, tpm: 0, tpa: 0, ftm: 0, fta: 0});
 const players = new Map(), teams = Object.fromEntries(Object.keys(TEAMS).map(code => [code, blank()]));
 
 /* Every player-game, with the (Eastern) day it was played, so the ladders can be ranked as of any night. */
@@ -78,9 +78,10 @@ for (const [id, date] of schedule) {
       const key = `${item.athlete.id}:${code}`;
       const row = players.get(key) ?? {id: item.athlete.id, name: item.athlete.displayName, code, position: item.athlete.position?.abbreviation ?? '', ...blank()};
       const [fgm, fga] = pair(at(item, 'FG')), [tpm, tpa] = pair(at(item, '3PT')), [ftm, fta] = pair(at(item, 'FT'));
-      const add = {games: 1, started: item.starter ? 1 : 0, min: minutes(at(item, 'MIN')), pts: +at(item, 'PTS') || 0, ast: +at(item, 'AST') || 0, reb: +at(item, 'REB') || 0, oreb: +at(item, 'OREB') || 0, dreb: +at(item, 'DREB') || 0, stl: +at(item, 'STL') || 0, blk: +at(item, 'BLK') || 0, tov: +at(item, 'TO') || 0, pf: +at(item, 'PF') || 0, fgm, fga, tpm, tpa, ftm, fta};
+      const add = {games: 1, started: item.starter ? 1 : 0, min: minutes(at(item, 'MIN')), pts: +at(item, 'PTS') || 0, ast: +at(item, 'AST') || 0, reb: +at(item, 'REB') || 0, oreb: +at(item, 'OREB') || 0, dreb: +at(item, 'DREB') || 0, stl: +at(item, 'STL') || 0, blk: +at(item, 'BLK') || 0, tov: +at(item, 'TO') || 0, pf: +at(item, 'PF') || 0, pm: Number(String(at(item, '+/-') ?? '0').replace('+', '')) || 0, fgm, fga, tpm, tpa, ftm, fta};
       log.push({day: dayOf(date), id: String(item.athlete.id), name: item.athlete.displayName, code, team: code, ...add});
-      for (const [field, value] of Object.entries(add)) { row[field] += value; teams[code][field] += field === 'games' || field === 'started' ? 0 : value; }
+      /* A team's plus-minus is just its margin five times over, so it is kept for players only. */
+      for (const [field, value] of Object.entries(add)) { row[field] += value; teams[code][field] += field === 'games' || field === 'started' || field === 'pm' ? 0 : value; }
       players.set(key, row);
     }
   }
@@ -88,7 +89,7 @@ for (const [id, date] of schedule) {
 
 const stats = (row, per) => ({
   points: round(row.pts / per), assists: round(row.ast / per), totalRebounds: round(row.reb / per), offensiveRebounds: round(row.oreb / per), defensiveRebounds: round(row.dreb / per),
-  steals: round(row.stl / per), blocks: round(row.blk / per), turnovers: round(row.tov / per), personalFouls: round(row.pf / per),
+  steals: round(row.stl / per), blocks: round(row.blk / per), turnovers: round(row.tov / per), personalFouls: round(row.pf / per), plusMinus: round(row.pm / per),
   fieldGoalsMade: round(row.fgm / per), fieldGoalsAttempted: round(row.fga / per), fieldGoalPercentage: pct(row.fgm, row.fga),
   threePointersMade: round(row.tpm / per), threePointersAttempted: round(row.tpa / per), threePointPercentage: pct(row.tpm, row.tpa),
   freeThrowsMade: round(row.ftm / per), freeThrowsAttempted: round(row.fta / per), freeThrowPercentage: pct(row.ftm, row.fta),

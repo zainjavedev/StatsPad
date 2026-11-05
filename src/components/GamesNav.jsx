@@ -8,11 +8,11 @@ export const GAMES = [
   {href: '/play/quiz', title: 'Stats quiz', line: 'Ten questions about this season: league leaders, team leaders, head to heads, standings.', tag: '10 questions · never repeats'},
 ];
 
-export default function GameHead({title, line, onShare, extra}) {
+export default function GameHead({title, onShare, extra}) {
   return <div className="gh">
     <a className="gh-back" href="/play"><ChevronLeft size={16}/> Games</a>
     <div className="gh-row">
-      <div><h1>{title}</h1>{line && <p>{line}</p>}</div>
+      <div><h1>{title}</h1></div>
       <div className="gh-side">
         {extra}
         {onShare && <button type="button" className="gh-share" onClick={onShare} aria-label="Share as an image"><Share2 size={16}/> Share</button>}

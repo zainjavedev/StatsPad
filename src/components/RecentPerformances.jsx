@@ -18,26 +18,27 @@ const codeOf = abbr => Object.keys(TEAMS).find(code => TEAMS[code].espn === Stri
 /* One performance card; used on Home and beside a player's game report. */
 /* Design rule: the photo is exactly as tall as the text beside it. The text block is measured and the face follows it,
    so a card with a wrapped name or a bigger font gets a bigger face instead of a gap. */
-export const useFaceSize = () => {
+export const useFaceSize = (whole = false) => {
   const main = useRef(null), [size, setSize] = useState(null);
   useLayoutEffect(() => {
     const node = main.current;
     if (!node || typeof ResizeObserver === 'undefined') return undefined;
-    /* The face matches the name and the numbers; the game line under them runs the full width, like the stat apps' cards. */
+    /* The face matches the name and the numbers; the game line under them runs the full width, like the stat apps' cards.
+       `whole` (the ranked home list) makes it cover the game line too, like the ladder photos; not on phones, where it would squeeze the numbers. */
     const measure = () => {
       const top = node.querySelector('.rp-top'), trio = node.querySelector('.rp-trio');
-      setSize(top && trio ? Math.round(trio.getBoundingClientRect().bottom - top.getBoundingClientRect().top) : Math.round(node.getBoundingClientRect().height));
+      setSize(top && trio && !(whole && innerWidth > 640) ? Math.round(trio.getBoundingClientRect().bottom - top.getBoundingClientRect().top) : Math.round(node.getBoundingClientRect().height));
     };
     measure();
     const watch = new ResizeObserver(measure);
     watch.observe(node);
     return () => watch.disconnect();
-  }, []);
+  }, [whole]);
   return [main, size];
 };
 
-export function PerfCard({line, onPick, showDate = true, rank}) {
-  const [sharing, setSharing] = useState(false), [main, face] = useFaceSize();
+export function PerfCard({line, onPick, showDate = true, rank, focus}) {
+  const [sharing, setSharing] = useState(false), [main, face] = useFaceSize(Boolean(rank));
   const s = line.player.stats, code = codeOf(line.team), oppCode = codeOf(line.opp);
   const row = {PTS: num(s.PTS), REB: num(s.REB), AST: num(s.AST), STL: num(s.STL), BLK: num(s.BLK), TO: num(s.TO)};
   return <>
@@ -45,12 +46,12 @@ export function PerfCard({line, onPick, showDate = true, rank}) {
       {rank && <b className="ld-rank">{rank}</b>}
       <span className="rp-face">{line.player.photo ? <img src={smallHeadshot(line.player.photo)} alt="" loading="lazy" decoding="async"/> : <i/>}{code && <img className="rp-team" src={espnLogoUrl(code)} alt=""/>}</span>
       <span className="rp-main" ref={main}>
-        <span className="rp-top"><b>{short(line.player.name)}</b><small> · {fps(row)} fps{showDate && line.date ? ` · ${day.format(line.date)}` : ''}</small></span>
-        <span className="rp-trio">{trio(s).map(([value, label]) => <span key={label}><b>{value}</b>{label}</span>)}</span>
+        <span className="rp-top"><b>{short(line.player.name)}</b><small> · {fps(row)} <abbr title="Fantasy points">fps</abbr>{showDate && line.date ? ` · ${day.format(line.date)}` : ''}</small></span>
+        <span className="rp-trio">{trio(s, focus).map(([value, label]) => <span key={label}><b>{value}</b>{label}</span>)}</span>
         {/* His own team is already on the face badge, so the game line is just the score (winner in bold) and the opponent. */}
         <small className="rp-game">{line.live && <i className="rp-wl live">Live</i>}<b className={line.won ? 'win' : ''}>{line.score.split('–')[0]}</b>–<b className={line.won ? '' : 'win'}>{line.score.split('–')[1]}</b><span className="rp-vs">{line.home ? 'vs' : '@'}</span>{oppCode && <img src={espnLogoUrl(oppCode)} alt={line.opp}/>}</small>
       </span>
-      <span className="rp-grade">{rating(s).toFixed(1)}</span>
+      <span className="rp-grade" title="Game grade out of 10">{rating(s).toFixed(1)}</span>
     </a>
     <button type="button" className="rp-share" onClick={() => setSharing(true)} aria-label={`Share ${line.player.name}'s night as an image`} title="Share as an image"><Share2 size={14}/></button>
     {sharing && <PerfShare line={line} onClose={() => setSharing(false)}/>}

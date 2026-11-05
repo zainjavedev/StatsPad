@@ -18,7 +18,6 @@ export default function BlogIndex() {
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(schema)}}/>
     <main className="blog-main wide">
       <h1>StatsPads blog</h1>
-      <p className="blog-lede">Player comparisons and stat breakdowns, each one built on the same numbers and radar charts as the compare tool.</p>
       <ul className="blog-grid">
         {published().map(post => <li key={post.slug}>
           <a className="blog-tile" href={`/blog/${post.slug}`}>

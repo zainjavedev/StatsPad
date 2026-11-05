@@ -79,7 +79,7 @@ export default function PlayerGame({gameId, box, plays, team, player, onClose, o
       </a>)}
     </div>
     <nav className="pg-crumbs" aria-label="Breadcrumb">
-      <a href="/schedule">Schedule</a><ChevronRight size={14} aria-hidden="true"/>
+      <a href="/scores">Fixtures</a><ChevronRight size={14} aria-hidden="true"/>
       <button type="button" onClick={onClose}>{team.abbr} {game.home ? 'vs' : '@'} {other.abbr}</button><ChevronRight size={14} aria-hidden="true"/>
       <span aria-current="page">{player.name}</span>
     </nav>

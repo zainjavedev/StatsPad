@@ -222,7 +222,7 @@ for (const [slug, name, file, keep] of LEADER_SETS) {
 }
 /* One page per stat ranking: the top 25 players, with the same qualifying minimums the app uses. */
 for (const entry of LEADERS) {
-  const ranked = players.filter(p => !entry.min || p.stats[entry.min[0]] >= entry.min[1]).sort((x, y) => leaderValue(entry, y.stats) - leaderValue(entry, x.stats)).slice(0, 25);
+  const ranked = players.filter(p => Number.isFinite(leaderValue(entry, p.stats)) && (!entry.min || p.stats[entry.min[0]] >= entry.min[1])).sort((x, y) => leaderValue(entry, y.stats) - leaderValue(entry, x.stats)).slice(0, 25);
   const lower = entry.label.toLowerCase();
   writePage({route: statUrl(entry.slug), title: fitTitle(`NBA ${lower} leaders ${pretty(seasonKey)} | StatsPads`, `NBA ${lower} leaders ${pretty(seasonKey)}`),
     description: fitDescription(`Who leads the NBA in ${lower} (${entry.unit}) in ${yearLabel}: the top 25 players ranked, from ${ranked[0]?.playerName ?? 'the league leader'} down, with team and games played.`, `Who leads the NBA in ${lower} (${entry.unit}) in ${yearLabel}: the top 25 players ranked.`),
@@ -271,6 +271,34 @@ for (const [slug, key, name] of [['mvp', 'mvp', 'MVP'], ['roty', 'rookie', 'Rook
     body: `<article class="seo"><h1>NBA ${esc(name)} ladder, ${pretty(SEASONS[0])}</h1><p>The ${esc(name)} ladder through ${esc(through)}. ${esc(method)}</p><h2>${esc(name)} ladder: ${listing}</h2><ol>${items.map(row => `<li>${row.url ? link(row.url, row.name) : esc(row.name)}, ${esc(row.teamName)}: ${row.pts} points, ${row.reb} rebounds, ${row.ast} assists in ${row.games} games${row.moved ? ` (${row.moved})` : ''}</li>`).join('')}</ol><p>${link('/ladders/mvp', 'MVP ladder')} · ${link('/ladders/roty', 'Rookie of the Year ladder')} · ${link('/stats/points', 'Stat leaders')} · ${link('/scores', 'Scores')}</p></article>`});
   pages[route].ladder = {name, key, through: ladders.through, method, rows: items};
 }
+
+/* /ladders: the top five in each award race. MVP and Rookie of the Year come from ladders.json; Sixth Man and Defensive Player
+   are StatsPads estimates from this season's per-game numbers (box score only), ranked here. */
+{
+  const pool = season.players.filter(p => p.gamesPlayed >= Math.max(2, Math.ceil(mostGames * .6)));
+  const espnOf = p => (/^espn-(\d+)$/.exec(p.playerId ?? '') || [])[1] ?? null;
+  const gameScore = s => s.points + .4 * s.fieldGoalsMade - .7 * s.fieldGoalsAttempted - .4 * (s.freeThrowsAttempted - s.freeThrowsMade) + .7 * s.offensiveRebounds + .3 * s.defensiveRebounds + s.steals + .7 * s.assists + .7 * s.blocks - .4 * s.personalFouls - s.turnovers;
+  const urlOf = name => (bySlug.get(slugify(name)) ? playerUrl(name) : null);
+  const fromSeason = (list, score) => list.map(p => [p, score(p)]).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([p]) => ({name: p.playerName, team: teamCodeOf(p.team), espnId: espnOf(p), games: p.gamesPlayed,
+    pts: p.stats.points, reb: p.stats.totalRebounds, ast: p.stats.assists, stl: p.stats.steals, blk: p.stats.blocks, url: urlOf(p.playerName)}));
+  const fromLadder = key => (ladders?.[key] ?? []).filter(row => row.qualified !== false).slice(0, 5).map(row => ({name: row.name, team: row.team, espnId: row.espnId, games: row.games, pts: row.pts, reb: row.reb, ast: row.ast, url: urlOf(row.name)}));
+  const races = [
+    {key: 'mvp', name: 'MVP', href: '/ladders/mvp', stats: ['pts', 'reb', 'ast'], method: 'Per-game game score, adjusted for games played.', rows: fromLadder('mvp')},
+    {key: 'roty', name: 'Rookie of the Year', href: '/ladders/roty', stats: ['pts', 'reb', 'ast'], method: 'Rookies only, on per-game game score.', rows: fromLadder('rookie')},
+    {key: 'sixth', name: 'Sixth Man of the Year', stats: ['pts', 'reb', 'ast'], method: 'Came off the bench in at least half his games, 15+ minutes a night, on per-game game score.',
+      rows: fromSeason(pool.filter(p => p.gamesStarted * 2 <= p.gamesPlayed && p.minutesPerGame >= 15), p => gameScore(p.stats))},
+    {key: 'dpoy', name: 'Defensive Player of the Year', stats: ['stl', 'blk', 'reb'], method: 'Box-score defense, 24+ minutes a night: steals and blocks count double, plus defensive rebounds, minus fouls.',
+      rows: fromSeason(pool.filter(p => p.minutesPerGame >= 24), p => 2 * (p.stats.steals + p.stats.blocks) + .3 * p.stats.defensiveRebounds - .2 * p.stats.personalFouls)},
+  ].filter(race => race.rows.length);
+  if (races.length) {
+    const year = pretty(SEASONS[0]);
+    writePage({route: '/ladders', jsonLd: [crumbs(['Home', '/'], ['Ladders', '/ladders'])],
+      title: `NBA award ladders ${year}: MVP, Rookie, Sixth Man, DPOY | StatsPads`,
+      description: fitDescription(`The top five in every NBA award race for ${year}: ${races.map(race => `${race.name} (${race.rows[0].name})`).join(', ')}.`, `The top five in every NBA award race for ${year}: MVP, Rookie of the Year, Sixth Man and Defensive Player of the Year.`),
+      body: `<article class="seo"><h1>NBA award ladders, ${year}</h1><p>The top five in each award race, from this season's numbers.</p>${races.map(race => `<h2>${esc(race.name)}</h2><p>${esc(race.method)}</p><ol>${race.rows.map(row => `<li>${row.url ? link(row.url, row.name) : esc(row.name)}, ${esc(TEAMS[row.team]?.name ?? row.team)}</li>`).join('')}</ol>`).join('')}</article>`});
+    pages['/ladders'].races = races;
+  }
+}
 /* ---------- /scores: results of the latest game nights, built from the schedule file so it needs no database ---------- */
 {
   const rows = (() => { try { return read(`public/data/${SEASONS[0]}/schedule.json`); } catch { return []; } })();
@@ -286,15 +314,13 @@ for (const [slug, key, name] of [['mvp', 'mvp', 'MVP'], ['roty', 'rookie', 'Rook
   if (days.length) {
     const latest = days[0], top = latest.games.slice(0, 3).map(g => `${g.awayScore > g.homeScore ? g.away : g.home} beat ${g.awayScore > g.homeScore ? g.home : g.away} ${Math.max(g.awayScore, g.homeScore)}-${Math.min(g.awayScore, g.homeScore)}`);
     const line = g => `${g.away} ${g.awayScore}, ${g.home} ${g.homeScore}${g.awayTop && g.homeTop ? ` (top scorers: ${g.awayTop.name} ${g.awayTop.pts}, ${g.homeTop.name} ${g.homeTop.pts})` : ''}`;
-    writePage({route: '/scores', jsonLd: [crumbs(['Home', '/'], ['Scores', '/scores']), webPage('/scores', 'NBA scores and results', `NBA final scores from ${latest.label}.`)],
-      title: 'NBA scores: last night\u2019s final scores | StatsPads',
+    writePage({route: '/scores', jsonLd: [crumbs(['Home', '/'], ['Fixtures', '/scores']), webPage('/scores', 'NBA scores and schedule', `NBA final scores from ${latest.label}.`)],
+      title: 'NBA fixtures 2026-27: scores, results, live games and schedule | StatsPads',
       description: fitDescription(`NBA scores and final results from ${latest.label}: ${top.join('; ')}. Box scores and player stats for every game.`, `NBA scores and final results from ${latest.label}, with a box score and player stats for every game. Updated after each game night.`),
-      body: `<article class="seo"><h1>NBA scores and results</h1><p>Final scores from the latest game nights. Open a game for the full box score and every player\u2019s stats.</p>${days.map(d => `<h2>NBA scores, ${esc(d.label)}</h2><ul>${d.games.map(g => `<li>${link(g.url, line(g))}</li>`).join('')}</ul>`).join('')}<p>${link('/schedule', 'Full schedule')} \u00b7 ${link('/standings', 'Standings')} \u00b7 ${link('/scores', 'Scores')} \u00b7 ${link('/lineups', 'Lineups')}</p></article>`});
+      body: `<article class="seo"><h1>NBA fixtures: scores and schedule</h1><p>Final scores from the latest game nights, live games and every game still to come this season, with tip-off times in your timezone and TV. Open a game for the full box score and every player\u2019s stats, or pick a team for its whole season.</p>${days.map(d => `<h2>NBA scores, ${esc(d.label)}</h2><ul>${d.games.map(g => `<li>${link(g.url, line(g))}</li>`).join('')}</ul>`).join('')}<p>${link('/standings', 'Standings')} \u00b7 ${link('/scores', 'Scores')} \u00b7 ${link('/lineups', 'Lineups')}</p></article>`});
     pages['/scores'].scores = {days};
   }
 }
-writePage({route: '/schedule', title: 'NBA schedule 2026-27: every game and TV time | StatsPads', description: 'The full 2026-27 NBA schedule: every game with times in your timezone, TV channel and scores. Filter by team or find when two teams meet.', jsonLd: [crumbs(['Home', '/'], ['Schedule', '/schedule'])],
-  body: `<article class="seo"><h1>NBA schedule 2026–27</h1><p>Every regular-season game with start times in your timezone, TV and arena. Pick a team, or two, to see when they play each other, like Lakers vs Celtics or 76ers vs Knicks.</p><p>Each of the 30 teams plays 82 regular-season games, 1,230 in all, split between 41 home games and 41 on the road. Every team meets the other 14 teams in its own conference three or four times and each team in the other conference twice, once at home and once away. Finished games link to a full box score with a shot chart and a game-flow chart, and upcoming games show the expected starters for both teams.</p><h2>Teams</h2>${teamList}</article>`});
 writePage({route: '/injuries', title: 'NBA Injury Report 2026-27: Who Is Out Today | StatsPads', description: 'Live NBA injury report for 2026-27: every player who is out, day-to-day or done for the season, with return dates and points, rebounds and assists per game.', jsonLd: [crumbs(['Home', '/'], ['Injuries', '/injuries'])],
   body: `<article class="seo"><h1>NBA injury report 2026–27</h1><p>Every NBA player who is out, day-to-day or done for the season, with ESPN&rsquo;s estimated return date and what each one averages in points, rebounds and assists. The list is sorted by scoring, so the biggest names are first.</p><p>Players are split three ways: day-to-day or questionable for the next game, out for a stretch, and out for the season. Injury news and return dates come from ESPN and change daily, so check back before you set a fantasy lineup or pick a game. Open any player for the full stat line and career table.</p><h2>Teams</h2>${teamList}</article>`});
 writePage({route: '/standings', title: 'NBA standings 2026-27: East and West | StatsPads', description: 'Current NBA standings for 2026-27: Eastern and Western conference seeds, records, games behind, home and road records, last ten and streaks.', jsonLd: [crumbs(['Home', '/'], ['Standings', '/standings'])],
@@ -426,10 +452,10 @@ for (const game of cap(db?.games ?? [])) {
     title: fitTitle(`${name}: match player stats, ${shortDay(game.played_at)} | StatsPads`, `${name}: match player stats, ${shortDay(game.played_at)}`, `${name}: match player stats`, `${game.away} vs ${game.home}: match player stats`),
     route,
     description: fitDescription(`${winner.name} beat ${loser.name} ${winScore}-${loseScore} on ${day}. Full box score and player stats: ${names}.`, `${winner.name} beat ${loser.name} ${winScore}-${loseScore} on ${day}. Full box score and player stats.`),
-    jsonLd: [crumbs(['Home', '/'], ['Schedule', '/schedule'], [name, route]),
+    jsonLd: [crumbs(['Home', '/'], ['Fixtures', '/scores'], [name, route]),
       {'@context': 'https://schema.org', '@type': 'SportsEvent', '@id': `${SITE}${route}#event`, name, url: SITE + route, sport: 'Basketball', startDate: new Date(game.played_at).toISOString(), eventStatus: 'https://schema.org/EventCompleted', ...(game.venue ? {location: {'@type': 'Place', name: game.venue}} : {}),
         awayTeam: {'@type': 'SportsTeam', name: away.name, url: SITE + teamUrl(game.away)}, homeTeam: {'@type': 'SportsTeam', name: home.name, url: SITE + teamUrl(game.home)}}],
-    body: `<article class="seo"><h1>${esc(name)}: match player stats and box score, ${day}</h1><p>The ${esc(winner.name)} beat the ${esc(loser.name)} ${winScore}-${loseScore} in a ${kind} game on ${day}${game.venue ? ` at ${esc(game.venue)}` : ''}. ${leaders.map(l => `${who(l)} led the ${esc(TEAMS[l.team].name)} with ${l.pts} points`).join('; ')}.</p>${sides.map(box).join('')}${sides.map(versus).join('')}<p>${link(teamUrl(game.away), `${away.name} roster`)} · ${link(teamUrl(game.home), `${home.name} roster`)} · ${link(teamUrl(game.away), `${away.name} starting lineup`)} · ${link(teamUrl(game.home), `${home.name} starting lineup`)} · ${link('/schedule', 'Schedule')}</p></article>`,
+    body: `<article class="seo"><h1>${esc(name)}: match player stats and box score, ${day}</h1><p>The ${esc(winner.name)} beat the ${esc(loser.name)} ${winScore}-${loseScore} in a ${kind} game on ${day}${game.venue ? ` at ${esc(game.venue)}` : ''}. ${leaders.map(l => `${who(l)} led the ${esc(TEAMS[l.team].name)} with ${l.pts} points`).join('; ')}.</p>${sides.map(box).join('')}${sides.map(versus).join('')}<p>${link(teamUrl(game.away), `${away.name} roster`)} · ${link(teamUrl(game.home), `${home.name} roster`)} · ${link(teamUrl(game.away), `${away.name} starting lineup`)} · ${link(teamUrl(game.home), `${home.name} starting lineup`)} · ${link('/scores', 'Fixtures')}</p></article>`,
   };
   written.push(route);
 }
@@ -448,7 +474,7 @@ const starList = named(debates.stars).slice(0, 20), rookieList = named(debates.r
 for (const group of [starList, rookieList]) for (let i = 0; i < group.length; i += 1) for (let j = i + 1; j < group.length; j += 1) listPair(group[i], group[j]);
 for (const [a, b] of teamPairs) if (DIVISIONS.some(division => division.includes(a.code) && division.includes(b.code))) listPair(a, b);
 
-const urls = ['/', '/compare', '/stats/points', '/lineups', '/schedule', '/standings', '/blog', ...published().map(post => `/blog/${post.slug}`), '/about', '/contact', '/terms', '/privacy', ...written.filter(route => !['/compare', '/lineups', '/stats/points'].includes(route) && !route.startsWith('/leaders') && (!route.startsWith('/compare/') || sitemapCompare.has(route)))];
+const urls = ['/', '/compare', '/stats/points', '/lineups', '/scores', '/ladders', '/standings', '/blog', ...published().map(post => `/blog/${post.slug}`), '/about', '/contact', '/terms', '/privacy', ...written.filter(route => !['/compare', '/lineups', '/stats/points'].includes(route) && !route.startsWith('/leaders') && (!route.startsWith('/compare/') || sitemapCompare.has(route)))];
 /* lastmod is the day a page's numbers last changed: a team's last finished game for team, player and compare pages, the game's own day for a game page. Hubs that change every day, and the static pages, get their own dates. */
 const lastGame = (() => {
   const rows = (() => { try { return read(`public/data/${SEASONS[0]}/schedule.json`); } catch { return []; } })();
@@ -471,7 +497,7 @@ const lastmodOf = route => {
   return today;
 };
 fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${[...new Set(urls)].map(route => `  <url><loc>${SITE}${route}</loc><lastmod>${lastmodOf(route)}</lastmod></url>`).join('\n')}\n</urlset>\n`);
-fs.writeFileSync(path.join(publicDir, 'llms.txt'), `# StatsPads\n\n> StatsPads (${SITE}) is a free NBA stats site: side-by-side player and team comparisons on a skill radar, league leaders, standings, the schedule, team pages with expected starting fives, and game pages with box scores. Stats come from ESPN's public feeds and are refreshed every few hours.\n\n## Main pages\n\n- [Home](${SITE}/): today's picture of the league\n- [Compare](${SITE}/compare): pick any two players or teams\n- [Stat leaders](${SITE}/leaders): top five in each major category\n- [Team leaders](${SITE}/stats/teams): every team ranked on efficiency, scoring, defense, steals, blocks and more\n- [Starting lineups and teams](${SITE}/lineups): the expected starting five, roster and stats for all 30 teams\n- [Standings](${SITE}/standings): both conferences with seeds\n- [Injury report](${SITE}/injuries): every injured player, who is out and when they return\n- [Schedule](${SITE}/schedule): every game of the season\n- [Scores](${SITE}/scores): final scores and results from the latest game nights\n- [Blog](${SITE}/blog): player comparisons and stat breakdowns\n${published().map(post => `- [${post.title}](${SITE}/blog/${post.slug}): ${post.description}`).join('\n')}\n\n## Stat rankings\n\n${LEADERS.map(entry => `- [${entry.label} leaders](${SITE}${statUrl(entry.slug)})`).join('\n')}\n\n## Page patterns\n\n- Players: ${SITE}/players/{player-name}, per-game stats, league ranks, career by season\n- Teams: ${SITE}/lineups/{team-name}, roster, expected starting five, team stats\n- Comparisons: ${SITE}/compare/{a}-vs-{b}\n\nFull list of pages: ${SITE}/sitemap.xml\n`);
+fs.writeFileSync(path.join(publicDir, 'llms.txt'), `# StatsPads\n\n> StatsPads (${SITE}) is a free NBA stats site: side-by-side player and team comparisons on a skill radar, league leaders, standings, the schedule, team pages with expected starting fives, and game pages with box scores. Stats come from ESPN's public feeds and are refreshed every few hours.\n\n## Main pages\n\n- [Home](${SITE}/): today's picture of the league\n- [Compare](${SITE}/compare): pick any two players or teams\n- [Stat leaders](${SITE}/leaders): top five in each major category\n- [Team leaders](${SITE}/stats/teams): every team ranked on efficiency, scoring, defense, steals, blocks and more\n- [Starting lineups and teams](${SITE}/lineups): the expected starting five, roster and stats for all 30 teams\n- [Standings](${SITE}/standings): both conferences with seeds\n- [Injury report](${SITE}/injuries): every injured player, who is out and when they return\n- [Fixtures: scores and schedule](${SITE}/scores): results, live games and every game still to come\n- [Blog](${SITE}/blog): player comparisons and stat breakdowns\n${published().map(post => `- [${post.title}](${SITE}/blog/${post.slug}): ${post.description}`).join('\n')}\n\n## Stat rankings\n\n${LEADERS.map(entry => `- [${entry.label} leaders](${SITE}${statUrl(entry.slug)})`).join('\n')}\n\n## Page patterns\n\n- Players: ${SITE}/players/{player-name}, per-game stats, league ranks, career by season\n- Teams: ${SITE}/lineups/{team-name}, roster, expected starting five, team stats\n- Comparisons: ${SITE}/compare/{a}-vs-{b}\n\nFull list of pages: ${SITE}/sitemap.xml\n`);
 fs.writeFileSync(path.join(publicDir, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 console.log(`prerender: ${written.length} pages, in ${((Date.now() - started) / 1000).toFixed(1)}s, ${players.filter(p => !p.nbaId && !p.espnId).length} of ${players.length} players without a headshot`);
 fs.mkdirSync(path.dirname(manifestFile), {recursive: true});

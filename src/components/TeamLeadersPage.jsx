@@ -27,7 +27,7 @@ export default function TeamLeadersPage({slug}) {
     <p>{entry.unit}{entry.note ? ` · ${entry.note.replace('&rsquo;', '’')}` : ''} · per game, all {ranked ? ranked.length : 30} teams</p>
     <div className="statpage-tabs" role="group" aria-label="Stat">{TEAM_LEADERS.map(item => <button key={item.slug} className={item.slug === entry.slug ? 'active' : ''} onClick={() => navigate(teamStatUrl(item.slug))}>{item.label}</button>)}</div>
     {ranked && !ranked.length && <p>No team has played a game yet.</p>}
-    <ol className="statpage-list">{(ranked ?? []).map((team, index) => {
+    <ol key={entry.slug} className="statpage-list list-in">{(ranked ?? []).map((team, index) => {
       const code = team.team, color = TEAMS[code]?.color || '#8a8a8a';
       return <li key={code} className={index < 3 ? `top top-${index + 1}` : ''} style={{'--tc': color}}>
         <button onClick={() => navigate(teamUrl(code))}>

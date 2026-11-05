@@ -14,10 +14,11 @@ export default function StatLeadersPage({slug, players, playerIds, Art, onOpen})
   const entry = LEADERS.find(item => item.slug === slug) || LEADERS[0];
   const ranked = useMemo(() => {
     const pool = qualified(players), base = pool.length ? pool : players;
-    const eligible = entry.min ? base.filter(player => player.stats[entry.min[0]] >= entry.min[1]) : base;
+    /* A stat the files do not carry yet (a new one, before the next refresh) leaves those players out instead of breaking. */
+    const eligible = base.filter(player => Number.isFinite(leaderValue(entry, player.stats)) && (!entry.min || player.stats[entry.min[0]] >= entry.min[1]));
     return [...eligible].sort((a, b) => leaderValue(entry, b.stats) - leaderValue(entry, a.stats) || a.playerName.localeCompare(b.playerName)).slice(0, SHOWN);
   }, [players, entry]);
-  const value = player => `${leaderValue(entry, player.stats).toFixed(1)}${entry.pct ? '%' : ''}`;
+  const value = player => { const amount = leaderValue(entry, player.stats); return `${entry.signed && amount > 0 ? '+' : ''}${amount.toFixed(1)}${entry.pct ? '%' : ''}`; };
   const rank = ranked.map((_, index) => index + 1); // ties run in alphabetical order, each with its own number
   return <section className="statpage">
     <button className="statpage-back" onClick={() => navigate('/')}><ArrowLeft size={15}/> Home</button>
@@ -25,7 +26,7 @@ export default function StatLeadersPage({slug, players, playerIds, Art, onOpen})
     <h1>{entry.label} leaders</h1>
     <p>{entry.unit}{entry.note ? ` · ${entry.note}` : ''} · top {ranked.length}</p>
     <div className="statpage-tabs" role="group" aria-label="Stat">{LEADERS.map(item => <button key={item.slug} className={item.slug === entry.slug ? 'active' : ''} onClick={() => navigate(`/stats/${item.slug}`)}>{item.label}</button>)}</div>
-    <ol className="statpage-list">{ranked.map((player, index) => {
+    <ol key={entry.slug} className="statpage-list list-in">{ranked.map((player, index) => {
       const code = teamCodeOf(player.team), color = TEAMS[code]?.color || '#8a8a8a';
       return <li key={player.playerId} className={rank[index] <= 3 ? `top top-${rank[index]}` : ''} style={{'--tc': color}}>
         <button onClick={() => onOpen(player)}>

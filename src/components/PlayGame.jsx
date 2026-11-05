@@ -200,7 +200,7 @@ export default function PlayGame() {
   const number = Math.min(ROUND, results.length + (revealed ? 0 : 1));
 
   return <main className="pl">
-    <GameHead title="Guess the player" line="A shot chart and a stat line from this season. Which starter is it?" onShare={round && !revealed && !finished ? () => setSharing(true) : null}/>
+    <GameHead title="Guess the player" onShare={round && !revealed && !finished ? () => setSharing(true) : null}/>
 
     {auth === 'in' && !finished && round && <div className="pl-progress" aria-label={`Round ${number} of ${ROUND}`}>
       <b>Round {number}<span> of {ROUND}</span></b>

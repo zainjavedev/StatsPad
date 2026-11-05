@@ -132,20 +132,6 @@ export function StandingsSkeleton() {
   </section>;
 }
 
-/* Schedule: title, the team and opponent pickers, the upcoming/played switch, then a day of games. */
-export function ScheduleSkeleton() {
-  return <section className="front-page" aria-busy="true" aria-label="Loading the schedule">
-    <Sk className="sk-title sk-big" style={{width: 200, marginTop: 20}}/>
-    <div className="sk-pickers"><Sk className="sk-picker"/><Sk className="sk-picker"/></div>
-    <Sk className="sk-switch"/>
-    <div className="sk-table">
-      <Sk className="sk-title sk-small" style={{width: 110, height: 16, margin: '4px 0 18px'}}/>
-      <Sk className="sk-title" style={{width: 150, height: 24, marginBottom: 14}}/>
-      {times(8, index => <Sk key={index} className="sk-game-row"/>)}
-    </div>
-  </section>;
-}
-
 /* A team's lineup page: the team rail, the banner, then the starting five. */
 export function LineupSkeleton() {
   return <section className="front-page sk-lineup" aria-busy="true" aria-label="Loading the lineup">
@@ -175,7 +161,6 @@ export function skeletonForPath(path) {
   if (path === '/lineups') return <TilesSkeleton/>;
   if (/^\/lineups\//.test(path)) return <LineupSkeleton/>;
   if (path === '/standings') return <StandingsSkeleton/>;
-  if (path === '/schedule') return <ScheduleSkeleton/>;
   if (path === '/injuries') return <InjuriesSkeleton/>;
   if (/^\/stats\//.test(path) || path === '/leaders') return <StatSkeleton/>;
   return <PageSkeleton/>;

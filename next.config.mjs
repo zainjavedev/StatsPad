@@ -28,6 +28,9 @@ export default {
     return [
       ...Object.entries(gameRedirects).map(([id, destination]) => ({source: `/games/${id}`, destination, permanent: true})),
       {source: '/performances', destination: '/scores', permanent: true},
+      /* Scores and the schedule became one page, Fixtures, at /scores; ?team= carries over. */
+      {source: '/schedule', destination: '/scores', permanent: true},
+      {source: '/fixtures', destination: '/scores', permanent: true},
       {source: '/teams', destination: '/lineups', permanent: true},
       {source: '/teams/:slug', destination: '/lineups/:slug', permanent: true},
       {source: '/leaders', destination: '/stats/points', permanent: true},

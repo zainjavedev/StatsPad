@@ -137,7 +137,10 @@ export function makeCopy({players, teams, esc, link, nameOf, playerHref, pairRou
     const rows = cats.map(cat => {
       const cells = entries.map(entry => { const rank = rankIn(pool, entry.item, cat); return rank ? [fixed(cat.get(entry.item)), ord(rank), 1 - (rank - 1) / pool.length] : null; });
       /* --p is the rank as a share of the pool (1 = first), which the page draws as a bar behind the rank. */
-      return cells.every(Boolean) ? `<tr><th scope="row">${cat.label}</th>${cells.map(([value, rank, share]) => `<td>${value}</td><td class="rk" style="--p:${share.toFixed(2)}">${rank}</td>`).join('')}</tr>` : '';
+      if (!cells.every(Boolean)) return '';
+      /* Side by side, the better rank is marked so the page can light up who wins each row. */
+      const best = cells.length === 2 && cells[0][2] !== cells[1][2] ? (cells[0][2] > cells[1][2] ? 0 : 1) : -1;
+      return `<tr><th scope="row">${cat.label}</th>${cells.map(([value, rank, share], index) => `<td${index === best ? ' class="best"' : ''}>${value}</td><td class="rk${index === best ? ' best' : ''}" style="--p:${share.toFixed(2)}">${rank}</td>`).join('')}</tr>`;
     }).filter(Boolean).join('');
     if (!rows) return '';
     const heads = entries.map(entry => `<th colspan="2" scope="colgroup">${esc(entry.name)}</th>`).join('');
@@ -146,7 +149,7 @@ export function makeCopy({players, teams, esc, link, nameOf, playerHref, pairRou
       const ranked = cats.map(cat => ({label: cat.label, rank: rankIn(pool, entries[0].item, cat)})).filter(entry => entry.rank).sort((x, y) => x.rank - y.rank);
       if (ranked.length > 1) verdict = ` ${esc(entries[0].name)} ranks highest in ${ranked[0].label} (${ord(ranked[0].rank)}) and lowest in ${ranked.at(-1).label} (${ord(ranked.at(-1).rank)}). The next strongest categories are ${list(ranked.slice(1, 3).map(entry => `${entry.label} (${ord(entry.rank)})`))}, and the next weakest are ${list(ranked.slice(-3, -1).reverse().map(entry => `${entry.label} (${ord(entry.rank)})`))}.`;
     }
-    return `<h2>League rankings</h2><p>Each stat per game, with the rank among ${pool.length} ${noun}.${verdict}</p><table><thead><tr><th></th>${heads}</tr><tr><th>Stat</th>${entries.map(() => '<th>Avg</th><th>Rank</th>').join('')}</tr></thead><tbody>${rows}</tbody></table>`;
+    return `<h2>League rankings</h2><p>Each stat per game, with the rank among ${pool.length} ${noun}.${verdict}</p><table${entries.length === 2 ? ' class="rk-vs"' : ''}><thead><tr><th></th>${heads}</tr><tr><th>Stat</th>${entries.map(() => '<th>Avg</th><th>Rank</th>').join('')}</tr></thead><tbody>${rows}</tbody></table>`;
   };
   const playerRankings = p => rankings(players, PLAYER_CATS, [{name: p.playerName, item: p}], 'qualified players');
   const teamRankings = t => rankings(teams, TEAM_CATS, [{name: t.name, item: t}], 'NBA teams');

@@ -69,7 +69,9 @@ export default function ShareSheet({ready, failed, unavailable = 'This is not av
       setPosterHeight(card.offsetHeight);
       /* On a big screen the preview may grow past the poster's own size, as far as the window's height allows next to the buttons. */
       const sheet = room.parentElement, chrome = sheet.offsetHeight - room.clientHeight, wide = matchMedia('(min-width: 900px)').matches;
-      const tall = wide ? (innerHeight - 48 - chrome) : room.clientHeight - 8;
+      /* The preview's own padding is inside clientHeight, so it comes off the room too, or the card's bottom edge gets clipped. */
+      const style = getComputedStyle(room), padding = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+      const tall = (wide ? innerHeight - 48 - chrome : room.clientHeight) - padding - 10;
       setScale(Math.min(wide ? 1.6 : 1, tall / card.offsetHeight, (room.clientWidth - 4) / card.offsetWidth));
     };
     measure();

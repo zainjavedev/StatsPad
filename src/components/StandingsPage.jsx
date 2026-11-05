@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { espnLogoUrl, TEAMS } from '../lib/teams';
+import { ArrowDown, ArrowUp } from 'lucide-react';
 import { useFavorites } from '../lib/favorites';
 
 /* Eastern and Western conference tables from ESPN's standings: seed, record, games behind,
@@ -30,13 +31,38 @@ const parse = data => (data.children ?? []).map(group => ({
 
 export const loadStandings = () => ask(2).then(parse);
 
-function Table({group, favorites, ranked, numbered}) {
+/* Any column can be sorted. Values become numbers first: a record like "4-1" by its win share, a streak "W5" as 5 and
+   "L2" as -2, games behind "-" as 0. */
+const sortValue = (row, key) => {
+  if (key === 'team') return TEAMS[row.code].name;
+  const raw = String(row.stat[key] ?? '');
+  if (/^\d+-\d+$/.test(raw)) { const [w, l] = raw.split('-').map(Number); return w + l ? w / (w + l) + w / 1000 : 0; }
+  if (/^[WL]\d+$/.test(raw)) return (raw[0] === 'W' ? 1 : -1) * Number(raw.slice(1));
+  return raw === '-' ? 0 : Number(raw.replace('+', '')) || 0;
+};
+const sortRows = (rows, {key, dir}) => [...rows].sort((a, b) => {
+  const x = sortValue(a, key), y = sortValue(b, key), order = typeof x === 'string' ? x.localeCompare(y) : x - y;
+  return (dir === 'up' ? order : -order) || byRecord(a, b);
+});
+
+/* Both conferences as one table; games behind is recounted from the league leader, since ESPN's is per conference. */
+function leagueRows(groups) {
+  const rows = groups.flatMap(group => group.rows).sort(byRecord), top = rows[0];
+  const behind = row => ((Number(top.stat.wins) - Number(row.stat.wins)) + (Number(row.stat.losses) - Number(top.stat.losses))) / 2;
+  return rows.map(row => ({...row, stat: {...row.stat, gamesBehind: behind(row) ? String(behind(row)) : '-'}}));
+}
+
+function Table({group, favorites, ranked, numbered, sort, onSort}) {
+  /* A header: tap once for highest first, again for lowest first, a third time back to the standings order. */
+  const head = (label, key, className) => <th key={label} className={className} aria-sort={sort?.key === key ? (sort.dir === 'up' ? 'ascending' : 'descending') : 'none'}>
+    <button type="button" className={sort?.key === key ? 'on' : ''} onClick={() => onSort(key)}>{label}{sort?.key === key && (sort.dir === 'up' ? <ArrowUp size={12}/> : <ArrowDown size={12}/>)}</button>
+  </th>;
   return <section className="front-panel stand">
     <div className="front-panel-head"><h2>{group.name}</h2></div>
     <div className="stand-scroll">
       <table>
-        <thead><tr><th className="num">#</th><th className="team">Team</th>{COLUMNS.map(([label]) => <th key={label} className={EXTRA.has(label) ? 'num extra' : 'num'}>{label}</th>)}</tr></thead>
-        <tbody>{group.rows.map((row, index) => <React.Fragment key={row.code}>
+        <thead><tr><th className="num">#</th>{head('Team', 'team', 'team')}{COLUMNS.map(([label, key]) => head(label, key, EXTRA.has(label) ? 'num extra' : 'num'))}</tr></thead>
+        <tbody key={`${group.name}-${sort?.key}-${sort?.dir}`} className="list-in">{group.rows.map((row, index) => <React.Fragment key={row.code}>
           {ranked && index === 6 && <tr className="stand-cut"><td colSpan={COLUMNS.length + 2}>Play-in</td></tr>}
           {ranked && index === 10 && <tr className="stand-cut"><td colSpan={COLUMNS.length + 2}>Out of the picture</td></tr>}
           <tr className={favorites.includes(row.code) ? 'mine' : ''}>
@@ -52,24 +78,27 @@ function Table({group, favorites, ranked, numbered}) {
 
 export default function StandingsPage() {
   const favorites = useFavorites();
-  const [groups, setGroups] = useState(null), [view, setView] = useState('eastern'), [error, setError] = useState(false);
+  const [groups, setGroups] = useState(null), [view, setView] = useState('eastern'), [error, setError] = useState(false), [sort, setSort] = useState(null);
+  const onSort = key => setSort(now => (now?.key !== key ? {key, dir: key === 'team' ? 'up' : 'down'} : now.dir === (key === 'team' ? 'up' : 'down') ? {key, dir: key === 'team' ? 'down' : 'up'} : null));
   useEffect(() => {
     loadStandings().then(setGroups).catch(() => setError(true));
   }, []);
   const played = groups?.some(group => group.rows.some(row => Number(row.stat.wins) + Number(row.stat.losses) > 0));
   const ranked = Boolean(played);
-  const shown = groups?.filter(group => group.name.toLowerCase().startsWith(view));
+  /* League: all 30 teams in one table, by record, with no playoff cut lines (those are per conference). */
+  const picked = view === 'league' ? groups && [{name: 'League', rows: leagueRows(groups)}] : groups?.filter(group => group.name.toLowerCase().startsWith(view));
+  const shown = sort ? picked?.map(group => ({...group, rows: sortRows(group.rows, sort)})) : picked;
   return <section className="sched">
     <div className="sched-head">
       <h1>Standings</h1>
     </div>
     <div className="sched-filters">
       <div className="front-tabs" role="group" aria-label="Conference">
-        {[['eastern', 'East'], ['western', 'West']].map(([key, label]) => <button key={key} className={view === key ? 'active' : ''} onClick={() => setView(key)}>{label}</button>)}
+        {[['eastern', 'East'], ['western', 'West'], ['league', 'League']].map(([key, label]) => <button key={key} className={view === key ? 'active' : ''} onClick={() => setView(key)}>{label}</button>)}
       </div>
     </div>
     {error && <p className="feed-empty">Standings are unavailable right now.</p>}
     {!groups && !error && <div className="front-panel" aria-busy="true" aria-label="Loading the standings"><div className="sk sk-title"/><div className="sk-rows">{Array.from({length: 15}, (_, index) => <div key={index} className="sk sk-row" style={{height: 36}}/>)}</div></div>}
-    <div className="stand-grid">{shown?.map(group => <Table key={group.name} group={group} favorites={favorites} ranked={ranked} numbered={played}/>)}</div>
+    <div className="stand-grid">{shown?.map(group => <Table key={group.name} group={group} favorites={favorites} ranked={ranked && view !== 'league' && !sort} numbered={played} sort={sort} onSort={onSort}/>)}</div>
   </section>;
 }

@@ -15,7 +15,6 @@ const ART = {
 export default function GamesHub() {
   return <main className="gm">
     <h1>Games</h1>
-    <p className="gm-lede">Test what you know about this NBA season. Every answer comes from real games.</p>
     <div className="gm-grid">{GAMES.map(game => <a key={game.href} href={game.href} className="gm-card">
       {ART[game.href]}
       <div className="gm-copy">

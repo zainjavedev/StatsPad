@@ -119,7 +119,7 @@ export default function StatsQuiz() {
     .then(() => { setCopied(true); setTimeout(() => setCopied(false), 1600); }).catch(() => {});
 
   return <main className="qz">
-    <GameHead title="Stats quiz" line="Ten questions about this season. Who leads the league, who leads their team, who wins the head to head."
+    <GameHead title="Stats quiz"
       extra={best > 0 && <span className="qz-best">Best <b>{best}/10</b></span>} onShare={done || (question && picked === null) ? () => setSharing(true) : null}/>
 
     {!round ? <div className="qz-card qz-skeleton" aria-busy="true"/> : !round.length ? <p className="qz-note">The season is too young for a quiz yet. Check back after a few more games.</p> : done ? <section className="qz-card qz-done">

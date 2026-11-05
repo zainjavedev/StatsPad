@@ -64,12 +64,11 @@ export default function FrontPage({players, playerIds, Art, onCompare, onLeaders
             </span>
             <span className="perf-hero-arts">{leaders[0].tied.slice(0, 2).map(player => <Art key={player.playerId} entity={player} playerIds={playerIds} className="perf-hero-art"/>)}</span>
           </button>}
-          <ol className="performers perf-rest">{leaders.slice(1, -1).map((entry, index) => <li key={entry.key} style={{'--tc': TEAMS[teamCodeOf(entry.player.team)]?.color || '#8a8a8a'}}><button onClick={() => navigate(statUrl(entry.slug))}>
-            <span className="perf-rank">{index + 2}</span>
+          <ul className="performers perf-rest">{leaders.slice(1, -1).map(entry => <li key={entry.key} style={{'--tc': TEAMS[teamCodeOf(entry.player.team)]?.color || '#8a8a8a'}}><button onClick={() => navigate(statUrl(entry.slug))}>
             <Art entity={entry.player} playerIds={playerIds} className="perf-art"/>
             <span className="perf-name"><b>{entry.player.playerName}</b><small>{entry.label} · {entry.player.team}</small></span>
             <strong>{entry.player.stats[entry.key].toFixed(1)}{entry.pct ? '%' : ''} <small>{entry.unit}</small></strong>
-          </button></li>)}</ol>        </section>
+          </button></li>)}</ul>        </section>
 
         <RecentPerformances results={results}/>
       </div>
