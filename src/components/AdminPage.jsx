@@ -1,11 +1,11 @@
 'use client';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { ChevronRight, Gamepad2, Monitor, RefreshCw, Smartphone, Tablet, X } from 'lucide-react';
+import { ChevronRight, Gamepad2, Monitor, MousePointerClick, RefreshCw, Smartphone, Tablet, X } from 'lucide-react';
 import { readAlerts } from '../lib/alerts';
 import AdminTabs from './AdminTabs';
 import './admin.css';
 
-/* The owner's activity dashboard: who visited, where they came from, what they opened, and who plays Guess the Player.
+/* The owner's activity dashboard: who visited, where they came from, what they opened and tapped, and who plays Guess the Player.
    The server decides who gets in (src/server/activity.js); everyone else sees a not-found. */
 
 const RANGES = [[1, '24h'], [7, '7 days'], [30, '30 days']];
@@ -138,14 +138,27 @@ function Pages({pages, entries}) {
   </section>;
 }
 
+/* Taps on controls that don't change the URL (Surprise me, a fixtures day, a sort chip), most tapped first. */
+function Taps({taps}) {
+  const [page, setPage] = useState('all');
+  const paths = useMemo(() => [...new Set(taps.map(row => row.path))], [taps]);
+  const rows = page === 'all' ? taps : taps.filter(row => row.path === page);
+  return <section className="adm-panel">
+    <div className="adm-hd"><h2>Clicks and taps</h2><p>buttons, tabs and filters that don’t change the URL</p></div>
+    {paths.length > 1 && <div className="adm-seg small adm-taps-pages" role="group" aria-label="Filter by page">{['all', ...paths.slice(0, 8)].map(path => <button key={path} type="button" className={page === path ? 'on' : ''} onClick={() => setPage(path)}>{path === 'all' ? 'All pages' : path}</button>)}</div>}
+    <Bars rows={rows} empty="No taps logged in this range yet." label={row => <span className="adm-tap"><b>{row.label}</b><small>{[row.area, row.path].filter(Boolean).join(' · ')}</small></span>}
+      value={row => row.count} note={row => `${row.visitors} ppl`}/>
+  </section>;
+}
+
 /* One person's trail, split into visits (30 minutes apart), newest first, with game rounds in between. */
 function Timeline({person, onClose}) {
   const [data, setData] = useState(null);
-  useEffect(() => { setData(null); call({person: person.person}).then(setData).catch(() => setData({views: [], answers: []})); }, [person.person]);
+  useEffect(() => { setData(null); call({person: person.person}).then(setData).catch(() => setData({views: [], answers: [], taps: []})); }, [person.person]);
   useEffect(() => { const close = event => event.key === 'Escape' && onClose(); window.addEventListener('keydown', close); return () => window.removeEventListener('keydown', close); }, [onClose]);
   const visits = useMemo(() => {
     if (!data || data === 'denied') return [];
-    const items = [...data.views.map(v => ({...v, kind: 'view'})), ...data.answers.map(a => ({...a, kind: 'play'}))].sort((a, b) => new Date(a.at) - new Date(b.at));
+    const items = [...data.views.map(v => ({...v, kind: 'view'})), ...data.answers.map(a => ({...a, kind: 'play'})), ...(data.taps ?? []).map(t => ({...t, kind: 'tap', tapKind: t.kind}))].sort((a, b) => new Date(a.at) - new Date(b.at));
     const groups = [];
     for (const item of items) {
       const last = groups.at(-1);
@@ -155,13 +168,14 @@ function Timeline({person, onClose}) {
   }, [data]);
   return <div className="adm-sheet" role="dialog" aria-modal="true" aria-label={`Activity for ${who(person)}`} onClick={event => { if (event.target === event.currentTarget) onClose(); }}>
     <div className="adm-sheet-card">
-      <div className="adm-hd"><div><h2>{who(person)}</h2><p>{person.first_seen ? `${plural(person.views, 'view')} · ${plural(person.visits, 'visit')} · first seen ${ago(person.first_seen)}` : 'Pages and game rounds, newest first'}</p></div><button type="button" onClick={onClose} aria-label="Close"><X size={18}/></button></div>
+      <div className="adm-hd"><div><h2>{who(person)}</h2><p>{person.first_seen ? `${plural(person.views, 'view')} · ${plural(person.visits, 'visit')} · first seen ${ago(person.first_seen)}` : 'Pages, taps and game rounds, newest first'}</p></div><button type="button" onClick={onClose} aria-label="Close"><X size={18}/></button></div>
       {!data ? <p className="adm-muted">Loading…</p> : !visits.length ? <p className="adm-muted">Nothing logged yet.</p>
         : visits.map(visit => { const Icon = DEVICE[visit.start.device] ?? Monitor; return <section key={visit.number} className="adm-visit">
           <h3>Visit {visit.number}<span>{clock.format(new Date(visit.start.at))} · <Icon size={12}/> {flag(visit.start.country)}{visit.source ? ` · ${visit.source.name}` : ''}</span></h3>
           <ol className="adm-timeline">{visit.items.map((item, index) => <li key={index} className={item.kind}>
             <time>{time.format(new Date(item.at))}</time>
             {item.kind === 'view' ? <a className="adm-path" href={item.path} target="_blank" rel="noreferrer">{item.path}</a>
+              : item.kind === 'tap' ? <span className="adm-tap-line"><MousePointerClick size={13}/> {item.label}{item.area ? <small> · {item.area}</small> : null}</span>
               : <span><Gamepad2 size={13}/> Round {item.step ?? '?'} · {item.player ?? 'a player'} · <b className={item.correct ? 'ok' : 'miss'}>{item.correct ? 'right' : 'wrong'}</b></span>}
           </li>)}</ol>
         </section>; })}
@@ -205,7 +219,7 @@ export default function AdminPage() {
 
   if (data === 'denied') return <section className="adm adm-denied"><h1>Page not found</h1><p>There is nothing here.</p></section>;
   if (!data) return <section className="adm"><p className="adm-muted">{error || 'Loading…'}</p></section>;
-  const {summary: s, series, people, pages, entries, sources, devices, countries, hours, players} = data;
+  const {summary: s, series, people, pages, entries, sources, devices, countries, hours, players, taps = []} = data;
   const range = RANGES.find(([value]) => value === days)[1];
   const ai = sources.filter(row => row.kind === 'ai').reduce((sum, row) => sum + row.count, 0);
 
@@ -238,6 +252,7 @@ export default function AdminPage() {
       <div className="adm-stackcol">
         <People people={people} onOpen={setOpen}/>
         <Pages pages={pages} entries={entries}/>
+        <Taps taps={taps}/>
       </div>
       <div className="adm-stackcol">
         <Sources sources={sources}/>

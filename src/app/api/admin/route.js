@@ -113,15 +113,17 @@ export async function POST(request) {
 
   if (body?.person) {
     const person = String(body.person);
-    const [views, answers] = await Promise.all([
+    const [views, answers, taps] = await Promise.all([
       sql`with v as (select visitor from page_views group by visitor having coalesce((array_agg(subscriber_id) filter (where subscriber_id is not null))[1]::text, visitor) = ${person})
         select path, at, device, country, referrer from page_views where visitor in (select visitor from v) or subscriber_id::text = ${person} order by at desc limit 300`,
       sql`select game_id, step, player, correct, at from play_answers where subscriber_id::text = ${person} order by at desc limit 200`,
+      sql`with v as (select visitor from page_views group by visitor having coalesce((array_agg(subscriber_id) filter (where subscriber_id is not null))[1]::text, visitor) = ${person})
+        select label, area, path, kind, at from ui_events where visitor in (select visitor from v) or visitor = ${person} or subscriber_id::text = ${person} order by at desc limit 300`,
     ]);
-    return NextResponse.json({views: views.map(view => ({...view, source: sourceOf(view.path, view.referrer)})), answers});
+    return NextResponse.json({views: views.map(view => ({...view, source: sourceOf(view.path, view.referrer)})), answers, taps});
   }
 
-  const [summary, series, people, pages, firsts, devices, countries, hours, players] = await Promise.all([
+  const [summary, series, people, pages, firsts, devices, countries, hours, players, taps] = await Promise.all([
     sql`with p as (select * from page_views where visitor not in (select visitor from page_views where subscriber_id = any(${owners}::uuid[]) union select visitor from hidden_visitors where ${hiding})),
         a as (select * from play_answers where not coalesce(subscriber_id = any(${owners}::uuid[]), false))
       select
@@ -182,13 +184,18 @@ export async function POST(request) {
       where not (s.id = any(${owners}::uuid[]))
       group by s.id, s.email, ps.correct, ps.total, ps.best, ps.streak, ps.updated_at
       order by ps.updated_at desc limit 100`,
+    /* Taps that don't change the URL, grouped by what was tapped, where, and on which page. */
+    sql`select label, coalesce(area, '') as area, split_part(path, '?', 1) as path, max(kind) as kind, count(*)::int as count, count(distinct visitor)::int as visitors, max(at) as last
+      from ui_events where at > now() - make_interval(days => ${days}) and visitor not in (select visitor from page_views where subscriber_id = any(${owners}::uuid[]) union select visitor from hidden_visitors where ${hiding})
+        and not coalesce(subscriber_id = any(${owners}::uuid[]), false)
+      group by 1, 2, 3 order by 5 desc limit 60`,
   ]);
   const withSource = firsts.map(row => ({...row, source: sourceOf(row.path, row.referrer)}));
   const sources = tally(withSource, row => row.source.name).map(entry => ({...entry, kind: withSource.find(row => row.source.name === entry.name).source.kind}));
   const entries = tally(withSource, row => row.path.split('?')[0]).slice(0, 25).map(({name, count}) => ({path: name, visitors: count}));
   const byHour = Array.from({length: 24}, (_, hour) => hours.find(row => row.hour === hour)?.views ?? 0);
   return NextResponse.json({
-    days, zone, summary: summary[0], series, pages, entries, sources, devices, countries, hours: byHour, players,
+    days, zone, summary: summary[0], series, pages, entries, sources, devices, countries, hours: byHour, players, taps,
     people: people.map(person => ({...person, source: sourceOf(person.first_path, person.referrer)})),
   });
 }

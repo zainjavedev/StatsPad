@@ -1,6 +1,6 @@
 import { sql } from './db';
 
-/* First-party activity log: page views from every browser and each Guess the Player answer.
+/* First-party activity log: page views from every browser, taps that don't change the URL, and each Guess the Player answer.
    Tables are created on first use, the same as play_scores, so nothing needs a setup run. */
 let ready;
 export const ensureActivity = () => (ready ??= (async () => {
@@ -30,6 +30,20 @@ export const ensureActivity = () => (ready ??= (async () => {
     at timestamptz not null default now()
   )`;
   await sql`create index if not exists play_answers_at on play_answers (at desc)`;
+  /* Taps on things that don't change the URL (Surprise me, a fixtures day, a sort chip, a tab), sent in batches by Tracker.jsx.
+     label is what the control said, area the part of the page it sat in. Nothing typed into a field is ever sent. */
+  await sql`create table if not exists ui_events (
+    id bigserial primary key,
+    visitor text not null,
+    subscriber_id uuid,
+    path text not null,
+    label text not null,
+    area text,
+    kind text not null,
+    at timestamptz not null default now()
+  )`;
+  await sql`create index if not exists ui_events_at on ui_events (at desc)`;
+  await sql`create index if not exists ui_events_visitor on ui_events (visitor, at desc)`;
 })().catch(error => { ready = undefined; throw error; }));
 
 /* Only the confirmed account for ADMIN_EMAIL gets in. Password sign-up hands back a token before the
