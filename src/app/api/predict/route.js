@@ -37,7 +37,7 @@ const crowdFor = async ids => {
   return rows.reduce((all, row) => ({...all, [row.game_id]: {...all[row.game_id], [row.pick]: row.n}}), {});
 };
 
-/* GET ?ids=1,2,3&token=…: the crowd split for those games, plus this account's picks for them and its record so far. */
+/* GET ?ids=1,2,3&token=…: the crowd split for those games, plus this account's picks for them, its record so far and its rank. */
 export async function GET(request) {
   const params = new URL(request.url).searchParams;
   const ids = [...new Set(String(params.get('ids') || '').split(',').filter(id => ID.test(id)))].slice(0, 120);
@@ -46,12 +46,16 @@ export async function GET(request) {
   if (!me) return NextResponse.json({crowd, picks: {}, record: null});
   const [picks, [record]] = await Promise.all([
     ids.length ? sql`select game_id, pick from predictions where subscriber_id = ${me.id} and game_id = any(${ids})` : [],
-    sql`select count(*) filter (where (g.home_score > g.away_score and p.pick = g.home) or (g.away_score > g.home_score and p.pick = g.away))::int as won,
-      count(*)::int as graded
-      from predictions p join games g on g.id = p.game_id
-      where p.subscriber_id = ${me.id} and g.home_score is not null and g.away_score is not null and g.home_score <> g.away_score`,
+    /* Every picker's graded record; you rank by wins, ties sharing a place. */
+    sql`with graded as (
+        select p.subscriber_id, count(*) filter (where p.pick = case when g.home_score > g.away_score then g.home else g.away end)::int as won, count(*)::int as total
+        from predictions p join games g on g.id = p.game_id
+        where g.home_score is not null and g.away_score is not null and g.home_score <> g.away_score
+        group by p.subscriber_id)
+      select me.won, me.total, (select count(*) from graded other where other.won > me.won)::int + 1 as rank, (select count(*) from graded)::int as players
+      from graded me where me.subscriber_id = ${me.id}`,
   ]);
-  return NextResponse.json({crowd, picks: Object.fromEntries(picks.map(row => [row.game_id, row.pick])), record: {won: record.won, lost: record.graded - record.won}});
+  return NextResponse.json({crowd, picks: Object.fromEntries(picks.map(row => [row.game_id, row.pick])), record: record ? {won: record.won, lost: record.total - record.won, rank: record.rank, players: record.players} : null});
 }
 
 /* POST {token, game, pick}: saves (or changes) this account's pick while the game has not started, and returns the game's split. */

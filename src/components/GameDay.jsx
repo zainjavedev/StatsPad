@@ -52,6 +52,16 @@ const loadBoard = (day, fresh) => {
   return boards.get(day);
 };
 
+/* Picks made while signed out, in this browser: {gameId: {code, start}}. Old ones are dropped after a month. */
+const LOCAL = 'statspad-picks', NUDGE = 'statspad-picks-nudge';
+const readLocalPicks = () => { try { return JSON.parse(localStorage.getItem(LOCAL)) || {}; } catch { return {}; } };
+const writeLocalPicks = value => {
+  const fresh = Object.fromEntries(Object.entries(value).filter(([, entry]) => Date.now() - new Date(entry.start) < 30 * 864e5));
+  try { localStorage.setItem(LOCAL, JSON.stringify(fresh)); } catch { /* private mode */ }
+};
+/* The sign-in line under the picks can be closed; it stays away for a week. */
+const nudgeSnoozed = () => { try { return Date.now() - Number(localStorage.getItem(NUDGE) || 0) < 7 * 864e5; } catch { return false; } };
+
 const face = id => `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${id}.png&w=96&h=70`;
 
 /* One team's line: a bar in the team's colour, logo, name, record and score; the winner gets a marker by the score.
@@ -111,7 +121,8 @@ function Game({game, showDay, mine, onPick}) {
 export default function GameDay() {
   const auth = useSignedIn();
   const [picks, setPicks] = useState({}), [record, setRecord] = useState(null), [notice, setNotice] = useState('');
-  const pending = useRef(null), inflight = useRef(new Set());
+  const inflight = useRef(new Set()), [version, setVersion] = useState(0), [nudgeHidden, setNudgeHidden] = useState(true);
+  useEffect(() => { setNudgeHidden(nudgeSnoozed()); }, []);
   const [rows, setRows] = useState(null), [day, setDay] = useState(null), [board, setBoard] = useState(new Map()), [team, setTeam] = useState('');
   const strip = useRef(null), today = eastern(Date.now());
 
@@ -158,52 +169,60 @@ export default function GameDay() {
     .sort((a, b) => a.start.localeCompare(b.start));
   const index = days.indexOf(day);
 
-  /* Picks for the games on screen, again whenever the account changes. Picks still being saved win over
-     what the server sends back. */
+  /* Picks for the games on screen. Signed in, they come from the account (picks still being saved win over what the server
+     sends back); signed out, from this browser. `version` refetches after local picks move into a new account. */
   const ids = games?.map(game => game.id).join(',') ?? '';
   useEffect(() => {
     if (!ids || auth === 'checking') return undefined;
+    if (auth === 'out') {
+      const local = readLocalPicks();
+      setPicks(Object.fromEntries(Object.entries(local).map(([id, entry]) => [id, entry.code])));
+      setRecord(null);
+      return undefined;
+    }
     let live = true;
-    const token = auth === 'in' ? readAlerts().email : '';
-    fetch(`/api/predict?ids=${ids}${token ? `&token=${encodeURIComponent(token)}` : ''}`).then(response => (response.ok ? response.json() : null)).then(data => {
+    const token = readAlerts().email;
+    fetch(`/api/predict?ids=${ids}&token=${encodeURIComponent(token)}`).then(response => (response.ok ? response.json() : null)).then(data => {
       if (!live || !data) return;
       setPicks(now => {
-        const next = token ? {...now, ...data.picks} : {};
+        const next = {...data.picks};
         inflight.current.forEach(id => { if (now[id]) next[id] = now[id]; });
         return next;
       });
       setRecord(data.record);
     }).catch(() => {});
     return () => { live = false; };
-  }, [ids, auth]);
+  }, [ids, auth, version]);
+
+  /* Signing in moves this browser's picks into the account, for games that have not tipped off yet (the server checks too). */
+  useEffect(() => {
+    if (auth !== 'in') return;
+    const local = readLocalPicks(), open = Object.entries(local).filter(([, entry]) => new Date(entry.start) > Date.now());
+    if (!Object.keys(local).length) return;
+    writeLocalPicks({});
+    if (!open.length) return;
+    const token = readAlerts().email;
+    Promise.all(open.map(([id, entry]) => fetch('/api/predict', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({token, game: id, pick: entry.code})}).catch(() => null)))
+      .then(() => setVersion(now => now + 1));
+  }, [auth]);
 
   const pick = useCallback((game, code) => {
-    if (auth !== 'in') {
-      pending.current = {game, code};
-      openSignIn({back: '/fixtures', title: 'Who wins tonight?', line: 'One tap with Google. Your picks are saved and graded after every game, so you can see your record.'});
-      return;
-    }
     const before = picks[game.id];
     if (before === code) return;
     setPicks(now => ({...now, [game.id]: code}));
+    /* Signed out: the pick lives in this browser (it still shows, grades and shares), and a quiet line offers an account. */
+    if (auth !== 'in') { writeLocalPicks({...readLocalPicks(), [game.id]: {code, start: game.start}}); return; }
     inflight.current.add(game.id);
     fetch('/api/predict', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({token: readAlerts().email, game: game.id, pick: code})})
       .then(async response => {
         const data = await response.json().catch(() => ({}));
-        /* A token the server no longer knows (account deleted): this browser reads as signed out, and the pick is saved after signing in again. */
-        if (response.status === 401) { signOut(); pending.current = {game, code}; openSignIn({back: '/fixtures', title: 'Sign in again', line: 'Your session ran out. One tap with Google and your pick is saved.'}); throw new Error(''); }
+        /* A token the server no longer knows (account deleted): this browser reads as signed out and keeps the pick itself. */
+        if (response.status === 401) { writeLocalPicks({...readLocalPicks(), [game.id]: {code, start: game.start}}); signOut(); return; }
         if (!response.ok) throw new Error(data.error || 'Could not save your pick. Try again.');
       })
-      .catch(error => { setPicks(now => ({...now, [game.id]: before})); if (error.message) setNotice(error.message); })
+      .catch(error => { setPicks(now => ({...now, [game.id]: before})); setNotice(error.message); })
       .finally(() => inflight.current.delete(game.id));
   }, [auth, picks]);
-  /* The pick that opened the sign-in pop-up is saved as soon as the sign-in lands. */
-  useEffect(() => {
-    if (auth !== 'in' || !pending.current) return;
-    const {game, code} = pending.current;
-    pending.current = null;
-    pick(game, code);
-  }, [auth, pick]);
   useEffect(() => {
     if (!notice) return undefined;
     const timer = setTimeout(() => setNotice(''), 3200);
@@ -227,7 +246,7 @@ export default function GameDay() {
   return <section className="gb">
     <div className="gb-head">
       <h1>Fixtures</h1>
-      {record && record.won + record.lost > 0 && <span className="gb-record" title="Your picks so far, graded after each game">Your picks <b>{record.won}–{record.lost}</b></span>}
+      {record && record.won + record.lost > 0 && <span className="gb-record" title="Your picks so far, graded after each game, and where that ranks among everyone picking">Your picks <b>{record.won}–{record.lost}</b>{record.players >= 3 && <> · <b>#{record.rank}</b> of {record.players}</>}</span>}
       <select className="gb-team" value={team} onChange={event => setTeam(event.target.value)} aria-label="Team">
         <option value="">All teams, by day</option>{codes.map(code => <option key={code} value={code}>{TEAMS[code].name}</option>)}
       </select>
@@ -245,6 +264,11 @@ export default function GameDay() {
       {shareSpec && <ShareButton spec={shareSpec} filename={`statspads-picks-${team || day}`} title="My NBA picks" text={`My NBA picks for ${dayLabel} on StatsPads. Who do you have?`} path="/fixtures" className="gb-share" label={`Share my ${picked.length} ${picked.length === 1 ? 'pick' : 'picks'}`}/>}
     </div>}
     {games?.some(game => game.state !== 'in' && game.state !== 'post' && new Date(game.start) > Date.now()) && <p className="gb-hint">Tap who you think wins. Change it any time before tip-off.</p>}
+    {auth === 'out' && picked.length > 0 && !nudgeHidden && <div className="gb-nudge" role="note">
+      <p><b>Keep your picks.</b> A free account saves them, keeps your record and ranks you against other fans.</p>
+      <button type="button" className="gb-nudge-go" data-track="Fixtures: picks sign-in nudge" onClick={() => openSignIn({back: '/fixtures', title: 'Save your picks', line: 'One tap with Google. Your picks move into your account, get graded after every game, and you see where you rank.'})}>Save my picks</button>
+      <button type="button" className="gb-nudge-x" aria-label="Not now" onClick={() => { try { localStorage.setItem(NUDGE, String(Date.now())); } catch { /* private mode */ } setNudgeHidden(true); }}><X size={16}/></button>
+    </div>}
     {!games ? <ul className="gb-list" aria-busy="true">{Array.from({length: 6}, (_, key) => <li key={key} className="gb-game sk"/>)}</ul>
       : !games.length ? <p className="gb-empty">No games on this day.</p>
       : team ? <>
