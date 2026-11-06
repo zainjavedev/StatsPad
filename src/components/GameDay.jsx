@@ -105,10 +105,11 @@ const PicksPoster = forwardRef(function PicksPoster({title, date, games, picks, 
   </div>;
 });
 
-function Game({game, showDay, mine, onPick}) {
+function Game({game, showDay, mine, onPick, pickDay}) {
   const started = game.state === 'in' || game.state === 'post', live = game.state === 'in';
-  /* Picks stay open until tip-off (by the clock, since the file's states lag); you can change your mind until then. */
-  const open = !started && new Date(game.start) > Date.now();
+  /* Picks open one day at a time: the first day with a game still to tip off (pickDay). They stay open until tip-off (by the
+     clock, since the file's states lag), so a pick can change until then; the next day opens once every game today has started. */
+  const open = !started && new Date(game.start) > Date.now() && game.day === pickDay;
   const away = Number(game.away.score), home = Number(game.home.score), final = game.state === 'post' && away !== home;
   const winner = final ? (away > home ? game.away.code : game.home.code) : null;
   const pickOf = code => (mine === code ? (winner ? (winner === code ? 'right' : 'wrong') : 'on') : null);
@@ -196,6 +197,8 @@ export default function GameDay() {
   const games = rows && (team ? rows.filter(row => row.away.code === team || row.home.code === team) : rows.filter(row => row.day === day).map(merge))
     .sort((a, b) => a.start.localeCompare(b.start));
   const index = days.indexOf(day);
+  /* The one day open for picks: the earliest with a game that has not tipped off yet. */
+  const pickDay = rows?.filter(row => new Date(row.start) > Date.now()).reduce((first, row) => (!first || row.day < first ? row.day : first), null) ?? null;
 
   /* Picks for the games on screen. Signed in, they come from the account (picks still being saved win over what the server
      sends back); signed out, from this browser. `version` refetches after local picks move into a new account. */
@@ -299,7 +302,9 @@ export default function GameDay() {
         : <h2 className="gb-day">{day === today ? 'Today' : longDay.format(noon(day))} <small>{games?.length ?? 0} games</small></h2>}
       {picked.length > 0 && <button type="button" className="gb-share" data-track="Fixtures: share picks" onClick={() => setSharing(true)}><Share2 size={15}/> Share my {picked.length} {picked.length === 1 ? 'pick' : 'picks'}</button>}
     </div>}
-    {games?.some(game => game.state !== 'in' && game.state !== 'post' && new Date(game.start) > Date.now()) && <p className="gb-hint">Tap who you think wins. Change it any time before tip-off.</p>}
+    {!team && day === pickDay && <p className="gb-hint">Tap who you think wins. Change it any time before tip-off.</p>}
+    {!team && pickDay && day > pickDay && <p className="gb-hint">Picks for this day open once {pickDay === today ? 'today' : longDay.format(noon(pickDay))}’s games have tipped off.</p>}
+    {team && pickDay && <p className="gb-hint">Picks are open for {pickDay === today ? 'today' : longDay.format(noon(pickDay))}’s games only.</p>}
     {auth === 'out' && picked.length > 0 && !nudgeHidden && <div className="gb-nudge" role="note">
       <p><b>Keep your picks.</b> A free account saves them, keeps your record and ranks you against other fans.</p>
       <button type="button" className="gb-nudge-go" data-track="Fixtures: picks sign-in nudge" onClick={() => openSignIn({back: '/fixtures', title: 'Save your picks', line: 'One tap with Google. Your picks move into your account, get graded after every game, and you see where you rank.'})}>Save my picks</button>
@@ -311,9 +316,9 @@ export default function GameDay() {
         {/* A team's season: what is next first, then the results, newest first. */}
         {[['Coming up', games.filter(game => game.state !== 'post')], ['Results', games.filter(game => game.state === 'post').reverse()]].filter(([, list]) => list.length).map(([title, list]) => <React.Fragment key={title}>
           <h3 className="gb-part">{title} <small>{list.length}</small></h3>
-          <ul key={`${team}-${title}`} className="gb-list list-in">{list.map(game => <Game key={game.id} game={game} mine={picks[game.id]} onPick={pick} showDay/>)}</ul>
+          <ul key={`${team}-${title}`} className="gb-list list-in">{list.map(game => <Game key={game.id} game={game} mine={picks[game.id]} onPick={pick} pickDay={pickDay} showDay/>)}</ul>
         </React.Fragment>)}
-      </> : <ul key={day} className="gb-list list-in">{games.map(game => <Game key={game.id} game={game} mine={picks[game.id]} onPick={pick}/>)}</ul>}
+      </> : <ul key={day} className="gb-list list-in">{games.map(game => <Game key={game.id} game={game} mine={picks[game.id]} onPick={pick} pickDay={pickDay}/>)}</ul>}
     {sharing && picked.length > 0 && <ShareSheet width={1600} ready onClose={() => setSharing(false)} filename={`statspads-picks-${team || day}`} text={shareText} url={`${location.origin}/fixtures`}>
       {ref => <PicksPoster ref={ref} title={team ? `${whose} ${nickname(team)} picks` : `${whose} NBA picks`} date={team ? TEAMS[team].name : day === today ? `Tonight, ${longDay.format(noon(day))}` : longDay.format(noon(day))} games={picked} picks={picks} record={shareRecord}/>}
     </ShareSheet>}

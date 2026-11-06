@@ -4851,3 +4851,5 @@ a.bt-name:hover b{text-decoration:underline}
 .pxc-c4 .gb-side small{display:none}.pxc-c4 .gb-side b{font-size:14px}.pxc-c4 .gb-side{gap:7px}
 .pxc-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex:none;padding-top:10px;border-top:1px solid var(--line);color:var(--text-3);font-size:13px;font-weight:500}
 .pxc-foot b{color:var(--text-3);font-weight:500}.pxc-foot u{color:var(--text-2);font-weight:600;text-decoration:none}
+/* Leaderboard empty state: the button is a link, so the page's link colour must not win over its own. */
+.pk-empty a.qz-primary{color:var(--ink-0,#0b0b0c);text-decoration:none}

@@ -27,6 +27,7 @@ const loadSchedule = async origin => {
   return schedule;
 };
 
+const eastern = date => new Date(date).toLocaleDateString('en-CA', {timeZone: 'America/New_York'});
 const ID = /^\d{1,14}$/;
 const fail = (error, status) => NextResponse.json({error}, {status});
 const account = async token => (token ? (await sql`select id from subscribers where token = ${token} and channel = 'email'`)[0] : null);
@@ -66,6 +67,9 @@ export async function POST(request) {
   const found = (await loadSchedule(request.url).catch(() => new Map())).get(game);
   if (!found || (pick !== found.away && pick !== found.home)) return fail('Unknown game.', 400);
   if (new Date(found.start) <= new Date()) return fail('This game has started. Picks are locked.', 409);
+  /* One day open at a time: the earliest day (Eastern) with a game still to tip off. */
+  const pickDay = [...schedule.values()].filter(row => new Date(row.start) > new Date()).map(row => eastern(row.start)).sort()[0];
+  if (eastern(found.start) !== pickDay) return fail('Picks for this day open once the earlier games have tipped off.', 409);
   await ensure();
   const me = await account(String(body?.token || ''));
   if (!me) return fail('Sign in to make picks.', 401);
