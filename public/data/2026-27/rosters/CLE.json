@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Kenny Atkinson",
-  "lastUpdated": "2026-10-23",
+  "lastUpdated": "2026-11-06",
   "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
@@ -214,19 +214,6 @@
       "exp": 0,
       "college": "Arkansas",
       "jersey": "15",
-      "unit": "third"
-    },
-    {
-      "name": "Riley Minix",
-      "bbrefId": "minixri01",
-      "nbaId": null,
-      "espnId": 5177362,
-      "pos": "F",
-      "height": "6-7",
-      "birthDate": "2000-09-22",
-      "exp": 3,
-      "college": "Morehead State",
-      "jersey": "12",
       "unit": "third"
     }
   ]

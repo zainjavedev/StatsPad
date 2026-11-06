@@ -5,7 +5,7 @@
   "season": "2026-27",
   "statsSeason": "2025-26",
   "coach": "Joe Mazzulla",
-  "lastUpdated": "2026-10-23",
+  "lastUpdated": "2026-11-06",
   "note": "Starters are the five who started the most 2026–27 regular-season games so far; the rest of the rotation is estimated, and coaches can change any of it.",
   "sources": [
     {
@@ -216,18 +216,6 @@
       "exp": 2,
       "college": null,
       "jersey": "28",
-      "unit": "third"
-    },
-    {
-      "name": "Chris Cenac Jr.",
-      "nbaId": null,
-      "espnId": 5142621,
-      "pos": "F",
-      "height": "6-11",
-      "birthDate": "2007-02-01",
-      "exp": 0,
-      "college": "Houston",
-      "jersey": "12",
       "unit": "third"
     },
     {
