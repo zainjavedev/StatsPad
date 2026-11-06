@@ -6,7 +6,7 @@ import { SEASONS, pretty } from '../src/lib/season.js';
 import { makeCopy } from './seo-copy.mjs';
 import { bestSeason, careerOf, liveRow, seasonsOf, tsOf } from '../src/lib/career.js';
 import { LEADERS, leaderValue, statUrl } from '../src/lib/statLeaders.js';
-import { TEAM_LEADERS, teamStatUrl, rankTeams, showValue } from '../src/lib/teamLeaders.js';
+import { TEAM_LEADERS, addBlowouts, teamStatUrl, rankTeams, showValue } from '../src/lib/teamLeaders.js';
 import { published } from '../src/content/blog/posts.js';
 import { SITE, compareUrl, gameUrl, playerUrl, slugify, teamUrl } from '../src/lib/routes.js';
 
@@ -231,16 +231,19 @@ for (const entry of LEADERS) {
     body: `<article class="seo"><h1>NBA ${esc(lower)} leaders, ${yearLabel}</h1><p>The top 25 NBA players in ${esc(lower)} (${entry.unit}) for ${yearLabel}${entry.min ? `, among players with at least ${entry.min[1]} ${entry.min[0].replace(/([A-Z])/g, ' $1').toLowerCase()} per game` : ''}.</p>${table(['Rank', 'Player', 'Team', 'GP', entry.unit], ranked.map((p, index) => [index + 1, link(playerUrl(p.playerName), p.playerName), p.code ? esc(TEAMS[p.code].name) : '', p.gamesPlayed, fixed(leaderValue(entry, p.stats))]), `NBA ${lower} leaders, ${yearLabel}`)}<p>${link('/leaders', 'All stat leaders')} · ${LEADERS.filter(other => other.slug !== entry.slug).map(other => link(statUrl(other.slug), `${other.label} leaders`)).join(' · ')}</p></article>`});
 }
 /* Team rankings: a hub with each category's best team, and one page per stat with all 30 teams. */
-const playedTeams = teamData.filter(team => team.gamesPlayed > 0 && TEAMS[team.team]);
+/* The blowout lists count 20-point finals from the schedule file. */
+const playedTeams = addBlowouts(teamData.filter(team => team.gamesPlayed > 0 && TEAMS[team.team]), (() => { try { return read(`public/data/${SEASONS[0]}/schedule.json`); } catch { return []; } })());
 if (playedTeams.length >= 2) {
   const teamName = team => TEAMS[team.team].name;
   const stripNote = note => (note ?? '').replace(/&rsquo;/g, '’');
   for (const entry of TEAM_LEADERS) {
     const ranked = rankTeams(entry, playedTeams), lower = entry.label.toLowerCase();
     writePage({route: teamStatUrl(entry.slug), title: fitTitle(`NBA team ${lower} leaders ${pretty(seasonKey)} | StatsPads`, `NBA team ${lower} leaders ${pretty(seasonKey)}`),
-      description: fitDescription(`Which NBA team is best at ${lower} (${entry.unit}) in ${yearLabel}: all ${ranked.length} teams ranked per game, led by ${teamName(ranked[0])}.`, `NBA teams ranked by ${lower} (${entry.unit}) in ${yearLabel}.`),
+      description: entry.count
+        ? fitDescription(`Which NBA teams have the most ${lower} in ${yearLabel} (${stripNote(entry.note).toLowerCase()}): all ${ranked.length} teams ranked, led by ${teamName(ranked[0])} with ${showValue(entry, entry.value(ranked[0].stats))}.`, `NBA teams ranked by ${lower} in ${yearLabel}.`)
+        : fitDescription(`Which NBA team is best at ${lower} (${entry.unit}) in ${yearLabel}: all ${ranked.length} teams ranked per game, led by ${teamName(ranked[0])}.`, `NBA teams ranked by ${lower} (${entry.unit}) in ${yearLabel}.`),
       jsonLd: [crumbs(['Home', '/'], ['Leaders', '/stats/points'], ['Teams', '/stats/teams'], [`${entry.label}`, teamStatUrl(entry.slug)]), webPage(teamStatUrl(entry.slug), `NBA team ${lower} leaders ${yearLabel}`, `All NBA teams ranked by ${lower} (${entry.unit}) for ${yearLabel}.`)],
-      body: `<article class="seo"><h1>NBA team ${esc(lower)} leaders, ${yearLabel}</h1><p>Every NBA team ranked by ${esc(lower)} (${entry.unit}) per game for ${yearLabel}${entry.note ? `. ${esc(stripNote(entry.note))}` : ''}.</p>${table(['Rank', 'Team', 'GP', entry.unit], ranked.map((team, index) => [index + 1, link(teamUrl(team.team), teamName(team)), team.gamesPlayed, showValue(entry, entry.value(team.stats))]), `NBA team ${lower} leaders, ${yearLabel}`)}<p>${link('/stats/teams', 'All team leaders')} · ${TEAM_LEADERS.filter(other => other.slug !== entry.slug).map(other => link(teamStatUrl(other.slug), `${other.label} leaders`)).join(' · ')} · ${link('/stats/points', 'Player leaders')}</p></article>`});
+      body: `<article class="seo"><h1>NBA team ${esc(lower)} leaders, ${yearLabel}</h1><p>Every NBA team ranked by ${esc(lower)} ${entry.count ? 'in' : `(${entry.unit}) per game for`} ${yearLabel}${entry.note ? `. ${esc(stripNote(entry.note))}` : ''}.</p>${table(['Rank', 'Team', 'GP', entry.unit], ranked.map((team, index) => [index + 1, link(teamUrl(team.team), teamName(team)), team.gamesPlayed, showValue(entry, entry.value(team.stats))]), `NBA team ${lower} leaders, ${yearLabel}`)}<p>${link('/stats/teams', 'All team leaders')} · ${TEAM_LEADERS.filter(other => other.slug !== entry.slug).map(other => link(teamStatUrl(other.slug), `${other.label} leaders`)).join(' · ')} · ${link('/stats/points', 'Player leaders')}</p></article>`});
   }
   writePage({route: '/stats/teams', title: fitTitle(`NBA team leaders ${pretty(seasonKey)}: efficiency, scoring, defense | StatsPads`, `NBA team leaders ${pretty(seasonKey)} | StatsPads`),
     description: fitDescription(`The best NBA teams in efficiency, scoring, playmaking, rebounding, steals, blocks and shooting in ${yearLabel}, ranked per game.`, `NBA team leaders in every major stat for ${yearLabel}.`),
