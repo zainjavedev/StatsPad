@@ -50,7 +50,12 @@ const adopt = ({token, email, teams, picture}) => {
 };
 
 /* The account's public profile (name and photo for the predictor leaderboard), mirrored here so the header shows the photo. */
-export const loadProfile = () => fetch(`/api/profile?token=${encodeURIComponent(readAlerts().email || '')}`).then(response => (response.ok ? response.json() : null)).catch(() => null);
+export const loadProfile = () => fetch(`/api/profile?token=${encodeURIComponent(readAlerts().email || '')}`).then(response => (response.ok ? response.json() : null)).then(data => {
+  /* Kept in step here too, so a name saved on another device shows on this one. */
+  const saved = readAlerts();
+  if (data && saved.email && (saved.profileName !== data.name || saved.profilePhoto !== data.photo)) writeAlerts({...saved, profileName: data.name, profilePhoto: data.photo});
+  return data;
+}).catch(() => null);
 export async function saveProfile(changes) {
   const data = await post('/api/profile', {token: readAlerts().email, ...changes});
   if (data.photo !== undefined) writeAlerts({...readAlerts(), profilePhoto: data.photo, profileName: data.name});

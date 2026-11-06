@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Moon, Sun } from 'lucide-react';
-import { BlogGlyph, CompareGlyph, FixturesGlyph, GamesGlyph, HomeGlyph, LeadersGlyph } from './NavIcons';
+import { CompareGlyph, FixturesGlyph, GamesGlyph, HomeGlyph, LeadersGlyph } from './NavIcons';
 import AccountButton from './AccountButton';
 import SideNav from './SideNav';
 import SiteSearch from './SiteSearch';
@@ -9,7 +9,7 @@ import SiteSearch from './SiteSearch';
 /* Pages that aren't a menu item themselves light up the item they live under, the same as the server pages do. */
 const SECTION = {team:'teams', injuries:'teams', game:'scores', schedule:'scores', stat:'leaders', teamstat:'leaders'};
 /* The phone's bottom bar; wide screens get the left menu (SideNav) instead. */
-const TABS = [['home','Home',HomeGlyph],['leaders','Leaders',LeadersGlyph],['scores','Fixtures',FixturesGlyph],['compare','Compare',CompareGlyph],['play','Games',GamesGlyph],['blog','Blog',BlogGlyph]];
+const TABS = [['home','Home',HomeGlyph],['leaders','Leaders',LeadersGlyph],['scores','Fixtures',FixturesGlyph],['compare','Compare',CompareGlyph],['play','Games',GamesGlyph]];
 
 /* A banner div, not <header>, so none of the old header rules apply. The tab
    bar is a sibling because a blurred parent would trap a fixed child. */

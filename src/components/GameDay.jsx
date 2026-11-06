@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 import { Check, ChevronLeft, ChevronRight, Share2, X } from 'lucide-react';
 import { TEAMS, espnLogoUrl, nickname } from '../lib/teams';
 import { gameUrl, playerUrl } from '../lib/routes';
-import { readAlerts, signOut } from '../lib/alerts';
+import { loadProfile, readAlerts, signOut } from '../lib/alerts';
 import { openSignIn, useSignedIn } from '../lib/signin';
 import ShareSheet from './ShareSheet';
 
@@ -97,7 +97,6 @@ const PicksPoster = forwardRef(function PicksPoster({title, date, games, picks, 
             <Side side={started ? game.away : {...game.away, score: undefined}} won={final && away > home} lost={final && away < home} pick={pickOf(game.away.code)}/>
             <Side side={started ? game.home : {...game.home, score: undefined}} won={final && home > away} lost={final && home < away} pick={pickOf(game.home.code)}/>
           </span>
-          <span className="pxc-when">{game.state === 'in' ? 'Live' : final ? 'Final' : `${eastClock.format(new Date(game.start))} ET`}</span>
         </div>;
       })}
       {more > 0 && <div className="pxc-card pxc-more"><b>+{more}</b> more picks</div>}
@@ -150,7 +149,7 @@ function Game({game, showDay, mine, onPick}) {
 export default function GameDay() {
   const auth = useSignedIn();
   const [picks, setPicks] = useState({}), [record, setRecord] = useState(null), [notice, setNotice] = useState('');
-  const [sharing, setSharing] = useState(false), inflight = useRef(new Set()), [version, setVersion] = useState(0), [nudgeHidden, setNudgeHidden] = useState(true);
+  const [sharing, setSharing] = useState(false), [myName, setMyName] = useState(''), inflight = useRef(new Set()), [version, setVersion] = useState(0), [nudgeHidden, setNudgeHidden] = useState(true);
   useEffect(() => { setNudgeHidden(nudgeSnoozed()); }, []);
   const [rows, setRows] = useState(null), [day, setDay] = useState(null), [board, setBoard] = useState(new Map()), [team, setTeam] = useState('');
   const strip = useRef(null), today = eastern(Date.now());
@@ -222,6 +221,14 @@ export default function GameDay() {
     }).catch(() => {});
     return () => { live = false; };
   }, [ids, auth, version]);
+
+  /* The saved display name titles the share picture ("Zain's NBA picks"); signed out it stays "My NBA picks". */
+  useEffect(() => {
+    if (auth !== 'in') { setMyName(''); return; }
+    setMyName(readAlerts().profileName || '');
+    loadProfile().then(data => { if (data) setMyName(data.name || ''); });
+  }, [auth]);
+  const whose = myName ? `${myName}${/s$/i.test(myName) ? '’' : '’s'}` : 'My';
 
   /* Signing in moves this browser's picks into the account, for games that have not tipped off yet (the server checks too). */
   useEffect(() => {
@@ -308,7 +315,7 @@ export default function GameDay() {
         </React.Fragment>)}
       </> : <ul key={day} className="gb-list list-in">{games.map(game => <Game key={game.id} game={game} mine={picks[game.id]} onPick={pick}/>)}</ul>}
     {sharing && picked.length > 0 && <ShareSheet width={1600} ready onClose={() => setSharing(false)} filename={`statspads-picks-${team || day}`} text={shareText} url={`${location.origin}/fixtures`}>
-      {ref => <PicksPoster ref={ref} title={team ? `My ${nickname(team)} picks` : 'My NBA picks'} date={team ? TEAMS[team].name : day === today ? `Tonight, ${longDay.format(noon(day))}` : longDay.format(noon(day))} games={picked} picks={picks} record={shareRecord}/>}
+      {ref => <PicksPoster ref={ref} title={team ? `${whose} ${nickname(team)} picks` : `${whose} NBA picks`} date={team ? TEAMS[team].name : day === today ? `Tonight, ${longDay.format(noon(day))}` : longDay.format(noon(day))} games={picked} picks={picks} record={shareRecord}/>}
     </ShareSheet>}
     {notice && createPortal(<div className="toast" role="alert">{notice}</div>, document.body)}
   </section>;
