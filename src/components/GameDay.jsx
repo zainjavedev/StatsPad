@@ -1,12 +1,13 @@
 'use client';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Check, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { Check, ChevronLeft, ChevronRight, Share2, X } from 'lucide-react';
 import { TEAMS, espnLogoUrl, nickname } from '../lib/teams';
 import { gameUrl, playerUrl } from '../lib/routes';
 import { readAlerts, signOut } from '../lib/alerts';
 import { openSignIn, useSignedIn } from '../lib/signin';
-import ShareButton from './ShareButton';
+import ShareSheet from './ShareSheet';
+import PicksPoster from './PicksPoster';
 
 /* Fixtures (/fixtures; /scores and /schedule redirect here): a strip of every game day, then that day's games as flat rows
    (both teams with logo and record, the score with the winner marked, the status: final, the live clock, or tip-off and TV,
@@ -123,7 +124,7 @@ function Game({game, showDay, mine, onPick}) {
 export default function GameDay() {
   const auth = useSignedIn();
   const [picks, setPicks] = useState({}), [record, setRecord] = useState(null), [notice, setNotice] = useState('');
-  const inflight = useRef(new Set()), [version, setVersion] = useState(0), [nudgeHidden, setNudgeHidden] = useState(true);
+  const [sharing, setSharing] = useState(false), inflight = useRef(new Set()), [version, setVersion] = useState(0), [nudgeHidden, setNudgeHidden] = useState(true);
   useEffect(() => { setNudgeHidden(nudgeSnoozed()); }, []);
   const [rows, setRows] = useState(null), [day, setDay] = useState(null), [board, setBoard] = useState(new Map()), [team, setTeam] = useState('');
   const strip = useRef(null), today = eastern(Date.now());
@@ -234,15 +235,16 @@ export default function GameDay() {
   /* The share card: this day's picks (or the team's), with a tick or cross on the ones already decided. */
   const picked = games?.filter(game => picks[game.id]) ?? [];
   const dayLabel = team ? TEAMS[team]?.name : day === today ? 'tonight' : day ? longDay.format(noon(day)) : '';
-  const shareSpec = picked.length ? {
-    kind: 'picks', eyebrow: 'My picks', title: team ? `My ${nickname(team)} picks` : `My NBA picks, ${day ? chipDay.format(noon(day)) : ''}`,
-    sub: `${picked.length} ${picked.length === 1 ? 'game' : 'games'}, called before tip-off`, color: TEAMS[picks[picked[0].id]]?.color, foot: 'Who do you have? Make your picks',
-    games: picked.map(game => {
-      const away = Number(game.away.score), home = Number(game.home.score), done = game.state === 'post' && away !== home;
-      const result = done ? ((away > home ? game.away.code : game.home.code) === picks[game.id] ? 'right' : 'wrong') : null;
-      return {away: game.away.code, home: game.home.code, pick: picks[game.id], result, note: done ? `${away}–${home}` : game.state === 'in' ? 'Live' : `${eastClock.format(new Date(game.start))} ET`};
-    }),
-  } : null;
+  /* The share picture: one tile per pick, with the result once the game is final. */
+  const shareGames = picked.map(game => {
+    const away = Number(game.away.score), home = Number(game.home.score), done = game.state === 'post' && away !== home;
+    const result = done ? ((away > home ? game.away.code : game.home.code) === picks[game.id] ? 'right' : 'wrong') : null;
+    return {away: game.away.code, home: game.home.code, pick: picks[game.id], result, note: done ? `${away}–${home} final` : game.state === 'in' ? 'Live' : `${eastClock.format(new Date(game.start))} ET`};
+  });
+  const decided = shareGames.filter(game => game.result), shareRecord = decided.length ? {won: decided.filter(game => game.result === 'right').length, lost: decided.filter(game => game.result === 'wrong').length} : null;
+  /* The post text: the picked teams by name (X shows them before the picture loads), the question, one hashtag. */
+  const names = shareGames.map(game => nickname(game.pick)), listed = names.length > 6 ? `${names.slice(0, 6).join(', ')} and ${names.length - 6} more` : names.join(', ');
+  const shareText = `My NBA picks ${team ? `for the ${nickname(team)}` : day === today ? 'tonight' : `for ${dayLabel}`}: ${listed}${shareRecord ? ` (${shareRecord.won}–${shareRecord.lost} so far)` : ''}. Who do you have? #NBA`;
 
   return <section className="gb">
     <div className="gb-head">
@@ -262,7 +264,7 @@ export default function GameDay() {
     {(team || day) && <div className="gb-dayrow">
       {team ? <h2 className="gb-day">{TEAMS[team].name} <small>{games?.length ?? 0} games this season</small></h2>
         : <h2 className="gb-day">{day === today ? 'Today' : longDay.format(noon(day))} <small>{games?.length ?? 0} games</small></h2>}
-      {shareSpec && <ShareButton spec={shareSpec} filename={`statspads-picks-${team || day}`} title="My NBA picks" text={`My NBA picks for ${dayLabel} on StatsPads. Who do you have?`} path="/fixtures" className="gb-share" label={`Share my ${picked.length} ${picked.length === 1 ? 'pick' : 'picks'}`}/>}
+      {picked.length > 0 && <button type="button" className="gb-share" data-track="Fixtures: share picks" onClick={() => setSharing(true)}><Share2 size={15}/> Share my {picked.length} {picked.length === 1 ? 'pick' : 'picks'}</button>}
     </div>}
     {games?.some(game => game.state !== 'in' && game.state !== 'post' && new Date(game.start) > Date.now()) && <p className="gb-hint">Tap who you think wins. Change it any time before tip-off.</p>}
     {auth === 'out' && picked.length > 0 && !nudgeHidden && <div className="gb-nudge" role="note">
@@ -279,6 +281,9 @@ export default function GameDay() {
           <ul key={`${team}-${title}`} className="gb-list list-in">{list.map(game => <Game key={game.id} game={game} mine={picks[game.id]} onPick={pick} showDay/>)}</ul>
         </React.Fragment>)}
       </> : <ul key={day} className="gb-list list-in">{games.map(game => <Game key={game.id} game={game} mine={picks[game.id]} onPick={pick}/>)}</ul>}
+    {sharing && picked.length > 0 && <ShareSheet width={1600} ready onClose={() => setSharing(false)} filename={`statspads-picks-${team || day}`} text={shareText} url={`${location.origin}/fixtures`}>
+      {ref => <PicksPoster ref={ref} title={team ? `My ${nickname(team)} picks` : 'My NBA picks'} date={team ? TEAMS[team].name : day === today ? `Tonight, ${chipDay.format(noon(day))}` : chipDay.format(noon(day))} games={shareGames} record={shareRecord}/>}
+    </ShareSheet>}
     {notice && createPortal(<div className="toast" role="alert">{notice}</div>, document.body)}
   </section>;
 }

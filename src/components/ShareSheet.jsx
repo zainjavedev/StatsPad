@@ -71,7 +71,9 @@ export default function ShareSheet({ready, failed, unavailable = 'This is not av
       const sheet = room.parentElement, chrome = sheet.offsetHeight - room.clientHeight, wide = matchMedia('(min-width: 900px)').matches;
       /* The preview's own padding is inside clientHeight, so it comes off the room too, or the card's bottom edge gets clipped. */
       const style = getComputedStyle(room), padding = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
-      const tall = (wide ? innerHeight - 48 - chrome : room.clientHeight) - padding - 10;
+      /* The room left in the window, not the preview's own height: on a phone the preview sizes to its content, so measuring it
+         would feed the scale back into itself and collapse the preview to nothing. */
+      const tall = innerHeight - (wide ? 48 : 24) - chrome - padding - 10;
       setScale(Math.min(wide ? 1.6 : 1, tall / card.offsetHeight, (room.clientWidth - 4) / card.offsetWidth));
     };
     measure();
