@@ -15,7 +15,7 @@ const day = new Intl.DateTimeFormat(undefined, {month: 'short', day: 'numeric'})
 const short = name => name.replace(/^(\S)\S*\s+/, '$1. ');
 const codeOf = abbr => Object.keys(TEAMS).find(code => TEAMS[code].espn === String(abbr).toLowerCase());
 
-/* One performance card; used on Home and beside a player's game report. */
+/* One performance card, the same everywhere it appears: Home, /performances, player pages and game reports. */
 /* Design rule: the photo is exactly as tall as the text beside it. The text block is measured and the face follows it,
    so a card with a wrapped name or a bigger font gets a bigger face instead of a gap. */
 export const useFaceSize = (whole = false) => {
@@ -38,7 +38,7 @@ export const useFaceSize = (whole = false) => {
 };
 
 export function PerfCard({line, onPick, showDate = true, rank, focus}) {
-  const [sharing, setSharing] = useState(false), [main, face] = useFaceSize(Boolean(rank));
+  const [sharing, setSharing] = useState(false), [main, face] = useFaceSize(true);
   const s = line.player.stats, code = codeOf(line.team), oppCode = codeOf(line.opp);
   const row = {PTS: num(s.PTS), REB: num(s.REB), AST: num(s.AST), STL: num(s.STL), BLK: num(s.BLK), TO: num(s.TO)};
   return <>

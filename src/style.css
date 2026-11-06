@@ -4770,3 +4770,15 @@ a.bt-name:hover b{text-decoration:underline}
 .bt-recap li span{color:var(--text-3)}.bt-recap li em{margin-left:auto;font-size:11px;font-style:normal;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#e0a530}
 @keyframes btIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
 @media(max-width:480px){.bt-table td{font-size:17px;padding:7px 4px}.bt-name b{font-size:14px}.bt-picks .qz-primary{font-size:14px;padding-inline:8px}}
+
+/* ---------- Player page: recent performances look exactly like the cards on Home and /performances ----------
+   Flat rows with a divider, no boxes, the face as tall as the name and numbers (--face, measured by PerfCard). Overrides the
+   older boxed profile styles above. */
+.pp-recent .rp-list{display:block!important;gap:0!important}
+@media(min-width:1100px){.pp-recent .rp-list{columns:2;column-gap:56px}.pp-recent .rp-list>li{break-inside:avoid}}
+.pp-recent .rp-list>li,.pp-recent .rp-list>li:last-child,.pp-recent .rp-list>li:hover,.pp-recent .rp-list>li:active{border:0!important;border-bottom:1px solid var(--line)!important;border-radius:0!important;background:none!important}
+.pp-recent .rp-list>li::after{content:none!important}
+.pp-recent .rp-card{grid-template-columns:var(--face,52px) minmax(0,1fr) auto!important;gap:14px!important;padding:14px 4px!important}
+.pp-recent .rp-face,.pp-recent .rp-face>img:first-child,.pp-recent .rp-face>i{width:var(--face,52px)!important;height:var(--face,52px)!important}
+.pp-recent .rp-team{width:22px!important;height:22px!important}
+@media(max-width:520px){.pp-recent .rp-card{grid-template-columns:var(--face,44px) minmax(0,1fr) auto!important;gap:10px!important;padding:12px 2px!important}.pp-recent .rp-face,.pp-recent .rp-face>img:first-child,.pp-recent .rp-face>i{width:var(--face,44px)!important;height:var(--face,44px)!important}.pp-recent .rp-team{width:20px!important;height:20px!important}}
