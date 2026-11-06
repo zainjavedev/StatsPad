@@ -1,6 +1,7 @@
 import React, { forwardRef, useState } from 'react';
 import { onDark, siteHost } from '../lib/share';
 import ShotChart from './ShotChart';
+import { TEAMS, espnLogoUrl, nickname } from '../lib/teams';
 
 /* The 1080x1080 picture people post. Layouts, picked by spec.kind:
      versus  {eyebrow, names, subs, colors, score, rows: [{label, values, lead}], photos?}
@@ -8,6 +9,7 @@ import ShotChart from './ShotChart';
      list    {eyebrow, title, sub, color, rows: [{lead, name, sub, value, photo?}]}
      perf    {eyebrow, title, sub, color, person, rating, tone, headline: [[value, unit]], tags, tiles: [[label, value]], bars: [{label, value}], assists: [{name, pts, ast}]}
      grid    {eyebrow, title, sub, color, rows: [{lead, name, lines, photo?}], summary?}
+     picks   {eyebrow, title, sub, color, games: [{away, home, pick, note, result?: 'right' | 'wrong'}], more}
    plus {foot} and the page address ({path}). Photos are ESPN headshots, filled
    in by lib/photos.js; anyone without one gets their initials. */
 
@@ -119,6 +121,35 @@ function List({spec}) {
   </>;
 }
 
+/* Fixtures picks: each game as away @ home with both logos, the picked team lit in its colour with a tick (a cross once it lost),
+   the other one dimmed, and the tip-off time or the result on the right. Eight games fit; the rest are counted. */
+function Picks({spec}) {
+  const games = spec.games.slice(0, 8), more = spec.games.length - games.length;
+  const side = (code, game) => {
+    const mine = game.pick === code, color = onDark(TEAMS[code]?.color);
+    return <span className={`sc-pk-side${mine ? ' on' : ''}`} style={{'--c': color}}>
+      <img src={espnLogoUrl(code)} alt="" crossOrigin="anonymous"/>
+      <b>{nickname(code)}</b>
+      {mine && <i className={game.result || ''}>{game.result === 'wrong' ? '✕' : '✓'}</i>}
+    </span>;
+  };
+  return <>
+    <div className="sc-title">
+      <div className="sc-title-text">
+        <b style={{'--c': onDark(spec.color)}}>{spec.title}</b>
+        <small>{spec.sub}</small>
+      </div>
+    </div>
+    <div className={`sc-pk${games.length > 6 ? ' tight' : ''}`}>
+      {games.map(game => <div className="sc-pk-row" key={`${game.away}-${game.home}`}>
+        {side(game.away, game)}<span className="sc-pk-at">@</span>{side(game.home, game)}
+        <span className={`sc-pk-note ${game.result || ''}`}>{game.note}</span>
+      </div>)}
+      {more > 0 && <p className="sc-pk-more">+{more} more {more === 1 ? 'pick' : 'picks'}</p>}
+    </div>
+  </>;
+}
+
 function Leader({spec}) {
   const count = spec.photos?.length || 0, long = spec.names.length > 28;
   return <>
@@ -169,7 +200,7 @@ const shownLink = path => { const host = siteHost(); return path && `${host}${pa
 
 const ShareCard = forwardRef(function ShareCard({spec}, ref) {
   const accent = onDark(spec.colors?.[0] || spec.color);
-  const Body = {versus: Versus, tiles: Tiles, list: List, grid: Grid, perf: Perf, leader: Leader}[spec.kind];
+  const Body = {versus: Versus, tiles: Tiles, list: List, grid: Grid, perf: Perf, leader: Leader, picks: Picks}[spec.kind];
   return <div className={`sc-card sc-kind-${spec.kind}`} ref={ref} style={{'--accent': accent}}>
     <Head spec={spec}/>
     <Body spec={spec}/>

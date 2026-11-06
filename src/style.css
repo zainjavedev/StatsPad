@@ -4813,3 +4813,21 @@ a.bt-name:hover b{text-decoration:underline}
 .acct-photo-actions .acct-secondary{width:auto}
 .acct-avatar{overflow:hidden}.acct-avatar img{width:100%;height:100%;object-fit:cover}
 .acct-board{text-decoration:none;justify-content:center}
+
+/* Share card: Fixtures picks (ShareCard kind "picks"). */
+.sc-pk{display:flex;flex-direction:column;margin-top:30px}
+.sc-pk-row{display:grid;grid-template-columns:minmax(0,1fr) 44px minmax(0,1fr) 150px;align-items:center;gap:12px;height:84px;border-bottom:2px solid #1d2026}
+.sc-pk-row:last-child{border-bottom:0}
+.sc-pk.tight .sc-pk-row{height:70px}
+.sc-pk-side{display:flex;align-items:center;gap:14px;min-width:0;height:60px;padding:0 16px 0 10px;border-radius:16px;color:#6d7078}
+.sc-pk.tight .sc-pk-side{height:54px}
+.sc-pk-side img{flex:none;width:44px;height:44px;object-fit:contain;opacity:.45}
+.sc-pk-side b{overflow:hidden;font-size:32px;font-weight:700;letter-spacing:-.01em;text-overflow:ellipsis;white-space:nowrap}
+.sc-pk-side.on{background:color-mix(in srgb,var(--c) 26%,#14161b);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--c) 70%,transparent);color:#fff}
+.sc-pk-side.on img{opacity:1}
+.sc-pk-side i{display:grid;flex:none;place-items:center;width:34px;height:34px;margin-left:auto;border-radius:50%;background:#fff;color:#0c0d10;font-size:20px;font-style:normal;font-weight:900}
+.sc-pk-side i.right{background:#5ee08a}.sc-pk-side i.wrong{background:#3a3d45;color:#f87171}
+.sc-pk-at{color:#4d5058;font-size:26px;font-weight:700;text-align:center}
+.sc-pk-note{color:#a6a8af;font-size:28px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sc-pk-note.right{color:#5ee08a}.sc-pk-note.wrong{color:#f87171}
+.sc-pk-more{margin-top:14px;color:#8b8d94;font-size:26px;font-weight:700}

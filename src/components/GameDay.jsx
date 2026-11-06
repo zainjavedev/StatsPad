@@ -24,6 +24,8 @@ const chip = new Intl.DateTimeFormat('en-US', {weekday: 'short', timeZone: 'UTC'
 const chipDay = new Intl.DateTimeFormat('en-US', {month: 'short', day: 'numeric', timeZone: 'UTC'});
 const longDay = new Intl.DateTimeFormat('en-US', {weekday: 'long', month: 'long', day: 'numeric', timeZone: 'UTC'});
 const clock = new Intl.DateTimeFormat(undefined, {hour: 'numeric', minute: '2-digit'});
+/* The share card gives tip-off in Eastern time, the way the NBA lists games, since friends may be anywhere. */
+const eastClock = new Intl.DateTimeFormat('en-US', {hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York'});
 const codes = Object.keys(TEAMS).sort((a, b) => TEAMS[a].name.localeCompare(TEAMS[b].name));
 const codeOf = abbr => Object.keys(TEAMS).find(code => TEAMS[code].espn === String(abbr).toLowerCase());
 
@@ -233,13 +235,12 @@ export default function GameDay() {
   const picked = games?.filter(game => picks[game.id]) ?? [];
   const dayLabel = team ? TEAMS[team]?.name : day === today ? 'tonight' : day ? longDay.format(noon(day)) : '';
   const shareSpec = picked.length ? {
-    kind: 'list', eyebrow: 'My picks', title: team ? `${TEAMS[team].name} picks` : `NBA picks, ${day ? chipDay.format(noon(day)) : ''}`,
+    kind: 'picks', eyebrow: 'My picks', title: team ? `My ${nickname(team)} picks` : `My NBA picks, ${day ? chipDay.format(noon(day)) : ''}`,
     sub: `${picked.length} ${picked.length === 1 ? 'game' : 'games'}, called before tip-off`, color: TEAMS[picks[picked[0].id]]?.color, foot: 'Who do you have? Make your picks',
-    rows: picked.slice(0, 12).map((game, place) => {
-      const mine = picks[game.id], other = mine === game.away.code ? game.home.code : game.away.code;
+    games: picked.map(game => {
       const away = Number(game.away.score), home = Number(game.home.score), done = game.state === 'post' && away !== home;
-      const won = done && (away > home ? game.away.code : game.home.code) === mine;
-      return {lead: place + 1, name: `${nickname(mine)} to win`, sub: `${mine === game.home.code ? 'vs' : 'at'} ${TEAMS[other].name}`, value: done ? (won ? '✓' : '✗') : clock.format(new Date(game.start))};
+      const result = done ? ((away > home ? game.away.code : game.home.code) === picks[game.id] ? 'right' : 'wrong') : null;
+      return {away: game.away.code, home: game.home.code, pick: picks[game.id], result, note: done ? `${away}–${home}` : game.state === 'in' ? 'Live' : `${eastClock.format(new Date(game.start))} ET`};
     }),
   } : null;
 
