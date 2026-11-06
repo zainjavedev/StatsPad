@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Check, ChevronLeft, ChevronRight, Share2, X } from 'lucide-react';
 import { TEAMS, espnLogoUrl, nickname } from '../lib/teams';
@@ -7,7 +7,6 @@ import { gameUrl, playerUrl } from '../lib/routes';
 import { readAlerts, signOut } from '../lib/alerts';
 import { openSignIn, useSignedIn } from '../lib/signin';
 import ShareSheet from './ShareSheet';
-import PicksPoster from './PicksPoster';
 
 /* Fixtures (/fixtures; /scores and /schedule redirect here): a strip of every game day, then that day's games as flat rows
    (both teams with logo and record, the score with the winner marked, the status: final, the live clock, or tip-off and TV,
@@ -79,6 +78,33 @@ function Side({side, won, lost, pick, as: Tag = 'span', ...rest}) {
     <span className="sr">{team?.name}</span>
   </Tag>;
 }
+
+/* The share picture for X (16:9, 800x450 saved at 1600x900): the picked games as the same cards the page shows (both teams
+   with logo, record and colour bar, the pick lit with its tick, right or wrong once final), three to a row, with the date
+   above and where to make picks below. */
+const PicksPoster = forwardRef(function PicksPoster({title, date, games, picks, record}, ref) {
+  const shown = games.slice(0, games.length > 12 ? 11 : 12), more = games.length - shown.length, slots = shown.length + (more > 0 ? 1 : 0);
+  const cols = slots <= 3 ? slots : slots === 4 ? 2 : slots <= 9 ? 3 : 4, rows = Math.ceil(slots / cols);
+  return <div className={`pxc-poster pxc-r${rows} pxc-c${cols}`} ref={ref} style={{'--cols': cols, '--rows': rows}}>
+    <div className="pxc-top"><b>{title}</b><span>{date}{record ? <> · <em>{record.won}–{record.lost}</em> so far</> : ''}</span></div>
+    <div className="pxc-grid">
+      {shown.map(game => {
+        const started = game.state === 'in' || game.state === 'post', away = Number(game.away.score), home = Number(game.home.score);
+        const final = game.state === 'post' && away !== home, winner = final ? (away > home ? game.away.code : game.home.code) : null, mine = picks[game.id];
+        const pickOf = code => (mine === code ? (winner ? (winner === code ? 'right' : 'wrong') : 'on') : null);
+        return <div key={game.id} className="pxc-card">
+          <span className="gb-sides">
+            <Side side={started ? game.away : {...game.away, score: undefined}} won={final && away > home} lost={final && away < home} pick={pickOf(game.away.code)}/>
+            <Side side={started ? game.home : {...game.home, score: undefined}} won={final && home > away} lost={final && home < away} pick={pickOf(game.home.code)}/>
+          </span>
+          <span className="pxc-when">{game.state === 'in' ? 'Live' : final ? 'Final' : `${eastClock.format(new Date(game.start))} ET`}</span>
+        </div>;
+      })}
+      {more > 0 && <div className="pxc-card pxc-more"><b>+{more}</b> more picks</div>}
+    </div>
+    <div className="pxc-foot"><span>Who do you have?</span><b>Make your picks at <u>statspads.com/fixtures</u></b></div>
+  </div>;
+});
 
 function Game({game, showDay, mine, onPick}) {
   const started = game.state === 'in' || game.state === 'post', live = game.state === 'in';
@@ -282,7 +308,7 @@ export default function GameDay() {
         </React.Fragment>)}
       </> : <ul key={day} className="gb-list list-in">{games.map(game => <Game key={game.id} game={game} mine={picks[game.id]} onPick={pick}/>)}</ul>}
     {sharing && picked.length > 0 && <ShareSheet width={1600} ready onClose={() => setSharing(false)} filename={`statspads-picks-${team || day}`} text={shareText} url={`${location.origin}/fixtures`}>
-      {ref => <PicksPoster ref={ref} title={team ? `My ${nickname(team)} picks` : 'My NBA picks'} date={team ? TEAMS[team].name : day === today ? `Tonight, ${chipDay.format(noon(day))}` : chipDay.format(noon(day))} games={shareGames} record={shareRecord}/>}
+      {ref => <PicksPoster ref={ref} title={team ? `My ${nickname(team)} picks` : 'My NBA picks'} date={team ? TEAMS[team].name : day === today ? `Tonight, ${longDay.format(noon(day))}` : longDay.format(noon(day))} games={picked} picks={picks} record={shareRecord}/>}
     </ShareSheet>}
     {notice && createPortal(<div className="toast" role="alert">{notice}</div>, document.body)}
   </section>;

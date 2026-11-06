@@ -4832,32 +4832,22 @@ a.bt-name:hover b{text-decoration:underline}
 .sc-pk-note.right{color:#5ee08a}.sc-pk-note.wrong{color:#f87171}
 .sc-pk-more{margin-top:14px;color:#8b8d94;font-size:26px;font-weight:700}
 
-/* Picks picture for X (PicksPoster): 800x450, saved at 1600x900. Sized to read at phone width in the timeline. */
-.px{display:grid;grid-template-columns:250px minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;width:800px;height:450px;overflow:hidden;background:radial-gradient(70% 90% at 0 0,color-mix(in srgb,var(--accent) 30%,transparent),transparent 70%),linear-gradient(180deg,#121419,#0b0c0f);color:#f4f3ef;font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,sans-serif}
-.px-side{display:flex;flex-direction:column;gap:4px;padding:26px 10px 0 30px}
-.px-brand{font-size:22px;font-weight:800;letter-spacing:-.02em}
-.px-eyebrow{margin-top:26px;color:var(--accent);font-size:14px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
-.px-date{font-size:44px;font-weight:800;line-height:1.02;letter-spacing:-.035em}
-.px-count{margin-top:6px;color:#a3a5ac;font-size:15px;font-weight:600;line-height:1.35}
-.px-record{margin-top:14px;color:#a3a5ac;font-size:16px;font-weight:600}.px-record b{color:#fff;font-size:30px;font-weight:800;margin-right:4px}
-.px-ask{margin-top:auto;padding-bottom:18px;font-size:22px;font-weight:800;letter-spacing:-.02em}
-.px-grid{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));grid-auto-rows:1fr;gap:10px;padding:22px 26px 16px 4px;min-height:0}
-.px-game{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:0;padding:8px 6px;border-radius:14px;background:rgb(255 255 255 / .045);border:1px solid rgb(255 255 255 / .07)}
-.px-logos{display:flex;align-items:center;gap:8px}
-.px-logo{position:relative;display:grid;place-items:center;width:var(--lg,54px);height:var(--lg,54px);border-radius:50%}
-.px-logo img{width:76%;height:76%;object-fit:contain;opacity:.32;filter:grayscale(.6)}
-.px-logo.on{background:color-mix(in srgb,var(--c) 30%,#16181d);box-shadow:0 0 0 3px var(--c)}
-.px-logo.on img{opacity:1;filter:none}
-.px-logo em{position:absolute;right:-5px;bottom:-4px;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#fff;color:#0b0c0f;font-size:13px;font-style:normal;font-weight:900;box-shadow:0 0 0 2px #121419}
-.px-game.right .px-logo em{background:#5ee08a}.px-game.wrong .px-logo em{background:#3a3d45;color:#f87171}
-.px-at{color:#5d6068;font-size:14px;font-style:normal;font-weight:700}
-.px-pick{max-width:100%;overflow:hidden;font-size:var(--pk,19px);font-weight:800;letter-spacing:-.01em;text-overflow:ellipsis;white-space:nowrap}
-.px-note{color:#9a9ca3;font-size:13px;font-weight:600;white-space:nowrap}
-.px-game.right .px-note{color:#5ee08a}.px-game.wrong .px-note{color:#f87171}
-.px-more{justify-content:center}.px-more b{font-size:30px}
-.px-n1 .px-grid{--lg:96px;--pk:30px}.px-n1 .px-note{font-size:17px}
-.px-n2 .px-grid{--lg:56px;--pk:21px}
-.px-n1.px-c2 .px-grid{--lg:84px;--pk:28px}.px-n1.px-c3 .px-grid{--lg:56px;--pk:24px}.px-n1.px-c3 .px-note{font-size:15px}.px-n2 .px-logos{gap:10px}
-.px-n3 .px-grid{--lg:46px;--pk:17px;gap:8px}.px-n3 .px-note{font-size:12px}.px-n3 .px-game{gap:2px;padding:4px}
-.px-foot{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;margin:0 26px 0 30px;padding:11px 0 14px;border-top:1px solid #23252b;color:#8e9097;font-size:14px;font-weight:600}
-.px-foot b{color:#fff;font-size:17px;font-weight:800}
+/* Picks picture for X (PicksPoster in GameDay): the page's own game cards on a 16:9 canvas, in the visitor's theme. */
+.pxc-poster{box-sizing:border-box;display:flex;flex-direction:column;width:800px;height:450px;padding:22px 26px 16px;overflow:hidden;background:var(--ink-0);color:var(--text-1);font-family:inherit}
+.pxc-poster *{box-sizing:border-box}
+.pxc-top{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex:none}
+.pxc-top b{font-size:26px;font-weight:800;letter-spacing:-.02em}
+.pxc-top span{color:var(--text-2);font-size:16px;font-weight:700}.pxc-top em{color:var(--text-1);font-style:normal;font-weight:800}
+.pxc-grid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));grid-template-rows:repeat(var(--rows),minmax(0,1fr));gap:9px;margin:12px 0 10px}
+.pxc-card{display:flex;flex-direction:column;justify-content:center;gap:2px;min-width:0;min-height:0;overflow:hidden;padding:6px 9px 4px 7px;border:1px solid var(--line);border-radius:14px;background:var(--ink-1)}
+.pxc-card .gb-sides{gap:3px}
+.pxc-card .gb-side{min-height:30px;padding:0 8px 0 12px;border-radius:9px}
+.pxc-card .gb-side.picked{background:color-mix(in srgb,var(--tc) 20%,var(--ink-1));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--tc) 55%,var(--line))}
+.pxc-card .gb-side em{font-size:20px}
+.pxc-when{align-self:flex-end;color:var(--text-3);font-size:11px;font-weight:700;line-height:1.2}
+.pxc-more{align-items:center;color:var(--text-2);font-size:15px;font-weight:700}.pxc-more b{color:var(--text-1);font-size:28px}
+.pxc-r1 .pxc-grid{grid-template-rows:auto;align-content:center}.pxc-r1 .pxc-card{padding:14px 14px 10px 12px;gap:8px}.pxc-r1 .pxc-card .gb-sides{gap:8px}.pxc-r1 .pxc-card .gb-side{min-height:60px}.pxc-r1 .gb-side b{font-size:24px}.pxc-r1 .gb-side small{font-size:15px}.pxc-r1 .gb-side img{width:42px;height:42px}.pxc-r1 .gb-side{grid-template-columns:42px minmax(0,auto) auto 1fr}.pxc-r1 .pxc-when{font-size:15px}.pxc-r1.pxc-c3 .gb-side b{font-size:20px}.pxc-r1.pxc-c3 .gb-side small{font-size:13px}.pxc-r1.pxc-c3 .gb-side{gap:8px;grid-template-columns:36px minmax(0,auto) auto 1fr}.pxc-r1.pxc-c3 .gb-side img{width:36px;height:36px}
+.pxc-r2 .pxc-grid{gap:12px}.pxc-r2 .pxc-card{gap:5px;padding:9px 10px 6px 8px}.pxc-r2 .pxc-card .gb-side{min-height:44px}.pxc-r2 .gb-side b{font-size:19px}.pxc-r2 .pxc-when{font-size:13px}
+.pxc-c4 .gb-side small{display:none}.pxc-c4 .gb-side b{font-size:14px}.pxc-c4 .gb-side{gap:7px}
+.pxc-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex:none;padding-top:11px;border-top:1px solid var(--line);color:var(--text-2);font-size:15px;font-weight:700}
+.pxc-foot b{color:var(--text-1);font-weight:700}.pxc-foot u{margin-left:4px;padding:3px 10px;border-radius:999px;background:var(--text-1);color:var(--ink-0);font-weight:800;text-decoration:none}
