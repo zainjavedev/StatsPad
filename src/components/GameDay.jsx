@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 import { Check, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { TEAMS, espnLogoUrl, nickname } from '../lib/teams';
 import { gameUrl, playerUrl } from '../lib/routes';
-import { readAlerts } from '../lib/alerts';
+import { readAlerts, signOut } from '../lib/alerts';
 import { openSignIn, useSignedIn } from '../lib/signin';
 import ShareButton from './ShareButton';
 
@@ -206,8 +206,8 @@ export default function GameDay() {
     fetch('/api/predict', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({token: readAlerts().email, game: game.id, pick: code})})
       .then(async response => {
         const data = await response.json().catch(() => ({}));
-        /* A token the server no longer knows (account deleted, or signed out elsewhere): sign in again and keep the pick. */
-        if (response.status === 401) { pending.current = {game, code}; openSignIn({back: '/fixtures', title: 'Sign in again', line: 'Your session ran out. One tap with Google and your pick is saved.'}); throw new Error(''); }
+        /* A token the server no longer knows (account deleted): this browser reads as signed out, and the pick is saved after signing in again. */
+        if (response.status === 401) { signOut(); pending.current = {game, code}; openSignIn({back: '/fixtures', title: 'Sign in again', line: 'Your session ran out. One tap with Google and your pick is saved.'}); throw new Error(''); }
         if (!response.ok) throw new Error(data.error || 'Could not save your pick. Try again.');
         setCrowd(now => ({...now, [game.id]: data.crowd}));
       })
