@@ -161,9 +161,13 @@ export default function GameDay() {
       const days = [...new Set(list.map(row => row.day))].sort();
       /* Nights that have started, judged by tip-off time, since the file's game states lag between refreshes. */
       const played = days.filter(value => value <= today && list.some(row => row.day === value && new Date(row.start) <= Date.now()));
-      /* Scores opens on today once its first game has tipped off (the file's states lag, so this goes by start time). */
-      const tipped = list.some(row => row.day === today && new Date(row.start) <= Date.now());
-      setDay(tipped ? today : played.at(-1) ?? days.find(value => value >= today) ?? days[0]);
+      /* Opens on whichever night is closer in time: today's first tip-off, or the end of the last night played (its last
+         tip-off plus about two and a half hours). So late at night it shows the results, and by the afternoon it shows tonight. */
+      const now = Date.now(), starts = value => list.filter(row => row.day === value).map(row => new Date(row.start).getTime());
+      const todayStarts = starts(today), last = played.filter(value => value < today).at(-1);
+      const untilToday = todayStarts.length ? Math.min(...todayStarts) - now : Infinity;
+      const sinceLast = last ? now - (Math.max(...starts(last)) + 2.5 * 36e5) : Infinity;
+      setDay(todayStarts.length && untilToday <= sinceLast ? today : last ?? days.find(value => value >= today) ?? days[0]);
       const asked = new URLSearchParams(location.search).get('team')?.toUpperCase();
       if (TEAMS[asked]) setTeam(asked);
     });
