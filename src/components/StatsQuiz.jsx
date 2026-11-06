@@ -1,12 +1,12 @@
 'use client';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowRight, Check, Copy, RotateCcw, X } from 'lucide-react';
 import { loadQuizData, makeRound, questionKey } from '../lib/quiz';
-import { readAlerts } from '../lib/alerts';
 import { espnLogoUrl } from '../lib/teams';
 import GameHead from './GamesNav';
 import ShareSheet from './ShareSheet';
 import { SignInBar, goSignIn } from './PlayGame';
+import { useSignedIn } from '../lib/signin';
 
 /* Stats Quiz (/play/quiz): ten questions about this season, answer explained after each one, best score kept on this device.
    Signed-out visitors see the question with the answers locked behind sign-in. A question once shown is never asked again
@@ -77,9 +77,10 @@ const ScorePoster = React.forwardRef(function ScorePoster({round, results}, ref)
 
 export default function StatsQuiz() {
   const [data, setData] = useState(null), [round, setRound] = useState(null), [step, setStep] = useState(0), [picked, setPicked] = useState(null);
-  const [results, setResults] = useState([]), [best, setBest] = useState(0), [copied, setCopied] = useState(false), [sharing, setSharing] = useState(false), [auth, setAuth] = useState('checking');
+  const [results, setResults] = useState([]), [best, setBest] = useState(0), [copied, setCopied] = useState(false), [sharing, setSharing] = useState(false);
+  const auth = useSignedIn(), pending = useRef(null);
   useEffect(() => {
-    setBest(readBest()); setAuth(readAlerts().email ? 'in' : 'out');
+    setBest(readBest());
     loadQuizData().then(found => { setData(found); setRound(freshRound(found)); });
   }, []);
 
@@ -91,10 +92,16 @@ export default function StatsQuiz() {
   }, [question, auth]);
 
   const choose = useCallback(index => {
-    if (auth === 'out') { goSignIn('/play/quiz'); return; }
+    if (auth === 'out') { pending.current = index; goSignIn('/play/quiz', {title: 'Know the answer?', line: 'One tap with Google. Questions you have had are never repeated.'}); return; }
     if (!question || picked !== null) return;
     setPicked(index); setResults(now => [...now, index === question.answer]);
   }, [question, picked, auth]);
+  useEffect(() => {
+    if (auth !== 'in' || pending.current === null) return;
+    const index = pending.current;
+    pending.current = null;
+    choose(index);
+  }, [auth, choose]);
   const next = useCallback(() => { setPicked(null); setStep(now => now + 1); window.scrollTo({top: 0, behavior: 'smooth'}); }, []);
   const again = () => { setRound(freshRound(data)); setStep(0); setPicked(null); setResults([]); setCopied(false); };
 

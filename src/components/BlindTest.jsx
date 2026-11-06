@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowRight, Check, Copy, RotateCcw } from 'lucide-react';
 import { GROUP_NAME, STATS, dayPairs, loadBlindData, today, wins } from '../lib/blind';
 import { readAlerts } from '../lib/alerts';
@@ -7,6 +7,7 @@ import { espnHeadshotUrl, espnLogoUrl } from '../lib/teams';
 import { playerUrl } from '../lib/routes';
 import GameHead from './GamesNav';
 import { SignInBar, goSignIn } from './PlayGame';
+import { useSignedIn } from '../lib/signin';
 
 /* Blind test (/play/blind): two season lines, names hidden, pick who is better, then the reveal. No right or wrong: some
    pairs are what they look like, some are built to surprise (src/lib/blind.js). Ten pairs a round, the same pairs for
@@ -40,9 +41,9 @@ function Side({player, label, shown, picked}) {
 
 export default function BlindTest() {
   const [pairs, setPairs] = useState(null), [start, setStart] = useState(0), [step, setStep] = useState(0);
-  const [picks, setPicks] = useState([]), [split, setSplit] = useState(null), [auth, setAuth] = useState('checking'), [copied, setCopied] = useState(false);
+  const [picks, setPicks] = useState([]), [split, setSplit] = useState(null), [copied, setCopied] = useState(false);
+  const auth = useSignedIn(), pending = useRef(null);
   useEffect(() => {
-    setAuth(readAlerts().email ? 'in' : 'out');
     loadBlindData().then(data => setPairs(dayPairs(data, today())));
   }, []);
 
@@ -53,7 +54,7 @@ export default function BlindTest() {
   const pair = round[step], done = round.length > 0 && step >= round.length, picked = picks[step];
 
   const choose = useCallback(index => {
-    if (auth === 'out') { goSignIn('/play/blind'); return; }
+    if (auth === 'out') { pending.current = index; goSignIn('/play/blind', {title: 'Which one would you take?', line: 'One tap with Google. Then see who they were and how other fans voted.'}); return; }
     if (!pair || picked) return;
     const choice = pair.sides[index];
     setPicks(now => [...now, {pair, id: choice.id}]);
@@ -61,6 +62,12 @@ export default function BlindTest() {
     fetch('/api/blind', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({token: readAlerts().email || '', pair: pair.key, pick: choice.id})})
       .then(response => (response.ok ? response.json() : 'none')).then(setSplit).catch(() => setSplit('none'));
   }, [auth, pair, picked]);
+  useEffect(() => {
+    if (auth !== 'in' || pending.current === null) return;
+    const index = pending.current;
+    pending.current = null;
+    choose(index);
+  }, [auth, choose]);
   const next = useCallback(() => { setStep(now => now + 1); setSplit(null); window.scrollTo({top: 0, behavior: 'smooth'}); }, []);
   const again = () => { setStart(now => now + ROUND); setStep(0); setPicks([]); setSplit(null); setCopied(false); };
 

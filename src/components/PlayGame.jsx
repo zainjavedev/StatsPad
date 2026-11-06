@@ -10,6 +10,7 @@ import { loadPool, nextRound } from '../lib/playRound';
 import GameHead from './GamesNav';
 import { TEAMS, espnLogoUrl, nickname } from '../lib/teams';
 import { photoUrl } from '../lib/photos';
+import { openSignIn, useSignedIn } from '../lib/signin';
 
 /* Guess the Player: a silhouette, one real stat line and shot chart from this season, three similar starters.
    Signed-in accounts keep a running score on the server. */
@@ -93,18 +94,19 @@ function Sparks() {
   })}</span>;
 }
 
-export const goSignIn = (back = '/play/guess') => { try { sessionStorage.setItem('statspad-return', back); } catch { /* private mode */ } window.location.href = '/signin'; };
+/* Opens the sign-in pop-up (components/SignInSheet.jsx); its email link goes to /signin and comes back to `back`. */
+export const goSignIn = (back = '/play/guess', copy = {}) => openSignIn({back, ...copy});
 
 /* Signed-out visitors see a real round, clues and all, with the choices locked behind this bar. The Stats Quiz uses it too. */
 export function SignInBar({back = '/play/guess', title = 'Think you know who it is?', line = 'Sign in to lock in your guess. Your score and streak are saved to your account.'}) {
   return <div className="pl-bar">
     <div><b>{title}</b><span>{line}</span></div>
-    <button type="button" className="pl-primary" onClick={() => goSignIn(back)}><LogIn size={18}/> Sign in to play</button>
+    <button type="button" className="pl-primary" onClick={() => goSignIn(back, {title, line})}><LogIn size={18}/> Sign in to play</button>
   </div>;
 }
 
 function SignInPrompt() {
-  const go = () => goSignIn();
+  const go = () => goSignIn('/play/guess', {title: 'Sign in to play', line: 'One tap with Google. Your score and streak are saved to your account.'});
   return <section className="pl-gate">
     <div className="pl-gate-sil" aria-hidden="true"><svg viewBox="0 0 100 120"><circle cx="50" cy="32" r="20"/><path d="M12 120c0-34 14-52 38-52s38 18 38 52z"/></svg><b>?</b></div>
     <h2>Sign in to play</h2>
@@ -129,8 +131,7 @@ function Results({results, stats, onAgain}) {
 }
 
 export default function PlayGame() {
-  const [auth, setAuth] = useState('checking');
-  const [token, setToken] = useState('');
+  const auth = useSignedIn();
   const [stats, setStats] = useState({correct: 0, total: 0, streak: 0, best: 0});
   const [round, setRound] = useState(null);
   const [picked, setPicked] = useState(null);
@@ -139,7 +140,7 @@ export default function PlayGame() {
   const [finished, setFinished] = useState(false);
   const [skipped, setSkipped] = useState(false);
   const [sharing, setSharing] = useState(false);
-  const seen = useRef(null), upcoming = useRef(null), card = useRef(null), started = useRef(false), game = useRef(newGame());
+  const seen = useRef(null), pending = useRef(null), upcoming = useRef(null), card = useRef(null), started = useRef(false), game = useRef(newGame());
 
   const fetchRound = useCallback(async () => {
     const pool = await loadPool();
@@ -150,29 +151,36 @@ export default function PlayGame() {
   }, []);
   const prefetch = useCallback(() => { upcoming.current = fetchRound().catch(() => null); }, [fetchRound]);
 
+  /* The first round loads either way; signing in (here, from the pop-up) brings the account's score and the seen list. */
   useEffect(() => {
-    if (started.current) return;
-    started.current = true;
+    if (auth === 'checking') return;
     const email = readAlerts().email;
-    if (!email) {
-      setAuth('out'); seen.current = new Set();
-      fetchRound().then(found => { if (found) { setRound(found); setStatus('ready'); } else setStatus('empty'); }).catch(() => setStatus('error'));
+    if (email) api('GET', null, email).then(setStats).catch(() => {});
+    if (started.current) {
+      if (email) { seen.current = new Set([...readSeen(), ...seen.current]); prefetch(); }
       return;
     }
-    setToken(email); setAuth('in'); seen.current = readSeen();
-    api('GET', null, email).then(setStats).catch(() => {});
-    fetchRound().then(found => { if (found) { setRound(found); setStatus('ready'); prefetch(); } else setStatus('empty'); }).catch(() => setStatus('error'));
-  }, [fetchRound, prefetch]);
+    started.current = true;
+    seen.current = email ? readSeen() : new Set();
+    fetchRound().then(found => { if (found) { setRound(found); setStatus('ready'); if (email) prefetch(); } else setStatus('empty'); }).catch(() => setStatus('error'));
+  }, [auth, fetchRound, prefetch]);
 
   const choose = useCallback(index => {
     if (!round || picked !== null) return;
-    if (auth === 'out') { goSignIn(); return; }
+    if (auth === 'out') { pending.current = index; goSignIn('/play/guess', {title: 'Lock in your guess', line: 'One tap with Google. Your score and streak are saved to your account.'}); return; }
     const right = round.choices[index].correct;
     setPicked(index);
     setResults(now => [...now, {name: round.answer.name, right}]);
     setStats(now => ({correct: now.correct + (right ? 1 : 0), total: now.total + 1, streak: right ? now.streak + 1 : 0, best: Math.max(now.best, right ? now.streak + 1 : 0)}));
-    api('POST', {token, correct: right, game: game.current, step: results.length + 1, player: round.answer.name}).then(setStats).catch(() => {});
-  }, [round, picked, token, auth, results.length]);
+    api('POST', {token: readAlerts().email, correct: right, game: game.current, step: results.length + 1, player: round.answer.name}).then(setStats).catch(() => {});
+  }, [round, picked, auth, results.length]);
+  /* The guess that opened the pop-up counts once the sign-in lands. */
+  useEffect(() => {
+    if (auth !== 'in' || pending.current === null) return;
+    const index = pending.current;
+    pending.current = null;
+    choose(index);
+  }, [auth, choose]);
 
   const showNext = useCallback(async () => {
     setStatus('loading'); setPicked(null);

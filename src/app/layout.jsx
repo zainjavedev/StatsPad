@@ -3,6 +3,7 @@ import '../feel.css';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { socialTags } from '../lib/social';
 import Tracker from '../components/Tracker';
+import SignInSheet from '../components/SignInSheet';
 
 const TITLE = 'StatsPads: NBA player and team comparisons', DESCRIPTION = 'Compare NBA players and teams side by side, browse rosters and see the league leaders.';
 
@@ -33,6 +34,7 @@ export default function RootLayout({children}) {
       {children}
       <SpeedInsights/>
       <Tracker/>
+      <SignInSheet/>
     </body>
   </html>;
 }

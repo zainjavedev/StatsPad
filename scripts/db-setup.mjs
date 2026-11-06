@@ -109,4 +109,12 @@ await sql`create table if not exists play_answers (
   at timestamptz not null default now()
 )`;
 await sql`create index if not exists play_answers_at on play_answers (at desc)`;
+/* Fixture predictions (src/app/api/predict): one pick per account per game, graded against games. */
+await sql`create table if not exists predictions (
+  game_id text not null,
+  subscriber_id uuid not null,
+  pick text not null,
+  at timestamptz not null default now(),
+  primary key (game_id, subscriber_id)
+)`;
 console.log('db: ready');

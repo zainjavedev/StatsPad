@@ -1,15 +1,20 @@
 'use client';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { Check, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { TEAMS, espnLogoUrl, nickname } from '../lib/teams';
 import { gameUrl, playerUrl } from '../lib/routes';
-import { useFavorites } from '../lib/favorites';
+import { readAlerts } from '../lib/alerts';
+import { openSignIn, useSignedIn } from '../lib/signin';
+import ShareButton from './ShareButton';
 
 /* Fixtures (/fixtures; /scores and /schedule redirect here): a strip of every game day, then that day's games as flat rows
    (both teams with logo and record, the score with the winner marked, the status: final, the live clock, or tip-off and TV,
    and each side's best line once the game has started). The day's games come from the schedule file and ESPN's scoreboard
    for that date is laid over them, so results and live scores are always current. It opens on today once the first game
-   has tipped off, otherwise on the latest night with results. The team picker (or ?team=BOS) lists that team's season instead. */
+   has tipped off, otherwise on the latest night with results. The team picker (or ?team=BOS) lists that team's season instead.
+   Every game takes a pick (who wins) until tip-off: saved to the account by /api/predict, graded once the game is final,
+   with the fans' split after picking and a share card of the day's picks. Signed-out visitors get the sign-in pop-up. */
 
 const SEASON = '2026-27';
 const SCOREBOARD = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=';
@@ -60,13 +65,38 @@ function Side({side, won, lost}) {
   </span>;
 }
 
-function Game({game, mine, showDay}) {
+/* Who wins: two team buttons under the game. Open until tip-off; after that the pick (if any) stays, marked right or wrong once
+   the game is final. The fans' split shows once you have picked, or once picks are locked. */
+function Pick({game, mine, crowd, onPick}) {
+  const open = game.state !== 'in' && game.state !== 'post' && new Date(game.start) > Date.now();
+  const away = Number(game.away.score), home = Number(game.home.score);
+  const winner = game.state === 'post' && away !== home ? (away > home ? game.away.code : game.home.code) : null;
+  const total = (crowd?.[game.away.code] || 0) + (crowd?.[game.home.code] || 0), showSplit = total > 0 && (mine || !open);
+  if (!open && !mine && !total) return null;
+  const label = open ? (mine ? 'Your pick' : 'Who wins?') : mine ? (winner ? (winner === mine ? 'You called it' : 'Missed this one') : 'Your pick, locked') : 'Fan picks';
+  return <div className={`gb-pick${open ? ' open' : ''}${winner && mine ? (winner === mine ? ' right' : ' wrong') : ''}`}>
+    <span className="gb-pick-q">{winner && mine ? (winner === mine ? <Check size={14}/> : <X size={14}/>) : null}{label}{showSplit && <small>{total} {total === 1 ? 'pick' : 'picks'}</small>}</span>
+    <div className="gb-pick-opts" role="group" aria-label={`Who wins, ${nickname(game.away.code)} or ${nickname(game.home.code)}?`}>
+      {[game.away.code, game.home.code].map(code => {
+        const share = showSplit ? Math.round(((crowd?.[code] || 0) / total) * 100) : null;
+        return <button key={code} type="button" className={`gb-opt${mine === code ? ' on' : ''}${mine && mine !== code ? ' off' : ''}`} style={{'--tc': TEAMS[code]?.color || '#666', '--pct': `${share ?? 0}%`}}
+          disabled={!open} aria-pressed={mine === code} data-track={`Fixtures: pick ${code}`} onClick={() => onPick(game, code)}>
+          <span className="gb-opt-logo"><img src={espnLogoUrl(code)} alt="" width="22" height="22"/>{mine === code && <i className="gb-opt-tick" aria-label="your pick"><Check size={10} strokeWidth={3.5}/></i>}</span>
+          <b>{nickname(code)}</b>
+          {share !== null && <small>{share}%</small>}
+        </button>;
+      })}
+    </div>
+  </div>;
+}
+
+function Game({game, showDay, mine, crowd, onPick}) {
   const started = game.state === 'in' || game.state === 'post', live = game.state === 'in';
   const away = Number(game.away.score), home = Number(game.home.score), final = game.state === 'post' && away !== home;
   const tops = started && [game.away.top, game.home.top].filter(Boolean);
   /* A tag for the games worth a second look: overtime, or decided by three or fewer. */
   const overtime = /OT/.test(game.detail || ''), close = final && Math.abs(away - home) <= 3;
-  return <li className={`gb-game${live ? ' live' : ''}${mine ? ' mine' : ''}`}>
+  return <li className={`gb-game${live ? ' live' : ''}`}>
     <a href={gameUrl(game.away.code, game.home.code, game.id)}>
       <span className="gb-sides">
         <Side side={started ? game.away : {...game.away, score: undefined}} won={final && away > home} lost={final && away < home}/>
@@ -83,11 +113,14 @@ function Game({game, mine, showDay}) {
       <span className="gb-perf-face">{top.id && <img src={face(top.id)} alt="" loading="lazy"/>}</span>
       <span className="gb-perf-main"><b>{top.name}</b><span>{top.line.map(part => { const [value, unit] = part.split(' '); return <span key={unit}><em>{value}</em>{unit?.toLowerCase()}</span>; })}</span></span>
     </a>)}</div>}
+    <Pick game={game} mine={mine} crowd={crowd} onPick={onPick}/>
   </li>;
 }
 
 export default function GameDay() {
-  const favorites = useFavorites();
+  const auth = useSignedIn();
+  const [picks, setPicks] = useState({}), [crowd, setCrowd] = useState({}), [record, setRecord] = useState(null), [notice, setNotice] = useState('');
+  const pending = useRef(null), inflight = useRef(new Set());
   const [rows, setRows] = useState(null), [day, setDay] = useState(null), [board, setBoard] = useState(new Map()), [team, setTeam] = useState('');
   const strip = useRef(null), today = eastern(Date.now());
 
@@ -132,11 +165,86 @@ export default function GameDay() {
   };
   const games = rows && (team ? rows.filter(row => row.away.code === team || row.home.code === team) : rows.filter(row => row.day === day).map(merge))
     .sort((a, b) => a.start.localeCompare(b.start));
-  const index = days.indexOf(day), mine = game => favorites.includes(game.away.code) || favorites.includes(game.home.code);
+  const index = days.indexOf(day);
+
+  /* Picks and the fans' split for the games on screen, again whenever the account changes. Picks still being saved win over
+     what the server sends back. */
+  const ids = games?.map(game => game.id).join(',') ?? '';
+  useEffect(() => {
+    if (!ids || auth === 'checking') return undefined;
+    let live = true;
+    const token = auth === 'in' ? readAlerts().email : '';
+    fetch(`/api/predict?ids=${ids}${token ? `&token=${encodeURIComponent(token)}` : ''}`).then(response => (response.ok ? response.json() : null)).then(data => {
+      if (!live || !data) return;
+      setCrowd(now => ({...now, ...data.crowd}));
+      setPicks(now => {
+        const next = token ? {...now, ...data.picks} : {};
+        inflight.current.forEach(id => { if (now[id]) next[id] = now[id]; });
+        return next;
+      });
+      setRecord(data.record);
+    }).catch(() => {});
+    return () => { live = false; };
+  }, [ids, auth]);
+
+  const pick = useCallback((game, code) => {
+    if (auth !== 'in') {
+      pending.current = {game, code};
+      openSignIn({back: '/fixtures', title: 'Who wins tonight?', line: 'One tap with Google. Your picks are saved and graded after every game, so you can see your record.'});
+      return;
+    }
+    const before = picks[game.id], split = crowd[game.id];
+    if (before === code) return;
+    setPicks(now => ({...now, [game.id]: code}));
+    setCrowd(now => {
+      const next = {...now[game.id]};
+      if (before) next[before] = Math.max(0, (next[before] || 1) - 1);
+      next[code] = (next[code] || 0) + 1;
+      return {...now, [game.id]: next};
+    });
+    inflight.current.add(game.id);
+    fetch('/api/predict', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({token: readAlerts().email, game: game.id, pick: code})})
+      .then(async response => {
+        const data = await response.json().catch(() => ({}));
+        /* A token the server no longer knows (account deleted, or signed out elsewhere): sign in again and keep the pick. */
+        if (response.status === 401) { pending.current = {game, code}; openSignIn({back: '/fixtures', title: 'Sign in again', line: 'Your session ran out. One tap with Google and your pick is saved.'}); throw new Error(''); }
+        if (!response.ok) throw new Error(data.error || 'Could not save your pick. Try again.');
+        setCrowd(now => ({...now, [game.id]: data.crowd}));
+      })
+      .catch(error => { setPicks(now => ({...now, [game.id]: before})); setCrowd(now => ({...now, [game.id]: split})); if (error.message) setNotice(error.message); })
+      .finally(() => inflight.current.delete(game.id));
+  }, [auth, picks, crowd]);
+  /* The pick that opened the sign-in pop-up is saved as soon as the sign-in lands. */
+  useEffect(() => {
+    if (auth !== 'in' || !pending.current) return;
+    const {game, code} = pending.current;
+    pending.current = null;
+    pick(game, code);
+  }, [auth, pick]);
+  useEffect(() => {
+    if (!notice) return undefined;
+    const timer = setTimeout(() => setNotice(''), 3200);
+    return () => clearTimeout(timer);
+  }, [notice]);
+
+  /* The share card: this day's picks (or the team's), with a tick or cross on the ones already decided. */
+  const picked = games?.filter(game => picks[game.id]) ?? [];
+  const dayLabel = team ? TEAMS[team]?.name : day === today ? 'tonight' : day ? longDay.format(noon(day)) : '';
+  const shareSpec = picked.length ? {
+    kind: 'list', eyebrow: 'My picks', title: team ? `${TEAMS[team].name} picks` : `NBA picks, ${day ? chipDay.format(noon(day)) : ''}`,
+    sub: `${picked.length} ${picked.length === 1 ? 'game' : 'games'}, called before tip-off`, color: TEAMS[picks[picked[0].id]]?.color, foot: 'Who do you have? Make your picks',
+    rows: picked.slice(0, 12).map((game, place) => {
+      const mine = picks[game.id], other = mine === game.away.code ? game.home.code : game.away.code;
+      const away = Number(game.away.score), home = Number(game.home.score), done = game.state === 'post' && away !== home;
+      const won = done && (away > home ? game.away.code : game.home.code) === mine;
+      return {lead: place + 1, name: `${nickname(mine)} to win`, sub: `${mine === game.home.code ? 'vs' : 'at'} ${TEAMS[other].name}`, value: done ? (won ? '✓' : '✗') : clock.format(new Date(game.start))};
+    }),
+  } : null;
 
   return <section className="gb">
     <div className="gb-head">
       <h1>Fixtures</h1>
+      {record && record.won + record.lost > 0 && <span className="gb-record" title="Your picks so far, graded after each game">Your picks <b>{record.won}–{record.lost}</b></span>}
       <select className="gb-team" value={team} onChange={event => setTeam(event.target.value)} aria-label="Team">
         <option value="">All teams, by day</option>{codes.map(code => <option key={code} value={code}>{TEAMS[code].name}</option>)}
       </select>
@@ -148,16 +256,20 @@ export default function GameDay() {
       </button>)}</div>
       <button type="button" className="gb-step" aria-label="Next day" disabled={index >= days.length - 1} onClick={() => setDay(days[index + 1])}><ChevronRight size={18}/></button>
     </nav>}
-    {day && !team && <h2 className="gb-day">{day === today ? 'Today' : longDay.format(noon(day))} <small>{games?.length ?? 0} games</small></h2>}
-    {team && <h2 className="gb-day">{TEAMS[team].name} <small>{games?.length ?? 0} games this season</small></h2>}
+    {(team || day) && <div className="gb-dayrow">
+      {team ? <h2 className="gb-day">{TEAMS[team].name} <small>{games?.length ?? 0} games this season</small></h2>
+        : <h2 className="gb-day">{day === today ? 'Today' : longDay.format(noon(day))} <small>{games?.length ?? 0} games</small></h2>}
+      {shareSpec && <ShareButton spec={shareSpec} filename={`statspads-picks-${team || day}`} title="My NBA picks" text={`My NBA picks for ${dayLabel} on StatsPads. Who do you have?`} path="/fixtures" className="gb-share" label={`Share my ${picked.length} ${picked.length === 1 ? 'pick' : 'picks'}`}/>}
+    </div>}
     {!games ? <ul className="gb-list" aria-busy="true">{Array.from({length: 6}, (_, key) => <li key={key} className="gb-game sk"/>)}</ul>
       : !games.length ? <p className="gb-empty">No games on this day.</p>
       : team ? <>
         {/* A team's season: what is next first, then the results, newest first. */}
         {[['Coming up', games.filter(game => game.state !== 'post')], ['Results', games.filter(game => game.state === 'post').reverse()]].filter(([, list]) => list.length).map(([title, list]) => <React.Fragment key={title}>
           <h3 className="gb-part">{title} <small>{list.length}</small></h3>
-          <ul key={`${team}-${title}`} className="gb-list list-in">{list.map(game => <Game key={game.id} game={game} mine={mine(game)} showDay/>)}</ul>
+          <ul key={`${team}-${title}`} className="gb-list list-in">{list.map(game => <Game key={game.id} game={game} mine={picks[game.id]} crowd={crowd[game.id]} onPick={pick} showDay/>)}</ul>
         </React.Fragment>)}
-      </> : <ul key={day} className="gb-list list-in">{games.map(game => <Game key={game.id} game={game} mine={mine(game)}/>)}</ul>}
+      </> : <ul key={day} className="gb-list list-in">{games.map(game => <Game key={game.id} game={game} mine={picks[game.id]} crowd={crowd[game.id]} onPick={pick}/>)}</ul>}
+    {notice && createPortal(<div className="toast" role="alert">{notice}</div>, document.body)}
   </section>;
 }
