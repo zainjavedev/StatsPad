@@ -2,8 +2,8 @@
    title, description, canonical URL, locale, and the share image with its size, type and alt text. */
 
 export const SITE_NAME = 'StatsPads';
-export const IMAGE_ALT = 'StatsPads: compare any two NBA players on a skill radar, shown with Cooper Flagg and Shai Gilgeous-Alexander';
-export const SHARE_IMAGE = '/og-compare.jpg';
+export const IMAGE_ALT = 'StatsPads: every NBA night in one glance, with the night\'s top performances ranked';
+export const SHARE_IMAGE = '/og-home.jpg';
 
 export const ogImages = () => [{url: SHARE_IMAGE, width: 1200, height: 630, alt: IMAGE_ALT, type: 'image/jpeg'}];
 
