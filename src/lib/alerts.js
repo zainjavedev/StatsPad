@@ -41,11 +41,21 @@ export async function enableBrowserAlerts(teams) {
 /* An account is the email row: signing in (Google or an emailed link) stores its token here and
    brings the account's teams into this browser's favorites. */
 const adopt = ({token, email, teams, picture}) => {
-  const before = readAlerts();
+  const before = {...readAlerts()};
+  /* Another account's name and photo never carry over. */
+  if (before.emailAddress !== email) { delete before.profilePhoto; delete before.profileName; }
   /* A Google photo stays while the same account signs in another way; a different account never inherits it. */
   writeAlerts({...before, email: token, emailAddress: email, picture: picture ?? (before.emailAddress === email ? before.picture ?? null : null)});
   setFavorites([...getFavorites(), ...teams]);
 };
+
+/* The account's public profile (name and photo for the predictor leaderboard), mirrored here so the header shows the photo. */
+export const loadProfile = () => fetch(`/api/profile?token=${encodeURIComponent(readAlerts().email || '')}`).then(response => (response.ok ? response.json() : null)).catch(() => null);
+export async function saveProfile(changes) {
+  const data = await post('/api/profile', {token: readAlerts().email, ...changes});
+  if (data.photo !== undefined) writeAlerts({...readAlerts(), profilePhoto: data.photo, profileName: data.name});
+  return data;
+}
 
 export async function signInWithGoogle(credential) {
   adopt(await post('/api/auth/google', {credential, teams: getFavorites()}));
@@ -70,7 +80,7 @@ export async function completeSignIn(code) {
 
 export function signOut() {
   const rest = {...readAlerts()};
-  delete rest.email; delete rest.emailAddress; delete rest.push;
+  delete rest.email; delete rest.emailAddress; delete rest.push; delete rest.profilePhoto; delete rest.profileName;
   writeAlerts(rest);
 }
 

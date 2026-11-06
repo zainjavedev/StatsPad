@@ -10,7 +10,7 @@ import SiteSearch from '../SiteSearch';
 
 /* The same banner, left menu and bottom bar the stats app wears, as plain links so the page stays a server page.
    SECTION is the left-menu item a page lights up. */
-const SECTION = {'/': 'home', '/leaders': 'leaders', '/ladders': 'ladders', '/performances': 'performances', '/fixtures': 'scores', '/compare': 'compare', '/lineups': 'teams', '/play': 'play', '/blog': 'blog'};
+const SECTION = {'/': 'home', '/leaders': 'leaders', '/ladders': 'ladders', '/performances': 'performances', '/fixtures': 'scores', '/compare': 'compare', '/lineups': 'teams', '/play': 'play', '/play/leaderboard': 'leaderboard', '/blog': 'blog'};
 
 const TABS = [['/', 'Home', HomeGlyph], ['/leaders', 'Leaders', LeadersGlyph], ['/fixtures', 'Fixtures', FixturesGlyph], ['/compare', 'Compare', CompareGlyph], ['/play', 'Games', GamesGlyph], ['/blog', 'Blog', BlogGlyph]];
 
@@ -25,6 +25,6 @@ export default function BlogShell({children, active = '/blog', className = '', t
     {children}
     <SiteFooter/>
     <Warm/>
-    {tabs && <nav className="tabbar" aria-label="Main">{TABS.map(([href, label, Icon]) => <Link key={href} href={href} className={href === active ? 'active' : ''} aria-current={href === active ? 'page' : undefined}><Icon size={19} className="nav-icon"/><span>{label}</span></Link>)}</nav>}
+    {tabs && <nav className="tabbar" aria-label="Main">{TABS.map(([href, label, Icon]) => <Link key={href} href={href} className={href === active || (href === '/play' && active.startsWith('/play/')) ? 'active' : ''} aria-current={href === active ? 'page' : undefined}><Icon size={19} className="nav-icon"/><span>{label}</span></Link>)}</nav>}
   </div>;
 }

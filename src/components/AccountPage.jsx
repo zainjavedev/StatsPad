@@ -1,12 +1,65 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { BarChart3, Eye, EyeOff, LogOut, ShieldCheck, Trash2 } from 'lucide-react';
+import { BarChart3, Camera, Eye, EyeOff, LogOut, ShieldCheck, Trash2, Trophy } from 'lucide-react';
 import { useIsAdmin } from '../lib/admin';
 import { useFavorites, toggleFavorite } from '../lib/favorites';
 import { TEAMS } from '../lib/teams';
 import { TeamLogo } from './TeamRail';
-import { completeSignIn, disableAlerts, logIn, readAlerts, sendSignInLink, setPassword, signInWithGoogle, signOut, signUp, syncAlertTeams } from '../lib/alerts';
+import { completeSignIn, disableAlerts, loadProfile, logIn, readAlerts, saveProfile, sendSignInLink, setPassword, signInWithGoogle, signOut, signUp, syncAlertTeams } from '../lib/alerts';
 
 const GOOGLE_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+/* A picked photo, cropped to a centred square and shrunk to a small JPEG (about 10 KB), so it can live on the account row. */
+const squarePhoto = file => new Promise((resolve, reject) => {
+  if (!file?.type?.startsWith('image/')) { reject(new Error('Pick an image file.')); return; }
+  const image = new Image(), url = URL.createObjectURL(file);
+  image.onload = () => {
+    const side = Math.min(image.naturalWidth, image.naturalHeight), canvas = document.createElement('canvas');
+    canvas.width = canvas.height = 192;
+    canvas.getContext('2d').drawImage(image, (image.naturalWidth - side) / 2, (image.naturalHeight - side) / 2, side, side, 0, 0, 192, 192);
+    URL.revokeObjectURL(url);
+    resolve(canvas.toDataURL('image/jpeg', .85));
+  };
+  image.onerror = () => { URL.revokeObjectURL(url); reject(new Error('That image could not be opened.')); };
+  image.src = url;
+});
+
+/* Name and photo, shown on the predictor leaderboard. Nothing is public until it is saved here. */
+function ProfileCard({googlePicture, onSaved}) {
+  const [name, setName] = useState(''), [photo, setPhoto] = useState(null), [changed, setChanged] = useState(false), [busy, setBusy] = useState(false), [note, setNote] = useState(null);
+  const file = useRef(null);
+  useEffect(() => { loadProfile().then(data => { if (data) { setName(data.name); setPhoto(data.photo); } }); }, []);
+  const choose = async event => {
+    try { setPhoto(await squarePhoto(event.target.files?.[0])); setChanged(true); setNote(null); } catch (error) { setNote({ok: false, text: error.message}); }
+    event.target.value = '';
+  };
+  const save = async event => {
+    event.preventDefault(); setBusy(true); setNote(null);
+    try {
+      const data = await saveProfile(changed ? {name, photo} : {name});
+      setName(data.name); setPhoto(data.photo); setChanged(false); onSaved?.(); setNote({ok: true, text: 'Saved. This is how you show up on the leaderboard.'});
+    } catch (error) { setNote({ok: false, text: error.message}); }
+    setBusy(false);
+  };
+  return <div className="acct-card acct-profile">
+    <h2>Your profile</h2>
+    <p className="acct-empty">Your name and photo on the <a href="/play/leaderboard">predictor leaderboard</a>.</p>
+    <form onSubmit={save}>
+      <div className="acct-photo-row">
+        <span className="acct-photo">{photo ? <img src={photo} alt="" referrerPolicy="no-referrer"/> : <b>{name.trim()?.[0]?.toUpperCase() || '?'}</b>}</span>
+        <div className="acct-photo-actions">
+          <button type="button" className="acct-secondary" onClick={() => file.current?.click()}><Camera size={15}/> {photo ? 'Change photo' : 'Add a photo'}</button>
+          {googlePicture && photo !== googlePicture && <button type="button" className="acct-link" onClick={() => { setPhoto(googlePicture); setChanged(true); }}>Use my Google photo</button>}
+          {photo && <button type="button" className="acct-link" onClick={() => { setPhoto(null); setChanged(true); }}>Remove photo</button>}
+        </div>
+        <input ref={file} type="file" accept="image/*" hidden onChange={choose}/>
+      </div>
+      <label>Display name<input value={name} maxLength={24} onChange={event => setName(event.target.value)} placeholder="How other fans see you" autoComplete="nickname"/></label>
+      <button className="acct-primary" disabled={busy}>{busy ? 'Saving…' : 'Save profile'}</button>
+    </form>
+    {note && <p className={`acct-note ${note.ok ? 'ok' : 'bad'}`} role="status">{note.text}</p>}
+    <a className="acct-secondary acct-board" href="/play/leaderboard"><Trophy size={15}/> See the leaderboard</a>
+  </div>;
+}
+
 const PERKS = [[ShieldCheck, 'Your teams everywhere', 'Sign in on any browser and your followed teams are already there.']];
 
 /* Sign in, create an account, and manage it. Following a team never needs an account;
@@ -93,11 +146,12 @@ export default function AccountPage({onTeams}) {
 
   return <section className="acct acct-in">
     <div className="acct-head">
-      <span className="acct-avatar">{saved.emailAddress?.[0]?.toUpperCase()}</span>
+      <span className="acct-avatar">{saved.profilePhoto ? <img src={saved.profilePhoto} alt="" referrerPolicy="no-referrer"/> : saved.emailAddress?.[0]?.toUpperCase()}</span>
       <div><h1>Your account</h1><p>{saved.emailAddress}</p></div>
     </div>
     {say('auth')}
     <div className="acct-grid">
+      <ProfileCard googlePicture={saved.picture} onSaved={() => setSaved(readAlerts())}/>
       {admin && <div className="acct-card">
         <h2>Activity</h2>
         <p className="acct-empty">Who visited, what they opened, where they came from, and Guess the Player rounds.</p>

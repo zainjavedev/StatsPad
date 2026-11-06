@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { BlogGlyph, CompareGlyph, FixturesGlyph, GamesGlyph, HomeGlyph, LaddersGlyph, LeadersGlyph, PerformancesGlyph, PlusGlyph, StandingsGlyph, TeamsGlyph } from './NavIcons';
+import { BlogGlyph, CompareGlyph, FixturesGlyph, GamesGlyph, HomeGlyph, LaddersGlyph, LeadersGlyph, PerformancesGlyph, PlusGlyph, StandingsGlyph, TeamsGlyph, TrophyGlyph } from './NavIcons';
 import { useFavorites } from '../lib/favorites';
 import { TEAMS, espnLogoUrl } from '../lib/teams';
 import { gameUrl, teamUrl } from '../lib/routes';
@@ -12,7 +12,7 @@ import { gameUrl, teamUrl } from '../lib/routes';
 const GROUPS = [
   [null, [['home', '/', 'Home', HomeGlyph], ['scores', '/fixtures', 'Fixtures', FixturesGlyph], ['performances', '/performances', 'Performances', PerformancesGlyph], ['leaders', '/leaders', 'Leaders', LeadersGlyph], ['ladders', '/ladders', 'Ladders', LaddersGlyph], ['standings', '/standings', 'Standings', StandingsGlyph]]],
   ['Explore', [['compare', '/compare', 'Compare', CompareGlyph], ['teams', '/lineups', 'Teams', TeamsGlyph], ['blog', '/blog', 'Blog', BlogGlyph]]],
-  ['More', [['play', '/play', 'Games', GamesGlyph]]],
+  ['More', [['play', '/play', 'Games', GamesGlyph], ['leaderboard', '/play/leaderboard', 'Leaderboard', TrophyGlyph]]],
 ];
 
 const SCOREBOARD = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard';

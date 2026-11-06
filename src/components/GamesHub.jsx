@@ -25,6 +25,16 @@ export default function GamesHub() {
         <p>{game.line}</p>
         <span className="gm-go">Play <ArrowRight size={16}/></span>
       </div>
-    </a>)}</div>
+    </a>)}
+      {/* Not a round to play but where the Fixtures picks end up, so it sits with the games. */}
+      <a href="/play/leaderboard" className="gm-card">
+        <div className="gm-art is-board" aria-hidden="true">{[2, 1, 3].map(place => <span key={place} className={`p${place}`}><b>{place}</b></span>)}</div>
+        <div className="gm-copy">
+          <h2>Predictor leaderboard</h2>
+          <p>Pick who wins every game on Fixtures before tip-off. Every right pick moves you up the board.</p>
+          <span className="gm-go">See the board <ArrowRight size={16}/></span>
+        </div>
+      </a>
+    </div>
   </main>;
 }

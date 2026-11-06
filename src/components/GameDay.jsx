@@ -246,7 +246,7 @@ export default function GameDay() {
   return <section className="gb">
     <div className="gb-head">
       <h1>Fixtures</h1>
-      {record && record.won + record.lost > 0 && <span className="gb-record" title="Your picks so far, graded after each game, and where that ranks among everyone picking">Your picks <b>{record.won}–{record.lost}</b>{record.players >= 3 && <> · <b>#{record.rank}</b> of {record.players}</>}</span>}
+      {record && record.won + record.lost > 0 && <a className="gb-record" href="/play/leaderboard" title="Your picks so far, graded after each game. Open the leaderboard">Your picks <b>{record.won}–{record.lost}</b>{record.players >= 3 && <> · <b>#{record.rank}</b> of {record.players}</>}</a>}
       <select className="gb-team" value={team} onChange={event => setTeam(event.target.value)} aria-label="Team">
         <option value="">All teams, by day</option>{codes.map(code => <option key={code} value={code}>{TEAMS[code].name}</option>)}
       </select>

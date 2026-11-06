@@ -117,4 +117,7 @@ await sql`create table if not exists predictions (
   at timestamptz not null default now(),
   primary key (game_id, subscriber_id)
 )`;
+/* Public profile for the predictor leaderboard (src/server/profile.js). */
+await sql`alter table subscribers add column if not exists display_name text`;
+await sql`alter table subscribers add column if not exists photo text`;
 console.log('db: ready');

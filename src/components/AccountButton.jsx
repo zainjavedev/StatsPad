@@ -20,7 +20,7 @@ function CopyLink() {
 export default function AccountButton() {
   const [email, setEmail] = useState(''), [picture, setPicture] = useState(''), [broken, setBroken] = useState(false), admin = useIsAdmin();
   useEffect(() => {
-    const update = () => { const saved = readAlerts(); setEmail(saved.emailAddress || ''); setPicture(saved.picture || ''); setBroken(false); };
+    const update = () => { const saved = readAlerts(); setEmail(saved.emailAddress || ''); setPicture(('profilePhoto' in saved ? saved.profilePhoto : saved.picture) || ''); setBroken(false); };
     update();
     window.addEventListener('statspad:alerts', update);
     window.addEventListener('storage', update);
