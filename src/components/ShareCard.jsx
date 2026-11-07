@@ -90,7 +90,7 @@ function Perf({spec}) {
     </div>
     <p className="sc-story">{spec.story}</p>
     <div className="sc-perf">
-      <div className="sc-court"><ShotChart shots={spec.shots} color={onDark(spec.color)}/><small>{spec.shotLine}</small></div>
+      <div className="sc-court"><ShotChart shots={spec.shots} color={onDark(spec.color)} extend={false}/><small>{spec.shotLine}</small></div>
       <div className="sc-side3">
         <div className="sc-head3">{spec.headline.map(([value, unit]) => <span key={unit}><b>{value}</b>{unit}</span>)}</div>
         {spec.tags.length > 0 && <div className="sc-tags">{spec.tags.map(tag => <span key={tag}>{tag}</span>)}</div>}

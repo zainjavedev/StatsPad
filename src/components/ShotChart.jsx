@@ -1,14 +1,21 @@
 import React from 'react';
 
 /* Half court in feet from the basket (x across, y up the floor), drawn at 50 x 42 with the baseline at the
-   bottom. Makes are filled in the team colour, misses are hollow. */
+   bottom. Makes are filled in the team colour, misses are hollow.
+   ESPN's y is feet from the basket, so 36.75 is only 42 feet from the baseline; the real half-court line is at 41.75.
+   When a player shot from deeper than that, the drawing grows upward (top < 0) to the half-court line and a strip of
+   the backcourt, so those shots are drawn where they were taken instead of falling off the top. */
 const HOOP_Y = 36.75;
 const sy = y => HOOP_Y - y;
 const LINE = {fill: 'none', stroke: 'currentColor', strokeWidth: .28, opacity: .55};
 
-export function Court() {
+const HALF = HOOP_Y - 41.75, BACK = HALF - 6;
+export function Court({top = 0}) {
   return <g style={{color: '#fff'}}>
-    <rect x=".12" y=".12" width="49.76" height="41.76" rx="1.2" {...LINE}/>
+    {top < 0
+      ? <path d={`M.12 ${top + .12}V41.88H49.88V${top + .12}`} {...LINE}/>
+      : <rect x=".12" y=".12" width="49.76" height="41.76" rx="1.2" {...LINE}/>}
+    {top <= HALF && <><path d={`M.12 ${HALF}H49.88`} {...LINE}/><path d={`M19 ${HALF}a6 6 0 0 1 12 0`} {...LINE}/></>}
     <rect x="17" y="23" width="16" height="19" {...LINE}/>
     <path d="M19 23a6 6 0 0 1 12 0" {...LINE}/>
     <path d="M19 23a6 6 0 0 0 12 0" {...LINE} strokeDasharray=".7 .7"/>
@@ -19,11 +26,18 @@ export function Court() {
   </g>;
 }
 
-export default function ShotChart({shots, assists = [], className = ''}) {
-  const misses = shots.filter(shot => !shot.made), makes = shots.filter(shot => shot.made);
-  return <svg className={`shot-chart ${className}`} viewBox="0 0 50 42" role="img" aria-label={`${makes.length} of ${shots.length} shots made`}>
-    <rect width="50" height="42" rx="1.2" fill="#ffffff" fillOpacity=".035"/>
-    <Court/>
+/* `extend` off (the share pictures, whose layouts are fixed) keeps the 50 x 42 court and pins deep shots to its top edge. */
+export default function ShotChart({shots, assists = [], className = '', extend = true}) {
+  /* Deep shots stretch the court upward: to just past the shot, or to the half-court line and 6 feet of backcourt.
+     Anything deeper still (a full-court heave) sits on that top edge. */
+  const deepest = Math.max(0, ...shots.map(shot => shot.y));
+  const top = !extend || deepest <= HOOP_Y - .8 ? 0 : Math.max(BACK, Math.min(-1, Math.floor(sy(deepest) - 1.2)));
+  const place = shot => ({...shot, x: Math.min(49.3, Math.max(.7, shot.x)), y: HOOP_Y - Math.max(top + .7, sy(shot.y))});
+  const misses = shots.filter(shot => !shot.made).map(place), makes = shots.filter(shot => shot.made).map(place);
+  assists = assists.map(place);
+  return <svg className={`shot-chart ${className}`} viewBox={`0 ${top} 50 ${42 - top}`} role="img" aria-label={`${makes.length} of ${shots.length} shots made`}>
+    <rect y={top} width="50" height={42 - top} rx="1.2" fill="#ffffff" fillOpacity=".035"/>
+    <Court top={top}/>
             {misses.map((shot, index) => <path key={`m${index}`} d={`M${shot.x - .5} ${sy(shot.y) - .5}l1 1M${shot.x + .5} ${sy(shot.y) - .5}l-1 1`} stroke="#c9777a" strokeWidth=".26" strokeLinecap="round" opacity=".75" fill="none"/>)}
         {makes.map((shot, index) => <circle key={`h${index}`} cx={shot.x} cy={sy(shot.y)} r=".65" fill="none" stroke="#7fc79d" strokeWidth=".3"/>)}
     {assists.map((shot, index) => <rect key={`a${index}`} x={shot.x - .6} y={sy(shot.y) - .6} width="1.2" height="1.2" fill="none" stroke="#6aa6ff" strokeWidth=".3" transform={`rotate(45 ${shot.x} ${sy(shot.y)})`}/>)}

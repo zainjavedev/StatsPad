@@ -46,7 +46,7 @@ const Poster = forwardRef(function Poster({line, box, chart}, ref) {
         </div>
       </div>
       {chart && <div className="sp-court">
-        <ShotChart shots={shots} assists={assists} className="sp-chart"/>
+        <ShotChart shots={shots} assists={assists} className="sp-chart" extend={false}/>
         <p className="pg-legend shot-key"><span><i className="made"/>Made</span><span><i className="missed"/>Missed</span>{assists.length > 0 && <span><i className="assist"/>Assisted</span>}</p>
       </div>}
     </div>
