@@ -4853,3 +4853,10 @@ a.bt-name:hover b{text-decoration:underline}
 .pxc-foot b{color:var(--text-3);font-weight:500}.pxc-foot u{color:var(--text-2);font-weight:600;text-decoration:none}
 /* Leaderboard empty state: the button is a link, so the page's link colour must not win over its own. */
 .pk-empty a.qz-primary{color:var(--ink-0,#0b0b0c);text-decoration:none}
+
+/* Share sheet on phones: a 44px close target, and the page under it doesn't rubber-band while the sheet is up. */
+.ss-back{overscroll-behavior:contain}
+.ss-sheet{touch-action:manipulation;overscroll-behavior:contain}
+.ss-close{width:40px;height:40px;right:10px;top:10px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.ss-close::after{content:"";position:absolute;inset:-6px}
+.ss-close:active{background:#24262b}

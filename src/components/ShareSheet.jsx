@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { toBlob } from 'html-to-image';
 import { shareFontCSS } from '../lib/shareFont';
@@ -52,16 +52,22 @@ export default function ShareSheet({ready, failed, unavailable = 'This is not av
 
   useEffect(() => { shareFontCSS(); }, []);
 
+  /* Locked once for the sheet's life (not again on every parent render, which made the page under it jump on phones). `alive`
+     stops a picture still being built in the background once the sheet is closed. */
+  const close = useRef(onClose), alive = useRef(true);
+  close.current = onClose;
   useEffect(() => {
-    const onKey = event => { if (event.key === 'Escape') onClose(); };
+    alive.current = true;
+    const onKey = event => { if (event.key === 'Escape') close.current(); };
     window.addEventListener('keydown', onKey);
-    const overflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = overflow; };
-  }, [onClose]);
+    const root = document.documentElement, before = [document.body.style.overflow, root.style.overflow];
+    document.body.style.overflow = 'hidden'; root.style.overflow = 'hidden';
+    return () => { alive.current = false; window.removeEventListener('keydown', onKey); [document.body.style.overflow, root.style.overflow] = before; };
+  }, []);
 
   /* The preview shrinks to fit the sheet so the buttons never scroll out of reach. The saved picture is not scaled. */
-  useEffect(() => {
+  /* Measured before the first paint, so the card never flashes at full size before it shrinks. */
+  useLayoutEffect(() => {
     if (!ready || !poster.current || !frame.current) return undefined;
     const measure = () => {
       const card = poster.current, room = frame.current;
@@ -95,14 +101,18 @@ export default function ShareSheet({ready, failed, unavailable = 'This is not av
     if (document.fonts?.ready) await document.fonts.ready;
     await Promise.race([Promise.all([...node.querySelectorAll('img')].filter(image => !image.complete).map(image => new Promise(resolve => { image.onload = resolve; image.onerror = resolve; }))), new Promise(resolve => setTimeout(resolve, 5000))]);
     await inlineImages(node);
+    if (!alive.current) throw Object.assign(new Error('closed'), {name: 'AbortError'});
     const restore = await flattenSvgs(node);
     let made;
     const options = {pixelRatio: width / node.offsetWidth, backgroundColor: '#000000', ...(fontEmbedCSS ? {fontEmbedCSS} : {})};
     /* Safari draws the images inside the capture only once they have been decoded in it, so its first picture comes out with blank
        photos and charts. A throwaway first pass warms it up; the second is the real one. */
     const webkit = /AppleWebKit/.test(navigator.userAgent) && !/Chrome|Chromium|Android/.test(navigator.userAgent);
+    /* Each pass holds the page for a moment on a phone, so a closed sheet stops between passes instead of finishing the work. */
+    const gone = () => { if (!alive.current) throw Object.assign(new Error('closed'), {name: 'AbortError'}); };
     try {
-      if (webkit) { await toBlob(node, options).catch(() => null); await toBlob(node, options).catch(() => null); }
+      if (webkit) { gone(); await toBlob(node, options).catch(() => null); gone(); await toBlob(node, options).catch(() => null); }
+      gone();
       made = await toBlob(node, options);
     } finally { restore(); }
     if (!made) throw new Error('no image');
@@ -115,7 +125,8 @@ export default function ShareSheet({ready, failed, unavailable = 'This is not av
   useEffect(() => {
     if (!ready) return undefined;
     built.current = null;
-    const timer = setTimeout(() => { blob().catch(() => {}); }, 450);
+    /* Started once the sheet has finished sliding up, so the work doesn't stall the animation or the first taps. */
+    const timer = setTimeout(() => { blob().catch(() => {}); }, 700);
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready, revision]);
@@ -163,7 +174,7 @@ export default function ShareSheet({ready, failed, unavailable = 'This is not av
     return '';
   });
 
-  return createPortal(<div className="ss-back" role="presentation" onClick={onClose}>
+  return createPortal(<div className="ss-back" role="presentation" onClick={event => { if (event.target === event.currentTarget) onClose(); }}>
     <div className="ss-sheet" role="dialog" aria-modal="true" aria-label="Share image" onClick={event => event.stopPropagation()}>
       <div className="ss-top"><h3>Share image</h3><button type="button" className="ss-close" onClick={onClose} aria-label="Close"><Close size={18}/></button></div>
       <div className="ss-preview" ref={frame}>{ready ? <div className="ss-scale" style={{transform: `scale(${scale})`, height: posterHeight ? posterHeight * scale : undefined}}>{children(poster)}</div> : <div className="ss-wait">{failed ? unavailable : 'Building your image…'}</div>}</div>

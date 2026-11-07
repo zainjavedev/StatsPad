@@ -82,11 +82,14 @@ function Side({side, won, lost, pick, as: Tag = 'span', ...rest}) {
 /* The share picture for X (16:9, 800x450 saved at 1600x900): the picked games as the same cards the page shows (both teams
    with logo, record and colour bar, the pick lit with its tick, right or wrong once final), three to a row, with the date
    above and where to make picks below. */
+/* Share of decided picks that were right, rounded: 4–1 is 80%. */
+const hitRate = ({won, lost}) => Math.round(won / (won + lost) * 100);
+
 const PicksPoster = forwardRef(function PicksPoster({title, date, games, picks, record}, ref) {
   const shown = games.slice(0, games.length > 12 ? 11 : 12), more = games.length - shown.length, slots = shown.length + (more > 0 ? 1 : 0);
   const cols = slots <= 3 ? slots : slots === 4 ? 2 : slots <= 9 ? 3 : 4, rows = Math.ceil(slots / cols);
   return <div className={`pxc-poster pxc-r${rows} pxc-c${cols}`} ref={ref} style={{'--cols': cols, '--rows': rows}}>
-    <div className="pxc-top"><b>{title}</b><span>{date}{record ? <> · <em>{record.won}–{record.lost}</em> so far</> : ''}</span></div>
+    <div className="pxc-top"><b>{title}</b><span>{date}{record ? <> · <em>{record.won}–{record.lost}</em> · <em>{hitRate(record)}%</em> right</> : ''}</span></div>
     <div className="pxc-grid">
       {shown.map(game => {
         const started = game.state === 'in' || game.state === 'post', away = Number(game.away.score), home = Number(game.home.score);
@@ -284,12 +287,12 @@ export default function GameDay() {
   const decided = shareGames.filter(game => game.result), shareRecord = decided.length ? {won: decided.filter(game => game.result === 'right').length, lost: decided.filter(game => game.result === 'wrong').length} : null;
   /* The post text: the picked teams by name (X shows them before the picture loads), the question, one hashtag. */
   const names = shareGames.map(game => nickname(game.pick)), listed = names.length > 6 ? `${names.slice(0, 6).join(', ')} and ${names.length - 6} more` : names.join(', ');
-  const shareText = `My NBA picks ${team ? `for the ${nickname(team)}` : day === today ? 'tonight' : `for ${dayLabel}`}: ${listed}${shareRecord ? ` (${shareRecord.won}–${shareRecord.lost} so far)` : ''}. Who do you have? #NBA`;
+  const shareText = `My NBA picks ${team ? `for the ${nickname(team)}` : day === today ? 'tonight' : `for ${dayLabel}`}: ${listed}${shareRecord ? ` (${shareRecord.won}–${shareRecord.lost}, ${hitRate(shareRecord)}% right so far)` : ''}. Who do you have? #NBA`;
 
   return <section className="gb">
     <div className="gb-head">
       <h1>Fixtures</h1>
-      {record && record.won + record.lost > 0 && <a className="gb-record" href="/play/leaderboard" title="Your picks so far, graded after each game. Open the leaderboard">Your picks <b>{record.won}–{record.lost}</b>{record.players >= 3 && <> · <b>#{record.rank}</b> of {record.players}</>}</a>}
+      {record && record.won + record.lost > 0 && <a className="gb-record" href="/play/leaderboard" title="Your picks so far, graded after each game. Open the leaderboard">Your picks <b>{record.won}–{record.lost}</b> · <b>{hitRate(record)}%</b>{record.players >= 3 && <> · <b>#{record.rank}</b> of {record.players}</>}</a>}
       <select className="gb-team" value={team} onChange={event => setTeam(event.target.value)} aria-label="Team">
         <option value="">All teams, by day</option>{codes.map(code => <option key={code} value={code}>{TEAMS[code].name}</option>)}
       </select>
