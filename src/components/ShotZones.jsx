@@ -80,6 +80,11 @@ export default function ShotZones({espnId, firstName}) {
             })}
           </g>
           <Court bare/>
+          {/* Free throws on the free-throw line: made of attempted under Shots, their share of his points under Points. */}
+          {data.fta > 0 && <g transform="translate(25 23)">
+            <rect x="-5.2" y="-1.35" width="10.4" height="2.7" rx="1.35" fill="#0b0c0f" stroke="#fff" strokeOpacity=".35" strokeWidth=".2"><title>{`Free throws: ${data.ftm} of ${data.fta}, ${pct(data.ftm / Math.max(1, data.pts))} of his points`}</title></rect>
+            <text textAnchor="middle" dominantBaseline="central" className="sz-num" fontSize="1.6">FT {mode === 'shots' ? `${data.ftm}/${data.fta}` : pct(data.ftm / Math.max(1, data.pts))}</text>
+          </g>}
           {zones.map(zone => {
             const [x, y] = LABEL[zone.key], corner = zone.key.startsWith('c3');
             return <text key={zone.key} x={x} y={y} textAnchor="middle" dominantBaseline="central" className={`sz-num${zone.key === hot.key ? ' hot' : ''}`} fontSize={corner ? 1.5 : zone.key === 'ra' ? 2 : 2.2} transform={corner ? `rotate(-90 ${x} ${y})` : undefined}>{zone.fga ? pct(zone[by]) : ''}</text>;
