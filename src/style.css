@@ -4885,3 +4885,15 @@ a.bt-name:hover b{text-decoration:underline}
   .pp-recent-zones>.sz{margin-top:20px;position:sticky;top:84px}
 }
 .sz-tabs .sz-ft{margin-left:6px}
+
+/* Comparison: both players' hot zones side by side, one set of switches. */
+.sz-compare{padding:18px 20px 6px;border-top:1px solid var(--line)}
+.sz-compare-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.sz-compare-head .vs-section{margin:0;padding:0;border:0}
+.sz-compare-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 20px}
+.sz-compare-one{margin:0;min-width:0}
+.sz-compare-one figcaption{margin:0 0 8px;color:var(--text-1);font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sz-compare .sz-court{max-width:none}
+.sz-none{margin:0;padding:30px 10px;border-radius:12px;background:var(--ink-2);color:var(--text-3);font-size:13px;text-align:center}
+@media(max-width:600px){.sz-compare{padding:14px 12px 4px}.sz-compare-grid{gap:10px}.sz-compare .sz-num{font-size:2.6px}}
+.sz-compare-grid{max-width:960px;margin:0 auto}

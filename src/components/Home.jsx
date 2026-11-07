@@ -20,6 +20,7 @@ import { CURRENT, loadLatest, pretty, qualified, setCurrentIsPreseason, stageOf 
 import { compareUrl, leadersUrl, matchesName, playerUrl, routeParams, teamUrl } from '../lib/routes';
 import FrontPage from './FrontPage';
 import PlayerBody from './PlayerBody';
+import { CompareZones } from './ShotZones';
 import { headshotSources, loadHeadshotIds } from '../lib/headshots';
 import ShareButton from './ShareButton';
 import SiteFooter from './SiteFooter';
@@ -238,7 +239,7 @@ function ComparisonPage({leaguePlayers,onTeams,onLeaders,data,entityType,setEnti
           onShuffle={()=>{const pool=starPool().filter(option=>!enriched.some(selected=>selected.playerName===option.playerName)),option=pool[Math.floor(Math.random()*pool.length)];if(option)setSelected(enriched.map((entity,position)=>position===index?option:entity))}}/>;return index===1&&ready?<React.Fragment key="radar"><Radar axes={radar} names={enriched.slice(0,2).map(entity=>entity.playerName)} colors={COLORS} scope={radarScope} notes={radarNotes}/>{slot}</React.Fragment>:slot})}
         {!ready&&<span className="vs-badge">VS</span>}
       </div>
-      {ready?<>{entityType==='team'&&<TeamLineups teams={enriched.slice(0,2)} leaguePlayers={leaguePlayers} season={data.season} colors={COLORS}/>}<div className="vs-table" key={enriched.map(player=>player.playerName).join('|')}>
+      {ready?<>{entityType==='team'&&<TeamLineups teams={enriched.slice(0,2)} leaguePlayers={leaguePlayers} season={data.season} colors={COLORS}/>}{entityType==='player'&&seasonType==='regular-season'&&data.season===CURRENT&&<CompareZones players={enriched.slice(0,2)}/>}<div className="vs-table" key={enriched.map(player=>player.playerName).join('|')}>
         {sections.map(([title,metrics])=><React.Fragment key={title}>
           <div className="vs-section">{title}</div>
           {metrics.map((metric,row)=><VsRow key={metric[0]} players={enriched} population={enrichedPopulation} metric={metric} row={row} colors={COLORS}/>)}
