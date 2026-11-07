@@ -7,7 +7,8 @@ import { finished, loadSchedule } from '../lib/schedule';
 import { fps, rating } from '../lib/playerGame';
 import { TEAMS } from '../lib/teams';
 
-/* Every line from the last few game nights, sortable on any stat. A night picker narrows it to one night; the sort chips
+/* Every line from the last few game nights, sortable on any stat, or the whole season's best lines for the chosen sort
+   (Full season, read from the stored box scores by /api/performances). A night picker narrows it to one night; the sort chips
    order it (tap the chosen one again to flip lowest first, which is how to find the sloppiest night for turnovers). Read
    from the box scores of the latest finals, so a game that ended minutes ago is already here. */
 const codeOf = abbr => Object.keys(TEAMS).find(code => TEAMS[code].espn === String(abbr).toLowerCase());
@@ -15,6 +16,12 @@ const NIGHTS = 3, PER_NIGHT = 80, SHOWN = 30;
 const dayLabel = date => date.toLocaleDateString(undefined, {weekday: 'short', month: 'short', day: 'numeric'});
 const num = value => Number(String(value ?? '').replace('+', '')) || 0;
 const made = (value, part) => Number(String(value ?? '0-0').split('-')[part]) || 0;
+const SEASON_LINES = new Map();
+const loadSeason = (key, dir) => {
+  const id = `${key}:${dir}`;
+  if (!SEASON_LINES.has(id)) SEASON_LINES.set(id, fetch(`/api/performances?sort=${key}&dir=${dir}`).then(response => (response.ok ? response.json() : {lines: []})).then(data => (data.lines ?? []).map(line => ({...line, date: new Date(line.date)}))).catch(() => { SEASON_LINES.delete(id); return []; }));
+  return SEASON_LINES.get(id);
+};
 
 /* Each sort: key, label, the value it ranks on (null leaves a line out), the label the card shows it under (focus), and
    the rule behind it, said under the chips so nobody wonders why a line is missing or how a number is made. The cards are
@@ -52,14 +59,23 @@ export default function PerformancesList() {
     return () => { live = false; };
   }, []);
   useEffect(() => setCount(SHOWN), [night, order]);
+  /* Full season: the top 200 lines for the chosen sort and direction, fetched when picked. */
+  const [season, setSeason] = useState(null);
+  useEffect(() => {
+    if (night !== 'season') return undefined;
+    let live = true;
+    setSeason(null);
+    loadSeason(order.key, order.dir).then(found => { if (live) setSeason(found); });
+    return () => { live = false; };
+  }, [night, order]);
 
   const chosen = SORTS.find(item => item.key === order.key), valueOf = chosen.value;
   const lines = useMemo(() => {
     if (!nights) return [];
-    const pool = nights.filter(entry => night === 'all' || entry.day === night).flatMap(entry => entry.lines);
+    const pool = night === 'season' ? season ?? [] : nights.filter(entry => night === 'all' || entry.day === night).flatMap(entry => entry.lines);
     return pool.map(line => ({line, value: valueOf(line.player.stats)})).filter(entry => entry.value !== null)
       .sort((a, b) => (order.dir === 'down' ? b.value - a.value : a.value - b.value) || b.line.rating - a.line.rating);
-  }, [nights, night, order, valueOf]);
+  }, [nights, night, order, valueOf, season]);
 
   if (nights === null) return <PerfSkeleton count={8}/>;
   if (!nights.length) return <p className="rp-empty">No finished games yet. Performances show up here once games end.</p>;
@@ -67,7 +83,8 @@ export default function PerformancesList() {
   return <>
     <div className="pfl-controls">
       <div className="front-tabs" role="group" aria-label="Night">
-        <button type="button" className={night === 'all' ? 'active' : ''} onClick={() => setNight('all')}>All nights</button>
+        <button type="button" className={night === 'season' ? 'active' : ''} onClick={() => setNight('season')}>Full season</button>
+        <button type="button" className={night === 'all' ? 'active' : ''} onClick={() => setNight('all')}>Last {nights.length} nights</button>
         {nights.map(entry => <button key={entry.day} type="button" className={night === entry.day ? 'active' : ''} onClick={() => setNight(entry.day)}>{dayLabel(new Date(entry.day))}</button>)}
       </div>
       <div className="pfl-sorts" role="group" aria-label="Sort by">
@@ -76,7 +93,8 @@ export default function PerformancesList() {
         </button>)}
       </div>
     </div>
-    <p className="pfl-count">{lines.length} lines · {order.dir === 'down' ? 'highest' : 'lowest'} first{chosen.note ? ` · ${chosen.note}` : ''}</p>
+    <p className="pfl-count">{night === 'season' ? (season ? `The season’s ${order.dir === 'down' ? 'top' : 'bottom'} ${lines.length} lines` : 'Loading the season…') : `${lines.length} lines`} · {order.dir === 'down' ? 'highest' : 'lowest'} first{chosen.note ? ` · ${chosen.note}` : ''}{night === 'season' && order.dir === 'up' ? ' · 10+ minutes only' : ''}</p>
+    {night === 'season' && !season && <PerfSkeleton count={6}/>}
     <ul key={`${night}-${order.key}-${order.dir}`} className="rp-list rp-ranked pfl-grid list-in">{lines.slice(0, count).map(({line}, index) => <li key={`${line.gameId}-${line.player.id}`} className={index < 3 ? 'top3' : undefined} style={{'--tc': TEAMS[codeOf(line.team)]?.color || '#8a8a8a'}}>
       <PerfCard line={line} rank={index + 1} focus={chosen.focus}/>
     </li>)}</ul>
