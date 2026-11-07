@@ -4897,3 +4897,6 @@ a.bt-name:hover b{text-decoration:underline}
 .sz-none{margin:0;padding:30px 10px;border-radius:12px;background:var(--ink-2);color:var(--text-3);font-size:13px;text-align:center}
 @media(max-width:600px){.sz-compare{padding:14px 12px 4px}.sz-compare-grid{gap:10px}.sz-compare .sz-num{font-size:2.6px}}
 .sz-compare-grid{max-width:960px;margin:0 auto}
+
+/* The boxed top three in ranked lists (Performances, leaderboards): padding inside the box, so the grade and share button don't touch its edge. */
+.rp-ranked>li.top3>.rp-card{padding:14px 14px 14px 12px!important}
