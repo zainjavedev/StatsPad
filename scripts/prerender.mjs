@@ -9,6 +9,7 @@ import { LEADERS, leaderValue, statUrl } from '../src/lib/statLeaders.js';
 import { TEAM_LEADERS, addBlowouts, teamStatUrl, rankTeams, showValue } from '../src/lib/teamLeaders.js';
 import { published } from '../src/content/blog/posts.js';
 import { SITE, compareUrl, gameUrl, playerUrl, slugify, teamUrl } from '../src/lib/routes.js';
+import { groupsOf } from '../src/lib/shotZones.js';
 
 /* Runs before `next build`. Writes src/seo/pages.json (title, description and a
    readable stats body for every player, team and popular comparison, which the
@@ -82,7 +83,20 @@ async function loadDb() {
       if (!byPlayer.has(line.espn_player_id)) byPlayer.set(line.espn_player_id, []);
       byPlayer.get(line.espn_player_id).push(line);
     }
-    return {games, byGame, byPlayer, gameById: new Map(games.map(game => [game.id, game]))};
+    /* Every regular-season field-goal attempt with its spot on the floor, for the hot-zones copy on player pages. */
+    const shotsByPlayer = new Map();
+    try {
+      const shots = await sql`select s->'participants'->0->'athlete'->>'id' as pid, (s->'coordinate'->>'x')::float as x, (s->'coordinate'->>'y')::float as y,
+          s->>'text' as text, s->'type'->>'text' as type, (s->>'pointsAttempted')::int as pa
+        from games g join game_raw r on r.game_id = g.id, jsonb_array_elements(r.data->'plays') s
+        where g.season = ${SEASONS[0]} and g.season_type <> 'preseason' and (s->>'shootingPlay')::boolean`;
+      for (const shot of shots) {
+        if (/Free Throw/i.test(shot.type || '') || !/\b(makes|misses|blocks)\b/i.test(shot.text || '') || !(shot.x >= 0) || !(shot.y > -100)) continue;
+        if (!shotsByPlayer.has(shot.pid)) shotsByPlayer.set(shot.pid, []);
+        shotsByPlayer.get(shot.pid).push({x: shot.x, y: shot.y, made: /\bmakes\b/i.test(shot.text), three: shot.pa === 3});
+      }
+    } catch (error) { console.warn(`prerender: shot locations unavailable (${error.message})`); }
+    return {games, byGame, byPlayer, shotsByPlayer, gameById: new Map(games.map(game => [game.id, game]))};
   } catch (error) { console.warn(`prerender: box scores unavailable (${error.message}), skipping game pages`); return null; }
 }
 const db = await loadDb();
@@ -102,6 +116,29 @@ const gameLog = p => {
       + `<span class="glog-line"><span><b>${line.pts}</b> PTS</span><span><b>${line.reb}</b> REB</span><span><b>${line.ast}</b> AST</span><span><b>${line.minutes}</b> MIN</span></span></a></li>`;
   }).join('');
   return `<h2>${esc(p.playerName)} game log, ${pretty(SEASONS[0])}</h2><p>${esc(p.playerName)}'s last ${rows.length} games. Open one for the full box score.</p><ol class="glog">${cards}</ol>`;
+};
+/* Hot zones in words: where a player takes his shots this regular season (the five standard zones) and how much of his scoring
+   each gives, with free throws. Mirrors the hot-zones chart on the player page. Needs 20+ shots. */
+const zonesFor = p => {
+  const shots = (p.espnId && db?.shotsByPlayer?.get(String(p.espnId))) || [];
+  if (shots.length < 20) return null;
+  const lines = (db.byPlayer.get(String(p.espnId)) || []).filter(line => db.gameById.get(line.game_id)?.season_type !== 'preseason');
+  const pts = lines.reduce((sum, line) => sum + line.pts, 0), ftm = lines.reduce((sum, line) => sum + line.ftm, 0), fta = lines.reduce((sum, line) => sum + line.fta, 0);
+  const groups = groupsOf(shots, pts), hot = [...groups].sort((x, y) => y.fga - x.fga)[0];
+  return {shots: shots.length, games: lines.length, pts, ftm, fta, groups, hot};
+};
+const pc = value => `${Math.round(value * 100)}%`;
+const zonesHtml = (p, z) => {
+  if (!z) return '';
+  const name = esc(p.playerName), last = esc(p.playerName.split(' ').slice(-1)[0]);
+  const second = [...z.groups].sort((x, y) => y.fga - x.fga)[1];
+  return `<h2>${name} hot zones and shot chart, ${pretty(SEASONS[0])}</h2>`
+    + `<p>${name}'s hot zone is ${z.hot.label}: ${pc(z.hot.share)} of his field-goal attempts come from there and ${pc(z.hot.ptsShare)} of his points, on ${z.hot.fgm} of ${z.hot.fga} shooting (${pc(z.hot.pct)}).`
+    + `${second?.fga ? ` Next is ${second.label} with ${pc(second.share)} of his shots (${pc(second.ptsShare)} of his points).` : ''}`
+    + `${z.fta ? ` Free throws add ${pc(z.ftm / Math.max(1, z.pts))} of ${last}'s points (${z.ftm} of ${z.fta}, ${pc(z.ftm / z.fta)}).` : ''}`
+    + ` Based on ${z.shots} shots in ${z.games} regular-season games, from the play-by-play.</p>`
+    + table(['Zone', 'FGM-FGA', 'FG%', 'Share of shots', 'Share of points'], z.groups.filter(g => g.fga).map(g => [esc(g.name), `${g.fgm}-${g.fga}`, pc(g.pct), pc(g.share), pc(g.ptsShare)])
+      .concat(z.fta ? [['Free throws', `${z.ftm}-${z.fta}`, pc(z.ftm / z.fta), '–', pc(z.ftm / Math.max(1, z.pts))]] : []), `${p.playerName} shot zones, ${pretty(SEASONS[0])} regular season`);
 };
 const pages = {};
 const written = [];
@@ -351,13 +388,19 @@ for (const p of cap(players)) {
   const photo = p.espnId ? `https://a.espncdn.com/i/headshots/nba/players/full/${p.espnId}.png` : p.nbaId ? `https://cdn.nba.com/headshots/nba/latest/1040x760/${p.nbaId}.png` : null;
   const pre = preseasonBySlug.get(p.slug);
   const [first, ...rest] = plain(p.playerName).split(' ');
+  const zones = zonesFor(p);
   writePage({route, og: {type: 'profile', fields: {firstName: first, lastName: rest.join(' ') || first}},
     jsonLd: [crumbs(['Home', '/'], ['Players', '/stats/points'], [p.playerName, route]),
       webPage(route, `${p.playerName} stats ${yearLabel}`, `${p.playerName} ${yearLabel} NBA stats: ${statLine(p)}.`, {mainEntity: {'@id': personId}}),
       {'@context': 'https://schema.org', '@type': 'Person', '@id': personId, name: p.playerName, jobTitle: `Basketball player${p.position ? ` (${p.position})` : ''}`, description: `${p.playerName} averaged ${statLine(p)} in ${p.gamesPlayed} games in ${yearLabel}.`, url: SITE + route, mainEntityOfPage: {'@id': `${SITE}${route}#webpage`}, ...(photo ? {image: photo} : {}), ...(p.code ? {affiliation: {'@type': 'SportsTeam', name: TEAMS[p.code].name, sport: 'Basketball', url: SITE + teamUrl(p.code)}} : {})}],
     title: fitTitle(...(pre ? [`${p.playerName}: regular season & preseason stats ${pretty(seasonKey)} | StatsPads`, `${p.playerName} regular season & preseason stats ${pretty(seasonKey)}`, `${p.playerName} preseason & regular stats ${pretty(seasonKey)}`] : []), `${p.playerName} ${statsLabel} ${pretty(seasonKey)}: ${fixed(p.stats.points)} PPG, ${fixed(p.stats.totalRebounds)} RPG, ${fixed(p.stats.assists)} APG | StatsPads`, `${p.playerName} ${statsLabel} ${pretty(seasonKey)}: ${fixed(p.stats.points)} PPG, ${fixed(p.stats.totalRebounds)} RPG, ${fixed(p.stats.assists)} APG`, `${p.playerName} ${statsLabel} ${pretty(seasonKey)}: ${fixed(p.stats.points)} PPG, ${fixed(p.stats.totalRebounds)} RPG`, `${p.playerName} ${statsLabel} ${pretty(seasonKey)}`),
-    description: fitDescription(`${p.playerName} ${yearLabel} NBA stats: ${statLine(p)}, ${fixed(p.stats.fieldGoalPercentage)}% FG, ${fixed(p.stats.threePointPercentage)}% 3P, ${fixed(p.ts)}% TS in ${p.gamesPlayed} games. Compare ${p.playerName} with any player.`, `${p.playerName} ${yearLabel} NBA stats: ${statLine(p)}, ${fixed(p.stats.fieldGoalPercentage)}% FG, ${fixed(p.stats.threePointPercentage)}% 3P in ${p.gamesPlayed} games.`),
-    body: `<article class="seo"><h1>${esc(p.playerName)} stats, ${yearLabel}</h1>${updated()}${copy.playerProfile(p)}${copy.playerRankings(p)}${table(['Stat', 'Per game'], PLAYER_ROWS.map(([label, get, places]) => [esc(label), fixed(get(p), places ?? 1)]), `${p.playerName} per-game stats, ${yearLabel}`)}${p.code ? `<p>${link(teamUrl(p.code), `${TEAMS[p.code].name} roster`)}</p>` : ''}${pre ? `<h2>${esc(p.playerName)} preseason stats, ${pretty(seasonKey)}</h2><p>${esc(p.playerName)} averaged ${statLine(pre)} in ${pre.gamesPlayed} preseason games.</p>${table(['Stat', 'Preseason per game'], PLAYER_ROWS.map(([label, get, places]) => [esc(label), fixed(get(pre), places ?? 1)]), `${p.playerName} preseason per-game stats, ${pretty(seasonKey)}`)}` : ''}${gameLog(p)}${careerHtml(p)}${copy.teammates(p)}${copy.neighbours(p)}${related ? `<h2>Compare</h2><ul>${related}</ul>` : ''}</article>`});
+    /* With shot locations, the description names the hot zone; otherwise (or if it runs long) the plain stat line. */
+    description: [
+      ...(zones ? [`${p.playerName} ${yearLabel} NBA stats: ${statLine(p)}, ${fixed(p.stats.fieldGoalPercentage)}% FG. Hot zone: ${zones.hot.short}, ${pc(zones.hot.share)} of his shots.`,
+        `${p.playerName} ${yearLabel} stats: ${statLine(p)}. Hot zone: ${zones.hot.short}, ${pc(zones.hot.share)} of his shots.`] : []),
+      `${p.playerName} ${yearLabel} NBA stats: ${statLine(p)}, ${fixed(p.stats.fieldGoalPercentage)}% FG, ${fixed(p.stats.threePointPercentage)}% 3P, ${fixed(p.ts)}% TS in ${p.gamesPlayed} games. Compare ${p.playerName} with any player.`,
+    ].find(text => text.length <= 160) ?? `${p.playerName} ${yearLabel} NBA stats: ${statLine(p)}, ${fixed(p.stats.fieldGoalPercentage)}% FG, ${fixed(p.stats.threePointPercentage)}% 3P in ${p.gamesPlayed} games.`,
+    body: `<article class="seo"><h1>${esc(p.playerName)} stats, ${yearLabel}</h1>${updated()}${copy.playerProfile(p)}${copy.playerRankings(p)}${table(['Stat', 'Per game'], PLAYER_ROWS.map(([label, get, places]) => [esc(label), fixed(get(p), places ?? 1)]), `${p.playerName} per-game stats, ${yearLabel}`)}${p.code ? `<p>${link(teamUrl(p.code), `${TEAMS[p.code].name} roster`)}</p>` : ''}${pre ? `<h2>${esc(p.playerName)} preseason stats, ${pretty(seasonKey)}</h2><p>${esc(p.playerName)} averaged ${statLine(pre)} in ${pre.gamesPlayed} preseason games.</p>${table(['Stat', 'Preseason per game'], PLAYER_ROWS.map(([label, get, places]) => [esc(label), fixed(get(pre), places ?? 1)]), `${p.playerName} preseason per-game stats, ${pretty(seasonKey)}`)}` : ''}${zonesHtml(p, zones)}${gameLog(p)}${careerHtml(p)}${copy.teammates(p)}${copy.neighbours(p)}${related ? `<h2>Compare</h2><ul>${related}</ul>` : ''}</article>`});
 }
 /* Players who only have preseason games keep a page after the regular season takes over, so the preseason searches still land somewhere. */
 for (const q of cap([...preseasonBySlug.values()].filter(q => q.minutesPerGame >= 10 && !bySlug.has(slugify(q.playerName))))) {
@@ -500,7 +543,7 @@ const lastmodOf = route => {
   return today;
 };
 fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${[...new Set(urls)].map(route => `  <url><loc>${SITE}${route}</loc><lastmod>${lastmodOf(route)}</lastmod></url>`).join('\n')}\n</urlset>\n`);
-fs.writeFileSync(path.join(publicDir, 'llms.txt'), `# StatsPads\n\n> StatsPads (${SITE}) is a free NBA stats site: side-by-side player and team comparisons on a skill radar, league leaders, standings, the schedule, team pages with expected starting fives, and game pages with box scores. Stats come from ESPN's public feeds and are refreshed every few hours.\n\n## Main pages\n\n- [Home](${SITE}/): today's picture of the league\n- [Compare](${SITE}/compare): pick any two players or teams\n- [Stat leaders](${SITE}/leaders): top five in each major category\n- [Team leaders](${SITE}/stats/teams): every team ranked on efficiency, scoring, defense, steals, blocks and more\n- [Starting lineups and teams](${SITE}/lineups): the expected starting five, roster and stats for all 30 teams\n- [Standings](${SITE}/standings): both conferences with seeds\n- [Injury report](${SITE}/injuries): every injured player, who is out and when they return\n- [Fixtures: scores and schedule](${SITE}/fixtures): results, live games and every game still to come\n- [Blog](${SITE}/blog): player comparisons and stat breakdowns\n${published().map(post => `- [${post.title}](${SITE}/blog/${post.slug}): ${post.description}`).join('\n')}\n\n## Stat rankings\n\n${LEADERS.map(entry => `- [${entry.label} leaders](${SITE}${statUrl(entry.slug)})`).join('\n')}\n\n## Page patterns\n\n- Players: ${SITE}/players/{player-name}, per-game stats, league ranks, career by season\n- Teams: ${SITE}/lineups/{team-name}, roster, expected starting five, team stats\n- Comparisons: ${SITE}/compare/{a}-vs-{b}\n\nFull list of pages: ${SITE}/sitemap.xml\n`);
+fs.writeFileSync(path.join(publicDir, 'llms.txt'), `# StatsPads\n\n> StatsPads (${SITE}) is a free NBA stats site: side-by-side player and team comparisons on a skill radar, league leaders, standings, the schedule, team pages with expected starting fives, and game pages with box scores. Stats come from ESPN's public feeds and are refreshed every few hours.\n\n## Main pages\n\n- [Home](${SITE}/): today's picture of the league\n- [Compare](${SITE}/compare): pick any two players or teams\n- [Stat leaders](${SITE}/leaders): top five in each major category\n- [Team leaders](${SITE}/stats/teams): every team ranked on efficiency, scoring, defense, steals, blocks and more\n- [Starting lineups and teams](${SITE}/lineups): the expected starting five, roster and stats for all 30 teams\n- [Standings](${SITE}/standings): both conferences with seeds\n- [Injury report](${SITE}/injuries): every injured player, who is out and when they return\n- [Fixtures: scores and schedule](${SITE}/fixtures): results, live games and every game still to come\n- [Blog](${SITE}/blog): player comparisons and stat breakdowns\n${published().map(post => `- [${post.title}](${SITE}/blog/${post.slug}): ${post.description}`).join('\n')}\n\n## Stat rankings\n\n${LEADERS.map(entry => `- [${entry.label} leaders](${SITE}${statUrl(entry.slug)})`).join('\n')}\n\n## Page patterns\n\n- Players: ${SITE}/players/{player-name}, per-game stats, league ranks, hot zones (where a player shoots from and how much of his scoring each zone gives), career by season\n- Teams: ${SITE}/lineups/{team-name}, roster, expected starting five, team stats\n- Comparisons: ${SITE}/compare/{a}-vs-{b}\n\nFull list of pages: ${SITE}/sitemap.xml\n`);
 fs.writeFileSync(path.join(publicDir, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 console.log(`prerender: ${written.length} pages, in ${((Date.now() - started) / 1000).toFixed(1)}s, ${players.filter(p => !p.nbaId && !p.espnId).length} of ${players.length} players without a headshot`);
 fs.mkdirSync(path.dirname(manifestFile), {recursive: true});

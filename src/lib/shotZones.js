@@ -40,3 +40,21 @@ export function zonesOf(shots, totalPoints) {
   const fga = shots.length, points = Math.max(totalPoints || 0, [...rows.values()].reduce((sum, row) => sum + row.pts, 0));
   return [...rows.values()].map(row => ({...row, share: fga ? row.fga / fga : 0, ptsShare: points ? row.pts / points : 0, pct: row.fga ? row.fgm / row.fga : null}));
 }
+
+/* The five standard groups (the NBA's own shot-zone split), for written copy: no left/right, since ESPN's coordinates don't say
+   which side is the player's left. `label` follows "his hot zone is", `short` fits a meta description. */
+export const GROUPS = [
+  {key: 'rim', name: 'Restricted area', label: 'the restricted area, at the rim', short: 'at the rim', where: 'at the rim', zones: ['ra']},
+  {key: 'paint', name: 'In the paint (non-RA)', label: 'the paint outside the restricted area', short: 'in the paint', where: 'in the paint outside the restricted area', zones: ['paint']},
+  {key: 'mid', name: 'Midrange', label: 'midrange', short: 'midrange', where: 'from midrange', zones: ['mid-left', 'mid-center', 'mid-right']},
+  {key: 'corner3', name: 'Corner 3', label: 'the corner three', short: 'corner threes', where: 'from the corner three', zones: ['c3-left', 'c3-right']},
+  {key: 'arc3', name: 'Above-the-break 3', label: 'the above-the-break three', short: 'above-the-break threes', where: 'from above-the-break threes', zones: ['w3-left', 'top3', 'w3-right']},
+];
+export function groupsOf(shots, totalPoints) {
+  const zones = zonesOf(shots, totalPoints);
+  return GROUPS.map(group => {
+    const parts = zones.filter(zone => group.zones.includes(zone.key));
+    const fga = parts.reduce((sum, zone) => sum + zone.fga, 0), fgm = parts.reduce((sum, zone) => sum + zone.fgm, 0);
+    return {...group, fga, fgm, pct: fga ? fgm / fga : null, share: parts.reduce((sum, zone) => sum + zone.share, 0), ptsShare: parts.reduce((sum, zone) => sum + zone.ptsShare, 0)};
+  });
+}
