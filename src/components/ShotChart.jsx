@@ -10,7 +10,8 @@ const sy = y => HOOP_Y - y;
 const LINE = {fill: 'none', stroke: 'currentColor', strokeWidth: .28, opacity: .55};
 
 const HALF = HOOP_Y - 41.75, BACK = HALF - 6;
-export function Court({top = 0}) {
+/* `bare` leaves out the rim, backboard and restricted-area arc (the hot-zones court fills that circle and writes its number there). */
+export function Court({top = 0, bare = false}) {
   return <g style={{color: '#fff'}}>
     {top < 0
       ? <path d={`M.12 ${top + .12}V41.88H49.88V${top + .12}`} {...LINE}/>
@@ -19,9 +20,11 @@ export function Court({top = 0}) {
     <rect x="17" y="23" width="16" height="19" {...LINE}/>
     <path d="M19 23a6 6 0 0 1 12 0" {...LINE}/>
     <path d="M19 23a6 6 0 0 0 12 0" {...LINE} strokeDasharray=".7 .7"/>
-    <path d="M21 36.75a4 4 0 0 1 8 0" {...LINE}/>
-    <path d="M22 38h6" {...LINE} strokeWidth=".5"/>
-    <circle cx="25" cy="36.75" r=".75" {...LINE} opacity=".7"/>
+    {!bare && <>
+      <path d="M21 36.75a4 4 0 0 1 8 0" {...LINE}/>
+      <path d="M22 38h6" {...LINE} strokeWidth=".5"/>
+      <circle cx="25" cy="36.75" r=".75" {...LINE} opacity=".7"/>
+    </>}
     <path d="M3 42V27.8A23.75 23.75 0 0 1 47 27.8V42" {...LINE}/>
   </g>;
 }

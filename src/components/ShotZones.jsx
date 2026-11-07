@@ -26,7 +26,7 @@ const SHAPES = {
 /* Where each zone's number sits. */
 const LABEL = {
   'w3-left': [7, 15], top3: [25, 6.5], 'w3-right': [43, 15], 'c3-left': [1.5, 35.5], 'c3-right': [48.5, 35.5],
-  'mid-left': [9.5, 33], 'mid-center': [25, 18.2], 'mid-right': [40.5, 33], paint: [25, 28.4], ra: [25, 34.3],
+  'mid-left': [9.5, 33], 'mid-center': [25, 18.2], 'mid-right': [40.5, 33], paint: [25, 28.6], ra: [25, 36.75],
 };
 
 /* The hot zone full red; every other zone a faded red, stronger the bigger its share. Solid colours (the zones overlap). */
@@ -79,10 +79,10 @@ export default function ShotZones({espnId, firstName}) {
               return <path key={key} d={shape.d} clipPath={shape.clip ? `url(#sz-${shape.clip})` : undefined} fill={heat(zone[by] / top, zone.key === hot.key)} stroke="#0b0c0f" strokeWidth=".35"><title>{`${zone.long}: ${zone.fgm} of ${zone.fga}, ${pct(zone.ptsShare)} of his points`}</title></path>;
             })}
           </g>
-          <Court/>
+          <Court bare/>
           {zones.map(zone => {
             const [x, y] = LABEL[zone.key], corner = zone.key.startsWith('c3');
-            return <text key={zone.key} x={x} y={y} textAnchor="middle" dominantBaseline="central" className={`sz-num${zone.key === hot.key ? ' hot' : ''}`} fontSize={corner ? 1.5 : 2.2} transform={corner ? `rotate(-90 ${x} ${y})` : undefined}>{zone.fga ? pct(zone[by]) : ''}</text>;
+            return <text key={zone.key} x={x} y={y} textAnchor="middle" dominantBaseline="central" className={`sz-num${zone.key === hot.key ? ' hot' : ''}`} fontSize={corner ? 1.5 : zone.key === 'ra' ? 2 : 2.2} transform={corner ? `rotate(-90 ${x} ${y})` : undefined}>{zone.fga ? pct(zone[by]) : ''}</text>;
           })}
         </svg>
       </div>
