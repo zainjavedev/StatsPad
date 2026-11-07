@@ -4886,3 +4886,5 @@ a.bt-name:hover b{text-decoration:underline}
 .sz-val b{color:var(--text-1);font-variant-numeric:tabular-nums}
 .sz-val small{color:var(--text-3);font-size:11px;font-variant-numeric:tabular-nums}
 @media(min-width:900px){.sz{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);column-gap:24px;align-items:start}.sz .pp-head,.sz .sz-hot,.sz .sz-tabs{grid-column:1/-1}.sz-court{grid-column:1;max-width:none;margin:0}.sz-list{grid-column:2;margin:0}.sz .pp-note{grid-column:1/-1}}
+.gb-go{display:inline-flex;align-items:center;gap:1px;margin-top:3px;padding:3px 6px 3px 9px;border:1px solid var(--line);border-radius:999px;color:var(--text-2);font-size:12px;font-weight:700;line-height:1}
+.gb-status:hover .gb-go{color:var(--text-1);border-color:var(--text-3)}

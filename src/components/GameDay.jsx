@@ -123,7 +123,8 @@ function Game({game, showDay, mine, onPick, pickDay}) {
     {live ? <b className="gb-live"><i/>{game.detail || 'Live'}</b> : game.state === 'post' ? <b>{overtime ? game.detail.replace(/^Final\/?/, 'Final · ') : 'Final'}</b> : <b>{clock.format(new Date(game.start))}</b>}
     {close && !overtime && <span className="gb-tag">Close game</span>}
     {showDay && <small>{chipDay.format(noon(game.day))}</small>}
-    {!started && game.tv && <small>{game.tv}</small>}
+    {/* Before tip-off: a plain way into the game page instead of the TV channel. */}
+    {!started && <span className="gb-go">Game <ChevronRight size={14} aria-hidden="true"/></span>}
   </>;
   /* Before tip-off each team line is a button: tap the team you think wins. The time still opens the game page. */
   if (open) return <li className={`gb-game open${mine ? ' has-pick' : ''}`}>
