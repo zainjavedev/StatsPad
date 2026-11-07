@@ -12,6 +12,8 @@ import { navigate } from '../lib/nav';
 import { smallHeadshot } from '../lib/headshots';
 import {PerfCard, PerfSkeleton} from './RecentPerformances';
 import Radar from './Radar';
+import ShotZones from './ShotZones';
+import { CURRENT } from '../lib/season';
 import { radarAxes, teamHex as radarHex } from '../lib/radarAxes';
 
 /* Everything under a player's hero: season tiles with league ranks, the
@@ -218,6 +220,7 @@ export default function PlayerBody({ entity, season, population, showCareer, onO
     {sharing && <PlayerShare player={enriched} pool={pool} season={season ? pretty(season) : ''} onClose={() => setSharing(false)}/>}
     </div>
     <RecentGames lines={recent}/>
+    {(!season || season === CURRENT) && <ShotZones espnId={espnId(entity)} firstName={entity.playerName.split(' ')[0]}/>}
 
     <div className="pp-grid-2">
       {showCareer && <section className="pp-card">
