@@ -117,6 +117,8 @@ await sql`create table if not exists predictions (
   at timestamptz not null default now(),
   primary key (game_id, subscriber_id)
 )`;
+/* Winners of picked games the box-score sync hasn't stored yet, from ESPN's scoreboard (src/server/picks.js). */
+await sql`create table if not exists pick_results (game_id text primary key, winner text not null, day date not null)`;
 /* Public profile for the predictor leaderboard (src/server/profile.js). */
 await sql`alter table subscribers add column if not exists display_name text`;
 await sql`alter table subscribers add column if not exists photo text`;

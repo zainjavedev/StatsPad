@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { sql } from '../../../server/db';
 import { ensureProfile, photoUrl } from '../../../server/profile';
+import { ensurePicks, settle } from '../../../server/picks';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,11 +22,15 @@ const rankOf = (rows, won, total) => {
 export async function GET(request) {
   await ensureProfile();
   const token = new URL(request.url).searchParams.get('token') || '';
-  const exists = (await sql`select to_regclass('predictions') is not null as ok`)[0]?.ok;
-  if (!exists) return NextResponse.json({rows: [], players: 0, through: null});
+  await ensurePicks();
+  /* Finished games the box-score sync hasn't stored yet are graded from ESPN's scoreboard (server/picks.js). */
+  await settle(request.url);
   const rows = await sql`with g as (
       select id, case when home_score > away_score then home else away end as winner, (played_at at time zone 'America/New_York')::date as day
-      from games where home_score is not null and away_score is not null and home_score <> away_score),
+      from games where home_score is not null and away_score is not null and home_score <> away_score
+      union all
+      select r.game_id, r.winner, r.day from pick_results r
+      where not exists (select 1 from games s where s.id = r.game_id and s.home_score is not null and s.away_score is not null)),
     graded as (select p.subscriber_id, p.pick, g.winner, g.day from predictions p join g on g.id = p.game_id),
     last as (select max(day) as day from graded)
     select s.id, s.token = ${token} as me, s.display_name, s.photo,

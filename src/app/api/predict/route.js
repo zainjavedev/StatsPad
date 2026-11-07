@@ -1,33 +1,11 @@
 import { NextResponse } from 'next/server';
 import { sql } from '../../../server/db';
-import { SEASONS } from '../../../lib/season';
+import { eastern, ensurePicks as ensure, loadSchedule, settle } from '../../../server/picks';
 
 export const dynamic = 'force-dynamic';
 
 /* Fixture predictions: one pick (a team code) per account per game, changeable until tip-off. The table is created on first use
-   (and by scripts/db-setup.mjs). A pick is graded against the games table, which the box-score sync fills after each game. */
-let ready;
-const ensure = () => (ready ??= (async () => {
-  await sql`create table if not exists predictions (
-    game_id text not null,
-    subscriber_id uuid not null,
-    pick text not null,
-    at timestamptz not null default now(),
-    primary key (game_id, subscriber_id)
-  )`;
-})().catch(error => { ready = undefined; throw error; }));
-
-/* The schedule file the site serves (preseason left out, as on /fixtures), cached for five minutes: game id -> {start, away, home}. */
-let schedule, fetchedAt = 0;
-const loadSchedule = async origin => {
-  if (schedule && Date.now() - fetchedAt < 300e3) return schedule;
-  const rows = await fetch(new URL(`/data/${SEASONS[0]}/schedule.json`, origin), {cache: 'no-store'}).then(response => response.json());
-  schedule = new Map(rows.filter(row => row[9] !== 1).map(([id, start, away, home]) => [String(id), {start, away, home}]));
-  fetchedAt = Date.now();
-  return schedule;
-};
-
-const eastern = date => new Date(date).toLocaleDateString('en-CA', {timeZone: 'America/New_York'});
+   (and by scripts/db-setup.mjs). A pick is graded against the games table (the box-score sync), or pick_results until the sync catches up (server/picks.js). */
 const ID = /^\d{1,14}$/;
 const fail = (error, status) => NextResponse.json({error}, {status});
 const account = async token => (token ? (await sql`select id from subscribers where token = ${token} and channel = 'email'`)[0] : null);
@@ -45,13 +23,17 @@ export async function GET(request) {
   await ensure();
   const [me, crowd] = await Promise.all([account(String(params.get('token') || '')), crowdFor(ids)]);
   if (!me) return NextResponse.json({crowd, picks: {}, record: null});
+  await settle(request.url);
   const [picks, [record]] = await Promise.all([
     ids.length ? sql`select game_id, pick from predictions where subscriber_id = ${me.id} and game_id = any(${ids})` : [],
     /* Every picker's graded record; you rank by wins, ties sharing a place. */
     sql`with graded as (
-        select p.subscriber_id, count(*) filter (where p.pick = case when g.home_score > g.away_score then g.home else g.away end)::int as won, count(*)::int as total
-        from predictions p join games g on g.id = p.game_id
-        where g.home_score is not null and g.away_score is not null and g.home_score <> g.away_score
+        select p.subscriber_id, count(*) filter (where p.pick = g.winner)::int as won, count(*)::int as total
+        from predictions p join (
+          select id, case when home_score > away_score then home else away end as winner from games where home_score is not null and away_score is not null and home_score <> away_score
+          union all
+          select r.game_id, r.winner from pick_results r where not exists (select 1 from games s where s.id = r.game_id and s.home_score is not null and s.away_score is not null)
+        ) g on g.id = p.game_id
         group by p.subscriber_id)
       select me.won, me.total, (select count(*) from graded other where other.won > me.won)::int + 1 as rank, (select count(*) from graded)::int as players
       from graded me where me.subscriber_id = ${me.id}`,
@@ -64,7 +46,7 @@ export async function POST(request) {
   const body = await request.json().catch(() => null);
   const game = String(body?.game || ''), pick = String(body?.pick || '');
   if (!ID.test(game)) return fail('Unknown game.', 400);
-  const found = (await loadSchedule(request.url).catch(() => new Map())).get(game);
+  const schedule = await loadSchedule(request.url).catch(() => new Map()), found = schedule.get(game);
   if (!found || (pick !== found.away && pick !== found.home)) return fail('Unknown game.', 400);
   if (new Date(found.start) <= new Date()) return fail('This game has started. Picks are locked.', 409);
   /* One day open at a time: the earliest day (Eastern) with a game still to tip off. */
