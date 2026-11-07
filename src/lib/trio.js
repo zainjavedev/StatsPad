@@ -5,8 +5,9 @@ const num = value => Number(String(value ?? '').replace('+', '')) || 0;
    blocks, and a quiet night of three steals does not push a real line out. Shooting only counts with enough attempts, and is judged against 65% so an ordinary shooting night does not crowd out a real number.
    The two that follow points keep the usual order (rebounds, assists...). `must` (a label like 'blk') is always one of
    them, for a list sorted on that stat. */
-/* Numbers a card only shows when a list is sorted on them (turnovers, free throws attempted), as [value, label]. */
-const EXTRA = {to: s => num(s.TO), fta: s => Number(String(s.FT ?? '0-0').split('-')[1]) || 0};
+/* Numbers a card only shows when a list is sorted on them (turnovers, free throws attempted, plus-minus), as [value, label]. */
+const signed = value => (value > 0 ? `+${value}` : String(value));
+const EXTRA = {to: s => num(s.TO), fta: s => Number(String(s.FT ?? '0-0').split('-')[1]) || 0, '+/-': s => (s['+/-'] === undefined ? null : signed(num(s['+/-'])))};
 const extra = (stats, label) => { const value = EXTRA[label]?.(stats); return value === undefined || value === null ? null : [value, label, 0]; };
 
 export function trio(stats, must) {

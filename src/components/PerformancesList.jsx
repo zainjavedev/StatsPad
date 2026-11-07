@@ -38,7 +38,7 @@ const SORTS = [
   sort('fg', 'FG%', s => (made(s.FG, 1) >= 8 ? made(s.FG, 0) / made(s.FG, 1) * 100 : null), 'fg', 'only players with 8+ shots, so a 6-for-6 night is left out'),
   sort('fta', 'FT attempts', s => made(s.FT, 1), 'fta', 'free throws attempted'),
   sort('to', 'Turnovers', s => num(s.TO), 'to', 'highest first is the sloppiest night'),
-  sort('pm', '+/-', s => num(s['+/-']), null, 'team points minus opponent points while he was on the floor'),
+  sort('pm', '+/-', s => num(s['+/-']), '+/-', 'team points minus opponent points while he was on the floor'),
   sort('fps', 'Fantasy', s => fps({PTS: num(s.PTS), REB: num(s.REB), AST: num(s.AST), STL: num(s.STL), BLK: num(s.BLK), TO: num(s.TO)}), null, 'fantasy points: points + 1.2 × rebounds + 1.5 × assists + 3 × steals + 3 × blocks − turnovers'),
 ];
 
