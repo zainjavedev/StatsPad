@@ -219,8 +219,11 @@ export default function PlayerBody({ entity, season, population, showCareer, onO
     </section>
     {sharing && <PlayerShare player={enriched} pool={pool} season={season ? pretty(season) : ''} onClose={() => setSharing(false)}/>}
     </div>
-    <RecentGames lines={recent}/>
-    {(!season || season === CURRENT) && <ShotZones espnId={espnId(entity)} firstName={entity.playerName.split(' ')[0]}/>}
+    {/* Recent games on the left, hot zones on the right on wide screens; stacked on a phone. */}
+    <div className="pp-recent-zones">
+      <RecentGames lines={recent}/>
+      {(!season || season === CURRENT) && <ShotZones espnId={espnId(entity)} firstName={entity.playerName.split(' ')[0]}/>}
+    </div>
 
     <div className="pp-grid-2">
       {showCareer && <section className="pp-card">

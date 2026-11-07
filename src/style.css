@@ -4876,3 +4876,12 @@ a.bt-name:hover b{text-decoration:underline}
   .vs-person:has(.vs-art.is-logo){justify-content:center}
   .vs-person .vs-art.is-logo{width:clamp(150px,13vw,220px);height:clamp(150px,13vw,220px);margin-bottom:10px}
 }
+
+/* Player profile: recent games in one column on the left, hot zones on the right (stacked on phones). */
+.pp-recent-zones>.sz{margin-top:16px}
+@media(min-width:1000px){
+  .pp-recent-zones{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
+  .pp-recent-zones .pp-recent .rp-list{columns:1!important}
+  .pp-recent-zones>.sz{margin-top:20px;position:sticky;top:84px}
+}
+.sz-tabs .sz-ft{margin-left:6px}

@@ -42,7 +42,7 @@ const loadShots = id => {
 };
 
 export default function ShotZones({espnId, firstName}) {
-  const [data, setData] = useState(undefined), [mode, setMode] = useState('shots');
+  const [data, setData] = useState(undefined), [mode, setMode] = useState('shots'), [showFt, setShowFt] = useState(false);
   useEffect(() => {
     if (!espnId) { setData(null); return undefined; }
     let live = true;
@@ -56,11 +56,14 @@ export default function ShotZones({espnId, firstName}) {
   const by = mode === 'shots' ? 'share' : 'ptsShare';
   const top = Math.max(...zones.map(zone => zone[by]), 0.0001);
   const hot = [...zones].sort((a, b) => b[by] - a[by] || b.fga - a.fga)[0];
+  const ft = showFt && data?.fta > 0 ? {pct: data.ftm / data.fta, share: data.ftm / Math.max(1, data.pts)} : null;
 
   return <section className="pp-card sz" aria-label={`${firstName}'s shot zones`}>
     <div className="pp-head sz-head"><h2>{firstName}&apos;s hot zones</h2>
       <div className="pp-tabs sz-tabs" role="group" aria-label="Shade the zones by">
         {[['shots', 'Shots'], ['points', 'Points']].map(([key, label]) => <button key={key} type="button" className={mode === key ? 'active' : ''} aria-pressed={mode === key} onClick={() => setMode(key)}>{label}</button>)}
+        {/* Free throws are off the floor, so they only show when asked for. */}
+        {data?.fta > 0 && <button type="button" className={`sz-ft${showFt ? ' active' : ''}`} aria-pressed={showFt} onClick={() => setShowFt(value => !value)}>FT</button>}
       </div>
     </div>
     {data === undefined ? <div className="sk" style={{height: 300, borderRadius: 12}}/> : <>
@@ -80,14 +83,16 @@ export default function ShotZones({espnId, firstName}) {
             })}
           </g>
           <Court bare/>
-          {/* Free throws on the free-throw line: FT% under Shots, their share of his points under Points. */}
-          {data.fta > 0 && <g transform="translate(25 23)">
-            <rect x="-5.2" y="-1.35" width="10.4" height="2.7" rx="1.35" fill="#0b0c0f" stroke="#fff" strokeOpacity=".35" strokeWidth=".2"><title>{`Free throws: ${data.ftm} of ${data.fta}, ${pct(data.ftm / Math.max(1, data.pts))} of his points`}</title></rect>
-            <text textAnchor="middle" dominantBaseline="central" className="sz-num" fontSize="1.6">FT {mode === 'shots' ? pct(data.ftm / data.fta) : pct(data.ftm / Math.max(1, data.pts))}</text>
+          {/* Free throws (when switched on): the top half of the free-throw circle shaded as its own zone, its number inside.
+              FT% under Shots, their share of his points under Points. Middle midrange's number moves up to make room. */}
+          {ft && <g>
+            <path d="M19 23a6 6 0 0 1 12 0Z" fill={mode === 'shots' ? mix(FLOOR, RED, .45) : heat(ft.share / top, ft.share >= top)} stroke="#0b0c0f" strokeWidth=".35"><title>{`Free throws: ${data.ftm} of ${data.fta}, ${pct(ft.share)} of his points`}</title></path>
+            <path d="M19 23a6 6 0 0 1 12 0" fill="none" stroke="#fff" strokeWidth=".28" opacity=".55"/>
+            <text x="25" y="21" textAnchor="middle" dominantBaseline="central" className="sz-num" fontSize="1.7">FT {mode === 'shots' ? pct(ft.pct) : pct(ft.share)}</text>
           </g>}
           {zones.map(zone => {
-            const [x, y] = LABEL[zone.key], corner = zone.key.startsWith('c3');
-            return <text key={zone.key} x={x} y={y} textAnchor="middle" dominantBaseline="central" className={`sz-num${zone.key === hot.key ? ' hot' : ''}`} fontSize={corner ? 1.5 : zone.key === 'ra' ? 2 : 2.2} transform={corner ? `rotate(-90 ${x} ${y})` : undefined}>{zone.fga ? pct(zone[by]) : ''}</text>;
+            const [x, y] = ft && zone.key === 'mid-center' ? [25, 15.2] : LABEL[zone.key], corner = zone.key.startsWith('c3');
+            return <text key={zone.key} x={x} y={y} textAnchor="middle" dominantBaseline="central" className={`sz-num${zone.key === hot.key ? ' hot' : ''}`} fontSize={corner ? 1.5 : zone.key === 'ra' || (ft && zone.key === 'mid-center') ? 2 : 2.2} transform={corner ? `rotate(-90 ${x} ${y})` : undefined}>{zone.fga ? pct(zone[by]) : ''}</text>;
           })}
         </svg>
       </div>
