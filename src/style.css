@@ -4869,3 +4869,10 @@ a.bt-name:hover b{text-decoration:underline}
 .sz-num{fill:#fff;font-weight:800;paint-order:stroke;stroke:rgb(0 0 0 / .35);stroke-width:.3;font-family:inherit}
 .gb-go{display:inline-flex;align-items:center;gap:1px;margin-top:3px;padding:3px 6px 3px 9px;border:1px solid var(--line);border-radius:999px;color:var(--text-2);font-size:12px;font-weight:700;line-height:1}
 .gb-status:hover .gb-go{color:var(--text-1);border-color:var(--text-3)}
+
+/* Team compare: the logo, name and Change team sit in the middle of the side column, level with the radar, and the logo grows
+   on wide screens instead of staying a small mark at the foot of a tall empty column. */
+@media(min-width:900px){
+  .vs-person:has(.vs-art.is-logo){justify-content:center}
+  .vs-person .vs-art.is-logo{width:clamp(150px,13vw,220px);height:clamp(150px,13vw,220px);margin-bottom:10px}
+}
